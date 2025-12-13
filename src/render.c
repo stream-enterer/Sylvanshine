@@ -157,3 +157,64 @@ void DrawFloorTexturedQuad(Texture2D texture, Rectangle src, Vector3 center, flo
     rlEnd();
     rlSetTexture(0);
 }
+
+void DrawFloorTexturedQuadRotated(Texture2D texture, Rectangle src, Vector3 center, float width, float depth, float y_rotation, bool atlas_rotated, Color tint) {
+    rlSetTexture(texture.id);
+
+    float hw = width * 0.5f;
+    float hd = depth * 0.5f;
+
+    float angle_rad = y_rotation * DEG2RAD;
+    float cos_a = cosf(angle_rad);
+    float sin_a = sinf(angle_rad);
+
+    float tex_left = src.x / (float)texture.width;
+    float tex_right = (src.x + fabsf(src.width)) / (float)texture.width;
+    float tex_top = src.y / (float)texture.height;
+    float tex_bottom = (src.y + fabsf(src.height)) / (float)texture.height;
+
+    float corners[4][2] = {
+        {-hw, -hd},
+        {-hw,  hd},
+        { hw,  hd},
+        { hw, -hd}
+    };
+
+    float rotated[4][2];
+    for (int i = 0; i < 4; i++) {
+        rotated[i][0] = corners[i][0] * cos_a - corners[i][1] * sin_a;
+        rotated[i][1] = corners[i][0] * sin_a + corners[i][1] * cos_a;
+    }
+
+    rlBegin(RL_QUADS);
+    rlColor4ub(tint.r, tint.g, tint.b, tint.a);
+
+    if (atlas_rotated) {
+        rlTexCoord2f(tex_left, tex_bottom);
+        rlVertex3f(center.x + rotated[0][0], center.y, center.z + rotated[0][1]);
+
+        rlTexCoord2f(tex_right, tex_bottom);
+        rlVertex3f(center.x + rotated[1][0], center.y, center.z + rotated[1][1]);
+
+        rlTexCoord2f(tex_right, tex_top);
+        rlVertex3f(center.x + rotated[2][0], center.y, center.z + rotated[2][1]);
+
+        rlTexCoord2f(tex_left, tex_top);
+        rlVertex3f(center.x + rotated[3][0], center.y, center.z + rotated[3][1]);
+    } else {
+        rlTexCoord2f(tex_left, tex_top);
+        rlVertex3f(center.x + rotated[0][0], center.y, center.z + rotated[0][1]);
+
+        rlTexCoord2f(tex_left, tex_bottom);
+        rlVertex3f(center.x + rotated[1][0], center.y, center.z + rotated[1][1]);
+
+        rlTexCoord2f(tex_right, tex_bottom);
+        rlVertex3f(center.x + rotated[2][0], center.y, center.z + rotated[2][1]);
+
+        rlTexCoord2f(tex_right, tex_top);
+        rlVertex3f(center.x + rotated[3][0], center.y, center.z + rotated[3][1]);
+    }
+
+    rlEnd();
+    rlSetTexture(0);
+}

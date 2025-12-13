@@ -38,10 +38,10 @@
 #define AGGRO_COLOR_G 217
 #define AGGRO_COLOR_B 0
 
-#define GRID_COLOR_R 80
-#define GRID_COLOR_G 80
-#define GRID_COLOR_B 100
-#define GRID_COLOR_A 150
+#define GRID_COLOR_R 0
+#define GRID_COLOR_G 0
+#define GRID_COLOR_B 0
+#define GRID_COLOR_A 20
 
 typedef struct {
     int x;
