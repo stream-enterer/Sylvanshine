@@ -76,7 +76,7 @@ RSXMapping* FindRSXMapping(FXSystem* system, const char* rsx_name) {
     return NULL;
 }
 
-void CreateSpawnFX(FXSystem* system, FXInstance* fx, Vector2 position) {
+void CreateSpawnFX(FXSystem* system, FXInstance* fx, Vector3 position) {
     memset(fx, 0, sizeof(FXInstance));
     fx->position = position;
     fx->active = true;
@@ -136,23 +136,25 @@ void UpdateFXInstance(FXInstance* fx, float dt) {
     }
 }
 
-void DrawFXInstance(FXInstance* fx) {
+void DrawFXInstance(FXInstance* fx, RenderState* render) {
     if (!fx->active) return;
+
+    (void)render;
 
     for (int i = 0; i < fx->sprite_count; i++) {
         if (!fx->sprites[i].active) continue;
 
         FXSprite* sprite = &fx->sprites[i];
         Rectangle src = GetCurrentFrameRect(&sprite->player);
+        if (src.width == 0 || src.height == 0) continue;
 
-        Rectangle dest = {
-            fx->position.x - src.width * 0.5f,
-            fx->position.y - src.height * 0.5f,
-            src.width,
-            src.height
-        };
+        float sprite_width = src.width * WORLD_SCALE;
+        float sprite_height = src.height * WORLD_SCALE;
 
-        DrawTexturePro(sprite->texture, src, dest, (Vector2){0, 0}, 0.0f, WHITE);
+        Vector3 sprite_pos = fx->position;
+        sprite_pos.y = sprite_height * 0.5f + 0.01f * (float)i;
+
+        DrawTexturedQuad(sprite->texture, src, sprite_pos, sprite_width, sprite_height, ENTITY_XYZ_ROTATION, WHITE, false);
     }
 }
 

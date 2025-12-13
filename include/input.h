@@ -2,6 +2,7 @@
 #define INPUT_H
 
 #include "board.h"
+#include "render.h"
 #include "types.h"
 #include "unit.h"
 
@@ -15,7 +16,7 @@ typedef struct {
 } InputState;
 
 void InitInputState(InputState* state);
-void UpdateInputState(InputState* state, Board* board, Unit* units, int unit_count);
+void UpdateInputState(InputState* state, RenderState* render, Unit* units, int unit_count);
 void CalculateMoveTiles(InputState* state, Unit* unit);
 bool IsMoveValid(InputState* state, BoardPos pos);
 

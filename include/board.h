@@ -1,22 +1,22 @@
 #ifndef BOARD_H
 #define BOARD_H
 
+#include "render.h"
 #include "types.h"
 
 #include <raylib.h>
 
 typedef struct {
     Texture2D background;
-    float origin_x;
-    float origin_y;
+    Texture2D tile_move;
 } Board;
 
 void InitBoard(Board* board);
 void UnloadBoard(Board* board);
-void DrawBoard(Board* board);
-void DrawTileHighlight(Board* board, int col, int row, Color color);
-Vector2 BoardToScreen(Board* board, int col, int row);
-BoardPos ScreenToBoard(Board* board, float screen_x, float screen_y);
+void DrawBackground(Board* board);
+void DrawTileHighlight(Board* board, RenderState* render, int col, int row, Color color);
+void DrawTileSprite(Board* board, RenderState* render, int col, int row, Color tint);
+BoardPos WorldToBoard(RenderState* render, Vector3 world_pos);
 bool IsValidBoardPos(int col, int row);
 
 #endif

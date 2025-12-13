@@ -2,7 +2,7 @@
 #define UNIT_H
 
 #include "animation.h"
-#include "board.h"
+#include "render.h"
 #include "types.h"
 
 #include <raylib.h>
@@ -20,22 +20,30 @@ typedef struct {
     AnimationPlayer player;
 
     BoardPos board_pos;
-    Vector2 screen_pos;
-    Vector2 move_start;
-    Vector2 move_target;
+    BoardPos prev_board_pos;
+    Vector3 world_pos;
+    Vector3 move_start;
+    Vector3 move_target;
     float move_progress;
+    float move_duration;
+    int move_distance;
+
+    float spawn_time;
+    float shadow_alpha;
 
     UnitState state;
     bool selected;
     bool active;
+    bool facing_left;
 } Unit;
 
 void LoadUnit(Unit* unit, const char* name);
 void UnloadUnit(Unit* unit);
-void UpdateUnit(Unit* unit, Board* board, float dt);
-void DrawUnit(Unit* unit, Texture2D shadow);
+void UpdateUnit(Unit* unit, RenderState* render, float dt);
+void DrawUnitShadow(Unit* unit, Texture2D shadow, RenderState* render);
+void DrawUnit(Unit* unit, RenderState* render);
 void SetUnitAnimation(Unit* unit, const char* anim_name, bool looping);
-void StartUnitMove(Unit* unit, Board* board, BoardPos target);
-void SpawnUnit(Unit* unit, Board* board, BoardPos pos);
+void StartUnitMove(Unit* unit, RenderState* render, BoardPos target);
+void SpawnUnit(Unit* unit, RenderState* render, BoardPos pos);
 
 #endif
