@@ -1,0 +1,59 @@
+key	vertex_shader	fragment_shader	usage_count	usage_files
+BlurMedium	helpers/PosTexVertex.glsl	[GENERATED] blurShaderGenerator.js	2	app/view/nodes/GlowSprite.js:789; app/view/nodes/GlowSprite.js:891
+BlurStrong	helpers/PosTexVertex.glsl	[GENERATED] blurShaderGenerator.js	2	app/view/nodes/GlowSprite.js:787; app/view/nodes/GlowSprite.js:889
+BlurWeak	helpers/PosTexVertex.glsl	[GENERATED] blurShaderGenerator.js	2	app/view/nodes/GlowSprite.js:791; app/view/nodes/GlowSprite.js:893
+Monochrome	helpers/PosTexColorVertex.glsl	MonochromeFragment.glsl	10	app/view/nodes/cards/BottomDeckCardNode.js:666; app/view/nodes/cards/BottomDeckCardNode.js:670; app/view/nodes/cards/EntityNode.js:1812; app/view/nodes/cards/ReplaceNode.js:225; app/view/nodes/cards/ReplaceNode.js:226 (+5 more)
+Tinting	helpers/PosTexColorVertex.glsl	TintingFragment.glsl	1	app/view/nodes/BaseSprite.js:340
+bloom	helpers/PosTexVertex.glsl	BloomFragment.glsl	0	
+cardAngleGradientShine	helpers/PosTexColorVertex.glsl	CardAngledGradientShine.glsl	0	
+caustic	helpers/PosTexColorVertex.glsl	CausticFragment.glsl	0	
+causticPrismaticGlow	helpers/PosTexColorVertex.glsl	CausticPrismaticGlowFragment.glsl	0	
+chromatic	ChromaticVertex.glsl	ChromaticFragment.glsl	1	app/view/nodes/GlowSprite.js:929
+chromaticFlare	helpers/PosTexColorVertex.glsl	ChromaticFlareFragment.glsl	0	
+colorize	helpers/PosTexColorVertex.glsl	ColorizeFragment.glsl	1	app/view/nodes/cards/CardNode.js:2610
+coreGem	helpers/PosTexColorVertex.glsl	CoreGemFragment.glsl	1	app/view/nodes/gem/CoreGemSprite.js:36
+coreGemEdgesAndColorizeFragment	helpers/PosTexColorVertex.glsl	CoreGemEdgesAndColorizeFragment.glsl	1	app/view/nodes/gem/CoreGemSprite.js:100
+depth	DepthVertex.glsl	DepthFragment.glsl	1	app/view/nodes/BaseSprite.js:1204
+depthDebug	helpers/PosTexVertex.glsl	DepthDebugFragment.glsl	0	
+depthTest	DepthTestVertex.glsl	DepthTestFragment.glsl	2	app/view/nodes/BaseParticleSystem.js:1724; app/view/nodes/BaseSprite.js:1182
+dissolve	helpers/PosTexColorVertex.glsl	DissolveFragment.glsl	1	app/view/nodes/BaseSprite.js:593
+dissolveWithDiscFromCenter	helpers/PosTexColorVertex.glsl	DissolveFromCenterWithDiscFragment.glsl	0	
+distortion	DistortionVertex.glsl	DistortionFragment.glsl	0	
+energyBall	helpers/PosTexColorVertex.glsl	EnergyBallFragment.glsl	0	
+fbmNoiseGradientMask	helpers/PosTexColorVertex.glsl	FbmNoiseGradientMask.glsl	0	
+fbmNoiseRaysShader	helpers/PosTexColorVertex.glsl	FbmNoiseRays.glsl	0	
+fbmPolarFlareShader	helpers/PosTexColorVertex.glsl	FbmPolarFlareFragment.glsl	0	
+fireLinearWaveShader	helpers/PosTexColorVertex.glsl	FireLinearWaveFragment.glsl	0	
+fireRing	helpers/PosTexColorVertex.glsl	FireRingFragment.glsl	0	
+fireRingFlareWarped	helpers/PosTexColorVertex.glsl	FireRingFlareWarpedFragment.glsl	0	
+fxaa	helpers/PosTexVertex.glsl	FXAAFragment.glsl	0	
+glow	GlowVertex.glsl	GlowFragment.glsl	1	app/view/nodes/GlowSprite.js:766
+glowImageMapControl	helpers/PosTexColorVertex.glsl	GlowImageMapControlFragment.glsl	0	
+glowImageMapRipple	helpers/PosTexColorVertex.glsl	GlowImageMapRippleFragment.glsl	0	
+glowNoise	helpers/PosTexVertex.glsl	GlowNoiseFragment.glsl	1	app/view/nodes/GlowSprite.js:821
+gradientColorMap	helpers/PosTexVertex.glsl	GradientColorMapFragment.glsl	0	
+highlight	HighlightVertex.glsl	HighlightFragment.glsl	1	app/view/nodes/GlowSprite.js:860
+highpass	helpers/PosTexVertex.glsl	HighpassFragment.glsl	0	
+lensFlare	helpers/PosTexColorVertex.glsl	LensFlareFragment.glsl	0	
+lensNoise	helpers/PosTexColorVertex.glsl	LensNoiseFragment.glsl	1	app/view/nodes/fx/LensNoiseSprite.js:56
+levelsShader	helpers/PosTexVertex.glsl	LevelsFragment.glsl	0	
+lighting	LightingVertex.glsl	LightingFragment.glsl	1	app/view/nodes/BaseSprite.js:1274
+mask	MaskVertex.glsl	MaskFragment.glsl	1	app/view/nodes/BaseSprite.js:298
+multipliedLighting	helpers/PosTexVertex.glsl	MultipliedLightingFragment.glsl	1	app/view/nodes/BaseSprite.js:1023
+polarFlareWipe	helpers/PosTexColorVertex.glsl	FbmPolarFlareWipeFragment.glsl	0	
+radialBlur	helpers/PosTexVertex.glsl	RadialBlurFragment.glsl	0	
+rarityFlare	helpers/PosTexColorVertex.glsl	RarityFlareFragment.glsl	0	
+riftFire	helpers/PosTexColorVertex.glsl	RiftFireFragment.glsl	0	
+riftLine	helpers/PosTexColorVertex.glsl	RiftLineFragment.glsl	0	
+shadowBlob	helpers/PosTexColorVertex.glsl	ShadowBlobFragment.glsl	0	
+shadowHighQuality	ShadowVertex.glsl	ShadowHighQualityFragment.glsl	1	app/view/nodes/BaseSprite.js:1299
+shadowLowQuality	ShadowVertex.glsl	ShadowLowQualityFragment.glsl	1	app/view/nodes/BaseSprite.js:1301
+shockwave	DistortionVertex.glsl	ShockwaveFragment.glsl	0	
+surface	helpers/PosTexVertex.glsl	SurfaceFragment.glsl	0	
+timer	helpers/PosTexColorVertex.glsl	TimerFragment.glsl	0	
+toneCurve	helpers/PosTexVertex.glsl	ToneCurveFragment.glsl	0	
+voronoiPrismatic	helpers/PosTexColorVertex.glsl	VoronoiPrismaticFragment.glsl	0	
+vortex	DistortionVertex.glsl	VortexFragment.glsl	0	
+water	DistortionVertex.glsl	WaterFragment.glsl	0	
+whiteCloudVignette	helpers/PosTexColorVertex.glsl	WhiteCloudVignetteFragment.glsl	0	
+wispLensFlare	helpers/PosTexColorVertex.glsl	WispLensFlareFragment.glsl	0	

@@ -1,0 +1,24 @@
+maxParticles	800.0
+duration	-1.0
+lifespan	2.0
+lifespanVariance	2.0
+emitterType	gravity
+sourcePositionVariancex	177.5
+sourcePositionVariancey	100.0
+speed	20.0
+speedVariance	0.0
+angle	90.0
+angleVariance	0.0
+gravityx	0.0
+gravityy	0.0
+startColorRed	1.0
+startColorGreen	1.0
+startColorBlue	1.0
+startColorAlpha	1.0
+finishColorRed	1.0
+finishColorGreen	1.0
+finishColorBlue	1.0
+finishColorAlpha	0.0
+startParticleSize	5.0
+finishParticleSize	5.0
+textureFileName	
