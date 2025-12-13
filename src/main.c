@@ -7,6 +7,8 @@
 
 #include <raylib.h>
 
+#include <stdio.h>
+
 #define MAX_FX_INSTANCES 16
 
 int main(void) {
@@ -18,6 +20,20 @@ int main(void) {
 
     Board board;
     InitBoard(&board);
+
+    printf("\n=== DEBUG INFO ===\n");
+    printf("1. Background texture: %d x %d pixels\n", board.background.width, board.background.height);
+    printf("2. Camera settings:\n");
+    printf("   Position: (%.2f, %.2f, %.2f)\n", render.camera.position.x, render.camera.position.y, render.camera.position.z);
+    printf("   Target:   (%.2f, %.2f, %.2f)\n", render.camera.target.x, render.camera.target.y, render.camera.target.z);
+    printf("   FOV Y:    %.2f degrees\n", render.camera.fovy);
+    printf("   Projection: %s\n", render.camera.projection == CAMERA_ORTHOGRAPHIC ? "ORTHOGRAPHIC" : "PERSPECTIVE");
+    printf("3. Board world-space size:\n");
+    printf("   Tile size: %.4f world units (TILE_SIZE=%d * WORLD_SCALE=%.4f)\n", render.tile_world_size, TILE_SIZE, WORLD_SCALE);
+    printf("   Board width:  %.4f world units (%d cols)\n", render.board_width, BOARD_COLS);
+    printf("   Board height: %.4f world units (%d rows)\n", render.board_height, BOARD_ROWS);
+    printf("4. Window size: %d x %d pixels\n", SCREEN_WIDTH, SCREEN_HEIGHT);
+    printf("==================\n\n");
 
     Texture2D shadow = LoadTexture("data/units/unit_shadow.png");
 
