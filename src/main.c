@@ -118,6 +118,12 @@ int main(void) {
 
         DrawFPS(10, 10);
 
+        Vector2 mouse = GetMousePosition();
+        Vector3 world = ScreenPosToWorld(&render, mouse.x, mouse.y);
+        DrawText(TextFormat("Screen: %.0f, %.0f", mouse.x, mouse.y), 10, 30, 20, WHITE);
+        DrawText(TextFormat("World: %.2f, %.2f", world.x, world.z), 10, 50, 20, WHITE);
+        DrawText(TextFormat("Board: %d, %d", input.hover_pos.x, input.hover_pos.y), 10, 70, 20, WHITE);
+
         EndDrawing();
     }
 
