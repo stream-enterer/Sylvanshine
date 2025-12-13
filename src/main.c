@@ -1,6 +1,7 @@
 #include "board.h"
 #include "fx.h"
 #include "input.h"
+#include "render.h"
 #include "types.h"
 #include "unit.h"
 
@@ -11,6 +12,9 @@
 int main(void) {
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Duelyst Visual Prototype");
     SetTargetFPS(60);
+
+    RenderState render;
+    InitRenderState(&render);
 
     Board board;
     InitBoard(&board);
@@ -28,10 +32,10 @@ int main(void) {
     int unit_count = 0;
 
     LoadUnit(&units[unit_count], "f1_general");
-    Vector2 spawn_pos = BoardToScreen(&board, 4, 2);
-    SpawnUnit(&units[unit_count], &board, (BoardPos){4, 2});
+    SpawnUnit(&units[unit_count], &render, (BoardPos){4, 2});
 
     if (fx_count < MAX_FX_INSTANCES) {
+        Vector3 spawn_pos = BoardToWorld(&render, 4, 2);
         CreateSpawnFX(&fx_system, &fx_instances[fx_count], spawn_pos);
         fx_count++;
     }
@@ -44,10 +48,10 @@ int main(void) {
     while (!WindowShouldClose()) {
         float dt = GetFrameTime();
 
-        UpdateInputState(&input, &board, units, unit_count);
+        UpdateInputState(&input, &render, units, unit_count);
 
         for (int i = 0; i < unit_count; i++) {
-            UpdateUnit(&units[i], &board, dt);
+            UpdateUnit(&units[i], &render, dt);
         }
 
         for (int i = 0; i < fx_count; i++) {
@@ -57,32 +61,42 @@ int main(void) {
         BeginDrawing();
         ClearBackground(BLACK);
 
-        DrawBoard(&board);
+        DrawBackground(&board);
+
+        BeginMode3D(render.camera);
 
         for (int col = 0; col < BOARD_COLS; col++) {
             for (int row = 0; row < BOARD_ROWS; row++) {
                 if (input.move_tiles[col][row]) {
-                    Color tile_color = {255, 255, 255, TILE_SELECT_OPACITY};
-                    DrawTileHighlight(&board, col, row, tile_color);
+                    Color tile_color = {MOVE_COLOR_R, MOVE_COLOR_G, MOVE_COLOR_B, TILE_SELECT_OPACITY};
+                    DrawTileHighlight(&board, &render, col, row, tile_color);
                 }
             }
         }
 
         if (input.hover_valid && input.selected_unit) {
-            Color hover_color = {255, 255, 255, TILE_HOVER_OPACITY};
+            Color hover_color;
             if (IsMoveValid(&input, input.hover_pos)) {
-                hover_color = (Color){100, 255, 100, TILE_HOVER_OPACITY};
+                hover_color = (Color){MOVE_HOVER_COLOR_R, MOVE_HOVER_COLOR_G, MOVE_HOVER_COLOR_B, TILE_HOVER_OPACITY};
+            } else {
+                hover_color = (Color){255, 255, 255, TILE_DIM_OPACITY};
             }
-            DrawTileHighlight(&board, input.hover_pos.x, input.hover_pos.y, hover_color);
+            DrawTileHighlight(&board, &render, input.hover_pos.x, input.hover_pos.y, hover_color);
         }
 
         for (int i = 0; i < unit_count; i++) {
-            DrawUnit(&units[i], shadow);
+            DrawUnitShadow(&units[i], shadow, &render);
         }
 
         for (int i = 0; i < fx_count; i++) {
-            DrawFXInstance(&fx_instances[i]);
+            DrawFXInstance(&fx_instances[i], &render);
         }
+
+        for (int i = 0; i < unit_count; i++) {
+            DrawUnit(&units[i], &render);
+        }
+
+        EndMode3D();
 
         DrawFPS(10, 10);
 

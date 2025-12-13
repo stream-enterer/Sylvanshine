@@ -10,9 +10,10 @@ void InitInputState(InputState* state) {
     memset(state->move_tiles, 0, sizeof(state->move_tiles));
 }
 
-void UpdateInputState(InputState* state, Board* board, Unit* units, int unit_count) {
+void UpdateInputState(InputState* state, RenderState* render, Unit* units, int unit_count) {
     Vector2 mouse = GetMousePosition();
-    BoardPos board_pos = ScreenToBoard(board, mouse.x, mouse.y);
+    Vector3 world_pos = ScreenPosToWorld(render, mouse.x, mouse.y);
+    BoardPos board_pos = WorldToBoard(render, world_pos);
 
     state->hover_pos = board_pos;
     state->hover_valid = IsValidBoardPos(board_pos.x, board_pos.y);
@@ -36,7 +37,7 @@ void UpdateInputState(InputState* state, Board* board, Unit* units, int unit_cou
             clicked_unit->selected = true;
             CalculateMoveTiles(state, clicked_unit);
         } else if (state->selected_unit && IsMoveValid(state, board_pos)) {
-            StartUnitMove(state->selected_unit, board, board_pos);
+            StartUnitMove(state->selected_unit, render, board_pos);
             state->selected_unit->selected = false;
             state->selected_unit = NULL;
             memset(state->move_tiles, 0, sizeof(state->move_tiles));

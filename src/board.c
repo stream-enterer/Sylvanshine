@@ -2,43 +2,57 @@
 
 void InitBoard(Board* board) {
     board->background = LoadTexture("data/maps/battlemap0_background.png");
-    board->origin_x = (SCREEN_WIDTH - BOARD_COLS * TILE_SIZE) * 0.5f + TILE_SIZE * 0.5f + TILE_OFFSET_X;
-    board->origin_y = (SCREEN_HEIGHT - BOARD_ROWS * TILE_SIZE) * 0.5f + TILE_SIZE * 0.5f + TILE_OFFSET_Y;
+    board->tile_move = LoadTexture("data/tiles/tile_mana.png");
 }
 
 void UnloadBoard(Board* board) {
     UnloadTexture(board->background);
+    UnloadTexture(board->tile_move);
 }
 
-void DrawBoard(Board* board) {
-    float bg_x = (SCREEN_WIDTH - board->background.width) * 0.5f;
-    float bg_y = (SCREEN_HEIGHT - board->background.height) * 0.5f;
-    DrawTexture(board->background, (int)bg_x, (int)bg_y, WHITE);
+void DrawBackground(Board* board) {
+    float scale_x = (float)SCREEN_WIDTH / board->background.width;
+    float scale_y = (float)SCREEN_HEIGHT / board->background.height;
+    float scale = scale_x > scale_y ? scale_x : scale_y;
+
+    float w = board->background.width * scale;
+    float h = board->background.height * scale;
+    float x = (SCREEN_WIDTH - w) * 0.5f;
+    float y = (SCREEN_HEIGHT - h) * 0.5f;
+
+    Rectangle src = {0, 0, (float)board->background.width, (float)board->background.height};
+    Rectangle dest = {x, y, w, h};
+    DrawTexturePro(board->background, src, dest, (Vector2){0, 0}, 0, WHITE);
 }
 
-void DrawTileHighlight(Board* board, int col, int row, Color color) {
-    Vector2 pos = BoardToScreen(board, col, row);
-    float half_tile = TILE_SIZE * 0.5f;
-    DrawRectangle(
-        (int)(pos.x - half_tile),
-        (int)(pos.y - half_tile),
-        TILE_SIZE,
-        TILE_SIZE,
-        color
-    );
+void DrawTileHighlight(Board* board, RenderState* render, int col, int row, Color color) {
+    (void)board;
+
+    Vector3 pos = BoardToWorld(render, col, row);
+    pos.y = 0.002f;
+
+    float tile_size = render->tile_world_size * 0.95f;
+    DrawColoredQuad(pos, tile_size, tile_size, BOARD_XYZ_ROTATION, color);
 }
 
-Vector2 BoardToScreen(Board* board, int col, int row) {
-    Vector2 result;
-    result.x = col * TILE_SIZE + board->origin_x;
-    result.y = row * TILE_SIZE + board->origin_y;
-    return result;
+void DrawTileSprite(Board* board, RenderState* render, int col, int row, Color tint) {
+    Vector3 pos = BoardToWorld(render, col, row);
+    pos.y = 0.002f;
+
+    float tile_size = render->tile_world_size;
+    Rectangle src = {0, 0, (float)board->tile_move.width, (float)board->tile_move.height};
+
+    DrawTexturedQuad(board->tile_move, src, pos, tile_size, tile_size, BOARD_XYZ_ROTATION, tint, false);
 }
 
-BoardPos ScreenToBoard(Board* board, float screen_x, float screen_y) {
+BoardPos WorldToBoard(RenderState* render, Vector3 world_pos) {
+    float half_cols = (BOARD_COLS - 1) * 0.5f;
+    float half_rows = (BOARD_ROWS - 1) * 0.5f;
+
     BoardPos result;
-    result.x = (int)((screen_x - board->origin_x + TILE_SIZE * 0.5f) / TILE_SIZE);
-    result.y = (int)((screen_y - board->origin_y + TILE_SIZE * 0.5f) / TILE_SIZE);
+    result.x = (int)(world_pos.x / render->tile_world_size + half_cols + 0.5f);
+    result.y = (int)(half_rows - world_pos.z / render->tile_world_size + 0.5f);
+
     return result;
 }
 
