@@ -1,0 +1,13 @@
+name	path
+deploy_circle1	sfx_ui/deploy_circle1.m4a
+notification	sfx_ui/notification.m4a
+pointdrop	sfx_ui/pointdrop.m4a
+select	sfx_ui/select.m4a
+sfx_artifact_equip	sfx_ui/sfx_artifact_equip.m4a
+sfx_artifact_equip01	sfx_ui/sfx_artifact_equip01.m4a
+sfx_artifact_equip02	sfx_ui/sfx_artifact_equip02.m4a
+sfx_artifact_equip03	sfx_ui/sfx_artifact_equip03.m4a
+sfx_artifact_equipmask	sfx_ui/sfx_artifact_equipmask.m4a
+sfx_artifact_equipweapon	sfx_ui/sfx_artifact_equipweapon.m4a
+sfx_division_crest_outline_reveal	sfx_ui/sfx_division_crest_outline_reveal.m4a
+sfx_division_crest_reveal	sfx_ui/sfx_division_crest_reveal.m4a
