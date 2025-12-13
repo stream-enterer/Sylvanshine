@@ -5,6 +5,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define SPRITE_SCALE (1.0f / TILE_SIZE)
+
 void LoadUnit(Unit* unit, const char* name) {
     char path[256];
 
@@ -84,8 +86,8 @@ void DrawUnitShadow(Unit* unit, Texture2D shadow, RenderState* render) {
     Vector3 shadow_pos = unit->world_pos;
     shadow_pos.y = 0.001f;
 
-    float shadow_width = shadow.width * WORLD_SCALE;
-    float shadow_height = shadow.height * WORLD_SCALE;
+    float shadow_width = shadow.width * SPRITE_SCALE;
+    float shadow_height = shadow.height * SPRITE_SCALE;
 
     Rectangle src = {0, 0, (float)shadow.width, (float)shadow.height};
     Color tint = {255, 255, 255, (unsigned char)unit->shadow_alpha};
@@ -101,8 +103,8 @@ void DrawUnit(Unit* unit, RenderState* render) {
     Rectangle src = GetCurrentFrameRect(&unit->player);
     if (src.width == 0 || src.height == 0) return;
 
-    float sprite_width = src.width * WORLD_SCALE;
-    float sprite_height = src.height * WORLD_SCALE;
+    float sprite_width = src.width * SPRITE_SCALE;
+    float sprite_height = src.height * SPRITE_SCALE;
 
     Vector3 sprite_pos = unit->world_pos;
     sprite_pos.y = sprite_height * 0.5f;

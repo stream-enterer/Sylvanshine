@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include <string.h>
 
+#define SPRITE_SCALE (1.0f / TILE_SIZE)
+
 static const char* SPAWN_FX_SPRITES[] = {
     "fxTeleportRecallWhite",
     "fx_f1_holyimmolation",
@@ -148,8 +150,8 @@ void DrawFXInstance(FXInstance* fx, RenderState* render) {
         Rectangle src = GetCurrentFrameRect(&sprite->player);
         if (src.width == 0 || src.height == 0) continue;
 
-        float sprite_width = src.width * WORLD_SCALE;
-        float sprite_height = src.height * WORLD_SCALE;
+        float sprite_width = src.width * SPRITE_SCALE;
+        float sprite_height = src.height * SPRITE_SCALE;
 
         Vector3 sprite_pos = fx->position;
         sprite_pos.y = sprite_height * 0.5f + 0.01f * (float)i;

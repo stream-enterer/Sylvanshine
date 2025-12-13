@@ -5,26 +5,24 @@
 #include <rlgl.h>
 
 void InitRenderState(RenderState* state) {
-    state->tile_world_size = TILE_SIZE * WORLD_SCALE;
-    state->board_width = BOARD_COLS * state->tile_world_size;
-    state->board_height = BOARD_ROWS * state->tile_world_size;
-    state->board_center = (Vector3){0.0f, 0.0f, 0.0f};
+    state->board_width = (float)BOARD_COLS;
+    state->board_height = (float)BOARD_ROWS;
+    state->board_center = (Vector3){BOARD_COLS * 0.5f, 0.0f, BOARD_ROWS * 0.5f};
 
-    state->camera.position = (Vector3){0.0f, CAMERA_HEIGHT, CAMERA_DISTANCE};
-    state->camera.target = (Vector3){0.0f, 0.0f, 0.0f};
+    state->camera.position = (Vector3){BOARD_COLS * 0.5f, 8.0f, BOARD_ROWS * 0.5f + 10.0f};
+    state->camera.target = (Vector3){BOARD_COLS * 0.5f, 0.0f, BOARD_ROWS * 0.5f};
     state->camera.up = (Vector3){0.0f, 1.0f, 0.0f};
     state->camera.fovy = CAMERA_FOVY;
     state->camera.projection = CAMERA_ORTHOGRAPHIC;
 }
 
 Vector3 BoardToWorld(RenderState* state, int col, int row) {
-    float half_cols = (BOARD_COLS - 1) * 0.5f;
-    float half_rows = (BOARD_ROWS - 1) * 0.5f;
+    (void)state;
 
     Vector3 pos;
-    pos.x = (col - half_cols) * state->tile_world_size;
+    pos.x = col + 0.5f;
     pos.y = 0.0f;
-    pos.z = (half_rows - row) * state->tile_world_size;
+    pos.z = row + 0.5f;
 
     return pos;
 }

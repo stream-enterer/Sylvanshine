@@ -5,16 +5,12 @@
 
 #include <raylib.h>
 
-#define WORLD_SCALE 0.01f
-#define CAMERA_DISTANCE 12.0f
-#define CAMERA_HEIGHT 8.0f
-#define CAMERA_FOVY 45.0f
+#define CAMERA_FOVY 7.0f
 
 typedef struct {
     Camera3D camera;
     float board_width;
     float board_height;
-    float tile_world_size;
     Vector3 board_center;
 } RenderState;
 

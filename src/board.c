@@ -27,11 +27,12 @@ void DrawBackground(Board* board) {
 
 void DrawTileHighlight(Board* board, RenderState* render, int col, int row, Color color) {
     (void)board;
+    (void)render;
 
     Vector3 pos = BoardToWorld(render, col, row);
     pos.y = 0.002f;
 
-    float tile_size = render->tile_world_size * 0.95f;
+    float tile_size = 0.95f;
     DrawColoredQuad(pos, tile_size, tile_size, BOARD_XYZ_ROTATION, color);
 }
 
@@ -39,19 +40,17 @@ void DrawTileSprite(Board* board, RenderState* render, int col, int row, Color t
     Vector3 pos = BoardToWorld(render, col, row);
     pos.y = 0.002f;
 
-    float tile_size = render->tile_world_size;
     Rectangle src = {0, 0, (float)board->tile_move.width, (float)board->tile_move.height};
 
-    DrawTexturedQuad(board->tile_move, src, pos, tile_size, tile_size, BOARD_XYZ_ROTATION, tint, false);
+    DrawTexturedQuad(board->tile_move, src, pos, 1.0f, 1.0f, BOARD_XYZ_ROTATION, tint, false);
 }
 
 BoardPos WorldToBoard(RenderState* render, Vector3 world_pos) {
-    float half_cols = (BOARD_COLS - 1) * 0.5f;
-    float half_rows = (BOARD_ROWS - 1) * 0.5f;
+    (void)render;
 
     BoardPos result;
-    result.x = (int)(world_pos.x / render->tile_world_size + half_cols + 0.5f);
-    result.y = (int)(half_rows - world_pos.z / render->tile_world_size + 0.5f);
+    result.x = (int)world_pos.x;
+    result.y = (int)world_pos.z;
 
     return result;
 }
