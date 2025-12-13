@@ -83,24 +83,15 @@ int main(void) {
 
         DrawBoardGrid(&board, &render);
 
-        for (int col = 0; col < BOARD_COLS; col++) {
-            for (int row = 0; row < BOARD_ROWS; row++) {
-                if (input.move_tiles[col][row]) {
-                    Color tile_color = {MOVE_COLOR_R, MOVE_COLOR_G, MOVE_COLOR_B, TILE_SELECT_OPACITY};
-                    DrawTileHighlight(&board, &render, col, row, tile_color);
-                }
-            }
+        bool hover_tiles[BOARD_COLS][BOARD_ROWS] = {0};
+        if (input.hover_valid && input.selected_unit && IsMoveValid(&input, input.hover_pos)) {
+            hover_tiles[input.hover_pos.x][input.hover_pos.y] = true;
         }
 
-        if (input.hover_valid && input.selected_unit) {
-            Color hover_color;
-            if (IsMoveValid(&input, input.hover_pos)) {
-                hover_color = (Color){MOVE_HOVER_COLOR_R, MOVE_HOVER_COLOR_G, MOVE_HOVER_COLOR_B, TILE_HOVER_OPACITY};
-            } else {
-                hover_color = (Color){255, 255, 255, TILE_DIM_OPACITY};
-            }
-            DrawTileHighlight(&board, &render, input.hover_pos.x, input.hover_pos.y, hover_color);
-        }
+        Color move_color = {MOVE_COLOR_R, MOVE_COLOR_G, MOVE_COLOR_B, TILE_SELECT_OPACITY};
+        Color hover_color = {MOVE_HOVER_COLOR_R, MOVE_HOVER_COLOR_G, MOVE_HOVER_COLOR_B, TILE_HOVER_OPACITY};
+
+        DrawMergedMoveTiles(&board, &render, input.move_tiles, hover_tiles, move_color, hover_color);
 
         for (int i = 0; i < unit_count; i++) {
             DrawUnitShadow(&units[i], shadow, &render);

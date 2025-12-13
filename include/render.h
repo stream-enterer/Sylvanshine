@@ -21,5 +21,6 @@ void DrawTexturedQuad(Texture2D texture, Rectangle src, Vector3 center, float wi
 void DrawColoredQuad(Vector3 center, float width, float height, float x_rotation, Color color);
 void DrawFloorQuad(Vector3 center, float width, float depth, Color color);
 void DrawFloorTexturedQuad(Texture2D texture, Rectangle src, Vector3 center, float width, float depth, Color tint);
+void DrawFloorTexturedQuadRotated(Texture2D texture, Rectangle src, Vector3 center, float width, float depth, float y_rotation, bool atlas_rotated, Color tint);
 
 #endif
