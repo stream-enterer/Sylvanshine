@@ -1,0 +1,6 @@
+apply	sfx/sfx_summonlegendary.m4a
+attack	sfx/sfx_f6_seismicelemental_attack_impact.m4a
+attackDamage	sfx/sfx_f2_lanternfox_death.m4a
+death	sfx/sfx_f2_lanternfox_death.m4a
+receiveDamage	sfx/sfx_neutral_golembloodshard_hit.m4a
+walk	sfx/sfx_neutral_arakiheadhunter_hit.m4a

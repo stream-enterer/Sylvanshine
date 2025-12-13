@@ -1,0 +1,6 @@
+apply	sfx/sfx_spell_diretidefrenzy.m4a
+attack	sfx/sfx_neutral_spelljammer_attack_swing.m4a
+attackDamage	sfx/sfx_neutral_spelljammer_attack_impact.m4a
+death	sfx/sfx_f6_voiceofthewind_death.m4a
+receiveDamage	sfx/sfx_neutral_spelljammer_hit.m4a
+walk	sfx/sfx_f6_voiceofthewind_attack_swing.m4a

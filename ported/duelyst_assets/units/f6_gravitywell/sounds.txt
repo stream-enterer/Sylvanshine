@@ -1,0 +1,6 @@
+apply	sfx/sfx_spell_icepillar.m4a
+attack	sfx/sfx_neutral_golembloodshard_attack_swing.m4a
+attackDamage	sfx/sfx_neutral_golembloodshard_attack_impact.m4a
+death	sfx/sfx_neutral_golembloodshard_death.m4a
+receiveDamage	sfx/sfx_neutral_golembloodshard_hit.m4a
+walk	sfx/sfx_neutral_ladylocke_attack_impact.m4a

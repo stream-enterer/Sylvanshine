@@ -1,0 +1,6 @@
+apply	sfx/sfx_unit_deploy.m4a
+attack	sfx/sfx_f6_waterelemental_attack_swing.m4a
+attackDamage	sfx/sfx_neutral_golemdragonbone_impact.m4a
+death	sfx/sfx_neutral_golemdragonbone_death.m4a
+receiveDamage	sfx/sfx_neutral_golemdragonbone_hit.m4a
+walk	sfx/sfx_unit_physical_4.m4a

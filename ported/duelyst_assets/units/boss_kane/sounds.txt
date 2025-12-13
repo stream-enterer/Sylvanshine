@@ -1,0 +1,6 @@
+apply	sfx/sfx_spell_immolation_b.m4a
+attack	sfx/sfx_neutral_rook_attack_swing.m4a
+attackDamage	sfx/sfx_neutral_rook_attack_impact.m4a
+death	sfx/sfx_neutral_windstopper_death.m4a
+receiveDamage	sfx/sfx_f2_kaidoassassin_hit.m4a
+walk	sfx/sfx_neutral_arcanelimiter_attack_impact.m4a

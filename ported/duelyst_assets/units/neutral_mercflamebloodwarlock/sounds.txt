@@ -1,0 +1,6 @@
+apply	sfx/sfx_unit_deploy.m4a
+attack	sfx/sfx_f4_engulfingshadow_attack_swing.m4a
+attackDamage	sfx/sfx_f4_engulfingshadow_hit.m4a
+death	sfx/sfx_f6_icebeetle_death.m4a
+receiveDamage	sfx/sfx_f4_engulfingshadow_attack_impact.m4a
+walk	sfx/sfx_neutral_ladylocke_attack_impact.m4a

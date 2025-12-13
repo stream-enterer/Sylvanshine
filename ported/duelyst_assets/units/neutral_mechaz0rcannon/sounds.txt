@@ -1,0 +1,6 @@
+apply	sfx/sfx_unit_deploy_2.m4a
+attack	sfx/sfx_neutral_cannonmechaz0r_attack_swing.m4a
+attackDamage	sfx/sfx_neutral_cannonmechaz0r_hit.m4a
+death	sfx/sfx_neutral_cannonmechaz0r_death.m4a
+receiveDamage	sfx/sfx_neutral_cannonmechaz0r_impact.m4a
+walk	sfx/sfx_unit_run_charge_4.m4a

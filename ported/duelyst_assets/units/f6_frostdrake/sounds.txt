@@ -1,0 +1,6 @@
+apply	sfx/sfx_spell_amplification.m4a
+attack	sfx/sfx_neutral_earthwalker_attack_swing.m4a
+attackDamage	sfx/sfx_neutral_earthwalker_attack_impact.m4a
+death	sfx/sfx_neutral_earthwalker_death.m4a
+receiveDamage	sfx/sfx_neutral_earthwalker_hit.m4a
+walk	sfx/sfx_unit_run_magical_4.m4a

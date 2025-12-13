@@ -1,0 +1,6 @@
+apply	sfx/sfx_neutral_prophetofthewhite_hit.m4a
+attack	sfx/sfx_neutral_spiritscribe_attack_swing.m4a
+attackDamage	sfx/sfx_neutral_spiritscribe_impact.m4a
+death	sfx/sfx_neutral_spiritscribe_death.m4a
+receiveDamage	sfx/sfx_neutral_spiritscribe_hit.m4a
+walk	sfx/sfx_neutral_songweaver_attack_swing.m4a
