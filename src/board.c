@@ -58,11 +58,14 @@ void DrawTileFromSheet(Board* board, RenderState* render, int col, int row, Tile
 }
 
 void DrawBoardGrid(Board* board, RenderState* render) {
-    Color grid_tint = {GRID_COLOR_R, GRID_COLOR_G, GRID_COLOR_B, GRID_COLOR_A};
+    (void)board;
 
     for (int col = 0; col < BOARD_COLS; col++) {
         for (int row = 0; row < BOARD_ROWS; row++) {
-            DrawTileFromSheet(board, render, col, row, board->grid_frame, grid_tint);
+            Color checker = ((col + row) % 2 == 0) ? RED : BLUE;
+            Vector3 pos = BoardToWorld(render, col, row);
+            pos.y = 0.001f;
+            DrawFloorQuad(pos, 0.9f, 0.9f, checker);
         }
     }
 }
