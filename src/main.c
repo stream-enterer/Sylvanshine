@@ -13,7 +13,7 @@
 
 int main(void) {
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Duelyst Visual Prototype");
-    SetTargetFPS(60);
+    SetTargetFPS(0);
 
     RenderState render;
     InitRenderState(&render);
@@ -80,6 +80,8 @@ int main(void) {
         DrawBackground(&board);
 
         BeginMode3D(render.camera);
+
+        DrawBoardGrid(&board, &render);
 
         for (int col = 0; col < BOARD_COLS; col++) {
             for (int row = 0; row < BOARD_ROWS; row++) {

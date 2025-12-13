@@ -3,11 +3,16 @@
 void InitBoard(Board* board) {
     board->background = LoadTexture("data/maps/battlemap0_background.png");
     board->tile_move = LoadTexture("data/tiles/tile_mana.png");
+    board->tiles_board = LoadTexture("data/tiles/tiles_board.png");
+
+    board->grid_frame = (TileFrame){2, 126, 122, 122};
+    board->hover_frame = (TileFrame){126, 2, 122, 122};
 }
 
 void UnloadBoard(Board* board) {
     UnloadTexture(board->background);
     UnloadTexture(board->tile_move);
+    UnloadTexture(board->tiles_board);
 }
 
 void DrawBackground(Board* board) {
@@ -43,6 +48,25 @@ void DrawTileSprite(Board* board, RenderState* render, int col, int row, Color t
     Rectangle src = {0, 0, (float)board->tile_move.width, (float)board->tile_move.height};
 
     DrawTexturedQuad(board->tile_move, src, pos, 1.0f, 1.0f, BOARD_XYZ_ROTATION, tint, false);
+}
+
+void DrawTileFromSheet(Board* board, RenderState* render, int col, int row, TileFrame frame, Color tint) {
+    Vector3 pos = BoardToWorld(render, col, row);
+    pos.y = 0.001f;
+
+    Rectangle src = {(float)frame.x, (float)frame.y, (float)frame.w, (float)frame.h};
+
+    DrawTexturedQuad(board->tiles_board, src, pos, 1.0f, 1.0f, BOARD_XYZ_ROTATION, tint, false);
+}
+
+void DrawBoardGrid(Board* board, RenderState* render) {
+    Color grid_tint = {GRID_COLOR_R, GRID_COLOR_G, GRID_COLOR_B, GRID_COLOR_A};
+
+    for (int col = 0; col < BOARD_COLS; col++) {
+        for (int row = 0; row < BOARD_ROWS; row++) {
+            DrawTileFromSheet(board, render, col, row, board->grid_frame, grid_tint);
+        }
+    }
 }
 
 BoardPos WorldToBoard(RenderState* render, Vector3 world_pos) {

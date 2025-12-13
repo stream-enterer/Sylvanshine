@@ -28,12 +28,20 @@
 #define MAX_FX_SPRITES 8
 #define MOVEMENT_RANGE 2
 
-#define MOVE_COLOR_R 0
-#define MOVE_COLOR_G 179
-#define MOVE_COLOR_B 0
-#define MOVE_HOVER_COLOR_R 102
+#define MOVE_COLOR_R 240
+#define MOVE_COLOR_G 240
+#define MOVE_COLOR_B 240
+#define MOVE_HOVER_COLOR_R 255
 #define MOVE_HOVER_COLOR_G 255
-#define MOVE_HOVER_COLOR_B 102
+#define MOVE_HOVER_COLOR_B 255
+#define AGGRO_COLOR_R 255
+#define AGGRO_COLOR_G 217
+#define AGGRO_COLOR_B 0
+
+#define GRID_COLOR_R 80
+#define GRID_COLOR_G 80
+#define GRID_COLOR_B 100
+#define GRID_COLOR_A 150
 
 typedef struct {
     int x;
