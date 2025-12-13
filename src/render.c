@@ -30,25 +30,15 @@ Vector3 BoardToWorld(RenderState* state, int col, int row) {
 Vector3 ScreenPosToWorld(RenderState* state, float screen_x, float screen_y) {
     Ray ray = GetMouseRay((Vector2){screen_x, screen_y}, state->camera);
 
-    float board_angle_rad = BOARD_XYZ_ROTATION * DEG2RAD;
-    Vector3 plane_normal = {0.0f, cosf(board_angle_rad), -sinf(board_angle_rad)};
-    float plane_d = 0.0f;
-
-    float denom = plane_normal.x * ray.direction.x +
-                  plane_normal.y * ray.direction.y +
-                  plane_normal.z * ray.direction.z;
-
-    if (fabsf(denom) < 0.0001f) {
+    if (fabsf(ray.direction.y) < 0.0001f) {
         return (Vector3){0, 0, 0};
     }
 
-    float t = -(plane_normal.x * ray.position.x +
-                plane_normal.y * ray.position.y +
-                plane_normal.z * ray.position.z + plane_d) / denom;
+    float t = -ray.position.y / ray.direction.y;
 
     Vector3 result;
     result.x = ray.position.x + ray.direction.x * t;
-    result.y = ray.position.y + ray.direction.y * t;
+    result.y = 0.0f;
     result.z = ray.position.z + ray.direction.z * t;
 
     return result;
@@ -121,4 +111,49 @@ void DrawColoredQuad(Vector3 center, float width, float height, float x_rotation
     rlVertex3f(center.x + hw, center.y + top_y, center.z + top_z);
 
     rlEnd();
+}
+
+void DrawFloorQuad(Vector3 center, float width, float depth, Color color) {
+    float hw = width * 0.5f;
+    float hd = depth * 0.5f;
+
+    rlBegin(RL_QUADS);
+    rlColor4ub(color.r, color.g, color.b, color.a);
+
+    rlVertex3f(center.x - hw, center.y, center.z - hd);
+    rlVertex3f(center.x - hw, center.y, center.z + hd);
+    rlVertex3f(center.x + hw, center.y, center.z + hd);
+    rlVertex3f(center.x + hw, center.y, center.z - hd);
+
+    rlEnd();
+}
+
+void DrawFloorTexturedQuad(Texture2D texture, Rectangle src, Vector3 center, float width, float depth, Color tint) {
+    rlSetTexture(texture.id);
+
+    float hw = width * 0.5f;
+    float hd = depth * 0.5f;
+
+    float tex_left = src.x / (float)texture.width;
+    float tex_right = (src.x + src.width) / (float)texture.width;
+    float tex_top = src.y / (float)texture.height;
+    float tex_bottom = (src.y + src.height) / (float)texture.height;
+
+    rlBegin(RL_QUADS);
+    rlColor4ub(tint.r, tint.g, tint.b, tint.a);
+
+    rlTexCoord2f(tex_left, tex_top);
+    rlVertex3f(center.x - hw, center.y, center.z - hd);
+
+    rlTexCoord2f(tex_left, tex_bottom);
+    rlVertex3f(center.x - hw, center.y, center.z + hd);
+
+    rlTexCoord2f(tex_right, tex_bottom);
+    rlVertex3f(center.x + hw, center.y, center.z + hd);
+
+    rlTexCoord2f(tex_right, tex_top);
+    rlVertex3f(center.x + hw, center.y, center.z - hd);
+
+    rlEnd();
+    rlSetTexture(0);
 }

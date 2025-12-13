@@ -32,13 +32,11 @@ void DrawBackground(Board* board) {
 
 void DrawTileHighlight(Board* board, RenderState* render, int col, int row, Color color) {
     (void)board;
-    (void)render;
 
     Vector3 pos = BoardToWorld(render, col, row);
     pos.y = 0.002f;
 
-    float tile_size = 0.95f;
-    DrawColoredQuad(pos, tile_size, tile_size, BOARD_XYZ_ROTATION, color);
+    DrawFloorQuad(pos, 0.95f, 0.95f, color);
 }
 
 void DrawTileSprite(Board* board, RenderState* render, int col, int row, Color tint) {
@@ -47,7 +45,7 @@ void DrawTileSprite(Board* board, RenderState* render, int col, int row, Color t
 
     Rectangle src = {0, 0, (float)board->tile_move.width, (float)board->tile_move.height};
 
-    DrawTexturedQuad(board->tile_move, src, pos, 1.0f, 1.0f, BOARD_XYZ_ROTATION, tint, false);
+    DrawFloorTexturedQuad(board->tile_move, src, pos, 1.0f, 1.0f, tint);
 }
 
 void DrawTileFromSheet(Board* board, RenderState* render, int col, int row, TileFrame frame, Color tint) {
@@ -56,7 +54,7 @@ void DrawTileFromSheet(Board* board, RenderState* render, int col, int row, Tile
 
     Rectangle src = {(float)frame.x, (float)frame.y, (float)frame.w, (float)frame.h};
 
-    DrawTexturedQuad(board->tiles_board, src, pos, 1.0f, 1.0f, BOARD_XYZ_ROTATION, tint, false);
+    DrawFloorTexturedQuad(board->tiles_board, src, pos, 1.0f, 1.0f, tint);
 }
 
 void DrawBoardGrid(Board* board, RenderState* render) {

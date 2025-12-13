@@ -19,5 +19,7 @@ Vector3 BoardToWorld(RenderState* state, int col, int row);
 Vector3 ScreenPosToWorld(RenderState* state, float screen_x, float screen_y);
 void DrawTexturedQuad(Texture2D texture, Rectangle src, Vector3 center, float width, float height, float x_rotation, Color tint, bool flip_h);
 void DrawColoredQuad(Vector3 center, float width, float height, float x_rotation, Color color);
+void DrawFloorQuad(Vector3 center, float width, float depth, Color color);
+void DrawFloorTexturedQuad(Texture2D texture, Rectangle src, Vector3 center, float width, float depth, Color tint);
 
 #endif
