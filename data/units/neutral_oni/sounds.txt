@@ -1,0 +1,6 @@
+apply	sfx/sfx_neutral_luxignis_death.wav
+attack	sfx/sfx_neutral_spelljammer_attack_swing.wav
+attackDamage	sfx/sfx_neutral_spelljammer_attack_impact.wav
+death	sfx/sfx_f6_voiceofthewind_death.wav
+receiveDamage	sfx/sfx_neutral_spelljammer_hit.wav
+walk	sfx/sfx_f6_voiceofthewind_attack_swing.wav

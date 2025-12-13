@@ -1,0 +1,6 @@
+apply	sfx/sfx_unit_deploy.wav
+attack	sfx/sfx_f2_chakriavatar_attack_swing.wav
+attackDamage	sfx/sfx_f6_draugarlord_attack_impact_.wav
+death	sfx/sfx_f1general_death.wav
+receiveDamage	sfx/sfx_f1_general_hit.wav
+walk	sfx/sfx_unit_run_charge_4.wav

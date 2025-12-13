@@ -1,0 +1,6 @@
+apply	sfx/sfx_spell_blindscorch.wav
+attack	sfx/sfx_neutral_firespitter_attack_swing.wav
+attackDamage	sfx/sfx_neutral_firespitter_attack_impact.wav
+death	sfx/sfx_neutral_firespitter_death.wav
+receiveDamage	sfx/sfx_neutral_firespitter_hit.wav
+walk	sfx/sfx_neutral_firestarter_impact.wav

@@ -1,0 +1,6 @@
+apply	sfx/sfx_neutral_jaxtruesight_attack_impact.wav
+attack	sfx/sfx_f5_kolossus_attack_swing.wav
+attackDamage	sfx/sfx_f5_kolossus_attack_impact.wav
+death	sfx/sfx_f5_kolossus_death.wav
+receiveDamage	sfx/sfx_f5_kolossus_hit.wav
+walk	sfx/sfx_neutral_arakiheadhunter_hit.wav

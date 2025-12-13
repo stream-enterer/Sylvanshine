@@ -1,0 +1,6 @@
+apply	sfx/sfx_f4_blacksolus_attack_swing.wav
+attack	sfx/sfx_f3_anubis_attack_impact.wav
+attackDamage	sfx/sfx_f4_siren_attack_impact.wav
+death	sfx/sfx_f3_anubis_death.wav
+receiveDamage	sfx/sfx_f3_anubis_hit.wav
+walk	sfx/sfx_f3_aymarahealer_impact.wav

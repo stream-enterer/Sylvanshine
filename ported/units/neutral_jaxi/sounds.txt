@@ -1,6 +1,0 @@
-apply	sfx/sfx_neutral_sai_hit.m4a
-attack	sfx/sfx_neutral_jaxi_attack_swing.m4a
-attackDamage	sfx/sfx_neutral_jaxi_impact.m4a
-death	sfx/sfx_neutral_jaxi_death.m4a
-receiveDamage	sfx/sfx_neutral_jaxi_hit.m4a
-walk	sfx/sfx_neutral_ubo_attack_swing.m4a

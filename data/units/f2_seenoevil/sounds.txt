@@ -1,0 +1,6 @@
+apply	sfx/sfx_unit_deploy.wav
+attack	sfx/sfx_neutral_komodocharger_attack_swing.wav
+attackDamage	sfx/sfx_f6_ancientgrove_attack_impact.wav
+death	sfx/sfx_f6_ancientgrove_death.wav
+receiveDamage	sfx/sfx_f6_ancientgrove_hit.wav
+walk	sfx/sfx_neutral_ladylocke_attack_impact.wav

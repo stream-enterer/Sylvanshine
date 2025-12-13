@@ -1,6 +1,0 @@
-apply	sfx/sfx_f6_voiceofthewind_attack_swing.m4a
-attack	sfx/sfx_neutral_amu_attack_swing.m4a
-attackDamage	sfx/sfx_neutral_amu_attack_impact.m4a
-death	sfx/sfx_neutral_amu_attack_death.m4a
-receiveDamage	sfx/sfx_neutral_amu_attack_hit.m4a
-walk	sfx/sfx_spell_polymorph.m4a

@@ -1,6 +1,0 @@
-apply	sfx/sfx_spell_amplification.m4a
-attack	sfx/sfx_neutral_dragonlark_attack_swing.m4a
-attackDamage	sfx/sfx_neutral_dragonlark_attack_impact.m4a
-death	sfx/sfx_neutral_dragonlark_death.m4a
-receiveDamage	sfx/sfx_neutral_dragonlark_hit.m4a
-walk	sfx/sfx_neutral_ladylocke_attack_impact.m4a

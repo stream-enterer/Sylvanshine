@@ -1,0 +1,6 @@
+apply	sfx/sfx_spell_ghostlightning.wav
+attack	sfx/sfx_neutral_silitharveteran_attack_swing.wav
+attackDamage	sfx/sfx_neutral_silitharveteran_attack_impact.wav
+death	sfx/sfx_neutral_silitharveteran_death.wav
+receiveDamage	sfx/sfx_neutral_silitharveteran_hit.wav
+walk	sfx/sfx_unit_run_charge_4.wav

@@ -1,6 +1,0 @@
-apply	sfx/sfx_spell_blindscorch.m4a
-attack	sfx/sfx_neutral_sai_attack_swing.m4a
-attackDamage	sfx/sfx_neutral_sai_attack_impact.m4a
-death	sfx/sfx_neutral_sai_death.m4a
-receiveDamage	sfx/sfx_neutral_grimrock_hit.m4a
-walk	sfx/sfx_neutral_prophetofthewhite_hit.m4a

@@ -1,6 +1,0 @@
-apply	sfx/sfx_spell_voidpulse.m4a
-attack	sfx/sfx_voidhunter_attack_swing.m4a
-attackDamage	sfx/sfx_voidhunter_attack_impact.m4a
-death	sfx/sfx_voidhunter_death.m4a
-receiveDamage	sfx/sfx_voidhunter_hit.m4a
-walk	sfx/sfx_neutral_chaoselemental_hit.m4a

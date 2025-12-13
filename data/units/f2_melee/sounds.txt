@@ -1,0 +1,6 @@
+apply	sfx/sfx_spell_deathstrikeseal.wav
+attack	sfx/sfx_f2_kaidoassassin_attack_swing.wav
+attackDamage	sfx/sfx_f2_kaidoassassin_attack_impact.wav
+death	sfx/sfx_f2_kaidoassassin_death.wav
+receiveDamage	sfx/sfx_f2_kaidoassassin_hit.wav
+walk	sfx/sfx_unit_run_magical_3.wav

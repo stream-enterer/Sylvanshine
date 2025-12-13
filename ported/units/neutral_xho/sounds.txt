@@ -1,4 +1,0 @@
-attack	sfx/sfx_neutral_xho_attack_swing.m4a
-attackDamage	sfx/sfx_neutral_xho_attack_impact.m4a
-death	sfx/sfx_neutral_xho_death.m4a
-receiveDamage	sfx/sfx_neutral_xho_hit.m4a

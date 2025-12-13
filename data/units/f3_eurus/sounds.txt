@@ -1,0 +1,6 @@
+apply	sfx/sfx_spell_ghostlightning.wav
+attack	sfx/sfx_f6_voiceofthewind_attack_impact.wav
+attackDamage	sfx/sfx_neutral_prophetofthewhite_impact.wav
+death	sfx/sfx_neutral_prophetofthewhite_death.wav
+receiveDamage	sfx/sfx_neutral_prophetofthewhite_hit.wav
+walk	sfx/sfx_neutral_ladylocke_attack_impact.wav

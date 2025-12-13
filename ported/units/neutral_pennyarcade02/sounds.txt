@@ -1,6 +1,0 @@
-apply	sfx/sfx_spell_icepillar_melt.m4a
-attack	sfx/sfx_neutral_wingsofparadise_attack_swing.m4a
-attackDamage	sfx/sfx_neutral_wingsofparadise_attack_impact.m4a
-death	sfx/sfx_neutral_wingsofparadise_death.m4a
-receiveDamage	sfx/sfx_neutral_wingsofparadise_hit.m4a
-walk	sfx/sfx_neutral_keeperofthevale_hit.m4a

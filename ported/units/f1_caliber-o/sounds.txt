@@ -1,6 +1,0 @@
-apply	sfx/sfx_summonlegendary.m4a
-attack	sfx/sfx_f6_draugarlord_attack_swing_.m4a
-attackDamage	sfx/sfx_neutral_chaoselemental_attack_impact.m4a
-death	sfx/sfx_spell_darkfiresacrifice.m4a
-receiveDamage	sfx/sfx_f6_draugarlord_hit.m4a
-walk	sfx/sfx_unit_physical_4.m4a

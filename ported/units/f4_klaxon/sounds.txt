@@ -1,6 +1,0 @@
-apply	sfx/sfx_summonlegendary.m4a
-attack	sfx/sfx_f2_celestialphantom_attack_swing.m4a
-attackDamage	sfx/sfx_f2_celestialphantom_attack_impact.m4a
-death	sfx/sfx_f2_celestialphantom_death.m4a
-receiveDamage	sfx/sfx_f2_celestialphantom_hit.m4a
-walk	sfx/sfx_f4_klaxon_shriek.m4a

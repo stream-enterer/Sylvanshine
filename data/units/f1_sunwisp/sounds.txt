@@ -1,0 +1,6 @@
+apply	sfx/sfx_spell_immolation_b.wav
+attack	sfx/sfx_f6_voiceofthewind_death.wav
+attackDamage	sfx/sfx_neutral_shieldoracle_attack_impact.wav
+death	sfx/sfx_neutral_shieldoracle_death.wav
+receiveDamage	sfx/sfx_neutral_shieldoracle_hit.wav
+walk	sfx/sfx_unit_run_magical_4.wav

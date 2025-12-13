@@ -1,0 +1,6 @@
+apply	sfx/sfx_summonlegendary.wav
+attack	sfx/sfx_neutral_sunseer_attack_swing.wav
+attackDamage	sfx/sfx_neutral_rook_attack_impact.wav
+death	sfx/sfx_spell_sunbloom.wav
+receiveDamage	sfx/sfx_neutral_sunseer_hit.wav
+walk	sfx/sfx_unit_run_magical_4.wav

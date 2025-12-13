@@ -1,0 +1,6 @@
+apply	sfx/sfx_neutral_earthwalker_death.wav
+attack	sfx/sfx_neutral_gro_attack_swing.wav
+attackDamage	sfx/sfx_neutral_gro_attack_impact.wav
+death	sfx/sfx_neutral_gro_death.wav
+receiveDamage	sfx/sfx_neutral_gro_hit.wav
+walk	sfx/sfx_neutral_grimrock_hit.wav

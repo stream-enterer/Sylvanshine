@@ -1,0 +1,6 @@
+apply	sfx/sfx_neutral_luxignis_death.wav
+attack	sfx/sfx_f6_frostwyvern_attack_swing.wav
+attackDamage	sfx/sfx_neutral_beastphasehound_attack_impact.wav
+death	sfx/sfx_f6_frostwyvern_death.wav
+receiveDamage	sfx/sfx_neutral_beastphasehound_hit.wav
+walk	sfx/sfx_neutral_arakiheadhunter_hit.wav

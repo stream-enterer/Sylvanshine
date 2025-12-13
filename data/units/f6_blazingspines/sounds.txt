@@ -1,0 +1,6 @@
+apply	sfx/sfx_f6_ancientgrove_attack_impact.wav
+attack	sfx/sfx_f6_draugarlord_attack_swing_.wav
+attackDamage	sfx/sfx_f6_draugarlord_attack_impact_.wav
+death	sfx/sfx_neutral_golembloodshard_death.wav
+receiveDamage	sfx/sfx_f6_draugarlord_hit.wav
+walk	sfx/sfx_neutral_ladylocke_attack_impact.wav

@@ -1,0 +1,6 @@
+apply	sfx/sfx_spell_icepillar_melt.wav
+attack	sfx/sfx_f6_seismicelemental_attack_impact.wav
+attackDamage	sfx/sfx_f2_lanternfox_death.wav
+death	sfx/sfx_f2_lanternfox_death.wav
+receiveDamage	sfx/sfx_neutral_golembloodshard_hit.wav
+walk	sfx/sfx_neutral_primordialgazer_death.wav

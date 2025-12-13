@@ -1,0 +1,6 @@
+apply	sfx/sfx_ui_booster_packexplode.wav
+attack	sfx/sfx_f2_stormkage_attack_swing.wav
+attackDamage	sfx/sfx_f2_mage4winds_impact.wav
+death	sfx/sfx_f2_stormkage_death.wav
+receiveDamage	sfx/sfx_f2_stormkage_hit.wav
+walk	sfx/sfx_neutral_ladylocke_attack_impact.wav

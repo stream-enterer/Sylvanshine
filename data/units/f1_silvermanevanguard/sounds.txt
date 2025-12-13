@@ -1,0 +1,6 @@
+apply	sfx/sfx_spell_immolation_b.wav
+attack	sfx/sfx_f1_silvermanevanguard_attack_swing.wav
+attackDamage	sfx/sfx_f1_silvermanevanguard_attack_impact.wav
+death	sfx/sfx_f1_silvermanevanguard_death.wav
+receiveDamage	sfx/sfx_f1_silvermanevanguard_hit.wav
+walk	sfx/sfx_neutral_ladylocke_attack_impact.wav

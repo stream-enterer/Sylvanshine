@@ -1,0 +1,6 @@
+apply	sfx/sfx_ui_booster_packexplode.wav
+attack	sfx/sfx_spell_entropicdecay.wav
+attackDamage	sfx/sfx_f3_dunecaster_impact.wav
+death	sfx/sfx_neutral_spelljammer_death.wav
+receiveDamage	sfx/sfx_f3_dunecaster_hit.wav
+walk	sfx/sfx_unit_run_magical_4.wav

@@ -1,0 +1,6 @@
+apply	sfx/sfx_unit_deploy_2.wav
+attack	sfx/sfx_f6_frostwyvern_death.wav
+attackDamage	sfx/sfx_f4_daemondeep_attack_impact.wav
+death	sfx/sfx_f4_daemondeep_death.wav
+receiveDamage	sfx/sfx_f4_daemondeep_hit.wav
+walk	sfx/sfx_neutral_ladylocke_attack_impact.wav

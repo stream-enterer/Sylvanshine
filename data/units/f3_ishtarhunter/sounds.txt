@@ -1,0 +1,6 @@
+apply	sfx/sfx_neutral_fog_attack_swing.wav
+attack	sfx/sfx_neutral_arakiheadhunter_attack_swing.wav
+attackDamage	sfx/sfx_neutral_arakiheadhunter_impact.wav
+death	sfx/sfx_neutral_arakiheadhunter_death.wav
+receiveDamage	sfx/sfx_neutral_arakiheadhunter_hit.wav
+walk	sfx/sfx_neutral_earthwalker_death.wav

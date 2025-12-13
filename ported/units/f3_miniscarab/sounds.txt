@@ -1,6 +1,0 @@
-apply	sfx/sfx_summonlegendary.m4a
-attack	sfx/sfx_neutral_stormatha_attack_swing.m4a
-attackDamage	sfx/sfx_neutral_stormatha_attack_impact.m4a
-death	sfx/sfx_neutral_stormatha_death.m4a
-receiveDamage	sfx/sfx_neutral_stormatha_hit.m4a
-walk	sfx/sfx_neutral_zurael_death.m4a

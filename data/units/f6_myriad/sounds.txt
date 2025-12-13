@@ -1,0 +1,6 @@
+apply	sfx/sfx_summonlegendary.wav
+attack	sfx/sfx_f6_voiceofthewind_attack_swing.wav
+attackDamage	sfx/sfx_f6_voiceofthewind_hit.wav
+death	sfx/sfx_f6_voiceofthewind_death.wav
+receiveDamage	sfx/sfx_f6_voiceofthewind_attack_impact.wav
+walk	sfx/sfx_unit_run_magical_4.wav

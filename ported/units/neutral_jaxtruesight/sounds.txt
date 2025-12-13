@@ -1,6 +1,0 @@
-apply	sfx/sfx_summonlegendary.m4a
-attack	sfx/sfx_neutral_jaxtruesight_attack_swing.m4a
-attackDamage	sfx/sfx_neutral_jaxtruesight_attack_impact.m4a
-death	sfx/sfx_neutral_jaxtruesight_death.m4a
-receiveDamage	sfx/sfx_neutral_jaxtruesight_hit.m4a
-walk	sfx/sfx_neutral_ladylocke_attack_impact.m4a

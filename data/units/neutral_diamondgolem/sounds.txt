@@ -1,0 +1,6 @@
+apply	sfx/sfx_unit_deploy_1.wav
+attack	sfx/sfx_neutral_golembloodshard_attack_swing.wav
+attackDamage	sfx/sfx_neutral_golembloodshard_attack_impact.wav
+death	sfx/sfx_neutral_golembloodshard_death.wav
+receiveDamage	sfx/sfx_neutral_golembloodshard_hit.wav
+walk	sfx/sfx_neutral_earthwalker_death.wav

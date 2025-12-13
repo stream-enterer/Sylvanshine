@@ -1,0 +1,6 @@
+apply	sfx/sfx_ui_booster_packexplode.wav
+attack	sfx/sfx_neutral_dancingblades_attack_swing.wav
+attackDamage	sfx/sfx_neutral_golemdragonbone_impact.wav
+death	sfx/sfx_neutral_golemdragonbone_death.wav
+receiveDamage	sfx/sfx_neutral_dancingblades_hit.wav
+walk	sfx/sfx_neutral_ladylocke_attack_impact.wav

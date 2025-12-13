@@ -1,0 +1,6 @@
+apply	sfx/sfx_spell_blindscorch.wav
+attack	sfx/sfx_spell_blaststarfire.wav
+attackDamage	sfx/sfx_spell_immolation_a.wav
+death	sfx/sfx_f1_elyxstormblade_death.wav
+receiveDamage	sfx/sfx_f4_engulfingshadow_attack_impact.wav
+walk	sfx/sfx_neutral_sai_attack_impact.wav

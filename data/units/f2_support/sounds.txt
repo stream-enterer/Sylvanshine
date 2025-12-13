@@ -1,0 +1,6 @@
+apply	sfx/sfx_spell_deathstrikeseal.wav
+attack	sfx/sfx_neutral_stormmetalgolem_attack_swing.wav
+attackDamage	sfx/sfx_neutral_stormmetalgolem_attack_impact.wav
+death	sfx/sfx_f6_icedryad_death.wav
+receiveDamage	sfx/sfx_f6_icedryad_hit.wav
+walk	sfx/sfx_unit_run_magical_3.wav

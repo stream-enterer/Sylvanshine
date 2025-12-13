@@ -1,0 +1,6 @@
+apply	sfx/sfx_unit_deploy.wav
+attack	sfx/sfx_f4_blacksolus_attack_impact.wav
+attackDamage	sfx/sfx_neutral_brightmossgolem_attack_impact.wav
+death	sfx/sfx_neutral_brightmossgolem_death.wav
+receiveDamage	sfx/sfx_neutral_brightmossgolem_hit.wav
+walk	sfx/sfx_unit_physical_4.wav

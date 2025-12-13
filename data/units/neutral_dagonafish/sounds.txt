@@ -1,0 +1,6 @@
+apply	sfx/sfx_unit_deploy.wav
+attack	sfx/sfx_f6_boreanbear_attack_impact.wav
+attackDamage	sfx/sfx_neutral_hailstonehowler_impact.wav
+death	sfx/sfx_neutral_hailstonehowler_death.wav
+receiveDamage	sfx/sfx_neutral_hailstonehowler_hit.wav
+walk	sfx/sfx_neutral_ladylocke_attack_impact.wav

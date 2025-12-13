@@ -1,6 +1,0 @@
-apply	sfx/sfx_spell_diretidefrenzy.m4a
-attack	sfx/sfx_f6_waterelemental_attack_swing.m4a
-attackDamage	sfx/sfx_f6_waterelemental_attack_impact.m4a
-death	sfx/sfx_neutral_daggerkiri_death.m4a
-receiveDamage	sfx/sfx_f6_waterelemental_hit.m4a
-walk	sfx/sfx_neutral_sai_attack_impact.m4a

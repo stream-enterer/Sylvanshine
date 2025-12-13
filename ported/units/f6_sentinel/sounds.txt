@@ -1,6 +1,0 @@
-apply	sfx/sfx_spell_amplification.m4a
-attack	sfx/sfx_neutral_hailstonehowler_attack_swing.m4a
-attackDamage	sfx/sfx_neutral_hailstonehowler_impact.m4a
-death	sfx/sfx_neutral_hailstonehowler_death.m4a
-receiveDamage	sfx/sfx_neutral_hailstonehowler_hit.m4a
-walk	sfx/sfx_neutral_arakiheadhunter_hit.m4a

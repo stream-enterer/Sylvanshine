@@ -1,0 +1,6 @@
+apply	sfx/sfx_summonlegendary.wav
+attack	sfx/sfx_spell_darkseed.wav
+attackDamage	sfx/sfx_neutral_daggerkiri_attack_swing.wav
+death	sfx/sfx_neutral_prophetofthewhite_death.wav
+receiveDamage	sfx/sfx_f2_kaidoassassin_hit.wav
+walk	sfx/sfx_unit_run_magical_3.wav

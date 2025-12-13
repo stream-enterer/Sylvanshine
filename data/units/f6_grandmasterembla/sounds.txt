@@ -1,0 +1,6 @@
+apply	sfx/sfx_spell_amplification.wav
+attack	sfx/sfx_neutral_sunseer_attack_swing.wav
+attackDamage	sfx/sfx_neutral_sunseer_attack_impact.wav
+death	sfx/sfx_neutral_sunseer_death.wav
+receiveDamage	sfx/sfx_neutral_sunseer_hit.wav
+walk	sfx/sfx_unit_run_magical_3.wav

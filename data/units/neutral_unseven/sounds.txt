@@ -1,0 +1,6 @@
+apply	sfx/sfx_summonlegendary.wav
+attack	sfx/sfx_f2_chakriavatar_attack_swing.wav
+attackDamage	sfx/sfx_neutral_arakiheadhunter_impact.wav
+death	sfx/sfx_f2_mage4winds_death.wav
+receiveDamage	sfx/sfx_neutral_arakiheadhunter_hit.wav
+walk	sfx/sfx_neutral_ladylocke_attack_impact.wav

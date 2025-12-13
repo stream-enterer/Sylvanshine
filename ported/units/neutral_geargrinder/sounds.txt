@@ -1,6 +1,0 @@
-apply	sfx/sfx_spell_fractalreplication.m4a
-attack	sfx/sfx_neutral_prophetofthewhite_attack_swing.m4a
-attackDamage	sfx/sfx_neutral_alcuinloremaster_attack_impact.m4a
-death	sfx/sfx_neutral_alcuinloremaster_death.m4a
-receiveDamage	sfx/sfx_neutral_alcuinloremaster_hit.m4a
-walk	sfx/sfx_unit_run_magical_3.m4a

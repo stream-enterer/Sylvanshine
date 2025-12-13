@@ -1,0 +1,6 @@
+apply	sfx/sfx_f6_voiceofthewind_attack_swing.wav
+attack	sfx/sfx_neutral_amu_attack_swing.wav
+attackDamage	sfx/sfx_neutral_amu_attack_impact.wav
+death	sfx/sfx_neutral_amu_attack_death.wav
+receiveDamage	sfx/sfx_neutral_amu_attack_hit.wav
+walk	sfx/sfx_spell_polymorph.wav

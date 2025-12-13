@@ -1,0 +1,6 @@
+apply	sfx/sfx_spell_diretidefrenzy.wav
+attack	sfx/sfx_neutral_sunelemental_death.wav
+attackDamage	sfx/sfx_f2_lanternfox_death.wav
+death	sfx/sfx_neutral_daggerkiri_death.wav
+receiveDamage	sfx/sfx_neutral_swornavenger_hit.wav
+walk	sfx/sfx_neutral_komodocharger_hit.wav
