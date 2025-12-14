@@ -54,9 +54,9 @@ void DrawTileQuadColored(RenderState* state, Vector2 center, float half_size, Co
     rlColor4ub(color.r, color.g, color.b, color.a);
 
     rlVertex2f(corners[0].x, corners[0].y);
-    rlVertex2f(corners[1].x, corners[1].y);
-    rlVertex2f(corners[2].x, corners[2].y);
     rlVertex2f(corners[3].x, corners[3].y);
+    rlVertex2f(corners[2].x, corners[2].y);
+    rlVertex2f(corners[1].x, corners[1].y);
 
     rlEnd();
 }
@@ -85,14 +85,14 @@ void DrawTileQuadTextured(RenderState* state, Texture2D texture, Rectangle src, 
     rlTexCoord2f(tex_left, tex_top);
     rlVertex2f(corners[0].x, corners[0].y);
 
-    rlTexCoord2f(tex_right, tex_top);
-    rlVertex2f(corners[1].x, corners[1].y);
+    rlTexCoord2f(tex_left, tex_bottom);
+    rlVertex2f(corners[3].x, corners[3].y);
 
     rlTexCoord2f(tex_right, tex_bottom);
     rlVertex2f(corners[2].x, corners[2].y);
 
-    rlTexCoord2f(tex_left, tex_bottom);
-    rlVertex2f(corners[3].x, corners[3].y);
+    rlTexCoord2f(tex_right, tex_top);
+    rlVertex2f(corners[1].x, corners[1].y);
 
     rlEnd();
     rlSetTexture(0);
@@ -133,26 +133,26 @@ void DrawTileQuadRotated(Texture2D texture, Rectangle src, Vector2 center, float
         rlTexCoord2f(tex_left, tex_bottom);
         rlVertex2f(corners[0].x, corners[0].y);
 
-        rlTexCoord2f(tex_left, tex_top);
-        rlVertex2f(corners[1].x, corners[1].y);
+        rlTexCoord2f(tex_right, tex_bottom);
+        rlVertex2f(corners[3].x, corners[3].y);
 
         rlTexCoord2f(tex_right, tex_top);
         rlVertex2f(corners[2].x, corners[2].y);
 
-        rlTexCoord2f(tex_right, tex_bottom);
-        rlVertex2f(corners[3].x, corners[3].y);
+        rlTexCoord2f(tex_left, tex_top);
+        rlVertex2f(corners[1].x, corners[1].y);
     } else {
         rlTexCoord2f(tex_left, tex_top);
         rlVertex2f(corners[0].x, corners[0].y);
 
-        rlTexCoord2f(tex_right, tex_top);
-        rlVertex2f(corners[1].x, corners[1].y);
+        rlTexCoord2f(tex_left, tex_bottom);
+        rlVertex2f(corners[3].x, corners[3].y);
 
         rlTexCoord2f(tex_right, tex_bottom);
         rlVertex2f(corners[2].x, corners[2].y);
 
-        rlTexCoord2f(tex_left, tex_bottom);
-        rlVertex2f(corners[3].x, corners[3].y);
+        rlTexCoord2f(tex_right, tex_top);
+        rlVertex2f(corners[1].x, corners[1].y);
     }
 
     rlEnd();
@@ -181,14 +181,14 @@ void DrawTexturedQuad2D(Texture2D texture, Rectangle src, Vector2 center, float 
     rlTexCoord2f(tex_left, tex_top);
     rlVertex2f(center.x - hw, center.y - hh);
 
-    rlTexCoord2f(tex_right, tex_top);
-    rlVertex2f(center.x + hw, center.y - hh);
+    rlTexCoord2f(tex_left, tex_bottom);
+    rlVertex2f(center.x - hw, center.y + hh);
 
     rlTexCoord2f(tex_right, tex_bottom);
     rlVertex2f(center.x + hw, center.y + hh);
 
-    rlTexCoord2f(tex_left, tex_bottom);
-    rlVertex2f(center.x - hw, center.y + hh);
+    rlTexCoord2f(tex_right, tex_top);
+    rlVertex2f(center.x + hw, center.y - hh);
 
     rlEnd();
     rlSetTexture(0);
