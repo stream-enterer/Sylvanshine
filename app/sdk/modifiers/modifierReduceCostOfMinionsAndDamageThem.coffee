@@ -3,7 +3,7 @@ PlayerModifierManaModifier = require 'app/sdk/playerModifiers/playerModifierMana
 DamageAction = require 'app/sdk/actions/damageAction'
 PlayCardFromHandAction = require 'app/sdk/actions/playCardFromHandAction'
 CardType = require 'app/sdk/cards/cardType'
-# REMOVED: UtilsPosition = require 'app/common/utils/utils_position'
+UtilsPosition = require 'app/common/utils/utils_position'
 
 class ModifierReduceCostOfMinionsAndDamageThem extends ModifierSummonWatch
 

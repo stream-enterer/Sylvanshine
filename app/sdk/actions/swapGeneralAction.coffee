@@ -1,4 +1,4 @@
-# REMOVED: Logger = require 'app/common/logger'
+Logger = require 'app/common/logger'
 Action = require './action'
 ModifierCardControlledPlayerModifiers = require 'app/sdk/modifiers/modifierCardControlledPlayerModifiers'
 PlayerModifier = require 'app/sdk/playerModifiers/playerModifier'

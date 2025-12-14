@@ -1,7 +1,7 @@
-# REMOVED: Logger = require 'app/common/logger'
+Logger = require 'app/common/logger'
 ModifierImmune = require './modifierImmune'
 ApplyCardToBoardAction = require 'app/sdk/actions/applyCardToBoardAction'
-# REMOVED: UtilsPosition = require 'app/common/utils/utils_position'
+UtilsPosition = require 'app/common/utils/utils_position'
 CardType = require 'app/sdk/cards/cardType'
 i18next = require 'i18next'
 

@@ -1,6 +1,6 @@
 ModifierEndTurnWatch = require './modifierEndTurnWatch'
 CardType = require 'app/sdk/cards/cardType'
-# REMOVED: CONFIG = require 'app/common/config'
+CONFIG = require 'app/common/config'
 DamageAction = require 'app/sdk/actions/damageAction'
 
 class ModifierEndTurnWatchDamageAllMinions extends ModifierEndTurnWatch

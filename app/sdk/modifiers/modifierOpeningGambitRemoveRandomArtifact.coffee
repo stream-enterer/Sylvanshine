@@ -1,6 +1,6 @@
 ModifierOpeningGambit = require './modifierOpeningGambit'
 RemoveRandomArtifactAction =  require 'app/sdk/actions/removeRandomArtifactAction'
-# REMOVED: UtilsGameSession = require 'app/common/utils/utils_game_session'
+UtilsGameSession = require 'app/common/utils/utils_game_session'
 
 
 class ModifierOpeningGambitRemoveRandomArtifact extends ModifierOpeningGambit

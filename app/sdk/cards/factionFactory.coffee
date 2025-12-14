@@ -1,7 +1,7 @@
 
 RSX = require('app/data/resources')
-# REMOVED: CONFIG = require('app/common/config')
-# REMOVED: UtilsGameSession = require('app/common/utils/utils_game_session')
+CONFIG = require('app/common/config')
+UtilsGameSession = require('app/common/utils/utils_game_session')
 Factions = require './factionsLookup'
 Cards = require './cardsLookupComplete'
 FactionProgression = require 'app/sdk/progression/factionProgression'

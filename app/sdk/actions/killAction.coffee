@@ -1,4 +1,4 @@
-# REMOVED: Logger =     require 'app/common/logger'
+Logger =     require 'app/common/logger'
 Action = require './action'
 CardType =       require 'app/sdk/cards/cardType'
 _ = require 'underscore'

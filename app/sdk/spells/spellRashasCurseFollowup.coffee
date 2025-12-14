@@ -1,6 +1,6 @@
-# REMOVED: Logger = require 'app/common/logger'
+Logger = require 'app/common/logger'
 SpellSpawnEntity =  require './spellSpawnEntity'
-# REMOVED: UtilsGameSession = require 'app/common/utils/utils_game_session'
+UtilsGameSession = require 'app/common/utils/utils_game_session'
 RemoveRandomArtifactAction =  require 'app/sdk/actions/removeRandomArtifactAction'
 
 class SpellRashasCurseFollowup extends SpellSpawnEntity

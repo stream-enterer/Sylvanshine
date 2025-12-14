@@ -1,9 +1,9 @@
-# REMOVED: CONFIG = require 'app/common/config'
+CONFIG = require 'app/common/config'
 Card = require 'app/sdk/cards/card'
 CardType = require 'app/sdk/cards/cardType'
 Modifier = require 'app/sdk/modifiers/modifier'
 ModifierDestructible = require 'app/sdk/modifiers/modifierDestructible'
-# REMOVED: UtilsGameSession = require 'app/common/utils/utils_game_session'
+UtilsGameSession = require 'app/common/utils/utils_game_session'
 _ = require 'underscore'
 
 class Artifact extends Card

@@ -1,4 +1,4 @@
-# REMOVED: Logger = require 'app/common/logger'
+Logger = require 'app/common/logger'
 SpellKillTarget = require('./spellKillTarget')
 PlayCardSilentlyAction = require 'app/sdk/actions/playCardSilentlyAction'
 

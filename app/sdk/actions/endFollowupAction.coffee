@@ -1,4 +1,4 @@
-# REMOVED: Logger =     require 'app/common/logger'
+Logger =     require 'app/common/logger'
 StopBufferingEventsAction =     require './stopBufferingEventsAction'
 
 class EndFollowupAction extends StopBufferingEventsAction

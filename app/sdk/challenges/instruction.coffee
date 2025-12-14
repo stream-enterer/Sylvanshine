@@ -1,5 +1,5 @@
-# REMOVED: CONFIG = require("app/common/config")
-# REMOVED: UtilsJavascript = require("app/common/utils/utils_javascript")
+CONFIG = require("app/common/config")
+UtilsJavascript = require("app/common/utils/utils_javascript")
 Validator = require("./../validators/validator")
 EndTurnAction = require("app/sdk/actions/endTurnAction")
 _ = require('underscore')

@@ -1,4 +1,4 @@
-# REMOVED: CONFIG = require 'app/common/config'
+CONFIG = require 'app/common/config'
 ModifierOpeningGambit = require './modifierOpeningGambit'
 RandomTeleportAction = require 'app/sdk/actions/randomTeleportAction'
 CardType = require 'app/sdk/cards/cardType'

@@ -1,8 +1,8 @@
 ModifierMyGeneralAttackWatch = require './modifierMyGeneralAttackWatch'
 PlayCardSilentlyAction = require 'app/sdk/actions/playCardSilentlyAction'
-# REMOVED: UtilsGameSession = require 'app/common/utils/utils_game_session'
+UtilsGameSession = require 'app/common/utils/utils_game_session'
 CardType = require 'app/sdk/cards/cardType'
-# REMOVED: CONFIG = require 'app/common/config'
+CONFIG = require 'app/common/config'
 
 class ModifierMyGeneralAttackWatchSpawnRandomEntityFromDeck extends ModifierMyGeneralAttackWatch
 

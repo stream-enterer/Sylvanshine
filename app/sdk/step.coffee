@@ -1,6 +1,6 @@
 SDKObject = require './object'
 _ = require 'underscore'
-# REMOVED: UtilsJavascript = require 'app/common/utils/utils_javascript'
+UtilsJavascript = require 'app/common/utils/utils_javascript'
 
 class Step extends SDKObject
 

@@ -1,4 +1,4 @@
-# REMOVED: UtilsGameSession = require 'app/common/utils/utils_game_session'
+UtilsGameSession = require 'app/common/utils/utils_game_session'
 ModifierDealDamageWatch = require './modifierDealDamageWatch'
 PutCardInHandAction = require 'app/sdk/actions/putCardInHandAction'
 Factions = require 'app/sdk/cards/factionsLookup.coffee'

@@ -1,5 +1,5 @@
 CONFIG = 'app/common/config'
-# REMOVED: UtilsJavascript = require 'app/common/utils/utils_javascript'
+UtilsJavascript = require 'app/common/utils/utils_javascript'
 ModifierDyingWishSpawnEntity = require './modifierDyingWishSpawnEntity'
 Cards = require 'app/sdk/cards/cardsLookupComplete'
 CardType = require 'app/sdk/cards/cardType'

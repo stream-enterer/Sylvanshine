@@ -1,6 +1,6 @@
 ModifierDealDamageWatch = require './modifierDealDamageWatch'
 RandomTeleportAction = require 'app/sdk/actions/randomTeleportAction'
-# REMOVED: CONFIG = require 'app/common/config'
+CONFIG = require 'app/common/config'
 _ = require 'underscore'
 
 class ModifierDealDamageWatchTeleportEnemyToYourSide extends ModifierDealDamageWatch

@@ -1,4 +1,4 @@
-# REMOVED: Logger = require 'app/common/logger'
+Logger = require 'app/common/logger'
 ModifierImmuneToDamage = require './modifierImmuneToDamage'
 DamageAction =   require 'app/sdk/actions/damageAction'
 ApplyCardToBoardAction = require 'app/sdk/actions/applyCardToBoardAction'

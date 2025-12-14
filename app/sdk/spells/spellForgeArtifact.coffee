@@ -1,7 +1,7 @@
 Spell = require 'app/sdk/spells/spell'
 Cards = require 'app/sdk/cards/cardsLookupComplete'
 CardType = require 'app/sdk/cards/cardType'
-# REMOVED: CONFIG = require('app/common/config')
+CONFIG = require('app/common/config')
 Modifier = require 'app/sdk/modifiers/modifier'
 ModifierTakeDamageWatchHealMyGeneral = require 'app/sdk/modifiers/modifierTakeDamageWatchHealMyGeneral'
 ModifierMyAttackOrCounterattackWatchDamageRandomEnemy = require 'app/sdk/modifiers/modifierMyAttackOrCounterattackWatchDamageRandomEnemy'

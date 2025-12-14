@@ -1,4 +1,4 @@
-# REMOVED: EVENTS = require 'app/common/event_types'
+EVENTS = require 'app/common/event_types'
 ModifierCannot = require './modifierCannot'
 AttackAction = require 'app/sdk/actions/attackAction'
 i18next = require 'i18next'

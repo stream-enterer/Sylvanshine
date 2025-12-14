@@ -1,5 +1,5 @@
-# REMOVED: CONFIG = require 'app/common/config'
-# REMOVED: Logger = require 'app/common/logger'
+CONFIG = require 'app/common/config'
+Logger = require 'app/common/logger'
 Entity = require './entity'
 CardType = require 'app/sdk/cards/cardType'
 ModifierStrikeback = require 'app/sdk/modifiers/modifierStrikeback'

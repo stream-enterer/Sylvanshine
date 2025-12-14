@@ -1,6 +1,6 @@
 PlayerModifier = require './playerModifier'
 ModifierImmuneToSpellDamage = require 'app/sdk/modifiers/modifierImmuneToSpellDamage'
-# REMOVED: CONFIG = require 'app/common/config'
+CONFIG = require 'app/common/config'
 
 class PlayerModifierPreventSpellDamage extends PlayerModifier
 

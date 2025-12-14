@@ -1,4 +1,4 @@
-# REMOVED: CONFIG = require 'app/common/config'
+CONFIG = require 'app/common/config'
 SpellSpawnEntity =   require './spellSpawnEntity'
 SpellFilterType = require './spellFilterType'
 ModifierEgg = require 'app/sdk/modifiers/modifierEgg'
@@ -6,7 +6,7 @@ Cards = require 'app/sdk/cards/cardsLookupComplete'
 Factions = require 'app/sdk/cards/factionsLookup'
 Rarity = require 'app/sdk/cards/rarityLookup'
 CardType = require 'app/sdk/cards/cardType'
-# REMOVED: UtilsGameSession = require 'app/common/utils/utils_game_session'
+UtilsGameSession = require 'app/common/utils/utils_game_session'
 GameFormat = require 'app/sdk/gameFormat'
 _ = require("underscore")
 

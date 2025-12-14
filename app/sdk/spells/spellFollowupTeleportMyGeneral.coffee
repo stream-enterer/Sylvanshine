@@ -1,4 +1,4 @@
-# REMOVED: Logger = require 'app/common/logger'
+Logger = require 'app/common/logger'
 SpellFollowupTeleport =  require './spellFollowupTeleport'
 
 class SpellFollowupTeleportMyGeneral extends SpellFollowupTeleport

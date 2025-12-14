@@ -1,10 +1,10 @@
-# REMOVED: Logger = require 'app/common/logger'
+Logger = require 'app/common/logger'
 Spell = require('./spell')
 CardType = require 'app/sdk/cards/cardType'
 Cards = require 'app/sdk/cards/cardsLookupComplete'
 SpellFilterType = require './spellFilterType'
-# REMOVED: CONFIG = require 'app/common/config'
-# REMOVED: UtilsGameSession = require 'app/common/utils/utils_game_session'
+CONFIG = require 'app/common/config'
+UtilsGameSession = require 'app/common/utils/utils_game_session'
 RemoveRandomArtifactAction =  require 'app/sdk/actions/removeRandomArtifactAction'
 
 class SpellRashasCurse extends Spell

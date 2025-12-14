@@ -1,6 +1,6 @@
 SpellKillTarget = require './spellKillTarget.coffee'
 HealAction = require 'app/sdk/actions/healAction'
-# REMOVED: UtilsPosition = require 'app/common/utils/utils_position'
+UtilsPosition = require 'app/common/utils/utils_position'
 
 class SpellLifeDrain extends SpellKillTarget
 

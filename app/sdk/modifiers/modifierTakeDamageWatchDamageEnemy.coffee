@@ -1,6 +1,6 @@
 ModifierTakeDamageWatch = require './modifierTakeDamageWatch'
 RandomDamageAction = require 'app/sdk/actions/randomDamageAction'
-# REMOVED: CONFIG = require 'app/common/config'
+CONFIG = require 'app/common/config'
 CardType = require 'app/sdk/cards/cardType'
 
 class ModifierTakeDamageWatchDamageEnemy extends ModifierTakeDamageWatch

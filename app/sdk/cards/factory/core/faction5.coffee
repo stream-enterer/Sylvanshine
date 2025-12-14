@@ -4,10 +4,10 @@
 _ = require 'underscore'
 moment = require 'moment'
 
-# REMOVED: Logger = require 'app/common/logger'
+Logger = require 'app/common/logger'
 
-# REMOVED: CONFIG = require('app/common/config')
-# REMOVED: config = require('config/config')
+CONFIG = require('app/common/config')
+config = require('config/config')
 RSX = require('app/data/resources')
 
 Card = require 'app/sdk/cards/card'

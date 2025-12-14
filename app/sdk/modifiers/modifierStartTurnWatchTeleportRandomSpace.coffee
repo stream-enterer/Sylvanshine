@@ -1,7 +1,7 @@
 ModifierStartTurnWatch = require './modifierStartTurnWatch'
-# REMOVED: UtilsGameSession = require 'app/common/utils/utils_game_session'
+UtilsGameSession = require 'app/common/utils/utils_game_session'
 RandomTeleportAction = require 'app/sdk/actions/randomTeleportAction'
-# REMOVED: CONFIG = require 'app/common/config'
+CONFIG = require 'app/common/config'
 _ = require 'underscore'
 
 class ModifierStartTurnWatchTeleportRandomSpace extends ModifierStartTurnWatch

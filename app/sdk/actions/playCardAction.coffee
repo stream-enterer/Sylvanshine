@@ -1,5 +1,5 @@
-# REMOVED: CONFIG =     require 'app/common/config'
-# REMOVED: Logger =     require 'app/common/logger'
+CONFIG =     require 'app/common/config'
+Logger =     require 'app/common/logger'
 ApplyCardToBoardAction =     require './applyCardToBoardAction'
 CardType = require 'app/sdk/cards/cardType'
 _ = require 'underscore'

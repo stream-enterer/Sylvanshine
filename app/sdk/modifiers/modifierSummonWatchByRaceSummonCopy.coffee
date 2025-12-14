@@ -1,7 +1,7 @@
 ModifierSummonWatch = require './modifierSummonWatch'
-# REMOVED: CONFIG = require 'app/common/config'
+CONFIG = require 'app/common/config'
 CloneEntityAction = require 'app/sdk/actions/cloneEntityAction'
-# REMOVED: UtilsGameSession = require 'app/common/utils/utils_game_session'
+UtilsGameSession = require 'app/common/utils/utils_game_session'
 
 class ModifierSummonWatchByRaceSummonCopy extends ModifierSummonWatch
 

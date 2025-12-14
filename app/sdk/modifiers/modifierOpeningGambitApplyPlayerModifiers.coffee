@@ -1,6 +1,6 @@
 Modifier = require './modifier'
 ModifierOpeningGambit = require './modifierOpeningGambit'
-# REMOVED: UtilsGameSession = require 'app/common/utils/utils_game_session'
+UtilsGameSession = require 'app/common/utils/utils_game_session'
 
 ###
 This modifier is used to apply player modifiers on spawn of an entity.

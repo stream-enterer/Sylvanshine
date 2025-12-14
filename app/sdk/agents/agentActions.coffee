@@ -4,7 +4,7 @@ PlayCardFromHandAction = require "app/sdk/actions/playCardFromHandAction"
 PlayCardAction = require "app/sdk/actions/playCardAction"
 ApplyCardToBoardAction = require "app/sdk/actions/applyCardToBoardAction"
 GameSession = require "app/sdk/gameSession"
-# REMOVED: CONFIG = require "app/common/config"
+CONFIG = require "app/common/config"
 
 ###
 AgentActions - Creates agent style actions and later interprets them into sdk actions

@@ -1,4 +1,4 @@
-# REMOVED: CONFIG =     require 'app/common/config'
+CONFIG =     require 'app/common/config'
 ModifierOverwatchMovedNearby = require './modifierOverwatchMovedNearby'
 RandomTeleportAction = require '../actions/randomTeleportAction'
 _ = require 'underscore'

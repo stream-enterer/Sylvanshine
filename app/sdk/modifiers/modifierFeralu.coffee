@@ -1,4 +1,4 @@
-# REMOVED: CONFIG = require 'app/common/config'
+CONFIG = require 'app/common/config'
 Modifier = require './modifier'
 Races = require 'app/sdk/cards/racesLookup'
 ModifierBelongsToAllRaces = require 'app/sdk/modifiers/modifierBelongsToAllRaces'

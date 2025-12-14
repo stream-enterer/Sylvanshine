@@ -1,4 +1,4 @@
-# REMOVED: CONFIG = require 'app/common/config'
+CONFIG = require 'app/common/config'
 SpellSpawnEntity = require './spellSpawnEntity'
 DieAction = require 'app/sdk/actions/dieAction'
 CardType = require 'app/sdk/cards/cardType'

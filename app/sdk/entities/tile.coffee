@@ -1,5 +1,5 @@
-# REMOVED: Logger = require 'app/common/logger'
-# REMOVED: UtilsGameSession = require 'app/common/utils/utils_game_session'
+Logger = require 'app/common/logger'
+UtilsGameSession = require 'app/common/utils/utils_game_session'
 Entity = require './entity'
 CardType = require 'app/sdk/cards/cardType'
 _ = require 'underscore'

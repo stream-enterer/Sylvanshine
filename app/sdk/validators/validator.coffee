@@ -1,4 +1,4 @@
-# REMOVED: EVENTS = require 'app/common/event_types'
+EVENTS = require 'app/common/event_types'
 
 class Validator
 

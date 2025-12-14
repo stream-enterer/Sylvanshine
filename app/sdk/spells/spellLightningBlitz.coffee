@@ -1,4 +1,4 @@
-# REMOVED: CONFIG = require 'app/common/config'
+CONFIG = require 'app/common/config'
 SpellApplyModifiers = require './spellApplyModifiers'
 RandomTeleportAction = require 'app/sdk/actions/randomTeleportAction'
 

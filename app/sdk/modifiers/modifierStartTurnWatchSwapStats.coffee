@@ -1,7 +1,7 @@
 ModifierStartTurnWatch = require './modifierStartTurnWatch'
 Modifier = require './modifier'
 
-# REMOVED: CONFIG = require 'app/common/config'
+CONFIG = require 'app/common/config'
 
 class ModifierStartTurnWatchSwapStats extends ModifierStartTurnWatch
 

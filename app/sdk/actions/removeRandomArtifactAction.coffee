@@ -1,4 +1,4 @@
-# REMOVED: UtilsGameSession = require 'app/common/utils/utils_game_session'
+UtilsGameSession = require 'app/common/utils/utils_game_session'
 Action = require './action'
 CardType = require 'app/sdk/cards/cardType'
 

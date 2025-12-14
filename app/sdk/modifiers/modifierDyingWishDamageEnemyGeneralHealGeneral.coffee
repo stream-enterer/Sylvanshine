@@ -2,7 +2,7 @@ ModifierDyingWish = require './modifierDyingWish'
 DamageAction = require 'app/sdk/actions/damageAction'
 HealAction = require 'app/sdk/actions/healAction'
 
-# REMOVED: CONFIG = require 'app/common/config'
+CONFIG = require 'app/common/config'
 
 class ModifierDyingWishDamageEnemyGeneralHealGeneral extends ModifierDyingWish
 

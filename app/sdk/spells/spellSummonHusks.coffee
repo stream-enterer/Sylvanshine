@@ -1,5 +1,5 @@
 SpellKillTarget = require './spellKillTarget'
-# REMOVED: CONFIG = require('app/common/config')
+CONFIG = require('app/common/config')
 UtilsGameSession = require '../../common/utils/utils_game_session.coffee'
 Cards = require 'app/sdk/cards/cardsLookupComplete'
 CardType = require 'app/sdk/cards/cardType'

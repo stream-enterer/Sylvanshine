@@ -1,5 +1,5 @@
 Spell = require './spell'
-# REMOVED: CONFIG = require 'app/common/config'
+CONFIG = require 'app/common/config'
 CardType = require 'app/sdk/cards/cardType'
 PlayCardAsTransformAction = require 'app/sdk/actions/playCardAsTransformAction'
 RemoveAction = require 'app/sdk/actions/removeAction'

@@ -1,4 +1,4 @@
-# REMOVED: CONFIG = require 'app/common/config'
+CONFIG = require 'app/common/config'
 ModifierBanded = require './modifierBanded'
 HealAction =     require "app/sdk/actions/healAction"
 

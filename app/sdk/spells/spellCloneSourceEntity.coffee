@@ -1,4 +1,4 @@
-# REMOVED: CONFIG = require 'app/common/config'
+CONFIG = require 'app/common/config'
 SpellApplyEntityToBoard =   require('./spellApplyEntityToBoard')
 CloneEntityAction = require 'app/sdk/actions/cloneEntityAction'
 

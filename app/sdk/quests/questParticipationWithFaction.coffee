@@ -1,5 +1,5 @@
 Quest = require './quest'
-# REMOVED: UtilsGameSession = require 'app/common/utils/utils_game_session'
+UtilsGameSession = require 'app/common/utils/utils_game_session'
 GameType = require 'app/sdk/gameType'
 FactionsLookup = require 'app/sdk/cards/factionsLookup'
 FactionFactory = require 'app/sdk/cards/factionFactory'

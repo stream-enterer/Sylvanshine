@@ -1,6 +1,6 @@
 Modifier = require './modifier'
 ModifierMyMoveWatch = require './modifierMyMoveWatch'
-# REMOVED: UtilsGameSession = require 'app/common/utils/utils_game_session'
+UtilsGameSession = require 'app/common/utils/utils_game_session'
 CardType = require 'app/sdk/cards/cardType'
 
 class ModifierMyMoveWatchApplyModifiers extends ModifierMyMoveWatch

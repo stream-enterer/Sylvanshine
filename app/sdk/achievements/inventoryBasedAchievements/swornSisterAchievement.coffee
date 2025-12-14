@@ -5,7 +5,7 @@ GameSession = require 'app/sdk/gameSession'
 RarityLookup = require 'app/sdk/cards/rarityLookup'
 CardSet = require 'app/sdk/cards/cardSetLookup'
 Cards = require 'app/sdk/cards/cardsLookupComplete'
-# REMOVED: Logger = require 'app/common/logger'
+Logger = require 'app/common/logger'
 _ = require 'underscore'
 i18next = require('i18next')
 

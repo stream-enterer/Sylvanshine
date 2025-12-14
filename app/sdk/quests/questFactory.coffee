@@ -1,4 +1,4 @@
-# REMOVED: Logger = require 'app/common/logger'
+Logger = require 'app/common/logger'
 
 QuestType = require './questTypeLookup'
 Quest = require './quest'
@@ -46,7 +46,7 @@ GameType = require 'app/sdk/gameType'
 CardType = require 'app/sdk/cards/cardType'
 Rarity = require 'app/sdk/cards/rarityLookup'
 
-# REMOVED: UtilsGameSession = require 'app/common/utils/utils_game_session'
+UtilsGameSession = require 'app/common/utils/utils_game_session'
 _ = require 'underscore'
 moment = require 'moment'
 i18next = require 'i18next'

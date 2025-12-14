@@ -1,6 +1,6 @@
 PlayerModifier = require './playerModifier'
 PlayCardSilentlyAction = require 'app/sdk/actions/playCardSilentlyAction'
-# REMOVED: UtilsJavascript = require 'app/common/utils/utils_javascript'
+UtilsJavascript = require 'app/common/utils/utils_javascript'
 _ = require("underscore")
 
 class PlayerModifierEndTurnRespawnEntityWithBuff extends PlayerModifier

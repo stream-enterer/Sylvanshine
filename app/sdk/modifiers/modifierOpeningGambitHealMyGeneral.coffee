@@ -2,7 +2,7 @@ ModifierOpeningGambit = require './modifierOpeningGambit'
 HealAction = require 'app/sdk/actions/healAction'
 CardType = require 'app/sdk/cards/cardType'
 Modifier = require './modifier'
-# REMOVED: CONFIG = require 'app/common/config'
+CONFIG = require 'app/common/config'
 
 
 class ModifierOpeningGambitHealMyGeneral extends ModifierOpeningGambit

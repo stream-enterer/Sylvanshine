@@ -2,7 +2,7 @@ ModifierStartTurnWatch = require './modifierStartTurnWatch'
 DamageAction = require 'app/sdk/actions/damageAction'
 CardType = require 'app/sdk/cards/cardType'
 i18next = require 'i18next'
-# REMOVED: CONFIG = require 'app/common/config'
+CONFIG = require 'app/common/config'
 
 class ModifierStartTurnWatchDamageGeneralEqualToMinionsOwned extends ModifierStartTurnWatch
 

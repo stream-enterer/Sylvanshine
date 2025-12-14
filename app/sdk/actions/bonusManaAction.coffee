@@ -1,7 +1,7 @@
-# REMOVED: Logger = require 'app/common/logger'
+Logger = require 'app/common/logger'
 Action = require './action'
 CardType = require 'app/sdk/cards/cardType'
-# REMOVED: CONFIG = require 'app/common/config'
+CONFIG = require 'app/common/config'
 PlayerModifierManaModifier = require 'app/sdk/playerModifiers/playerModifierManaModifier'
 
 class BonusManaAction extends Action

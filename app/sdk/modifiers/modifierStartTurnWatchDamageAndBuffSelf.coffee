@@ -1,7 +1,7 @@
 ModifierStartTurnWatchBuffSelf = require './modifierStartTurnWatchBuffSelf'
 DamageAction = require 'app/sdk/actions/damageAction'
 Stringifiers = require 'app/sdk/helpers/stringifiers'
-# REMOVED: CONFIG = require 'app/common/config'
+CONFIG = require 'app/common/config'
 
 class ModifierStartTurnWatchDamageAndBuffSelf extends ModifierStartTurnWatchBuffSelf
 

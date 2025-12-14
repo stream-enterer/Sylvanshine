@@ -1,4 +1,4 @@
-# REMOVED: CONFIG = require 'app/common/config'
+CONFIG = require 'app/common/config'
 ModifierSynergize = require './modifierSynergize'
 TeleportBehindUnitAction = require 'app/sdk/actions/teleportBehindUnitAction'
 CardType = require 'app/sdk/cards/cardType'

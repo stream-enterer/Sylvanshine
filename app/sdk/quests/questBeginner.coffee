@@ -1,6 +1,6 @@
 Quest = require './quest'
 QuestType = require './questTypeLookup'
-# REMOVED: UtilsGameSession = require 'app/common/utils/utils_game_session'
+UtilsGameSession = require 'app/common/utils/utils_game_session'
 GameType = require 'app/sdk/gameType'
 
 class QuestBeginner extends Quest

@@ -1,5 +1,5 @@
-# REMOVED: CONFIG = require 'app/common/config'
-# REMOVED: UtilsGameSession = require 'app/common/utils/utils_game_session'
+CONFIG = require 'app/common/config'
+UtilsGameSession = require 'app/common/utils/utils_game_session'
 ModifierDeathWatch = require './modifierDeathWatch'
 
 class ModifierOnOpponentDeathWatch extends ModifierDeathWatch

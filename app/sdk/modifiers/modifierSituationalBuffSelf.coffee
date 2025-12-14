@@ -1,5 +1,5 @@
 Modifier = require './modifier'
-# REMOVED: UtilsGameSession = require 'app/common/utils/utils_game_session'
+UtilsGameSession = require 'app/common/utils/utils_game_session'
 
 ###
   Abstract modifier class that checks for a specific board state (situation) and when that situation is active applies modifiers from modifiers context objects to the card this modifier is applied to.

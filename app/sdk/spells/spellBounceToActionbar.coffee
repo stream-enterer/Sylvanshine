@@ -1,10 +1,10 @@
-# REMOVED: CONFIG = require 'app/common/config'
+CONFIG = require 'app/common/config'
 Spell =   require './spell'
 CardType = require 'app/sdk/cards/cardType'
 SpellFilterType = require './spellFilterType'
 RemoveAction = require 'app/sdk/actions/removeAction'
 PutCardInHandAction = require 'app/sdk/actions/putCardInHandAction'
-# REMOVED: UtilsJavascript = require 'app/common/utils/utils_javascript'
+UtilsJavascript = require 'app/common/utils/utils_javascript'
 
 class SpellBounceToActionbar extends Spell
 

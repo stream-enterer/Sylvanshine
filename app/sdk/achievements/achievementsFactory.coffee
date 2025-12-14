@@ -1,4 +1,4 @@
-# REMOVED: Logger = require 'app/common/logger'
+Logger = require 'app/common/logger'
 
 # regex requires into cache generation code with the following
 # find: ([A-z]+) = ([ \S])*[\n]*

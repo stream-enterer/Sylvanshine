@@ -1,5 +1,5 @@
-# REMOVED: CONFIG =     require 'app/common/config'
-# REMOVED: Logger =     require 'app/common/logger'
+CONFIG =     require 'app/common/config'
+Logger =     require 'app/common/logger'
 Action =       require './action'
 CardType =       require 'app/sdk/cards/cardType'
 

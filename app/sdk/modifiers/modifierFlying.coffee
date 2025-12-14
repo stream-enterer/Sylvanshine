@@ -1,4 +1,4 @@
-# REMOVED: CONFIG =       require('app/common/config')
+CONFIG =       require('app/common/config')
 Modifier =   require './modifier'
 i18next = require 'i18next'
 

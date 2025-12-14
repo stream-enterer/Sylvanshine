@@ -1,5 +1,5 @@
-# REMOVED: CONFIG = require 'app/common/config'
-# REMOVED: UtilsJavascript = require 'app/common/utils/utils_javascript'
+CONFIG = require 'app/common/config'
+UtilsJavascript = require 'app/common/utils/utils_javascript'
 SpellApplyEntityToBoard =   require './spellApplyEntityToBoard'
 CardType = require('app/sdk/cards/cardType')
 Cards = require 'app/sdk/cards/cardsLookupComplete'

@@ -1,7 +1,7 @@
-# REMOVED: CONFIG = require 'app/common/config'
+CONFIG = require 'app/common/config'
 SpellApplyEntityToBoard =  require './spellApplyEntityToBoard'
 CardType = require 'app/sdk/cards/cardType'
-# REMOVED: UtilsGameSession = require 'app/common/utils/utils_game_session'
+UtilsGameSession = require 'app/common/utils/utils_game_session'
 CloneEntityAction = require 'app/sdk/actions/cloneEntityAction'
 ModifierMirage = require 'app/sdk/modifiers/modifierMirage'
 

@@ -270,7 +270,7 @@ module.exports = GameSession
 
 moment = require 'moment'
 _ = require 'underscore'
-# REMOVED: Logger = require 'app/common/logger'
+Logger = require 'app/common/logger'
 
 Logger.module('SDK').log 'Loading cards...' # Takes 10-15 seconds.
 Card = require './cards/card'
@@ -286,12 +286,12 @@ Rarity = require 'app/sdk/cards/rarityLookup'
 
 Logger.module('SDK').log 'Finishing SDK initialization...'
 SDKObject = require './object'
-# REMOVED: CONFIG = require 'app/common/config'
-# REMOVED: EventBus = require 'app/common/eventbus'
-# REMOVED: EVENTS = require 'app/common/event_types'
-# REMOVED: UtilsJavascript = require 'app/common/utils/utils_javascript'
-# REMOVED: UtilsGameSession = require 'app/common/utils/utils_game_session'
-# REMOVED: UtilsPosition = require 'app/common/utils/utils_position'
+CONFIG = require 'app/common/config'
+EventBus = require 'app/common/eventbus'
+EVENTS = require 'app/common/event_types'
+UtilsJavascript = require 'app/common/utils/utils_javascript'
+UtilsGameSession = require 'app/common/utils/utils_game_session'
+UtilsPosition = require 'app/common/utils/utils_position'
 GameType = require './gameType'
 GameFormat = require './gameFormat'
 Player = require './player'

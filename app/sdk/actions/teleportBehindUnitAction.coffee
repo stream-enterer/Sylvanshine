@@ -1,4 +1,4 @@
-# REMOVED: Logger = require 'app/common/logger'
+Logger = require 'app/common/logger'
 TeleportAction = require './teleportAction'
 
 class TeleportBehindUnitAction extends TeleportAction

@@ -1,7 +1,7 @@
 ModifierStartTurnWatch = require './modifierStartTurnWatch'
 DamageAction = require 'app/sdk/actions/damageAction'
 
-# REMOVED: CONFIG = require 'app/common/config'
+CONFIG = require 'app/common/config'
 
 class ModifierStartTurnWatchDamageMyGeneral extends ModifierStartTurnWatch
 

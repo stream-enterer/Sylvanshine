@@ -1,6 +1,6 @@
 ModifierEndTurnWatch = require './modifierEndTurnWatch.coffee'
 RandomTeleportAction = require 'app/sdk/actions/randomTeleportAction'
-# REMOVED: CONFIG = require 'app/common/config'
+CONFIG = require 'app/common/config'
 _ = require 'underscore'
 
 class ModifierEndTurnWatchTeleportCorner extends ModifierEndTurnWatch

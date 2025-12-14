@@ -1,4 +1,4 @@
-# REMOVED: CONFIG = require 'app/common/config'
+CONFIG = require 'app/common/config'
 SpellRefreshExhaustion = require './spellRefreshExhaustion'
 SpellFilterType = require './spellFilterType'
 

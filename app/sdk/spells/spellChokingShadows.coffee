@@ -1,11 +1,11 @@
-# REMOVED: Logger = require 'app/common/logger'
+Logger = require 'app/common/logger'
 Spell =   require('./spell')
 CardType = require 'app/sdk/cards/cardType'
 SpellFilterType = require './spellFilterType'
 DamageAction = require 'app/sdk/actions/damageAction'
 PlayCardAction = require 'app/sdk/actions/playCardAction'
 
-# REMOVED: CONFIG = require 'app/common/config'
+CONFIG = require 'app/common/config'
 
 class SpellChokingShadows extends Spell
 

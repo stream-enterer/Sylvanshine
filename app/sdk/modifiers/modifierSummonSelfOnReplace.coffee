@@ -1,6 +1,6 @@
 Modifier = require './modifier'
-# REMOVED: UtilsGameSession = require 'app/common/utils/utils_game_session'
-# REMOVED: CONFIG = require 'app/common/config'
+UtilsGameSession = require 'app/common/utils/utils_game_session'
+CONFIG = require 'app/common/config'
 ReplaceCardFromHandAction = require 'app/sdk/actions/replaceCardFromHandAction'
 PlayCardSilentlyAction = require 'app/sdk/actions/playCardSilentlyAction'
 DamageAction = require 'app/sdk/actions/damageAction'

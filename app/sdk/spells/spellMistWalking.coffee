@@ -1,9 +1,9 @@
-# REMOVED: Logger = require 'app/common/logger'
+Logger = require 'app/common/logger'
 Spell = require './spell'
 CardType = require 'app/sdk/cards/cardType'
 SpellFilterType = require './spellFilterType'
 TeleportAction = require 'app/sdk/actions/teleportAction'
-# REMOVED: CONFIG = require 'app/common/config'
+CONFIG = require 'app/common/config'
 _ = require 'underscore'
 
 class SpellMistWalking extends Spell

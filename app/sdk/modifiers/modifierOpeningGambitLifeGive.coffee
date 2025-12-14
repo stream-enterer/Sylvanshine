@@ -1,10 +1,10 @@
-# REMOVED: CONFIG = require 'app/common/config'
-# REMOVED: UtilsGameSession = require 'app/common/utils/utils_game_session'
+CONFIG = require 'app/common/config'
+UtilsGameSession = require 'app/common/utils/utils_game_session'
 ModifierOpeningGambit = require './modifierOpeningGambit'
 DieAction = require 'app/sdk/actions/dieAction'
 CardType = require 'app/sdk/cards/cardType'
 Rarity = require 'app/sdk/cards/rarityLookup'
-# REMOVED: UtilsGameSession = require 'app/common/utils/utils_game_session'
+UtilsGameSession = require 'app/common/utils/utils_game_session'
 PlayCardSilentlyAction = require 'app/sdk/actions/playCardSilentlyAction'
 _ = require 'underscore'
 

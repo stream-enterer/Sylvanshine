@@ -1,11 +1,11 @@
-# REMOVED: Logger = require 'app/common/logger'
+Logger = require 'app/common/logger'
 SpellSpawnEntity = require './spellSpawnEntity.coffee'
 CardType = require 'app/sdk/cards/cardType'
 SpellFilterType = require './spellFilterType'
 DamageAction = require 'app/sdk/actions/damageAction'
 Cards = require 'app/sdk/cards/cardsLookupComplete'
 UtilsGameSession = require '../../common/utils/utils_game_session.coffee'
-# REMOVED: CONFIG = require 'app/common/config'
+CONFIG = require 'app/common/config'
 
 class SpellDamageAndSpawnEntitiesNearbyGeneral extends SpellSpawnEntity
 

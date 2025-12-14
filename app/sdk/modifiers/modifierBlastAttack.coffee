@@ -1,5 +1,5 @@
-# REMOVED: EVENTS = require 'app/common/event_types'
-# REMOVED: CONFIG = require 'app/common/config'
+EVENTS = require 'app/common/event_types'
+CONFIG = require 'app/common/config'
 Modifier = require './modifier'
 AttackAction = require 'app/sdk/actions/attackAction'
 CardType = require 'app/sdk/cards/cardType'

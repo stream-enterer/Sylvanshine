@@ -1,4 +1,4 @@
-# REMOVED: Logger = require 'app/common/logger'
+Logger = require 'app/common/logger'
 SpellEnslave = require './spellEnslave'
 
 class SpellMindControlByAttackValue extends SpellEnslave

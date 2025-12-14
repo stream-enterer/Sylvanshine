@@ -1,8 +1,8 @@
-# REMOVED: CONFIG = require 'app/common/config'
+CONFIG = require 'app/common/config'
 ModifierKillWatch = require './modifierKillWatch'
 Races = require 'app/sdk/cards/racesLookup'
 CardType = require 'app/sdk/cards/cardType'
-# REMOVED: UtilsGameSession = require 'app/common/utils/utils_game_session'
+UtilsGameSession = require 'app/common/utils/utils_game_session'
 PlayCardSilentlyAction = require 'app/sdk/actions/playCardSilentlyAction'
 Cards = require 'app/sdk/cards/cardsLookupComplete'
 

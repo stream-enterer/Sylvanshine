@@ -1,8 +1,8 @@
-# REMOVED: CONFIG = require 'app/common/config'
+CONFIG = require 'app/common/config'
 Cards = require 'app/sdk/cards/cardsLookupComplete'
 ModifierBuilding = require './modifierBuilding'
 PlayCardSilentlyAction = require 'app/sdk/actions/playCardSilentlyAction'
-# REMOVED: UtilsGameSession = require 'app/common/utils/utils_game_session'
+UtilsGameSession = require 'app/common/utils/utils_game_session'
 
 class ModifierBuildCompleteReplicateAndSummonDervish extends ModifierBuilding
 

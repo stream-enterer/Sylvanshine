@@ -4,7 +4,7 @@
 _ = require 'underscore'
 moment = require 'moment'
 
-# REMOVED: CONFIG = require('app/common/config')
+CONFIG = require('app/common/config')
 RSX = require('app/data/resources')
 
 Card = require 'app/sdk/cards/card'

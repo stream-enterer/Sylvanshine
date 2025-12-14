@@ -1,10 +1,10 @@
 ModifierOpponentDrawCardWatch = require './modifierOpponentDrawCardWatch'
 PlayCardSilentlyAction = require 'app/sdk/actions/playCardSilentlyAction'
 PlayCardAction = require 'app/sdk/actions/playCardAction'
-# REMOVED: CONFIG = require 'app/common/config'
-# REMOVED: UtilsJavascript = require 'app/common/utils/utils_javascript'
-# REMOVED: UtilsGameSession = require 'app/common/utils/utils_game_session'
-# REMOVED: UtilsPosition = require 'app/common/utils/utils_position'
+CONFIG = require 'app/common/config'
+UtilsJavascript = require 'app/common/utils/utils_javascript'
+UtilsGameSession = require 'app/common/utils/utils_game_session'
+UtilsPosition = require 'app/common/utils/utils_position'
 
 class ModifierOpponentDrawCardWatchOverdrawSummonEntity extends ModifierOpponentDrawCardWatch
 

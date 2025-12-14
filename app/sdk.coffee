@@ -1,4 +1,4 @@
-# REMOVED: Logger = require 'app/common/logger.coffee'
+Logger = require 'app/common/logger.coffee'
 
 # SDK Namespace Wrapper
 GameSession = require 'app/sdk/gameSession'
@@ -6,7 +6,7 @@ GameSession = require 'app/sdk/gameSession'
 SDK = SDK or {}
 
 SDK.Step = require 'app/sdk/step'
-# REMOVED: SDK.Utils = require 'app/common/utils/utils_game_session'
+SDK.Utils = require 'app/common/utils/utils_game_session'
 SDK.GameType = require 'app/sdk/gameType'
 SDK.GameFormat = require 'app/sdk/gameFormat'
 SDK.GameSetup = require 'app/sdk/gameSetup'

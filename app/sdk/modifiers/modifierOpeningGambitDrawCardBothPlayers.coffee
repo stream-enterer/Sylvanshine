@@ -2,7 +2,7 @@ ModifierOpeningGambit = require './modifierOpeningGambit'
 DrawCardAction = require 'app/sdk/actions/drawCardAction'
 CardType = require 'app/sdk/cards/cardType'
 Modifier = require './modifier'
-# REMOVED: CONFIG = require 'app/common/config'
+CONFIG = require 'app/common/config'
 
 
 class ModifierOpeningGambitDrawCardBothPlayers extends ModifierOpeningGambit

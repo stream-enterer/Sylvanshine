@@ -1,4 +1,4 @@
-# REMOVED: CONFIG = require 'app/common/config'
+CONFIG = require 'app/common/config'
 ModifierBanded = require './modifierBanded'
 ModifierRanged = require './modifierRanged'
 i18next = require 'i18next'

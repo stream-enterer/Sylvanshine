@@ -1,4 +1,4 @@
-# REMOVED: Logger =     require 'app/common/logger'
+Logger =     require 'app/common/logger'
 ApplyCardToBoardAction =     require './applyCardToBoardAction'
 ModifierOpeningGambit =     require 'app/sdk/modifiers/modifierOpeningGambit'
 _ = require 'underscore'

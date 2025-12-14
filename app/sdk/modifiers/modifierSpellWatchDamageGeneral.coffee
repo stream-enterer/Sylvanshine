@@ -1,4 +1,4 @@
-# REMOVED: CONFIG = require 'app/common/config'
+CONFIG = require 'app/common/config'
 ModifierSpellWatch = require './modifierSpellWatch'
 CardType = require 'app/sdk/cards/cardType'
 Modifier = require './modifier'

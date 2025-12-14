@@ -1,7 +1,7 @@
 ModifierSummonWatch = require './modifierSummonWatch'
 HealAction =  require 'app/sdk/actions/healAction'
 CardType = require 'app/sdk/cards/cardType'
-# REMOVED: CONFIG = require 'app/common/config'
+CONFIG = require 'app/common/config'
 
 class ModifierSummonWatchHealSelf extends ModifierSummonWatch
 

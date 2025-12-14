@@ -1,12 +1,12 @@
-# REMOVED: Logger = require 'app/common/logger'
-# REMOVED: CONFIG = require 'app/common/config'
+Logger = require 'app/common/logger'
+CONFIG = require 'app/common/config'
 SpellSpawnEntity = require './spellSpawnEntity'
 CardType = require 'app/sdk/cards/cardType'
 Rarity = require 'app/sdk/cards/rarityLookup'
 Cards = require 'app/sdk/cards/cardsLookupComplete'
 DieAction = require 'app/sdk/actions/dieAction'
 ModifierDyingWish = require 'app/sdk/modifiers/modifierDyingWish'
-# REMOVED: UtilsGameSession = require 'app/common/utils/utils_game_session'
+UtilsGameSession = require 'app/common/utils/utils_game_session'
 _ = require 'underscore'
 
 class SpellCorpseCombustion extends SpellSpawnEntity

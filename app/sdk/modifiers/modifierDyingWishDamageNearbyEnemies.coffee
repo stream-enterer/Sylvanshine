@@ -1,4 +1,4 @@
-# REMOVED: CONFIG = require 'app/common/config'
+CONFIG = require 'app/common/config'
 ModifierDyingWish = require './modifierDyingWish'
 DamageAction = require 'app/sdk/actions/damageAction'
 CardType = require 'app/sdk/cards/cardType'

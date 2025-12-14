@@ -1,5 +1,5 @@
-# REMOVED: CONFIG =     require 'app/common/config'
-# REMOVED: Logger = require 'app/common/logger'
+CONFIG =     require 'app/common/config'
+Logger = require 'app/common/logger'
 Modifier =   require './modifier'
 AttackAction =   require 'app/sdk/actions/attackAction'
 ModifierProvoked =   require './modifierProvoked'

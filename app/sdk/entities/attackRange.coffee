@@ -1,4 +1,4 @@
-# REMOVED: UtilsPosition = require 'app/common/utils/utils_position'
+UtilsPosition = require 'app/common/utils/utils_position'
 Range = require './range'
 _ = require 'underscore'
 

@@ -1,7 +1,7 @@
-# REMOVED: CONFIG =       require 'app/common/config'
+CONFIG =       require 'app/common/config'
 ModifierBanding =   require './modifierBanding'
 ModifierEndTurnWatchHealSelfAndGeneral =   require './modifierEndTurnWatchHealSelfAndGeneral'
-# REMOVED: UtilsGameSession = require 'app/common/utils/utils_game_session'
+UtilsGameSession = require 'app/common/utils/utils_game_session'
 i18next = require 'i18next'
 
 class ModifierBandingHealSelfAndGeneral extends ModifierBanding

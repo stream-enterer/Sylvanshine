@@ -1,5 +1,5 @@
-# REMOVED: Logger =     require 'app/common/logger'
-# REMOVED: CONFIG =     require 'app/common/config'
+Logger =     require 'app/common/logger'
+CONFIG =     require 'app/common/config'
 PutCardInHandAction = require './putCardInHandAction'
 HurtingDamageAction = require './hurtingDamageAction'
 

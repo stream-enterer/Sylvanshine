@@ -1,8 +1,8 @@
 QuestBeginner = require './questBeginner'
 QuestType = require './questTypeLookup'
-# REMOVED: UtilsGameSession = require 'app/common/utils/utils_game_session'
+UtilsGameSession = require 'app/common/utils/utils_game_session'
 GameType = require 'app/sdk/gameType'
-# REMOVED: Logger = require 'app/common/logger'
+Logger = require 'app/common/logger'
 
 class QuestBeginnerWinFourPracticeGames extends QuestBeginner
   @Identifier: 9905

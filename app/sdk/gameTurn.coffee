@@ -1,5 +1,5 @@
 SDKObject = require('./object')
-# REMOVED: UtilsJavascript = require 'app/common/utils/utils_javascript'
+UtilsJavascript = require 'app/common/utils/utils_javascript'
 
 class GameTurn extends SDKObject
 

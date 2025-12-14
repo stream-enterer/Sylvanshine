@@ -1,7 +1,7 @@
-# REMOVED: CONFIG =     require 'app/common/config'
+CONFIG =     require 'app/common/config'
 Action =     require './action'
 GameStatus =   require 'app/sdk/gameStatus'
-# REMOVED: Logger =     require 'app/common/logger'
+Logger =     require 'app/common/logger'
 
 class TakeAnotherTurnAction extends Action
 

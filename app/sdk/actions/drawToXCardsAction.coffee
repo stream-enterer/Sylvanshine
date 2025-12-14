@@ -1,6 +1,6 @@
 Action =     require './action'
 GameStatus =   require 'app/sdk/gameStatus'
-# REMOVED: Logger =     require 'app/common/logger'
+Logger =     require 'app/common/logger'
 
 _ = require 'underscore'
 

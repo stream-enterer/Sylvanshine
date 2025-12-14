@@ -1,5 +1,5 @@
-# REMOVED: CONFIG = require 'app/common/config'
-# REMOVED: UtilsPosition = require 'app/common/utils/utils_position'
+CONFIG = require 'app/common/config'
+UtilsPosition = require 'app/common/utils/utils_position'
 Range = require './range'
 ModifierFlying = require 'app/sdk/modifiers/modifierFlying'
 

@@ -1,7 +1,7 @@
-# REMOVED: Logger = require 'app/common/logger'
+Logger = require 'app/common/logger'
 PlayCardSilentlyAction = require './playCardSilentlyAction'
-# REMOVED: CONFIG = require 'app/common/config'
-# REMOVED: UtilsGameSession = require 'app/common/utils/utils_game_session'
+CONFIG = require 'app/common/config'
+UtilsGameSession = require 'app/common/utils/utils_game_session'
 
 class RandomPlayCardSilentlyAction extends PlayCardSilentlyAction
 

@@ -1,7 +1,7 @@
 BonusManaAction =       require 'app/sdk/actions/bonusManaAction'
 Cards =                 require 'app/sdk/cards/cardsLookupComplete'
 CardType =               require 'app/sdk/cards/cardType'
-# REMOVED: CONFIG =                 require('app/common/config')
+CONFIG =                 require('app/common/config')
 ModifierCollectable =   require './modifierCollectable'
 i18next = require 'i18next'
 

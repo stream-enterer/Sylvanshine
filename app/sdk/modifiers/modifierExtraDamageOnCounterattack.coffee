@@ -2,7 +2,7 @@ Modifier = require './modifier'
 DamageAction = require 'app/sdk/actions/damageAction'
 CardType = require 'app/sdk/cards/cardType'
 ModifierStrikeback = require './modifierStrikeback'
-# REMOVED: EVENTS = require 'app/common/event_types'
+EVENTS = require 'app/common/event_types'
 
 class ModifierExtraDamageOnCounterattack extends Modifier
 

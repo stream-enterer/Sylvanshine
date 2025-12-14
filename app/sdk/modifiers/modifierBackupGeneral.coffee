@@ -1,4 +1,4 @@
-# REMOVED: EVENTS = require 'app/common/event_types'
+EVENTS = require 'app/common/event_types'
 Modifier = require './modifier'
 ModifierQuestBuffAbyssian = require './modifierQuestBuffAbyssian'
 ModifierQuestBuffNeutral = require './modifierQuestBuffNeutral'

@@ -1,4 +1,4 @@
-# REMOVED: Logger = require 'app/common/logger'
+Logger = require 'app/common/logger'
 DieAction = require './dieAction'
 GameStatus = require 'app/sdk/gameStatus'
 

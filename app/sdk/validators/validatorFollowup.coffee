@@ -1,13 +1,13 @@
-# REMOVED: Logger = require("app/common/logger")
-# REMOVED: EVENTS = require("app/common/event_types")
+Logger = require("app/common/logger")
+EVENTS = require("app/common/event_types")
 Validator = require("./validator")
 ResignAction = require("app/sdk/actions/resignAction")
 EndTurnAction = require("app/sdk/actions/endTurnAction")
 PlayCardAction = require("app/sdk/actions/playCardAction")
 StopBufferingEventsAction = require("app/sdk/actions/stopBufferingEventsAction")
 RollbackToSnapshotAction = require("app/sdk/actions/rollbackToSnapshotAction")
-# REMOVED: UtilsGameSession = require("app/common/utils/utils_game_session")
-# REMOVED: UtilsPosition = require 'app/common/utils/utils_position'
+UtilsGameSession = require("app/common/utils/utils_game_session")
+UtilsPosition = require 'app/common/utils/utils_position'
 _ = require 'underscore'
 i18next = require("i18next")
 

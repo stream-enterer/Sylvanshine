@@ -3,7 +3,7 @@ CardType = require 'app/sdk/cards/cardType'
 ModifierDealDamageWatch = require './modifierDealDamageWatch'
 DamageAction = require 'app/sdk/actions/damageAction'
 Stringifiers = require 'app/sdk/helpers/stringifiers'
-# REMOVED: UtilsGameSession = require 'app/common/utils/utils_game_session'
+UtilsGameSession = require 'app/common/utils/utils_game_session'
 
 class ModifierDealDamageWatchModifyTarget extends ModifierDealDamageWatch
 

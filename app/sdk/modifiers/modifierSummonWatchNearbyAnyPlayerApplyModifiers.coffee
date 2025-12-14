@@ -1,5 +1,5 @@
 ModifierSummonWatchAnyPlayerApplyModifiers = require './modifierSummonWatchAnyPlayerApplyModifiers'
-# REMOVED: UtilsGameSession = require 'app/common/utils/utils_game_session'
+UtilsGameSession = require 'app/common/utils/utils_game_session'
 Stringifiers = require 'app/sdk/helpers/stringifiers'
 
 class ModifierSummonWatchNearbyAnyPlayerApplyModifiers extends ModifierSummonWatchAnyPlayerApplyModifiers

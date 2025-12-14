@@ -1,4 +1,4 @@
-# REMOVED: Logger =     require 'app/common/logger'
+Logger =     require 'app/common/logger'
 Action =     require './action'
 Colors =     require 'colors' # used for console message coloring
 CardType =     require 'app/sdk/cards/cardType'

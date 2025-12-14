@@ -1,6 +1,6 @@
-# REMOVED: CONFIG =     require 'app/common/config'
+CONFIG =     require 'app/common/config'
 Action =     require './action'
-# REMOVED: Logger =     require 'app/common/logger'
+Logger =     require 'app/common/logger'
 
 class EndTurnAction extends Action
 

@@ -1,10 +1,10 @@
-# REMOVED: Logger = require 'app/common/logger'
-# REMOVED: CONFIG = require 'app/common/config'
+Logger = require 'app/common/logger'
+CONFIG = require 'app/common/config'
 Spell =   require('./spell')
 CardType = require 'app/sdk/cards/cardType'
 SpellFilterType = require './spellFilterType'
 DamageAction = require 'app/sdk/actions/damageAction'
-# REMOVED: UtilsGameSession = require 'app/common/utils/utils_game_session'
+UtilsGameSession = require 'app/common/utils/utils_game_session'
 
 class SpellBoneSwarm extends Spell
 

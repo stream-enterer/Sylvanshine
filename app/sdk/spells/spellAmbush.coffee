@@ -1,8 +1,8 @@
-# REMOVED: CONFIG = require 'app/common/config'
+CONFIG = require 'app/common/config'
 SpellSpawnEntity =   require './spellSpawnEntity'
 SpellFilterType = require './spellFilterType'
 Cards = require 'app/sdk/cards/cardsLookupComplete'
-# REMOVED: UtilsGameSession = require 'app/common/utils/utils_game_session'
+UtilsGameSession = require 'app/common/utils/utils_game_session'
 
 class SpellAmbush extends SpellSpawnEntity
 

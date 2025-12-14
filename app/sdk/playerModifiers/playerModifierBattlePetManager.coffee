@@ -1,4 +1,4 @@
-# REMOVED: EVENTS = require 'app/common/event_types'
+EVENTS = require 'app/common/event_types'
 PlayerModifier = require 'app/sdk/playerModifiers/playerModifier.coffee'
 ModifierBattlePet = require 'app/sdk/modifiers/modifierBattlePet.coffee'
 ModifierTranscendance = require 'app/sdk/modifiers/modifierTranscendance.coffee'

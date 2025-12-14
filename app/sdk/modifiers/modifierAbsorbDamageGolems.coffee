@@ -1,4 +1,4 @@
-# REMOVED: EVENTS = require 'app/common/event_types'
+EVENTS = require 'app/common/event_types'
 Modifier = require './modifier'
 DamageAction = require 'app/sdk/actions/damageAction'
 CardType = require 'app/sdk/cards/cardType'

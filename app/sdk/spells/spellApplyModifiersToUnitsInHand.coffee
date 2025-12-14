@@ -1,4 +1,4 @@
-# REMOVED: UtilsGameSession = require 'app/common/utils/utils_game_session'
+UtilsGameSession = require 'app/common/utils/utils_game_session'
 Spell = require './spell'
 CardType = require 'app/sdk/cards/cardType'
 SpellFilterType =  require './spellFilterType'

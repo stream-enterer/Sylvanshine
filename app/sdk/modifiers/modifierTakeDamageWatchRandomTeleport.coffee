@@ -1,7 +1,7 @@
 ModifierTakeDamageWatch = require './modifierTakeDamageWatch'
 RandomTeleportAction = require 'app/sdk/actions/randomTeleportAction'
-# REMOVED: CONFIG = require 'app/common/config'
-# REMOVED: UtilsGameSession = require 'app/common/utils/utils_game_session'
+CONFIG = require 'app/common/config'
+UtilsGameSession = require 'app/common/utils/utils_game_session'
 _ = require 'underscore'
 
 class ModifierTakeDamageWatchRandomTeleport extends ModifierTakeDamageWatch

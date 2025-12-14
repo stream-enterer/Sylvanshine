@@ -1,6 +1,6 @@
 RandomTeleportAction = require 'app/sdk/actions/randomTeleportAction'
-# REMOVED: CONFIG = require 'app/common/config'
-# REMOVED: UtilsGameSession = require 'app/common/utils/utils_game_session'
+CONFIG = require 'app/common/config'
+UtilsGameSession = require 'app/common/utils/utils_game_session'
 ModifierDealOrTakeDamageWatch = require './modifierDealOrTakeDamageWatch'
 CardType = require 'app/sdk/cards/cardType'
 _ = require 'underscore'

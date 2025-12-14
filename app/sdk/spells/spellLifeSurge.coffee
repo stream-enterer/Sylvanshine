@@ -1,10 +1,10 @@
-# REMOVED: Logger = require 'app/common/logger'
+Logger = require 'app/common/logger'
 SpellDamage = require './spellDamage'
 CardType = require 'app/sdk/cards/cardType'
 SpellFilterType = require './spellFilterType'
 HealAction = require 'app/sdk/actions/healAction'
-# REMOVED: CONFIG = require 'app/common/config'
-# REMOVED: UtilsPosition = require 'app/common/utils/utils_position'
+CONFIG = require 'app/common/config'
+UtilsPosition = require 'app/common/utils/utils_position'
 
 class SpellLifeSurge extends SpellDamage
 

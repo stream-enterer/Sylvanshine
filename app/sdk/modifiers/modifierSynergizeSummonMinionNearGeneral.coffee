@@ -1,6 +1,6 @@
-# REMOVED: CONFIG = require 'app/common/config'
+CONFIG = require 'app/common/config'
 ModifierSynergize = require './modifierSynergize'
-# REMOVED: UtilsGameSession = require 'app/common/utils/utils_game_session'
+UtilsGameSession = require 'app/common/utils/utils_game_session'
 PlayCardSilentlyAction = require 'app/sdk/actions/playCardSilentlyAction'
 
 class ModifierSynergizeSummonMinionNearGeneral extends ModifierSynergize

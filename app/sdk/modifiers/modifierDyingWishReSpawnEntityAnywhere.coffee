@@ -1,9 +1,9 @@
-# REMOVED: CONFIG = require 'app/common/config'
-# REMOVED: UtilsGameSession = require 'app/common/utils/utils_game_session'
+CONFIG = require 'app/common/config'
+UtilsGameSession = require 'app/common/utils/utils_game_session'
 ModifierDyingWish = require './modifierDyingWish'
 PlayCardSilentlyAction = require 'app/sdk/actions/playCardSilentlyAction'
 PlayCardAction = require 'app/sdk/actions/playCardAction'
-# REMOVED: UtilsPosition = require 'app/common/utils/utils_position'
+UtilsPosition = require 'app/common/utils/utils_position'
 _ = require 'underscore'
 
 class ModifierDyingWishReSpawnEntityAnywhere extends ModifierDyingWish

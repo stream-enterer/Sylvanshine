@@ -1,8 +1,8 @@
-# REMOVED: Logger = require 'app/common/logger'
-# REMOVED: CONFIG = require('app/common/config')
-# REMOVED: EVENTS = require 'app/common/event_types'
-# REMOVED: UtilsGameSession = require 'app/common/utils/utils_game_session'
-# REMOVED: UtilsPosition = require 'app/common/utils/utils_position'
+Logger = require 'app/common/logger'
+CONFIG = require('app/common/config')
+EVENTS = require 'app/common/event_types'
+UtilsGameSession = require 'app/common/utils/utils_game_session'
+UtilsPosition = require 'app/common/utils/utils_position'
 Card = require 'app/sdk/cards/card'
 CardType = require 'app/sdk/cards/cardType'
 Cards = require 'app/sdk/cards/cardsLookupComplete'

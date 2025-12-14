@@ -1,6 +1,6 @@
 ModifierSituationalBuffSelf = require './modifierSituationalBuffSelf'
 CardType = require 'app/sdk/cards/cardType'
-# REMOVED: CONFIG = require 'app/common/config'
+CONFIG = require 'app/common/config'
 _ = require 'underscore'
 ModifierAlwaysInfiltrated = require 'app/sdk/modifiers/modifierAlwaysInfiltrated'
 ModifierProvidesAlwaysInfiltrated = require 'app/sdk/modifiers/modifierProvidesAlwaysInfiltrated'

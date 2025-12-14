@@ -1,8 +1,8 @@
 SpellIntensify = require './spellIntensify'
 Cards = require 'app/sdk/cards/cardsLookupComplete'
 PlayCardSilentlyAction = require 'app/sdk/actions/playCardSilentlyAction'
-# REMOVED: UtilsGameSession = require 'app/common/utils/utils_game_session'
-# REMOVED: CONFIG = require 'app/common/config'
+UtilsGameSession = require 'app/common/utils/utils_game_session'
+CONFIG = require 'app/common/config'
 
 class SpellIntensifyShadowBlossom extends SpellIntensify
 

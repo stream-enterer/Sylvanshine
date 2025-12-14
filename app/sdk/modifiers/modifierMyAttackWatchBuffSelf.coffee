@@ -1,4 +1,4 @@
-# REMOVED: Logger = require 'app/common/logger'
+Logger = require 'app/common/logger'
 Modifier = require './modifier'
 ModifierMyAttackWatch = require './modifierMyAttackWatch'
 AttackAction = require 'app/sdk/actions/attackAction'

@@ -1,4 +1,4 @@
-# REMOVED: CONFIG = require 'app/common/config'
+CONFIG = require 'app/common/config'
 ModifierSummonWatch = require './modifierSummonWatch'
 ModifierOpponentSummonWatch = require './modifierOpponentSummonWatch'
 SwapGeneralAction = require 'app/sdk/actions/swapGeneralAction'

@@ -1,6 +1,6 @@
 Modifier = require './modifier'
 ModifierBackstab = require './modifierBackstab'
-# REMOVED: EVENTS = require 'app/common/event_types'
+EVENTS = require 'app/common/event_types'
 AttackAction = require 'app/sdk/actions/attackAction'
 
 class ModifierAlwaysBackstabbed extends Modifier

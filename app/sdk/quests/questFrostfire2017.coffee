@@ -1,7 +1,7 @@
 Quest = require './quest'
 GameStatus = require 'app/sdk/gameStatus'
 GameType = require 'app/sdk/gameType'
-# REMOVED: UtilsGameSession = require 'app/common/utils/utils_game_session'
+UtilsGameSession = require 'app/common/utils/utils_game_session'
 GiftCrateLookup = require 'app/sdk/giftCrates/giftCrateLookup'
 QuestType = require './questTypeLookup'
 moment = require 'moment'

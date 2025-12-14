@@ -1,7 +1,7 @@
 ModifierOpeningGambit =   require './modifierOpeningGambit'
 CardType = require 'app/sdk/cards/cardType'
 ModifierSilence = require './modifierSilence'
-# REMOVED: CONFIG = require('app/common/config')
+CONFIG = require('app/common/config')
 
 class ModifierOpeningGambitDispel extends ModifierOpeningGambit
 

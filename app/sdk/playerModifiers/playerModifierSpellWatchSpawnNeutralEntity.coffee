@@ -1,7 +1,7 @@
 PlayerModifierSpellWatch = require './playerModifierSpellWatch'
 Factions = require 'app/sdk/cards/factionsLookup'
-# REMOVED: CONFIG = require 'app/common/config'
-# REMOVED: UtilsGameSession = require 'app/common/utils/utils_game_session'
+CONFIG = require 'app/common/config'
+UtilsGameSession = require 'app/common/utils/utils_game_session'
 CardType = require 'app/sdk/cards/cardType'
 PlayCardSilentlyAction = require 'app/sdk/actions/playCardSilentlyAction'
 

@@ -1,4 +1,4 @@
-# REMOVED: Logger = require 'app/common/logger'
+Logger = require 'app/common/logger'
 SpellKillTarget = require './spellKillTarget'
 ModifierProvoke = require 'app/sdk/modifiers/modifierProvoke'
 ModifierFrenzy = require 'app/sdk/modifiers/modifierFrenzy'

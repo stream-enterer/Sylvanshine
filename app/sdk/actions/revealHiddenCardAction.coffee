@@ -1,5 +1,5 @@
-# REMOVED: Logger =     require 'app/common/logger'
-# REMOVED: UtilsJavascript =     require 'app/common/utils/utils_javascript'
+Logger =     require 'app/common/logger'
+UtilsJavascript =     require 'app/common/utils/utils_javascript'
 Action =     require './action'
 _ = require 'underscore'
 

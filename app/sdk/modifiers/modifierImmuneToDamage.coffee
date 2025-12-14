@@ -1,5 +1,5 @@
-# REMOVED: EVENTS = require 'app/common/event_types'
-# REMOVED: Logger = require 'app/common/logger'
+EVENTS = require 'app/common/event_types'
+Logger = require 'app/common/logger'
 ModifierImmune = require './modifierImmune'
 DamageAction = require 'app/sdk/actions/damageAction'
 

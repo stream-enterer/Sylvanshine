@@ -1,6 +1,6 @@
 ModifierOverwatch = require './modifierOverwatch'
 ApplyCardToBoardAction = require 'app/sdk/actions/applyCardToBoardAction'
-# REMOVED: UtilsPosition = require 'app/common/utils/utils_position'
+UtilsPosition = require 'app/common/utils/utils_position'
 CardType = require 'app/sdk/cards/cardType'
 
 class ModifierOverwatchSpellTarget extends ModifierOverwatch

@@ -1,6 +1,6 @@
 PlayerModifier = require './playerModifier'
 ModifierAlwaysBackstabbed = require 'app/sdk/modifiers/modifierAlwaysBackstabbed'
-# REMOVED: CONFIG = require 'app/common/config'
+CONFIG = require 'app/common/config'
 
 class PlayerModifierTeamAlwaysBackstabbed extends PlayerModifier
 

@@ -1,8 +1,8 @@
 SDKObject = require 'app/sdk/object'
-# REMOVED: CONFIG =       require 'app/common/config'
-# REMOVED: UtilsJavascript = require 'app/common/utils/utils_javascript'
+CONFIG =       require 'app/common/config'
+UtilsJavascript = require 'app/common/utils/utils_javascript'
 CardType =       require 'app/sdk/cards/cardType'
-# REMOVED: Logger =       require 'app/common/logger'
+Logger =       require 'app/common/logger'
 _ = require 'underscore'
 
 class Action extends SDKObject

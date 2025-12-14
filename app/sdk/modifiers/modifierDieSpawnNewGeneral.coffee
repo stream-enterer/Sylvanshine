@@ -6,8 +6,8 @@ PlayCardSilentlyAction = require 'app/sdk/actions/playCardSilentlyAction'
 PlayCardAction = require 'app/sdk/actions/playCardAction'
 KillAction = require 'app/sdk/actions/killAction'
 SwapGeneralAction = require 'app/sdk/actions/swapGeneralAction'
-# REMOVED: UtilsGameSession = require 'app/common/utils/utils_game_session'
-# REMOVED: CONFIG = require 'app/common/config'
+UtilsGameSession = require 'app/common/utils/utils_game_session'
+CONFIG = require 'app/common/config'
 
 class ModifierDieSpawnNewGeneral extends Modifier
 

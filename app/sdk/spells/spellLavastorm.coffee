@@ -1,5 +1,5 @@
-# REMOVED: Logger = require 'app/common/logger'
-# REMOVED: CONFIG = require 'app/common/config'
+Logger = require 'app/common/logger'
+CONFIG = require 'app/common/config'
 SpellKillTarget = require('./spellKillTarget')
 SpellFilterType = require './spellFilterType'
 

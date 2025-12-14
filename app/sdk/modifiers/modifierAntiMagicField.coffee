@@ -1,9 +1,9 @@
-# REMOVED: Logger = require 'app/common/logger'
+Logger = require 'app/common/logger'
 Modifier = require './modifier'
 DamageAction = require 'app/sdk/actions/damageAction'
 ApplyCardToBoardAction = require 'app/sdk/actions/applyCardToBoardAction'
-# REMOVED: UtilsGameSession = require 'app/common/utils/utils_game_session'
-# REMOVED: UtilsPosition = require 'app/common/utils/utils_position'
+UtilsGameSession = require 'app/common/utils/utils_game_session'
+UtilsPosition = require 'app/common/utils/utils_position'
 CardType = require 'app/sdk/cards/cardType'
 
 i18next = require('i18next')

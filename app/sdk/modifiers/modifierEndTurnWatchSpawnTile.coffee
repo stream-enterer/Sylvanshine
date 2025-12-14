@@ -1,6 +1,6 @@
-# REMOVED: CONFIG = require 'app/common/config'
+CONFIG = require 'app/common/config'
 ModifierEndTurnWatchSpawnEntity = require './modifierEndTurnWatchSpawnEntity'
-# REMOVED: UtilsPosition = require 'app/common/utils/utils_position'
+UtilsPosition = require 'app/common/utils/utils_position'
 
 class ModifierEndTurnWatchSpawnTile extends ModifierEndTurnWatchSpawnEntity
 

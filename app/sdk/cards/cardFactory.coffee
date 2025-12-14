@@ -4,7 +4,7 @@
 _ = require 'underscore'
 moment = require 'moment'
 
-# REMOVED: Logger = require 'app/common/logger'
+Logger = require 'app/common/logger'
 
 Cards = require 'app/sdk/cards/cardsLookupComplete'
 CosmeticsFactory = require 'app/sdk/cosmetics/cosmeticsFactory'

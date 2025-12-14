@@ -1,6 +1,6 @@
-# REMOVED: CONFIG =       require 'app/common/config'
-# REMOVED: UtilsJavascript = require 'app/common/utils/utils_javascript'
-# REMOVED: Logger =       require 'app/common/logger'
+CONFIG =       require 'app/common/config'
+UtilsJavascript = require 'app/common/utils/utils_javascript'
+Logger =       require 'app/common/logger'
 
 _ = require 'underscore'
 GameSession = require 'app/sdk/gameSession'

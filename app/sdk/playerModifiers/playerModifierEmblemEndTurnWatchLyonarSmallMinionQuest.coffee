@@ -1,5 +1,5 @@
 PlayerModifierEmblemEndTurnWatch = require './playerModifierEmblemEndTurnWatch'
-# REMOVED: CONFIG = require 'app/common/config'
+CONFIG = require 'app/common/config'
 ModifierTransformed = require 'app/sdk/modifiers/modifierTransformed'
 RemoveAction = require 'app/sdk/actions/removeAction'
 PlayCardAsTransformAction = require 'app/sdk/actions/playCardAsTransformAction'

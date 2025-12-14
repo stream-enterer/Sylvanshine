@@ -1,8 +1,8 @@
-# REMOVED: CONFIG = require 'app/common/config'
+CONFIG = require 'app/common/config'
 Modifier = require './modifier'
 ModifierWall = require './modifierWall'
 ModifierOpeningGambitApplyModifiers = require './modifierOpeningGambitApplyModifiers'
-# REMOVED: UtilsGameSession = require 'app/common/utils/utils_game_session'
+UtilsGameSession = require 'app/common/utils/utils_game_session'
 CardType = require 'app/sdk/cards/cardType'
 _ = require 'underscore'
 

@@ -1,6 +1,6 @@
 Modifier =            require './modifier'
 CardType =         require 'app/sdk/cards/cardType'
-# REMOVED: CONFIG = require 'app/common/config'
+CONFIG = require 'app/common/config'
 
 i18next = require('i18next')
 

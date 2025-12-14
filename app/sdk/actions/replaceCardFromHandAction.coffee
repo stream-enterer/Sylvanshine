@@ -1,7 +1,7 @@
-# REMOVED: CONFIG =     require 'app/common/config'
-# REMOVED: Logger =     require 'app/common/logger'
-# REMOVED: Analytics = require 'app/common/analytics'
-# REMOVED: UtilsGameSession = require 'app/common/utils/utils_game_session'
+CONFIG =     require 'app/common/config'
+Logger =     require 'app/common/logger'
+Analytics = require 'app/common/analytics'
+UtilsGameSession = require 'app/common/utils/utils_game_session'
 Action =     require './action'
 PutCardInHandAction = require './putCardInHandAction'
 _ = require("underscore")

@@ -1,4 +1,4 @@
-# REMOVED: CONFIG =     require 'app/common/config'
+CONFIG =     require 'app/common/config'
 DamageAction =   require './damageAction'
 CardType =       require 'app/sdk/cards/cardType'
 _ = require 'underscore'

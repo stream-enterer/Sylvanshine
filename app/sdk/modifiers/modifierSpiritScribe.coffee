@@ -1,7 +1,7 @@
 Modifier = require './modifier'
 ModifierSummonWatch = require './modifierSummonWatch'
 CardType = require 'app/sdk/cards/cardType'
-# REMOVED: UtilsGameSession = require 'app/common/utils/utils_game_session'
+UtilsGameSession = require 'app/common/utils/utils_game_session'
 ModifierFrenzy = require './modifierFrenzy'
 ModifierFlying = require './modifierFlying'
 ModifierTranscendance = require './modifierTranscendance'

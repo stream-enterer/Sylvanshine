@@ -1,6 +1,6 @@
 ModifierMyAttackWatch = require './modifierMyAttackWatch'
 ForcedAttackAction = require 'app/sdk/actions/forcedAttackAction'
-# REMOVED: CONFIG = require 'app/common/config'
+CONFIG = require 'app/common/config'
 CardType = require 'app/sdk/cards/cardType'
 
 class ModifierMyAttackWatchGamble extends ModifierMyAttackWatch

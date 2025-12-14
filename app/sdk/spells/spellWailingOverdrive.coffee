@@ -1,5 +1,5 @@
 SpellApplyModifiers = require './spellApplyModifiers'
-# REMOVED: CONFIG = require 'app/common/config'
+CONFIG = require 'app/common/config'
 
 class SpellWailingOverdrive extends SpellApplyModifiers
 

@@ -1,6 +1,6 @@
-# REMOVED: CONFIG = require 'app/common/config'
+CONFIG = require 'app/common/config'
 Modifier = require './modifier'
-# REMOVED: UtilsGameSession = require 'app/common/utils/utils_game_session'
+UtilsGameSession = require 'app/common/utils/utils_game_session'
 PlayCardSilentlyAction = require 'app/sdk/actions/playCardSilentlyAction'
 CardType = require 'app/sdk/cards/cardType'
 PlaySignatureCardAction = require 'app/sdk/actions/playSignatureCardAction'

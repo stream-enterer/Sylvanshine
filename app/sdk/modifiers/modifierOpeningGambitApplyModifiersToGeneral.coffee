@@ -1,4 +1,4 @@
-# REMOVED: CONFIG = require 'app/common/config'
+CONFIG = require 'app/common/config'
 Modifier = require './modifier'
 ModifierOpeningGambit = require './modifierOpeningGambit'
 CardType = require 'app/sdk/cards/cardType'

@@ -1,18 +1,5 @@
 # Coding Standards
 
-## Directory Structure
-
-```
-project/
-├── src/                   # All .c source files
-├── include/               # All .h headers (yours + raylib)
-├── lib/                   # Libraries (libraylib.*)
-├── data/                  # Game assets
-├── app/                   # Original Duelyst reference (read-only)
-├── build/                 # Compiled output (gitignored)
-└── Makefile
-```
-
 **Flat structure is mandatory:**
 - ALL headers go in `include/` — no subdirectories
 - ALL source files go in `src/` — no subdirectories

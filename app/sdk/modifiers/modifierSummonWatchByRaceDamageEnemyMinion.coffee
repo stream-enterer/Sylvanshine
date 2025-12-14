@@ -2,7 +2,7 @@ ModifierSummonWatch = require './modifierSummonWatch'
 Modifier = require './modifier'
 RandomDamageAction = require 'app/sdk/actions/randomDamageAction'
 CardType = require 'app/sdk/cards/cardType'
-# REMOVED: CONFIG = require 'app/common/config'
+CONFIG = require 'app/common/config'
 
 class ModifierSummonWatchByRaceDamageEnemyMinion extends ModifierSummonWatch
 

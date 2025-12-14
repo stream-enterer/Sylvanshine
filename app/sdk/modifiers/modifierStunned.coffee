@@ -1,11 +1,11 @@
-# REMOVED: CONFIG =     require 'app/common/config'
-# REMOVED: Logger = require 'app/common/logger'
+CONFIG =     require 'app/common/config'
+Logger = require 'app/common/logger'
 RefreshExhaustionAction =  require 'app/sdk/actions/refreshExhaustionAction'
 ApplyExhaustionAction =  require 'app/sdk/actions/applyExhaustionAction'
 AttackAction =   require 'app/sdk/actions/attackAction'
 MoveAction = require 'app/sdk/actions/moveAction'
 Modifier = require './modifier'
-# REMOVED: UtilsGameSession = require 'app/common/utils/utils_game_session'
+UtilsGameSession = require 'app/common/utils/utils_game_session'
 _ = require 'underscore'
 
 i18next = require('i18next')

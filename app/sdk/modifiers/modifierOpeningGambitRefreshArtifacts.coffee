@@ -2,7 +2,7 @@ ModifierOpeningGambit = require './modifierOpeningGambit'
 CardType = require 'app/sdk/cards/cardType'
 Modifier = require './modifier'
 RefreshArtifactChargesAction = require 'app/sdk/actions/refreshArtifactChargesAction'
-# REMOVED: CONFIG = require 'app/common/config'
+CONFIG = require 'app/common/config'
 
 class ModifierOpeningGambitRefreshArtifacts extends ModifierOpeningGambit
 

@@ -1,4 +1,4 @@
-# REMOVED: CONFIG = require 'app/common/config'
+CONFIG = require 'app/common/config'
 Modifier = require './modifier'
 MoveAction = require 'app/sdk/actions/moveAction'
 i18next = require 'i18next'

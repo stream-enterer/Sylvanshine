@@ -1,5 +1,5 @@
 Spell = require './spell'
-# REMOVED: CONFIG = require('app/common/config')
+CONFIG = require('app/common/config')
 UtilsGameSession = require '../../common/utils/utils_game_session.coffee'
 Cards = require 'app/sdk/cards/cardsLookupComplete'
 PlayCardSilentlyAction = require 'app/sdk/actions/playCardSilentlyAction'

@@ -4,7 +4,7 @@ Achievement = require 'app/sdk/achievements/achievement'
 GameType = require 'app/sdk/gameType'
 Cards = require 'app/sdk/cards/cardsLookupComplete'
 Factions = require 'app/sdk/cards/factionsLookup'
-# REMOVED: UtilsGameSession = require 'app/common/utils/utils_game_session'
+UtilsGameSession = require 'app/common/utils/utils_game_session'
 
 # Play your first 20 Season Ranked games.
 

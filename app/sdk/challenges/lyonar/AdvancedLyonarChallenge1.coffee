@@ -8,11 +8,11 @@ Cards       = require 'app/sdk/cards/cardsLookupComplete'
 Deck       = require 'app/sdk/cards/deck'
 GameSession       = require 'app/sdk/gameSession'
 AgentActions = require 'app/sdk/agents/agentActions'
-# REMOVED: CONFIG = require 'app/common/config'
+CONFIG = require 'app/common/config'
 RSX = require('app/data/resources')
 ChallengeCategory = require('app/sdk/challenges/challengeCategory')
 ModifierOpeningGambitApplyPlayerModifiers = require('app/sdk/modifiers/modifierOpeningGambitApplyPlayerModifiers')
-# REMOVED: UtilsGameSession = require 'app/common/utils/utils_game_session'
+UtilsGameSession = require 'app/common/utils/utils_game_session'
 i18next = require('i18next')
 
 # http://forums.duelyst.com/t/desperation-otk-1/11400

@@ -1,6 +1,6 @@
-# REMOVED: CONFIG =     require 'app/common/config'
-# REMOVED: Logger =     require 'app/common/logger'
-# REMOVED: UtilsJavascript =     require 'app/common/utils/utils_javascript'
+CONFIG =     require 'app/common/config'
+Logger =     require 'app/common/logger'
+UtilsJavascript =     require 'app/common/utils/utils_javascript'
 Action =     require './action'
 _ = require("underscore")
 

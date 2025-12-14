@@ -1,4 +1,4 @@
-# REMOVED: CONFIG = require 'app/common/config'
+CONFIG = require 'app/common/config'
 Validator = require("./validator")
 Player = require("app/sdk/player")
 ReplaceCardFromHandAction = require("app/sdk/actions/replaceCardFromHandAction")

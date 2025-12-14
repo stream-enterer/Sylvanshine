@@ -4,9 +4,9 @@ PlayCardSilentlyAction = require 'app/sdk/actions/playCardSilentlyAction'
 PlayCardAction = require 'app/sdk/actions/playCardAction'
 ModifierBackstab = require './modifierBackstab'
 CardType = require 'app/sdk/cards/cardType'
-# REMOVED: UtilsGameSession = require 'app/common/utils/utils_game_session'
+UtilsGameSession = require 'app/common/utils/utils_game_session'
 Cards = require 'app/sdk/cards/cardsLookupComplete'
-# REMOVED: CONFIG = require 'app/common/config'
+CONFIG = require 'app/common/config'
 
 class ModifierBackstabWatchSummonBackstabMinion extends ModifierBackstabWatch
 
