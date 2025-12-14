@@ -1,8 +1,7 @@
 #include "asset_manager.hpp"
+#include <GL/glew.h>
 
-#define GL_GLEXT_PROTOTYPES
-#include <GL/gl.h>
-#include <SDL2/SDL_image.h>
+#include <SDL3_image/SDL_image.h>
 
 #include <fstream>
 #include <iostream>
@@ -168,8 +167,8 @@ unsigned int AssetManager::LoadTexture(const std::string& path) {
         return 0;
     }
 
-    SDL_Surface* rgba_surface = SDL_ConvertSurfaceFormat(surface, SDL_PIXELFORMAT_RGBA32, 0);
-    SDL_FreeSurface(surface);
+    SDL_Surface* rgba_surface = SDL_ConvertSurface(surface, SDL_PIXELFORMAT_RGBA32);
+    SDL_DestroySurface(surface);
 
     if (!rgba_surface) {
         std::cerr << "Failed to convert surface to RGBA: " << path << std::endl;
@@ -188,7 +187,7 @@ unsigned int AssetManager::LoadTexture(const std::string& path) {
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, rgba_surface->w, rgba_surface->h, 0,
                  GL_RGBA, GL_UNSIGNED_BYTE, rgba_surface->pixels);
 
-    SDL_FreeSurface(rgba_surface);
+    SDL_DestroySurface(rgba_surface);
 
     textures_[path] = texture_id;
     return texture_id;

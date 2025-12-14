@@ -1,7 +1,6 @@
 #include "renderer.hpp"
+#include <GL/glew.h>
 
-#define GL_GLEXT_PROTOTYPES
-#include <GL/gl.h>
 #include <glm/gtc/matrix_transform.hpp>
 
 #include <iostream>
@@ -20,7 +19,7 @@ Renderer::~Renderer() {
 }
 
 bool Renderer::Initialize() {
-    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) != 0) {
+    if (!SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO)) {
         std::cerr << "Failed to initialize SDL: " << SDL_GetError() << std::endl;
         return false;
     }
@@ -31,9 +30,7 @@ bool Renderer::Initialize() {
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
     SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
 
-    window_ = SDL_CreateWindow("Duelyst Prototype",
-                                SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-                                WINDOW_WIDTH, WINDOW_HEIGHT,
+    window_ = SDL_CreateWindow("Duelyst Prototype", WINDOW_WIDTH, WINDOW_HEIGHT,
                                 SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
 
     if (!window_) {
@@ -49,6 +46,13 @@ bool Renderer::Initialize() {
 
     SDL_GL_MakeCurrent(window_, gl_context_);
     SDL_GL_SetSwapInterval(1);
+
+    glewExperimental = GL_TRUE;
+    GLenum glew_err = glewInit();
+    if (glew_err != GLEW_OK) {
+        std::cerr << "Failed to initialize GLEW: " << glewGetErrorString(glew_err) << std::endl;
+        return false;
+    }
 
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -89,7 +93,7 @@ void Renderer::Shutdown() {
     assets_.Shutdown();
 
     if (gl_context_) {
-        SDL_GL_DeleteContext(gl_context_);
+        SDL_GL_DestroyContext(gl_context_);
         gl_context_ = nullptr;
     }
 
@@ -103,21 +107,21 @@ void Renderer::Shutdown() {
 
 void Renderer::HandleEvent(const SDL_Event& event) {
     switch (event.type) {
-        case SDL_QUIT:
+        case SDL_EVENT_QUIT:
             should_quit_ = true;
             break;
 
-        case SDL_KEYDOWN:
-            if (event.key.keysym.sym == SDLK_ESCAPE) {
+        case SDL_EVENT_KEY_DOWN:
+            if (event.key.key == SDLK_ESCAPE) {
                 should_quit_ = true;
-            } else if (event.key.keysym.sym == SDLK_f) {
+            } else if (event.key.key == SDLK_F) {
                 ToggleFullscreen();
-            } else if (event.key.keysym.sym == SDLK_r) {
+            } else if (event.key.key == SDLK_R) {
                 game_state_.Reset();
             }
             break;
 
-        case SDL_MOUSEBUTTONDOWN:
+        case SDL_EVENT_MOUSE_BUTTON_DOWN:
             if (event.button.button == SDL_BUTTON_LEFT) {
                 glm::vec2 game_coords = ScreenToGameCoords(
                     event.button.x,
@@ -128,8 +132,8 @@ void Renderer::HandleEvent(const SDL_Event& event) {
             }
             break;
 
-        case SDL_WINDOWEVENT:
-            if (event.window.event == SDL_WINDOWEVENT_RESIZED) {
+        case SDL_EVENT_WINDOW_RESIZED:
+            if (event.type == SDL_EVENT_WINDOW_RESIZED) {
                 window_width_ = event.window.data1;
                 window_height_ = event.window.data2;
                 UpdateProjection();
@@ -161,7 +165,7 @@ void Renderer::ToggleFullscreen() {
     fullscreen_ = !fullscreen_;
 
     if (fullscreen_) {
-        SDL_SetWindowFullscreen(window_, SDL_WINDOW_FULLSCREEN_DESKTOP);
+        SDL_SetWindowFullscreen(window_, SDL_WINDOW_FULLSCREEN);
         SDL_GetWindowSize(window_, &window_width_, &window_height_);
         render_scale_ = 2;
     } else {

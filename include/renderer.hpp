@@ -6,7 +6,7 @@
 #include "game_state.hpp"
 #include "sprite_batch.hpp"
 
-#include <SDL2/SDL.h>
+#include <SDL3/SDL.h>
 
 #include <glm/glm.hpp>
 

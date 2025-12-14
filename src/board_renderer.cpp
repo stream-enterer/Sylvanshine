@@ -1,4 +1,5 @@
 #include "board_renderer.hpp"
+#include <GL/glew.h>
 
 #include <cmath>
 

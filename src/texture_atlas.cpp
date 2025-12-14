@@ -1,8 +1,7 @@
 #include "texture_atlas.hpp"
+#include <GL/glew.h>
 
-#define GL_GLEXT_PROTOTYPES
-#include <GL/gl.h>
-#include <SDL2/SDL_image.h>
+#include <SDL3_image/SDL_image.h>
 
 #include <fstream>
 #include <iostream>
@@ -21,8 +20,8 @@ bool TextureAtlas::Load(const std::string& image_path) {
         return false;
     }
 
-    SDL_Surface* rgba_surface = SDL_ConvertSurfaceFormat(surface, SDL_PIXELFORMAT_RGBA32, 0);
-    SDL_FreeSurface(surface);
+    SDL_Surface* rgba_surface = SDL_ConvertSurface(surface, SDL_PIXELFORMAT_RGBA32);
+    SDL_DestroySurface(surface);
 
     if (!rgba_surface) {
         std::cerr << "Failed to convert surface to RGBA: " << image_path << std::endl;
@@ -43,7 +42,7 @@ bool TextureAtlas::Load(const std::string& image_path) {
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width_, height_, 0,
                  GL_RGBA, GL_UNSIGNED_BYTE, rgba_surface->pixels);
 
-    SDL_FreeSurface(rgba_surface);
+    SDL_DestroySurface(rgba_surface);
 
     return true;
 }
