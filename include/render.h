@@ -4,20 +4,29 @@
 #include "types.h"
 
 #include <raylib.h>
-
-#define TILT_COS 0.9613f
-#define TILT_SIN 0.2756f
+#include <raymath.h>
 
 typedef struct {
     float board_origin_x;
     float board_origin_y;
-    float board_center_y;
+    float zeye;
+    Matrix projection;
+    Matrix view;
+    Matrix model;
+    Matrix mvp;
+    RenderTexture2D framebuffer;
 } RenderState;
 
 void InitRenderState(RenderState* state);
+void UnloadRenderState(RenderState* state);
+
 Vector2 TileCenterScreen(RenderState* state, int col, int row);
-Vector2 ApplyTilt(RenderState* state, Vector2 screen_pos);
+Vector2 ApplyPerspective(RenderState* state, Vector2 flat_pos);
 BoardPos ScreenToBoard(RenderState* state, Vector2 screen_pos);
+
+void BeginGridRender(RenderState* state);
+void EndGridRender(RenderState* state);
+void DrawGridToScreen(RenderState* state);
 
 void DrawTileQuadColored(RenderState* state, Vector2 center, float half_size, Color color);
 void DrawTileQuadTextured(RenderState* state, Texture2D texture, Rectangle src, Vector2 center, float half_size, Color tint);

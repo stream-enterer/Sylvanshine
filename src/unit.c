@@ -7,7 +7,7 @@
 
 static Vector2 GetTileScreenPos(RenderState* render, BoardPos pos) {
     Vector2 center = TileCenterScreen(render, pos.x, pos.y);
-    return ApplyTilt(render, center);
+    return ApplyPerspective(render, center);
 }
 
 void LoadUnit(Unit* unit, const char* name) {

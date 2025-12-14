@@ -24,7 +24,7 @@ int main(void) {
     printf("\n=== DEBUG INFO ===\n");
     printf("1. Background texture: %d x %d pixels\n", board.background.width, board.background.height);
     printf("2. Board origin: (%.2f, %.2f)\n", render.board_origin_x, render.board_origin_y);
-    printf("3. Board center Y: %.2f\n", render.board_center_y);
+    printf("3. Zeye: %.2f\n", render.zeye);
     printf("4. Board size: %d cols x %d rows\n", BOARD_COLS, BOARD_ROWS);
     printf("5. Tile size: %d pixels\n", TILE_SIZE);
     printf("6. Window size: %d x %d pixels\n", SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -47,7 +47,7 @@ int main(void) {
 
     if (fx_count < MAX_FX_INSTANCES) {
         Vector2 spawn_screen = TileCenterScreen(&render, 4, 2);
-        Vector2 spawn_tilted = ApplyTilt(&render, spawn_screen);
+        Vector2 spawn_tilted = ApplyPerspective(&render, spawn_screen);
         CreateSpawnFX(&fx_system, &fx_instances[fx_count], spawn_tilted);
         fx_count++;
     }
@@ -70,13 +70,6 @@ int main(void) {
             UpdateFXInstance(&fx_instances[i], dt);
         }
 
-        BeginDrawing();
-        ClearBackground(BLACK);
-
-        DrawBackground(&board);
-        DrawBoardFloor(&render);
-        DrawBoardGrid(&board, &render);
-
         bool hover_tiles[BOARD_COLS][BOARD_ROWS] = {0};
         if (input.hover_valid && input.selected_unit && IsMoveValid(&input, input.hover_pos)) {
             hover_tiles[input.hover_pos.x][input.hover_pos.y] = true;
@@ -85,7 +78,17 @@ int main(void) {
         Color move_color = {MOVE_COLOR_R, MOVE_COLOR_G, MOVE_COLOR_B, TILE_SELECT_OPACITY};
         Color hover_color = {MOVE_HOVER_COLOR_R, MOVE_HOVER_COLOR_G, MOVE_HOVER_COLOR_B, TILE_HOVER_OPACITY};
 
+        BeginGridRender(&render);
+        DrawBoardFloor(&render);
+        DrawBoardGrid(&board, &render);
         DrawMergedMoveTiles(&board, &render, input.move_tiles, hover_tiles, move_color, hover_color);
+        EndGridRender(&render);
+
+        BeginDrawing();
+        ClearBackground(BLACK);
+
+        DrawBackground(&board);
+        DrawGridToScreen(&render);
 
         for (int i = 0; i < unit_count; i++) {
             DrawUnitShadow(&units[i], shadow, &render);
@@ -117,6 +120,7 @@ int main(void) {
     }
     UnloadTexture(shadow);
     UnloadBoard(&board);
+    UnloadRenderState(&render);
 
     CloseWindow();
     return 0;
