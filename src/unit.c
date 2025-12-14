@@ -5,7 +5,10 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define SPRITE_SCALE (1.0f / TILE_SIZE)
+static Vector2 GetTileScreenPos(RenderState* render, BoardPos pos) {
+    Vector2 center = TileCenterScreen(render, pos.x, pos.y);
+    return ApplyTilt(render, center);
+}
 
 void LoadUnit(Unit* unit, const char* name) {
     char path[256];
@@ -22,7 +25,7 @@ void LoadUnit(Unit* unit, const char* name) {
     unit->facing_left = false;
     unit->board_pos = (BoardPos){0, 0};
     unit->prev_board_pos = (BoardPos){0, 0};
-    unit->world_pos = (Vector3){0, 0, 0};
+    unit->screen_pos = (Vector2){0, 0};
     unit->move_progress = 0.0f;
     unit->move_duration = 0.0f;
     unit->move_distance = 0;
@@ -52,14 +55,13 @@ void UpdateUnit(Unit* unit, RenderState* render, float dt) {
         unit->move_progress += dt / unit->move_duration;
         if (unit->move_progress >= 1.0f) {
             unit->move_progress = 1.0f;
-            unit->world_pos = unit->move_target;
+            unit->screen_pos = unit->move_target;
             unit->state = UNIT_STATE_IDLE;
             SetUnitAnimation(unit, "breathing", true);
         } else {
             float t = Smoothstep(unit->move_progress);
-            unit->world_pos.x = unit->move_start.x + (unit->move_target.x - unit->move_start.x) * t;
-            unit->world_pos.y = unit->move_start.y + (unit->move_target.y - unit->move_start.y) * t;
-            unit->world_pos.z = unit->move_start.z + (unit->move_target.z - unit->move_start.z) * t;
+            unit->screen_pos.x = unit->move_start.x + (unit->move_target.x - unit->move_start.x) * t;
+            unit->screen_pos.y = unit->move_start.y + (unit->move_target.y - unit->move_start.y) * t;
         }
     } else if (unit->state == UNIT_STATE_SPAWNING) {
         unit->spawn_time += dt;
@@ -74,7 +76,7 @@ void UpdateUnit(Unit* unit, RenderState* render, float dt) {
             SetUnitAnimation(unit, "breathing", true);
         }
     } else {
-        unit->world_pos = BoardToWorld(render, unit->board_pos.x, unit->board_pos.y);
+        unit->screen_pos = GetTileScreenPos(render, unit->board_pos);
     }
 }
 
@@ -83,16 +85,15 @@ void DrawUnitShadow(Unit* unit, Texture2D shadow, RenderState* render) {
 
     (void)render;
 
-    Vector3 shadow_pos = unit->world_pos;
-    shadow_pos.y = 0.001f;
+    float shadow_width = (float)shadow.width;
+    float shadow_height = (float)shadow.height;
 
-    float shadow_width = shadow.width * SPRITE_SCALE;
-    float shadow_height = shadow.height * SPRITE_SCALE;
+    Vector2 shadow_pos = unit->screen_pos;
 
     Rectangle src = {0, 0, (float)shadow.width, (float)shadow.height};
     Color tint = {255, 255, 255, (unsigned char)unit->shadow_alpha};
 
-    DrawTexturedQuad(shadow, src, shadow_pos, shadow_width, shadow_height, BOARD_XYZ_ROTATION, tint, false);
+    DrawTexturedQuad2D(shadow, src, shadow_pos, shadow_width, shadow_height, tint, false);
 }
 
 void DrawUnit(Unit* unit, RenderState* render) {
@@ -103,18 +104,18 @@ void DrawUnit(Unit* unit, RenderState* render) {
     Rectangle src = GetCurrentFrameRect(&unit->player);
     if (src.width == 0 || src.height == 0) return;
 
-    float sprite_width = src.width * SPRITE_SCALE;
-    float sprite_height = src.height * SPRITE_SCALE;
+    float sprite_width = src.width;
+    float sprite_height = src.height;
 
-    Vector3 sprite_pos = unit->world_pos;
-    sprite_pos.y = sprite_height * 0.5f;
+    Vector2 sprite_pos = unit->screen_pos;
+    sprite_pos.y -= sprite_height * 0.5f;
 
     Color tint = WHITE;
     if (unit->selected) {
         tint = (Color){200, 255, 200, 255};
     }
 
-    DrawTexturedQuad(unit->spritesheet, src, sprite_pos, sprite_width, sprite_height, ENTITY_XYZ_ROTATION, tint, unit->facing_left);
+    DrawTexturedQuad2D(unit->spritesheet, src, sprite_pos, sprite_width, sprite_height, tint, unit->facing_left);
 }
 
 void SetUnitAnimation(Unit* unit, const char* anim_name, bool looping) {
@@ -126,8 +127,8 @@ void SetUnitAnimation(Unit* unit, const char* anim_name, bool looping) {
 
 void StartUnitMove(Unit* unit, RenderState* render, BoardPos target) {
     unit->prev_board_pos = unit->board_pos;
-    unit->move_start = unit->world_pos;
-    unit->move_target = BoardToWorld(render, target.x, target.y);
+    unit->move_start = unit->screen_pos;
+    unit->move_target = GetTileScreenPos(render, target);
 
     int dx = abs(target.x - unit->board_pos.x);
     int dy = abs(target.y - unit->board_pos.y);
@@ -149,7 +150,7 @@ void StartUnitMove(Unit* unit, RenderState* render, BoardPos target) {
 void SpawnUnit(Unit* unit, RenderState* render, BoardPos pos) {
     unit->board_pos = pos;
     unit->prev_board_pos = pos;
-    unit->world_pos = BoardToWorld(render, pos.x, pos.y);
+    unit->screen_pos = GetTileScreenPos(render, pos);
     unit->state = UNIT_STATE_SPAWNING;
     unit->spawn_time = 0.0f;
     unit->shadow_alpha = 0.0f;

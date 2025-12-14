@@ -25,7 +25,7 @@ typedef struct {
 typedef struct {
     FXSprite sprites[MAX_FX_SPRITES];
     int sprite_count;
-    Vector3 position;
+    Vector2 position;
     bool active;
 } FXInstance;
 
@@ -37,7 +37,7 @@ typedef struct {
 void InitFXSystem(FXSystem* system);
 void LoadRSXMappings(FXSystem* system, const char* filepath);
 RSXMapping* FindRSXMapping(FXSystem* system, const char* rsx_name);
-void CreateSpawnFX(FXSystem* system, FXInstance* fx, Vector3 position);
+void CreateSpawnFX(FXSystem* system, FXInstance* fx, Vector2 position);
 void UpdateFXInstance(FXInstance* fx, float dt);
 void DrawFXInstance(FXInstance* fx, RenderState* render);
 void UnloadFXInstance(FXInstance* fx);
