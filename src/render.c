@@ -197,81 +197,10 @@ void EndGridRender(RenderState* state) {
 }
 
 void DrawGridToScreen(RenderState* state) {
-    rlDrawRenderBatchActive();
-
-    rlMatrixMode(RL_PROJECTION);
-    rlPushMatrix();
-    rlLoadIdentity();
-
-    float proj[16];
-    proj[0] = state->projection.m0;
-    proj[1] = state->projection.m1;
-    proj[2] = state->projection.m2;
-    proj[3] = state->projection.m3;
-    proj[4] = state->projection.m4;
-    proj[5] = state->projection.m5;
-    proj[6] = state->projection.m6;
-    proj[7] = state->projection.m7;
-    proj[8] = state->projection.m8;
-    proj[9] = state->projection.m9;
-    proj[10] = state->projection.m10;
-    proj[11] = state->projection.m11;
-    proj[12] = state->projection.m12;
-    proj[13] = state->projection.m13;
-    proj[14] = state->projection.m14;
-    proj[15] = state->projection.m15;
-    rlMultMatrixf(proj);
-
-    rlMatrixMode(RL_MODELVIEW);
-    rlPushMatrix();
-    rlLoadIdentity();
-
-    Matrix mv = MatrixMultiply(state->model, state->view);
-    float modelview[16];
-    modelview[0] = mv.m0;
-    modelview[1] = mv.m1;
-    modelview[2] = mv.m2;
-    modelview[3] = mv.m3;
-    modelview[4] = mv.m4;
-    modelview[5] = mv.m5;
-    modelview[6] = mv.m6;
-    modelview[7] = mv.m7;
-    modelview[8] = mv.m8;
-    modelview[9] = mv.m9;
-    modelview[10] = mv.m10;
-    modelview[11] = mv.m11;
-    modelview[12] = mv.m12;
-    modelview[13] = mv.m13;
-    modelview[14] = mv.m14;
-    modelview[15] = mv.m15;
-    rlMultMatrixf(modelview);
-
     Texture2D tex = state->framebuffer.texture;
-
-    rlSetTexture(tex.id);
-    rlBegin(RL_QUADS);
-
-    rlColor4ub(255, 255, 255, 255);
-
-    rlTexCoord2f(0.0f, 1.0f);
-    rlVertex3f(0.0f, 0.0f, 0.0f);
-
-    rlTexCoord2f(1.0f, 1.0f);
-    rlVertex3f(SCREEN_WIDTH, 0.0f, 0.0f);
-
-    rlTexCoord2f(1.0f, 0.0f);
-    rlVertex3f(SCREEN_WIDTH, SCREEN_HEIGHT, 0.0f);
-
-    rlTexCoord2f(0.0f, 0.0f);
-    rlVertex3f(0.0f, SCREEN_HEIGHT, 0.0f);
-
-    rlEnd();
-    rlSetTexture(0);
-
-    rlMatrixMode(RL_MODELVIEW);
-    rlPopMatrix();
-    rlMatrixMode(RL_PROJECTION);
-    rlPopMatrix();
+    Rectangle src = {0, 0, (float)tex.width, -(float)tex.height};
+    Rectangle dst = {0, 0, (float)SCREEN_WIDTH, (float)SCREEN_HEIGHT};
+    DrawTexturePro(tex, src, dst, (Vector2){0, 0}, 0.0f, WHITE);
 }
 
 void DrawTileQuadColored(RenderState* state, Vector2 center, float half_size, Color color) {
