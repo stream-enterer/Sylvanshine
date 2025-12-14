@@ -1,0 +1,3994 @@
+{
+  "UnitSpawnFX": [
+    {
+      "sprite": "fxTeleportRecallWhite"
+    },
+    {
+      "sprite": "fx_f1_holyimmolation"
+    },
+    {
+      "sprite": "fxSmokeGround"
+    },
+    {
+      "duration": 1.0
+    },
+    {
+      "sprite": "fx_f2_teleportsmoke"
+    },
+    {
+      "sprite": "fx_f2_teleportsmoke"
+    },
+    {
+      "sprite": "fxSmokeGround"
+    },
+    {
+      "duration": 1.0
+    },
+    {
+      "sprite": "fxTeleportRecallWhite"
+    },
+    {
+      "sprite": "fxBladestorm"
+    },
+    {
+      "sprite": "fxSmokeGround"
+    },
+    {
+      "duration": 1.0
+    },
+    {
+      "sprite": "fx_f2_teleportsmoke"
+    },
+    {
+      "sprite": "fx_f2_teleportsmoke"
+    },
+    {
+      "sprite": "fxSmokeGround"
+    },
+    {
+      "duration": 1.0
+    },
+    {
+      "sprite": "fxTeleportRecallWhite"
+    },
+    {
+      "sprite": "fxLightningHitGreen"
+    },
+    {
+      "sprite": "fxSmokeGround"
+    },
+    {
+      "duration": 1.0
+    },
+    {
+      "sprite": "fxBlueWaterSplash"
+    },
+    {
+      "sprite": "fxBlueWaterSplash"
+    },
+    {
+      "sprite": "fxSwirlRingsBlue"
+    },
+    {
+      "sprite": "fxSmokeGround"
+    },
+    {
+      "duration": 1.0
+    },
+    {
+      "sprite": "fxTeleportRecallBlue"
+    },
+    {
+      "sprite": "fxSwirlRingsBlue"
+    },
+    {
+      "sprite": "fxSmokeGround"
+    },
+    {
+      "duration": 1.0
+    },
+    {
+      "sprite": "fxTeleportRecall"
+    },
+    {
+      "sprite": "fxBladestorm"
+    },
+    {
+      "sprite": "fxSmokeGround"
+    },
+    {
+      "sprite": "fxTeleportRecall2"
+    },
+    {
+      "sprite": "fxBladestorm"
+    },
+    {
+      "sprite": "fxSmokeGround"
+    },
+    {
+      "sprite": "fxSmokeGround"
+    }
+  ],
+  "UnitHealedFX": [
+    {
+      "sprite": "fxSwirlRingsGreen"
+    },
+    {
+      "sprite": "fxSmokeGround"
+    }
+  ],
+  "SpellAutoFX": [
+    {
+      "duration": 1.0
+    }
+  ],
+  "SpellCastFX": [
+    {
+      "sprite": "fxSmokeGround"
+    },
+    {
+      "duration": 1.0
+    },
+    {
+      "sprite": "fx_f6_mesmerize"
+    },
+    {
+      "sprite": "fxTendrilsGreen"
+    },
+    {
+      "sprite": "fxSwirlRingsBlue"
+    },
+    {
+      "sprite": "fx_f5_earthsphere_blue"
+    },
+    {
+      "sprite": "fx_f6_chromaticcold"
+    },
+    {
+      "sprite": "fx_f6_markofsolitude"
+    },
+    {
+      "sprite": "fxSwirlRingsBlue"
+    },
+    {
+      "duration": 1.0
+    },
+    {
+      "sprite": "fx_f1_aurynnexus"
+    },
+    {
+      "sprite": "fx_f3_entropicdecay"
+    },
+    {
+      "sprite": "fx_f5_earthsphere_orange"
+    },
+    {
+      "sprite": "fxTeleportBlueOrb"
+    },
+    {
+      "sprite": "fxSwirlRingsBlue"
+    },
+    {
+      "sprite": "fxYellowTeleporterBeam"
+    },
+    {
+      "sprite": "fxYellowTeleporterBeam"
+    },
+    {
+      "sprite": "fx_f1_warsurge"
+    },
+    {
+      "sprite": "fxYellowTeleporterBeam"
+    },
+    {
+      "sprite": "fx_ringswirl"
+    },
+    {
+      "duration": 2.0
+    },
+    {
+      "duration": 2.0
+    },
+    {
+      "sprite": "fx_crossslash"
+    },
+    {
+      "sprite": "fx_f4_consumingrebirth"
+    },
+    {
+      "sprite": "fx_animalslash"
+    },
+    {
+      "sprite": "fx_animalslash"
+    },
+    {
+      "duration": 1.0
+    },
+    {
+      "sprite": "fx_flamesphere"
+    },
+    {
+      "sprite": "fx_f2_eightgates_purpleflame"
+    },
+    {
+      "sprite": "fx_f4_deathfire_crescendo"
+    },
+    {
+      "sprite": "fx_f2_eightgates_purpleflame"
+    },
+    {
+      "sprite": "fx_f4_darkfiresacrifice"
+    },
+    {
+      "duration": 1.0
+    },
+    {
+      "sprite": "fxBladestorm"
+    },
+    {
+      "sprite": "fxYellowTeleporterBeam"
+    },
+    {
+      "sprite": "fxBuffSimpleGold"
+    },
+    {
+      "sprite": "fxTeleportYellowOrb"
+    },
+    {
+      "duration": 0.8
+    },
+    {
+      "sprite": "fxHeavensStrike"
+    },
+    {
+      "sprite": "fx_f1_holyimmolation"
+    },
+    {
+      "sprite": "fxBuffSimpleGold"
+    },
+    {
+      "sprite": "fx_ringswirl"
+    },
+    {
+      "sprite": "fx_f1_divinebond"
+    },
+    {
+      "sprite": "fx_f4_wraithlingfury"
+    },
+    {
+      "sprite": "fx_f4_curseofagony"
+    },
+    {
+      "sprite": "fx_f3_cosmicflesh"
+    },
+    {
+      "duration": 2.0
+    },
+    {
+      "sprite": "fx_f3_entropicdecay"
+    },
+    {
+      "sprite": "fx_f5_earthsphere_orange"
+    },
+    {
+      "sprite": "fxCleanse"
+    },
+    {
+      "sprite": "fxCleanse"
+    },
+    {
+      "sprite": "fxSwirlRingsBlue"
+    },
+    {
+      "sprite": "fxCleanse"
+    },
+    {
+      "sprite": "fxCleanse"
+    },
+    {
+      "sprite": "fx_f3_blindscorch"
+    },
+    {
+      "sprite": "fxCleanse"
+    },
+    {
+      "sprite": "fxCollisionSparksOrange"
+    },
+    {
+      "sprite": "fxCollisionSparksBlue"
+    },
+    {
+      "sprite": "fxTeleportRecall"
+    },
+    {
+      "sprite": "fxBuffSimpleGold"
+    },
+    {
+      "sprite": "fxSmokeGround"
+    },
+    {
+      "sprite": "fxBuffSimpleGold"
+    },
+    {
+      "sprite": "fx_f5_amplification"
+    },
+    {
+      "sprite": "fxSwirlRingsGreen"
+    },
+    {
+      "sprite": "fxSwirlRingsGreen"
+    },
+    {
+      "sprite": "fxSwirlRingsGreen"
+    },
+    {
+      "sprite": "fxPlasmaRedVertical"
+    },
+    {
+      "sprite": "fx_fireslash"
+    },
+    {
+      "sprite": "fx_f2_saberspineseal"
+    },
+    {
+      "sprite": "fxPlasmaBlueVertical"
+    },
+    {
+      "sprite": "fx_f2_mistdragonseal"
+    },
+    {
+      "sprite": "fxElectricalGroundUpBlue"
+    },
+    {
+      "sprite": "fxSmokeGround"
+    },
+    {
+      "sprite": "fx_f2_innerfocus"
+    },
+    {
+      "sprite": "fxBuffSimpleGold"
+    },
+    {
+      "sprite": "fxSmokeGround"
+    },
+    {
+      "sprite": "fx_f2_twinstrike_part2"
+    },
+    {
+      "sprite": "fxSmokeGround"
+    },
+    {
+      "sprite": "fx_fireslash"
+    },
+    {
+      "sprite": "fx_fireslash"
+    },
+    {
+      "sprite": "fx_f2_eightgates_teal"
+    },
+    {
+      "sprite": "fxImpactRedBig"
+    },
+    {
+      "sprite": "fx_f2_manavortex"
+    },
+    {
+      "sprite": "fxExplosionGroundSmokeSwirl"
+    },
+    {
+      "sprite": "fx_f2_ancestralpact"
+    },
+    {
+      "sprite": "fx_f2_manavortex"
+    },
+    {
+      "sprite": "fxExplosionGroundSmokeSwirl"
+    },
+    {
+      "sprite": "fxPlasmaRedVertical"
+    },
+    {
+      "sprite": "fx_f2_onyxbearseal"
+    },
+    {
+      "sprite": "fxElectricalGroundUpYellow"
+    },
+    {
+      "sprite": "fxSmokeGround"
+    },
+    {
+      "sprite": "fxPlasmaRedVertical"
+    },
+    {
+      "sprite": "fx_f2_onyxbearseal"
+    },
+    {
+      "sprite": "fxElectricalGroundUpYellow"
+    },
+    {
+      "sprite": "fxSmokeGround"
+    },
+    {
+      "sprite": "fx_tornadoswirl"
+    },
+    {
+      "sprite": "fx_f2_ancestralpact"
+    },
+    {
+      "sprite": "fxSwirlRingsGreen"
+    },
+    {
+      "sprite": "fxFireTornado"
+    },
+    {
+      "sprite": "fxBuffSimpleGold"
+    },
+    {
+      "sprite": "fxSmokeGround"
+    },
+    {
+      "duration": 0.75,
+      "sprite": "fxPlasmaRedVertical"
+    },
+    {
+      "sprite": "fxPlasmaRedVertical"
+    },
+    {
+      "sprite": "fx_f2_deathstrikeseal"
+    },
+    {
+      "sprite": "fxElectricalGroundUpYellow"
+    },
+    {
+      "sprite": "fxSmokeGround"
+    },
+    {
+      "sprite": "fxPlasmaRedVertical"
+    },
+    {
+      "sprite": "fxPlasmaBlueVertical"
+    },
+    {
+      "sprite": "fxExplosionMediumBlueGround"
+    },
+    {
+      "sprite": "fxSandTileSpawn"
+    },
+    {
+      "sprite": "fx_ringswirl"
+    },
+    {
+      "sprite": "fx_f3_rashascurse"
+    },
+    {
+      "sprite": "fxExplosionMediumBlueGround"
+    },
+    {
+      "duration": 1.0
+    },
+    {
+      "sprite": "fxExplosionGroundSmokeSwirl"
+    },
+    {
+      "sprite": "fxBuffSimpleGold"
+    },
+    {
+      "sprite": "fxSmokeGround"
+    },
+    {
+      "sprite": "fxSmokeGround"
+    },
+    {
+      "sprite": "FloatingShield"
+    },
+    {
+      "sprite": "ForceField"
+    },
+    {
+      "sprite": "fxFaerieFireBlue"
+    },
+    {
+      "sprite": "fx_f5_flashreincarnation"
+    },
+    {
+      "sprite": "fx_f5_amplification"
+    },
+    {
+      "sprite": "fxTendrilsGreen"
+    },
+    {
+      "sprite": "fxTendrilsGreen"
+    },
+    {
+      "sprite": "fxTendrilsGreen"
+    },
+    {
+      "sprite": "fx_f5_amplification"
+    },
+    {
+      "sprite": "fxPrimalTileSpawn"
+    },
+    {
+      "sprite": "fx_f2_bbs_blink"
+    },
+    {
+      "sprite": "fx_f6_bbs_warbird"
+    },
+    {
+      "sprite": "fx_f6_bbs_kinectsurge"
+    },
+    {
+      "sprite": "fx_f2_bbs_petalflurry"
+    },
+    {
+      "sprite": "fx_f5_bbs_seekingeye"
+    },
+    {
+      "sprite": "fx_f5_manaburn"
+    },
+    {
+      "sprite": "fx_f5_naturalselection"
+    },
+    {
+      "sprite": "fx_f2_koanofhorns"
+    },
+    {
+      "sprite": "fx_f1_skyphalanx"
+    },
+    {
+      "sprite": "fx_f4_obliterate"
+    },
+    {
+      "sprite": "fx_neutral_riddle"
+    },
+    {
+      "sprite": "fx_f5_flamingstampede"
+    },
+    {
+      "sprite": "fx_f3_circleofdessication"
+    },
+    {
+      "sprite": "fx_f3_circleofdessication"
+    },
+    {
+      "sprite": "fx_f6_winterswake"
+    },
+    {
+      "sprite": "fx_f6_winterswake"
+    },
+    {
+      "sprite": "fxTeleportYellowOrb"
+    },
+    {
+      "sprite": "fxCleanse"
+    },
+    {
+      "sprite": "fxEnergyHaloGround"
+    },
+    {
+      "duration": 1.0
+    },
+    {
+      "sprite": "fxSmokeGround"
+    },
+    {
+      "duration": 0.5
+    },
+    {
+      "sprite": "fxYellowTeleporterBeam"
+    },
+    {
+      "sprite": "fxHeavensStrike"
+    },
+    {
+      "duration": 0.75
+    },
+    {
+      "sprite": "fxExplosionGroundSmokeSwirl"
+    },
+    {
+      "sprite": "fxImpactRedMed"
+    },
+    {
+      "sprite": "fx_f2_backstab"
+    },
+    {
+      "sprite": "fx_fireslash"
+    },
+    {
+      "sprite": "fxBladestorm"
+    },
+    {
+      "sprite": "fxCrossSlash"
+    },
+    {
+      "sprite": "fxBladestorm"
+    },
+    {
+      "sprite": "fx_multislash_intro"
+    },
+    {
+      "sprite": "fxBladestorm"
+    },
+    {
+      "sprite": "fxBladestorm"
+    },
+    {
+      "duration": 1.0
+    },
+    {
+      "sprite": "fx_f2_teleportsmoke"
+    },
+    {
+      "sprite": "fxSmokeGround"
+    },
+    {
+      "sprite": "fxTeleportOrangeOrb"
+    },
+    {
+      "duration": 1.0
+    },
+    {
+      "sprite": "fxTeleportOrangeOrb"
+    },
+    {
+      "duration": 1.0
+    },
+    {
+      "sprite": "fx_f1_divinebond"
+    },
+    {
+      "sprite": "fxCleanse"
+    },
+    {
+      "sprite": "fxSwirlRingsBlue"
+    },
+    {
+      "sprite": "fxBlueWaterSplash"
+    },
+    {
+      "sprite": "fx_f5_earthsphere_orange"
+    },
+    {
+      "duration": 1.5
+    },
+    {
+      "sprite": "fxCollisionSparksOrange"
+    },
+    {
+      "sprite": "fxCollisionSparksOrange"
+    },
+    {
+      "sprite": "fxSmokeGround"
+    },
+    {
+      "sprite": "fxCrossSlash"
+    },
+    {
+      "sprite": "fx_beamfire"
+    },
+    {
+      "sprite": "fx_f4_darkfiresacrifice"
+    },
+    {
+      "duration": 1.0
+    },
+    {
+      "sprite": "fx_f4_deathfire_crescendo"
+    },
+    {
+      "sprite": "fxSearingChasm"
+    },
+    {
+      "sprite": "fx_f5_manaburn"
+    },
+    {
+      "sprite": "fxTeleportOrangeOrb"
+    },
+    {
+      "sprite": "fx_bouldersphere"
+    },
+    {
+      "sprite": "fxTeleportOrangeOrb"
+    },
+    {
+      "sprite": "fx_f3_blast"
+    },
+    {
+      "sprite": "fxExplosionMediumBlueGround"
+    },
+    {
+      "sprite": "fxPlasmaBlueVertical"
+    },
+    {
+      "sprite": "fxEnergyHaloGround"
+    },
+    {
+      "sprite": "fxYellowTeleporterBeam"
+    },
+    {
+      "sprite": "fxEnergyHaloGround"
+    },
+    {
+      "sprite": "fxYellowTeleporterBeam"
+    },
+    {
+      "sprite": "fx_f1_lionheartblessing"
+    },
+    {
+      "sprite": "fx_fireslash"
+    },
+    {
+      "sprite": "fx_fireslash"
+    },
+    {
+      "sprite": "fx_multislash_full"
+    },
+    {
+      "sprite": "fx_f3_rashascurse"
+    },
+    {
+      "sprite": "fx_tornadoswirl"
+    },
+    {
+      "sprite": "fxBladestorm"
+    },
+    {
+      "sprite": "fxTeleportOrangeOrb"
+    },
+    {
+      "sprite": "fx_f5_earthsphere"
+    },
+    {
+      "sprite": "fxClawSlash"
+    },
+    {
+      "sprite": "fxClawSlash"
+    },
+    {
+      "sprite": "fxSwirlRingsGreen"
+    },
+    {
+      "sprite": "fxImpactGreenBig"
+    },
+    {
+      "sprite": "fxYellowTeleporterBeam"
+    },
+    {
+      "sprite": "fxTeleportRecall"
+    },
+    {
+      "sprite": "fx_f1_warsurge"
+    },
+    {
+      "sprite": "fx_f1_lasting_judgment"
+    },
+    {
+      "sprite": "fxHolyTileSpawn"
+    },
+    {
+      "sprite": "fx_f1_sunbloom"
+    },
+    {
+      "sprite": "fx_f1_aperionssurge"
+    },
+    {
+      "sprite": "fx_f2_twilightreiki"
+    },
+    {
+      "sprite": "fxTeleportOrangeOrb"
+    },
+    {
+      "sprite": "fx_f2_innerfocus"
+    },
+    {
+      "sprite": "fx_f2_spiraltechnique02"
+    },
+    {
+      "sprite": "fx_ringswirl"
+    },
+    {
+      "sprite": "fxTeleportBlueOrb"
+    },
+    {
+      "sprite": "fxElectricalGroundUpYellow"
+    },
+    {
+      "sprite": "fxElectricalGroundUpYellow"
+    },
+    {
+      "sprite": "fxArtifactBreak"
+    },
+    {
+      "sprite": "fxElectricalGroundUpYellow"
+    },
+    {
+      "sprite": "fxElectricalGroundUpYellow"
+    },
+    {
+      "sprite": "fxArtifactBreak"
+    },
+    {
+      "sprite": "fx_f3_entropicdecay"
+    },
+    {
+      "sprite": "fx_f3_cataclysmicfault"
+    },
+    {
+      "sprite": "fx_f4_wraithlingfury"
+    },
+    {
+      "sprite": "fx_f4_doom"
+    },
+    {
+      "sprite": "fxPrimalTileSpawn"
+    },
+    {
+      "sprite": "fx_f5_evolutionaryapex"
+    },
+    {
+      "duration": 1.0
+    },
+    {
+      "duration": 1.0
+    },
+    {
+      "sprite": "fxFrozenIceBlock"
+    },
+    {
+      "sprite": "fx_f6_mesmerize"
+    },
+    {
+      "sprite": "fx_f6_perfectreflection"
+    },
+    {
+      "sprite": "fx_f1_aurynnexus"
+    },
+    {
+      "sprite": "fx_f1_lionheartblessing"
+    },
+    {
+      "sprite": "fxHeavensStrike"
+    },
+    {
+      "sprite": "fxHeavensStrike"
+    },
+    {
+      "sprite": "fx_f1_warsurge"
+    },
+    {
+      "sprite": "fx_f2_innerfocus"
+    },
+    {
+      "sprite": "fx_f2_manavortex"
+    },
+    {
+      "sprite": "fx_f2_phoenixfire"
+    },
+    {
+      "sprite": "fx_electricsphere"
+    },
+    {
+      "sprite": "fx_f2_backstab"
+    },
+    {
+      "sprite": "fxTeleportRecallRed"
+    },
+    {
+      "sprite": "fx_f2_onyxbearseal"
+    },
+    {
+      "sprite": "fxTeleportRecallWhite"
+    },
+    {
+      "sprite": "fx_multislash_outro"
+    },
+    {
+      "sprite": "fx_multislash_outro"
+    },
+    {
+      "sprite": "fxImpactBlueBig"
+    },
+    {
+      "sprite": "fxImpactBigOrange"
+    },
+    {
+      "sprite": "fxTeleportYellowOrb"
+    },
+    {
+      "sprite": "fx_f3_fountainofyouth"
+    },
+    {
+      "sprite": "fx_f2_ancestralpact"
+    },
+    {
+      "sprite": "fx_f2_teleportsmoke"
+    },
+    {
+      "sprite": "fx_f2_teleportsmoke"
+    },
+    {
+      "sprite": "fxSmokeGround"
+    },
+    {
+      "sprite": "fx_f3_dominatewill"
+    },
+    {
+      "sprite": "fx_f2_backstab"
+    },
+    {
+      "sprite": "fxTeleportPurpleOrb"
+    },
+    {
+      "sprite": "fx_f4_nethersummoning"
+    },
+    {
+      "sprite": "fx_f4_darkfiretransformation"
+    },
+    {
+      "sprite": "fx_multislash_full"
+    },
+    {
+      "sprite": "fx_f4_darkfiresacrifice"
+    },
+    {
+      "sprite": "fxTeleportOrangeOrb"
+    },
+    {
+      "sprite": "fx_beamfire"
+    },
+    {
+      "sprite": "fx_f4_deathfire_crescendo"
+    },
+    {
+      "sprite": "fx_f2_eightgates_purpleflame"
+    },
+    {
+      "sprite": "fxSmokeGround"
+    },
+    {
+      "sprite": "fx_f4_darkseed"
+    },
+    {
+      "sprite": "f1CasterProjectile"
+    },
+    {
+      "sprite": "fx_f5_earthsphere"
+    },
+    {
+      "sprite": "f1CasterProjectile"
+    },
+    {
+      "sprite": "fx_f5_earthsphere"
+    },
+    {
+      "sprite": "fxLightningHitGreen"
+    },
+    {
+      "sprite": "fxSmokeGround"
+    },
+    {
+      "sprite": "fx_f5_kinectequilibrium"
+    },
+    {
+      "sprite": "fxFireTornado"
+    },
+    {
+      "sprite": "fxLightningHitGreen"
+    },
+    {
+      "sprite": "fxLightningHitGreen"
+    },
+    {
+      "sprite": "fxTeleportOrangeOrb"
+    },
+    {
+      "duration": 2.0
+    },
+    {
+      "sprite": "fx_f6_hailstoneprison"
+    },
+    {
+      "sprite": "fxTeleportBlueOrb"
+    },
+    {
+      "sprite": "fx_f6_hailstoneprison"
+    },
+    {
+      "sprite": "fxTeleportBlueOrb"
+    },
+    {
+      "sprite": "fxFrozenIceBlock"
+    },
+    {
+      "sprite": "fx_f6_chromaticcold"
+    },
+    {
+      "sprite": "fxTeleportBlueOrb"
+    },
+    {
+      "sprite": "fx_f1_truestrike"
+    },
+    {
+      "sprite": "fx_f2_backstab"
+    },
+    {
+      "sprite": "fx_f1_truestrike"
+    },
+    {
+      "sprite": "fx_beamlaser"
+    },
+    {
+      "sprite": "fxBuffSimpleGold"
+    },
+    {
+      "sprite": "fxEnergyHaloGround"
+    },
+    {
+      "sprite": "fxImpactRedBig"
+    },
+    {
+      "sprite": "fxSmokeGround"
+    },
+    {
+      "sprite": "fx_crossslash_x"
+    },
+    {
+      "sprite": "fx_neutral_riddle"
+    },
+    {
+      "sprite": "fx_f1_sunbloom"
+    },
+    {
+      "sprite": "fx_beamlaser"
+    },
+    {
+      "sprite": "fx_flamesphere"
+    },
+    {
+      "sprite": "fx_f4_shadownova"
+    },
+    {
+      "sprite": "fx_tornadoswirl"
+    },
+    {
+      "sprite": "fx_ringswirl"
+    },
+    {
+      "sprite": "fxFrozenIceBlock"
+    },
+    {
+      "sprite": "fxFrozenIceBlock"
+    },
+    {
+      "sprite": "fx_multislash_full"
+    },
+    {
+      "sprite": "fx_beamfire"
+    },
+    {
+      "sprite": "fxFireTornado"
+    },
+    {
+      "sprite": "fx_f5_tremor"
+    },
+    {
+      "sprite": "fx_bouldersphere"
+    }
+  ],
+  "SpellAppliedFX": [
+    {
+      "sprite": "fxBladestorm"
+    },
+    {
+      "sprite": "fxEnergyHaloGround"
+    },
+    {
+      "sprite": "fxSearingChasm"
+    },
+    {
+      "sprite": "fxSmokeGround"
+    },
+    {
+      "sprite": "fxFireTornado"
+    },
+    {
+      "sprite": "fxSmokeGround"
+    },
+    {
+      "sprite": "fxTendrilsGreen"
+    },
+    {
+      "sprite": "fxTendrilsGreen"
+    },
+    {
+      "sprite": "fxBuffSimpleGold"
+    },
+    {
+      "sprite": "fxImpactBigOrange"
+    },
+    {
+      "sprite": "fxImpactGreenBig"
+    },
+    {
+      "sprite": "fxImpactBigOrange"
+    },
+    {
+      "sprite": "fxImpactRedBig"
+    },
+    {
+      "sprite": "fxImpactBlueBig"
+    },
+    {
+      "sprite": "fx_f5_earthsphere_blue"
+    },
+    {
+      "sprite": "fx_fireslash"
+    },
+    {
+      "sprite": "fx_fireslash"
+    },
+    {
+      "sprite": "fxHeavensStrike"
+    },
+    {
+      "sprite": "fxFireTornado"
+    },
+    {
+      "sprite": "fx_slashfrenzy"
+    },
+    {
+      "sprite": "fxSmokeGround"
+    },
+    {
+      "sprite": "fxFireTornado"
+    },
+    {
+      "sprite": "fxFaerieFireRed"
+    },
+    {
+      "sprite": "fxSmokeGround"
+    },
+    {
+      "sprite": "fxTeleportPurpleOrb"
+    },
+    {
+      "sprite": "fx_f4_nethersummoning"
+    },
+    {
+      "sprite": "fx_f4_nethersummoning"
+    },
+    {
+      "sprite": "fx_f4_darkfiresacrifice"
+    },
+    {
+      "sprite": "fx_f2_eightgates_purpleflame"
+    },
+    {
+      "sprite": "fx_f1_truestrike"
+    },
+    {
+      "sprite": "fxEnergyHaloGround"
+    },
+    {
+      "sprite": "fxSmokeGround"
+    },
+    {
+      "sprite": "f1CasterProjectile"
+    },
+    {
+      "sprite": "fxImpactBigOrange"
+    },
+    {
+      "sprite": "fx_f1_divinebond"
+    },
+    {
+      "sprite": "fxBuffSimpleGold"
+    },
+    {
+      "sprite": "fxHeavensStrike"
+    },
+    {
+      "sprite": "fxSmokeGround"
+    },
+    {
+      "sprite": "fx_f1_decimate"
+    },
+    {
+      "duration": 1.0
+    },
+    {
+      "sprite": "fxPlasmaBlueHorizontal"
+    },
+    {
+      "sprite": "fxYellowTeleporterBeam"
+    },
+    {
+      "sprite": "fxPlasmaBlueHorizontal"
+    },
+    {
+      "sprite": "fxSwirlRingsBlue"
+    },
+    {
+      "sprite": "fx_f3_boneswarm"
+    },
+    {
+      "sprite": "fx_vortexswirl"
+    },
+    {
+      "sprite": "fxTeleportRecall"
+    },
+    {
+      "sprite": "fxSwirlRingsGreen"
+    },
+    {
+      "sprite": "fxSwirlRingsGreen"
+    },
+    {
+      "duration": 1.5
+    },
+    {
+      "sprite": "fxFireTornado"
+    },
+    {
+      "duration": 1.5
+    },
+    {
+      "sprite": "fx_f2_phoenixfire"
+    },
+    {
+      "sprite": "fx_ringswirl"
+    },
+    {
+      "sprite": "fxFireTornado"
+    },
+    {
+      "sprite": "fxPlasmaRedVertical"
+    },
+    {
+      "sprite": "fxFireTornado"
+    },
+    {
+      "sprite": "fxFaerieFireRed"
+    },
+    {
+      "sprite": "fxSmokeGround"
+    },
+    {
+      "sprite": "fxFaerieFireRed"
+    },
+    {
+      "sprite": "fxExplosionOrangeSmoke"
+    },
+    {
+      "sprite": "fx_slashfrenzy"
+    },
+    {
+      "sprite": "fxDevour"
+    },
+    {
+      "sprite": "BloodExplosionBig"
+    },
+    {
+      "sprite": "BloodExplosionMedium"
+    },
+    {
+      "sprite": "fxPlasmaRedVertical"
+    },
+    {
+      "sprite": "fx_f3_aurorastears"
+    },
+    {
+      "sprite": "fxExplosionGroundSmokeSwirl"
+    },
+    {
+      "sprite": "fx_f2_teleportsmoke"
+    },
+    {
+      "sprite": "fxSmokeGround"
+    },
+    {
+      "sprite": "fx_f3_starsfury"
+    },
+    {
+      "sprite": "fxSmokeGround"
+    },
+    {
+      "sprite": "fxElectricalGroundUpYellow"
+    },
+    {
+      "sprite": "fxElectricalGroundUpYellow"
+    },
+    {
+      "sprite": "fxArtifactBreak"
+    },
+    {
+      "sprite": "fxCleanse"
+    },
+    {
+      "sprite": "fxCleanse"
+    },
+    {
+      "sprite": "fx_slashfrenzy"
+    },
+    {
+      "sprite": "fx_animalslash"
+    },
+    {
+      "sprite": "fxImpactGreenSmall"
+    },
+    {
+      "sprite": "fxImpactGreenSmall"
+    },
+    {
+      "sprite": "fxImpactGreenSmall"
+    },
+    {
+      "sprite": "fxImpactGreenSmall"
+    },
+    {
+      "duration": 2.0
+    },
+    {
+      "sprite": "fx_f5_manaburn"
+    },
+    {
+      "sprite": "fx_f5_boundedlife"
+    },
+    {
+      "sprite": "fx_f5_manaburn"
+    },
+    {
+      "sprite": "fx_f5_manaburn"
+    },
+    {
+      "sprite": "fx_f3_blaststarfire"
+    },
+    {
+      "sprite": "fxElectricalGroundUpBlue"
+    },
+    {
+      "sprite": "fx_f4_bbs_shadowspawn"
+    },
+    {
+      "sprite": "fx_f2_bbs_arcaneheart"
+    },
+    {
+      "sprite": "fx_f1_bbs_afterglow"
+    },
+    {
+      "sprite": "fx_f3_bbs_ironshroud"
+    },
+    {
+      "sprite": "fx_f1_bbs_roar"
+    },
+    {
+      "sprite": "fx_f3_bbs_psyonicstrike"
+    },
+    {
+      "sprite": "fx_f3_bbs_decension"
+    },
+    {
+      "sprite": "fxImpactBlueBig"
+    },
+    {
+      "sprite": "fx_f5_bbs_overload"
+    },
+    {
+      "sprite": "fx_f6_bbs_crystallize"
+    },
+    {
+      "sprite": "fx_f1_bbs_conscript"
+    },
+    {
+      "sprite": "fx_f4_bbs_malice"
+    },
+    {
+      "sprite": "fx_f5_bbs_egg"
+    },
+    {
+      "sprite": "fxFrozenIceBlock"
+    },
+    {
+      "sprite": "fxTeleportBlueOrb"
+    },
+    {
+      "sprite": "fxShadowCreepSpawn"
+    },
+    {
+      "sprite": "fx_f4_soulshatterpact"
+    },
+    {
+      "sprite": "fxShadowCreepSpawn"
+    },
+    {
+      "sprite": "fx_f3_blast"
+    },
+    {
+      "sprite": "fxSearingChasm"
+    },
+    {
+      "sprite": "fxSmokeGround"
+    },
+    {
+      "sprite": "fx_f3_starsfury"
+    },
+    {
+      "sprite": "fxTeleportBlueOrb"
+    },
+    {
+      "sprite": "fx_f3_blaststarfire"
+    },
+    {
+      "duration": 1.25
+    },
+    {
+      "sprite": "fx_f1_lionheartblessing"
+    },
+    {
+      "sprite": "fx_fireslash"
+    },
+    {
+      "sprite": "fx_fireslash"
+    },
+    {
+      "sprite": "fxHeavensStrike"
+    },
+    {
+      "sprite": "fx_f3_entropicdecay"
+    },
+    {
+      "sprite": "fxTeleportPurpleOrb"
+    },
+    {
+      "sprite": "fx_f4_voidpulse"
+    },
+    {
+      "sprite": "fx_f4_nethersummoning"
+    },
+    {
+      "sprite": "fxTeleportPurpleOrb"
+    },
+    {
+      "sprite": "fxTendrilsGreen"
+    },
+    {
+      "sprite": "fxLightningHitGreen"
+    },
+    {
+      "sprite": "fxFrozenIceBlock"
+    },
+    {
+      "sprite": "fxSwirlRingsBlue"
+    },
+    {
+      "sprite": "fxSwirlRingsBlue"
+    },
+    {
+      "sprite": "fxImpactBlueMed"
+    },
+    {
+      "sprite": "fxImpactBlueMed"
+    },
+    {
+      "sprite": "fxImpactBlueBig"
+    },
+    {
+      "sprite": "fxYellowTeleporterBeam"
+    },
+    {
+      "sprite": "fxTeleportRecall"
+    },
+    {
+      "duration": 1.25
+    },
+    {
+      "sprite": "fxSwirlRingsBlue"
+    },
+    {
+      "sprite": "fx_f1_truestrike"
+    },
+    {
+      "sprite": "fxYellowTeleporterBeam"
+    },
+    {
+      "sprite": "fxYellowTeleporterBeam"
+    },
+    {
+      "sprite": "fx_f1_decimate"
+    },
+    {
+      "sprite": "fxTeleportRecallBlue"
+    },
+    {
+      "sprite": "fxArtifactHit"
+    },
+    {
+      "sprite": "fxArtifactHit"
+    },
+    {
+      "sprite": "fxTeleportRecallBlue"
+    },
+    {
+      "sprite": "fxArtifactHit"
+    },
+    {
+      "sprite": "fxArtifactHit"
+    },
+    {
+      "sprite": "fxYellowTeleporterBeam"
+    },
+    {
+      "sprite": "fxTeleportRecallWhite"
+    },
+    {
+      "sprite": "fxExplosionGroundSmokeSwirl"
+    },
+    {
+      "sprite": "fx_tornadoswirl"
+    },
+    {
+      "sprite": "fx_f4_shadowreflection"
+    },
+    {
+      "sprite": "fxYellowTeleporterBeam"
+    },
+    {
+      "sprite": "fxSearingChasm"
+    },
+    {
+      "sprite": "fx_f5_flashreincarnation"
+    },
+    {
+      "sprite": "fxFrozenIceBlock"
+    },
+    {
+      "sprite": "fxBlueWaterSplash"
+    },
+    {
+      "sprite": "fx_flashfreeze_appear"
+    },
+    {
+      "sprite": "fxBlueWaterSplash"
+    },
+    {
+      "sprite": "fx_flashfreeze_appear"
+    },
+    {
+      "sprite": "fxBlueWaterSplash"
+    },
+    {
+      "sprite": "fx_f5_earthsphere_blue"
+    },
+    {
+      "sprite": "fxBlueWaterSplash"
+    },
+    {
+      "sprite": "FloatingShield"
+    },
+    {
+      "sprite": "FloatingShield"
+    },
+    {
+      "sprite": "FloatingShield"
+    },
+    {
+      "sprite": "FloatingShield"
+    },
+    {
+      "sprite": "ForceField"
+    },
+    {
+      "sprite": "fxBuffSimpleGold"
+    },
+    {
+      "sprite": "fxTeleportRecallBlue"
+    },
+    {
+      "sprite": "fxImpactMediumBlue"
+    },
+    {
+      "sprite": "fx_ringswirl"
+    },
+    {
+      "sprite": "fxSandTileSpawn"
+    },
+    {
+      "sprite": "fx_f1_sunbloom"
+    },
+    {
+      "sprite": "fxTeleportBlueOrb"
+    },
+    {
+      "sprite": "fx_f1_warsurge"
+    },
+    {
+      "sprite": "fx_beamfire"
+    },
+    {
+      "sprite": "fxFaerieFireDeepRed"
+    },
+    {
+      "sprite": "fxImpactBigOrange"
+    },
+    {
+      "sprite": "fxTeleportOrangeOrb"
+    },
+    {
+      "sprite": "fx_f5_amplification"
+    },
+    {
+      "sprite": "fx_f5_earthsphere"
+    },
+    {
+      "duration": 2.0
+    },
+    {
+      "sprite": "fx_beamtesla"
+    },
+    {
+      "sprite": "fx_f1_truestrike"
+    },
+    {
+      "sprite": "fxBladestorm"
+    },
+    {
+      "sprite": "fxBladestorm"
+    },
+    {
+      "sprite": "fx_f1_truestrike"
+    },
+    {
+      "sprite": "ForceField"
+    },
+    {
+      "sprite": "fxBuffSimpleGold"
+    }
+  ],
+  "ModifierAppliedFX": [
+    {
+      "sprite": "fx_animalslash"
+    },
+    {
+      "sprite": "fx_f5_flashreincarnation"
+    },
+    {
+      "sprite": "fx_f4_bbs_abyssalscar"
+    },
+    {
+      "sprite": "fxCleanse"
+    },
+    {
+      "sprite": "fxSwirlRingsBlue"
+    },
+    {
+      "duration": 0.75,
+      "sprite": "fx_flashfreeze_appear"
+    },
+    {
+      "sprite": "fxSummonMythron"
+    }
+  ],
+  "UnitAttackedFX": [
+    {
+      "sprite": "fxImpactBigOrange"
+    },
+    {
+      "sprite": "fxCollisionSparksBlue"
+    },
+    {
+      "sprite": "fxImpactRingVerticalOrange"
+    },
+    {
+      "sprite": "fxCollisionSparksOrange"
+    },
+    {
+      "sprite": "fxImpactRingVerticalWhite"
+    },
+    {
+      "sprite": "fxCollisionSparksOrange"
+    },
+    {
+      "sprite": "fxCollisionSparksOrange"
+    },
+    {
+      "sprite": "fxImpactMediumOrange"
+    },
+    {
+      "sprite": "fxImpactWhiteMedium"
+    },
+    {
+      "sprite": "fxCollisionSparksBlue"
+    },
+    {
+      "sprite": "fxTeleportYellowOrb"
+    },
+    {
+      "sprite": "fxElectricalGroundUpYellow"
+    },
+    {
+      "sprite": "fxExplosionMediumBlueGround"
+    },
+    {
+      "sprite": "fxCollisionSparksBlue"
+    },
+    {
+      "sprite": "fxPlasmaBlueVertical"
+    },
+    {
+      "sprite": "fxExplosionMediumBlueGround"
+    },
+    {
+      "sprite": "fxPlasmaBlueVertical"
+    },
+    {
+      "sprite": "fxExplosionMediumBlueGround"
+    },
+    {
+      "sprite": "fxCollisionSparksBlue"
+    },
+    {
+      "sprite": "fxCollisionSparksBlue"
+    },
+    {
+      "sprite": "fxSearingChasm"
+    },
+    {
+      "sprite": "fxCollisionSparksOrange"
+    },
+    {
+      "duration": 0.75
+    },
+    {
+      "impactAtStart": false,
+      "duration": 1.1
+    },
+    {
+      "sprite": "fxTeleportOrangeOrb"
+    },
+    {
+      "looping": true,
+      "sprite": "f1CasterProjectile"
+    },
+    {
+      "sprite": "fxElectricalGroundUpYellow"
+    },
+    {
+      "sprite": "fxCollisionSparksOrange"
+    },
+    {
+      "duration": 0.5
+    },
+    {
+      "sprite": "fxElectricalGroundUpYellow"
+    },
+    {
+      "sprite": "fxImpactRingVerticalOrange"
+    },
+    {
+      "sprite": "fxImpactRingVerticalOrange"
+    },
+    {
+      "sprite": "fxPlasmaBlueVertical"
+    },
+    {
+      "sprite": "fxCollisionSparksBlue"
+    },
+    {
+      "sprite": "fxCollisionSparksBlue"
+    },
+    {
+      "sprite": "fxPlasmaBlueVertical"
+    },
+    {
+      "sprite": "fxCollisionSparksBlue"
+    },
+    {
+      "sprite": "fxCollisionSparksBlue"
+    },
+    {
+      "sprite": "fxExplosionMediumBlueGround"
+    },
+    {
+      "sprite": "fxElectricalGroundUpBlue"
+    },
+    {
+      "sprite": "fxCollisionSparksOrange"
+    },
+    {
+      "sprite": "fxCollisionSparksOrange"
+    },
+    {
+      "sprite": "fxCollisionSparksOrange"
+    },
+    {
+      "sprite": "fxCollisionSparksOrange"
+    },
+    {
+      "sprite": "fxCollisionSparksRed"
+    },
+    {
+      "sprite": "fxExplosionBigBall_MetalSlug"
+    },
+    {
+      "duration": 0.75
+    },
+    {
+      "sprite": "fxCollisionSparksBlue"
+    },
+    {
+      "sprite": "fxCollisionSparksBlue"
+    },
+    {
+      "sprite": "fxClawSlash"
+    },
+    {
+      "sprite": "fxClawSlash"
+    },
+    {
+      "sprite": "fxElectricalGroundUpYellow"
+    },
+    {
+      "sprite": "fxLightningHitGreen"
+    },
+    {
+      "sprite": "fxElectricalGroundUpYellow"
+    },
+    {
+      "sprite": "fxSmokeGround"
+    },
+    {
+      "sprite": "fxCollisionSparksBlue"
+    },
+    {
+      "sprite": "fxCollisionSparksBlue"
+    },
+    {
+      "sprite": "fxCollisionSparksRed"
+    },
+    {
+      "sprite": "fxClawSlash"
+    },
+    {
+      "sprite": "fxImpactRingVerticalWhite"
+    },
+    {
+      "sprite": "fxClawSlash"
+    },
+    {
+      "sprite": "fxClawSlash"
+    },
+    {
+      "sprite": "fxImpactRingVerticalWhite"
+    },
+    {
+      "sprite": "fxImpactRingVerticalOrange"
+    },
+    {
+      "sprite": "fxCollisionSparksOrange"
+    },
+    {
+      "sprite": "fxExplosionMediumIcyWhite"
+    },
+    {
+      "sprite": "fxCollisionSparksRed"
+    },
+    {
+      "sprite": "fxCollisionSparksRed"
+    },
+    {
+      "sprite": "fxImpactWhiteMedium"
+    },
+    {
+      "sprite": "fxCollisionSparksRed"
+    },
+    {
+      "sprite": "fxExplosionBigBall_MetalSlug"
+    },
+    {
+      "duration": 0.75
+    },
+    {
+      "sprite": "fxCollisionSparksRed"
+    },
+    {
+      "sprite": "fxClawSlash"
+    },
+    {
+      "sprite": "fxCollisionSparksRed"
+    },
+    {
+      "sprite": "BloodExplosionBig"
+    },
+    {
+      "sprite": "BloodExplosionMedium"
+    },
+    {
+      "sprite": "BloodExplosionBig"
+    },
+    {
+      "sprite": "fxImpactRingVerticalWhite"
+    },
+    {
+      "sprite": "fxCollisionSparksRed"
+    },
+    {
+      "sprite": "fxCollisionSparksRed"
+    },
+    {
+      "sprite": "fxCollisionSparksOrange"
+    },
+    {
+      "sprite": "fxFaerieFireRed"
+    },
+    {
+      "sprite": "fxImpactBigOrange"
+    },
+    {
+      "sprite": "fxPlasmaRedVertical"
+    },
+    {
+      "sprite": "fxClawSlash"
+    },
+    {
+      "sprite": "fxClawSlash"
+    },
+    {
+      "sprite": "fxFaerieFireRed"
+    },
+    {
+      "sprite": "fxExplosionBigBall_MetalSlug"
+    },
+    {
+      "duration": 0.75
+    },
+    {
+      "sprite": "fxCollisionSparksRed"
+    },
+    {
+      "sprite": "fxPlasmaRedVertical"
+    },
+    {
+      "sprite": "fxElectricalGroundUpRed"
+    },
+    {
+      "sprite": "fxPlasmaRedVertical"
+    },
+    {
+      "sprite": "fxImpactWhiteMedium"
+    },
+    {
+      "sprite": "fxCollisionSparksBlue"
+    },
+    {
+      "sprite": "fxCollisionSparksRed"
+    },
+    {
+      "sprite": "fxClawSlash"
+    },
+    {
+      "sprite": "fxImpactBigOrange"
+    },
+    {
+      "sprite": "fxCollisionSparksOrange"
+    },
+    {
+      "sprite": "fxCollisionSparksOrange"
+    },
+    {
+      "sprite": "fxImpactRingVerticalWhite"
+    },
+    {
+      "sprite": "fxCollisionSparksOrange"
+    },
+    {
+      "sprite": "fxPlasmaBlueVertical"
+    },
+    {
+      "sprite": "fxElectricalGroundUpBlue"
+    },
+    {
+      "sprite": "fxCollisionSparksRed"
+    },
+    {
+      "sprite": "fxExplosionBigBall_MetalSlug"
+    },
+    {
+      "duration": 0.75
+    },
+    {
+      "sprite": "fxCollisionSparksOrange"
+    },
+    {
+      "sprite": "fxImpactRingVerticalWhite"
+    },
+    {
+      "sprite": "fxPlasmaBlueVertical"
+    },
+    {
+      "sprite": "fxCollisionSparksOrange"
+    },
+    {
+      "sprite": "fxClawSlash"
+    },
+    {
+      "sprite": "fxClawSlash"
+    },
+    {
+      "sprite": "fxCollisionSparksOrange"
+    },
+    {
+      "sprite": "fxImpactRingVerticalWhite"
+    },
+    {
+      "sprite": "fxCollisionSparksOrange"
+    },
+    {
+      "sprite": "fxImpactRingVerticalWhite"
+    },
+    {
+      "sprite": "fxPlasmaBlueVertical"
+    },
+    {
+      "sprite": "fxCollisionSparksOrange"
+    },
+    {
+      "sprite": "fxImpactRingVerticalWhite"
+    },
+    {
+      "sprite": "fxCollisionSparksOrange"
+    },
+    {
+      "sprite": "fxImpactRingVerticalWhite"
+    },
+    {
+      "sprite": "fxPlasmaBlueVertical"
+    },
+    {
+      "sprite": "fxImpactWhiteMedium"
+    },
+    {
+      "sprite": "fxCollisionSparksBlue"
+    },
+    {
+      "sprite": "fxImpactBigOrange"
+    },
+    {
+      "sprite": "fxEnergyHaloGround"
+    },
+    {
+      "sprite": "fxCollisionSparksOrange"
+    },
+    {
+      "sprite": "fxClawSlash"
+    },
+    {
+      "sprite": "fxClawSlash"
+    },
+    {
+      "sprite": "fxImpactRingVerticalWhite"
+    },
+    {
+      "sprite": "fxCollisionSparksOrange"
+    },
+    {
+      "sprite": "fxImpactRingVerticalWhite"
+    },
+    {
+      "sprite": "fxCollisionSparksBlue"
+    },
+    {
+      "sprite": "fxExplosionMediumBlueGround"
+    },
+    {
+      "sprite": "fxElectricalGroundUpBlue"
+    },
+    {
+      "sprite": "fxElectricalGroundUpBlue"
+    },
+    {
+      "sprite": "fxExplosionMediumBlueGround"
+    },
+    {
+      "sprite": "fxCollisionSparksBlue"
+    },
+    {
+      "sprite": "fxElectricalGroundUpBlue"
+    },
+    {
+      "sprite": "fxElectricalGroundUpBlue"
+    },
+    {
+      "sprite": "fxExplosionMediumBlueGround"
+    },
+    {
+      "sprite": "fxCollisionSparksOrange"
+    },
+    {
+      "sprite": "fxPlasmaBlueVertical"
+    },
+    {
+      "sprite": "fxExplosionMediumBlueGround"
+    },
+    {
+      "sprite": "fxCollisionSparksOrange"
+    },
+    {
+      "sprite": "fxImpactRingVerticalWhite"
+    },
+    {
+      "sprite": "fxCollisionSparksPurple"
+    },
+    {
+      "sprite": "fxCrossSlash"
+    },
+    {
+      "sprite": "fxImpactRingVerticalWhite"
+    },
+    {
+      "sprite": "fxCollisionSparksPurple"
+    },
+    {
+      "sprite": "fxExplosionPurpleSmoke"
+    },
+    {
+      "sprite": "fxImpactRingVerticalWhite"
+    },
+    {
+      "sprite": "fxCollisionSparksPurple"
+    },
+    {
+      "duration": 0.9
+    },
+    {
+      "sprite": "fxSmokeGround"
+    },
+    {
+      "sprite": "fxExplosionMediumBlueGround"
+    },
+    {
+      "sprite": "fxSiphon"
+    },
+    {
+      "looping": true,
+      "sprite": "neutralMechaz0rSuperProjectile"
+    },
+    {
+      "duration": 0.6
+    },
+    {
+      "sprite": "fxCollisionSparksBlue"
+    },
+    {
+      "duration": 0.6
+    },
+    {
+      "sprite": "fxCollisionSparksBlue"
+    },
+    {
+      "sprite": "fxClawSlash"
+    },
+    {
+      "sprite": "fxFaerieFirePurple"
+    },
+    {
+      "duration": 0.6
+    },
+    {
+      "sprite": "fxCollisionSparksPurple"
+    },
+    {
+      "sprite": "fxCollisionSparksPurple"
+    },
+    {
+      "sprite": "fxCrossSlash"
+    },
+    {
+      "sprite": "fxCrossSlash"
+    },
+    {
+      "sprite": "fxFaerieFirePurple"
+    },
+    {
+      "sprite": "fxCollisionSparksPurple"
+    },
+    {
+      "sprite": "fxExplosionPurpleSmoke"
+    },
+    {
+      "sprite": "fxExplosionPurpleSmoke"
+    },
+    {
+      "sprite": "fxExplosionMediumBlueGround"
+    },
+    {
+      "sprite": "fxCrossSlash"
+    },
+    {
+      "sprite": "fxCollisionSparksPurple"
+    },
+    {
+      "sprite": "fxExplosionPurpleSmoke"
+    },
+    {
+      "sprite": "fxCrossSlash"
+    },
+    {
+      "sprite": "fxCollisionSparksPurple"
+    },
+    {
+      "sprite": "fxCrossSlash"
+    },
+    {
+      "sprite": "fxCollisionSparksPurple"
+    },
+    {
+      "sprite": "fxImpactWhiteMedium"
+    },
+    {
+      "sprite": "fxCrossSlash"
+    },
+    {
+      "sprite": "fxCollisionSparksPurple"
+    },
+    {
+      "sprite": "fxImpactWhiteMedium"
+    },
+    {
+      "sprite": "fxCollisionSparksPurple"
+    },
+    {
+      "sprite": "fxCollisionSparksRed"
+    },
+    {
+      "sprite": "fxExplosionBigBall_MetalSlug"
+    },
+    {
+      "duration": 0.75
+    },
+    {
+      "sprite": "fxCollisionSparksPurple"
+    },
+    {
+      "sprite": "fxClawSlash"
+    },
+    {
+      "sprite": "fxClawSlash"
+    },
+    {
+      "sprite": "fxCollisionSparksPurple"
+    },
+    {
+      "sprite": "fxExplosionPurpleSmoke"
+    },
+    {
+      "sprite": "fxExplosionPurpleSmoke"
+    },
+    {
+      "sprite": "fxCollisionSparksGreen"
+    },
+    {
+      "sprite": "fxLightningHitGreen"
+    },
+    {
+      "sprite": "fxBubbleEnergySootGround"
+    },
+    {
+      "sprite": "fxCollisionSparksGreen"
+    },
+    {
+      "sprite": "fxLightningHitGreen"
+    },
+    {
+      "sprite": "fxLightningHitGreen"
+    },
+    {
+      "sprite": "fxExplosionBigBall_MetalSlug"
+    },
+    {
+      "duration": 0.75
+    },
+    {
+      "sprite": "fxLightningHitGreen"
+    },
+    {
+      "sprite": "fxImpactGreenBig"
+    },
+    {
+      "sprite": "fxLightningHitGreen"
+    },
+    {
+      "sprite": "fxElectricalGroundUpGreen"
+    },
+    {
+      "sprite": "fxLightningHitGreen"
+    },
+    {
+      "sprite": "fxElectricalGroundUpGreen"
+    },
+    {
+      "sprite": "fxCollisionSparksGreen"
+    },
+    {
+      "sprite": "fxLightningHitGreen"
+    },
+    {
+      "sprite": "fxImpactGreenMed"
+    },
+    {
+      "sprite": "fxImpactGreenMed"
+    },
+    {
+      "sprite": "fxImpactMediumOrange"
+    },
+    {
+      "sprite": "fxCollisionSparksGreen"
+    },
+    {
+      "sprite": "fxLightningHitGreen"
+    },
+    {
+      "sprite": "fxElectricalGroundUpGreen"
+    },
+    {
+      "sprite": "fxCollisionSparksGreen"
+    },
+    {
+      "sprite": "fxLightningHitGreen"
+    },
+    {
+      "sprite": "fxElectricalGroundUpGreen"
+    },
+    {
+      "sprite": "fxCollisionSparksGreen"
+    },
+    {
+      "sprite": "fxLightningHitGreen"
+    },
+    {
+      "sprite": "fxElectricalGroundUpGreen"
+    },
+    {
+      "sprite": "fxCollisionSparksGreen"
+    },
+    {
+      "sprite": "fx_slashfrenzy"
+    },
+    {
+      "sprite": "fxClawSlash"
+    },
+    {
+      "sprite": "fxClawSlash"
+    },
+    {
+      "sprite": "fxCollisionSparksGreen"
+    },
+    {
+      "sprite": "fxLightningHitGreen"
+    },
+    {
+      "sprite": "fxLightningHitGreen"
+    },
+    {
+      "sprite": "fxLightningHitGreen"
+    },
+    {
+      "sprite": "fxCollisionSparksGreen"
+    },
+    {
+      "sprite": "fxLightningHitGreen"
+    },
+    {
+      "sprite": "fxElectricalGroundUpGreen"
+    },
+    {
+      "sprite": "fxLightningHitGreen"
+    },
+    {
+      "sprite": "fxClawSlash"
+    },
+    {
+      "sprite": "fxCollisionSparksGreen"
+    },
+    {
+      "sprite": "fxLightningHitGreen"
+    },
+    {
+      "sprite": "fx_slashfrenzy"
+    },
+    {
+      "sprite": "fxImpactWhiteMedium"
+    },
+    {
+      "sprite": "fxCollisionSparksGreen"
+    },
+    {
+      "sprite": "fxCollisionSparksGreen"
+    },
+    {
+      "sprite": "fxClawSlash"
+    },
+    {
+      "sprite": "fxElectricalGroundUpBlue"
+    },
+    {
+      "sprite": "fxCollisionSparksBlue"
+    },
+    {
+      "sprite": "fxElectricalGroundUpBlue"
+    },
+    {
+      "sprite": "fxElectricalGroundUpBlue"
+    },
+    {
+      "sprite": "fxElectricalGroundUpBlue"
+    },
+    {
+      "sprite": "fxCollisionSparksGreen"
+    },
+    {
+      "sprite": "fxClawSlash"
+    },
+    {
+      "sprite": "fxClawSlash"
+    },
+    {
+      "sprite": "fxCollisionSparksGreen"
+    },
+    {
+      "sprite": "fxLightningHitGreen"
+    },
+    {
+      "sprite": "fxLightningHitGreen"
+    },
+    {
+      "sprite": "fxImpactBigOrange"
+    },
+    {
+      "sprite": "fxCollisionSparksOrange"
+    },
+    {
+      "sprite": "fxImpactRingVerticalOrange"
+    },
+    {
+      "sprite": "fxExplosionBigWhiteHot"
+    },
+    {
+      "sprite": "fxBubbleEnergySootGround"
+    },
+    {
+      "sprite": "fxImpactRingVerticalWhite"
+    },
+    {
+      "sprite": "fxBubbleEnergySootGround"
+    },
+    {
+      "sprite": "fxImpactMediumBlue"
+    },
+    {
+      "sprite": "fxCollisionSparksBlue"
+    },
+    {
+      "sprite": "fxImpactMediumBlue"
+    },
+    {
+      "sprite": "fxCollisionSparksBlue"
+    },
+    {
+      "sprite": "fxCollisionSparksOrange"
+    },
+    {
+      "sprite": "fxClawSlash"
+    },
+    {
+      "sprite": "fxClawSlash"
+    },
+    {
+      "sprite": "fxClawSlash"
+    },
+    {
+      "sprite": "fxClawSlash"
+    },
+    {
+      "sprite": "fxCollisionSparksBlue"
+    },
+    {
+      "sprite": "fxCollisionSparksBlue"
+    },
+    {
+      "sprite": "fxCollisionSparksBlue"
+    },
+    {
+      "sprite": "fxClawSlash"
+    },
+    {
+      "sprite": "fxClawSlash"
+    },
+    {
+      "sprite": "fxCollisionSparksBlue"
+    },
+    {
+      "sprite": "fxClawSlash"
+    },
+    {
+      "sprite": "fxCollisionSparksBlue"
+    },
+    {
+      "sprite": "fxCollisionSparksBlue"
+    },
+    {
+      "sprite": "fxCollisionSparksBlue"
+    },
+    {
+      "sprite": "fxClawSlash"
+    },
+    {
+      "sprite": "fxCollisionSparksBlue"
+    },
+    {
+      "sprite": "fxCollisionSparksBlue"
+    },
+    {
+      "sprite": "fxClawSlash"
+    },
+    {
+      "sprite": "fxCollisionSparksBlue"
+    },
+    {
+      "sprite": "fxLightningHitGreen"
+    },
+    {
+      "sprite": "fxLightningHitGreen"
+    },
+    {
+      "sprite": "fxCollisionSparksBlue"
+    },
+    {
+      "sprite": "fxClawSlash"
+    },
+    {
+      "sprite": "fxCollisionSparksBlue"
+    },
+    {
+      "sprite": "fxDevour"
+    },
+    {
+      "sprite": "fxCollisionSparksBlue"
+    },
+    {
+      "sprite": "fxDevour"
+    },
+    {
+      "sprite": "fxCollisionSparksBlue"
+    },
+    {
+      "sprite": "fxCollisionSparksBlue"
+    },
+    {
+      "sprite": "fxCollisionSparksBlue"
+    },
+    {
+      "sprite": "fxCollisionSparksBlue"
+    },
+    {
+      "sprite": "fxClawSlash"
+    },
+    {
+      "sprite": "fxExplosionBigBall_MetalSlug"
+    },
+    {
+      "duration": 0.75
+    },
+    {
+      "sprite": "fxCollisionSparksBlue"
+    },
+    {
+      "sprite": "fxCollisionSparksBlue"
+    },
+    {
+      "sprite": "fxCollisionSparksBlue"
+    },
+    {
+      "sprite": "fxImpactBigOrange"
+    },
+    {
+      "sprite": "fxExplosionOrangeSmoke"
+    },
+    {
+      "sprite": "fxCollisionSparksOrange"
+    },
+    {
+      "sprite": "fxCollisionSparksBlue"
+    },
+    {
+      "sprite": "fxClawSlash"
+    },
+    {
+      "sprite": "fxExplosionMediumBlueGround"
+    },
+    {
+      "sprite": "fxExplosionMediumBlueGround"
+    },
+    {
+      "sprite": "fxExplosionBigBall_MetalSlug"
+    },
+    {
+      "sprite": "fxExplosionMediumBlueGround"
+    },
+    {
+      "sprite": "fxCollisionSparksBlue"
+    },
+    {
+      "sprite": "fxCollisionSparksOrange"
+    },
+    {
+      "sprite": "fxCollisionSparksBlue"
+    },
+    {
+      "sprite": "fxExplosionMediumBlueGround"
+    },
+    {
+      "sprite": "fxCollisionSparksBlue"
+    },
+    {
+      "sprite": "fxCollisionSparksBlue"
+    },
+    {
+      "sprite": "fxExplosionMediumBlueGround"
+    },
+    {
+      "sprite": "fxCollisionSparksRed"
+    },
+    {
+      "sprite": "fxElectricalGroundUpRed"
+    },
+    {
+      "sprite": "fxElectricalGroundUpRed"
+    },
+    {
+      "duration": 0.6
+    },
+    {
+      "sprite": "fxElectricalGroundUpBlue"
+    },
+    {
+      "duration": 0.6
+    },
+    {
+      "sprite": "fxExplosionMediumBlueGround"
+    },
+    {
+      "sprite": "fxCollisionSparksRed"
+    },
+    {
+      "sprite": "fxElectricalGroundUpRed"
+    },
+    {
+      "impactAtStart": false,
+      "impactAtEnd": true,
+      "sprite": "fxChainLightningBlue"
+    },
+    {
+      "sprite": "fxPlasmaBlueHorizontal"
+    },
+    {
+      "sprite": "fxSmokeGround"
+    },
+    {
+      "sprite": "fxCrossSlash"
+    },
+    {
+      "sprite": "fxCrossSlash"
+    },
+    {
+      "sprite": "fxCollisionSparksOrange"
+    },
+    {
+      "sprite": "fxCollisionSparksBlue"
+    },
+    {
+      "sprite": "fxSearingChasm"
+    },
+    {
+      "duration": 0.5
+    },
+    {
+      "sprite": "fxExplosionMediumBlueGround"
+    },
+    {
+      "sprite": "fxCollisionSparksBlue"
+    },
+    {
+      "sprite": "fxCollisionSparksBlue"
+    },
+    {
+      "duration": 0.5
+    },
+    {
+      "sprite": "fxExplosionMediumBlueGround"
+    },
+    {
+      "sprite": "fxFrozenIceBlock"
+    },
+    {
+      "sprite": "fxExplosionMediumBlueGround"
+    },
+    {
+      "sprite": "fxCollisionSparksBlue"
+    },
+    {
+      "sprite": "fxElectricalGroundUpRed"
+    },
+    {
+      "sprite": "fxElectricalGroundUpRed"
+    },
+    {
+      "sprite": "fxCollisionSparksBlue"
+    },
+    {
+      "sprite": "fxClawSlash"
+    },
+    {
+      "sprite": "fxClawSlash"
+    },
+    {
+      "sprite": "fxCollisionSparksOrange"
+    },
+    {
+      "sprite": "fxImpactWhiteMedium"
+    },
+    {
+      "sprite": "fxExplosionMediumBlueGround"
+    },
+    {
+      "sprite": "fxCollisionSparksBlue"
+    },
+    {
+      "sprite": "fxClawSlash"
+    },
+    {
+      "sprite": "fxClawSlash"
+    },
+    {
+      "sprite": "fxImpactWhiteMedium"
+    },
+    {
+      "sprite": "fxCollisionSparksBlue"
+    },
+    {
+      "sprite": "fxClawSlash"
+    },
+    {
+      "sprite": "fxClawSlash"
+    },
+    {
+      "sprite": "fxImpactWhiteMedium"
+    },
+    {
+      "sprite": "fxCollisionSparksOrange"
+    },
+    {
+      "sprite": "fxImpactWhiteMedium"
+    },
+    {
+      "sprite": "fxCollisionSparksRed"
+    },
+    {
+      "sprite": "fxImpactWhiteMedium"
+    },
+    {
+      "sprite": "fxCollisionSparksOrange"
+    },
+    {
+      "duration": 0.9
+    },
+    {
+      "sprite": "fxSmokeGround"
+    },
+    {
+      "sprite": "fxExplosionMediumBlueGround"
+    },
+    {
+      "sprite": "fxClawSlash"
+    },
+    {
+      "duration": 0.9
+    },
+    {
+      "sprite": "fxSmokeGround"
+    },
+    {
+      "sprite": "fxExplosionMediumBlueGround"
+    },
+    {
+      "sprite": "fxCollisionSparksGreen"
+    },
+    {
+      "sprite": "fxImpactGreenBig"
+    },
+    {
+      "sprite": "fxSmokeGround"
+    },
+    {
+      "sprite": "fxCollisionSparksBlue"
+    },
+    {
+      "sprite": "fxCollisionSparksBlue"
+    },
+    {
+      "sprite": "fxCollisionSparksBlue"
+    },
+    {
+      "sprite": "fxCollisionSparksBlue"
+    },
+    {
+      "sprite": "fxImpactBigOrange"
+    },
+    {
+      "sprite": "fxCollisionSparksRed"
+    },
+    {
+      "sprite": "fxCollisionSparksOrange"
+    },
+    {
+      "sprite": "fx_slashfrenzy"
+    },
+    {
+      "sprite": "fxCollisionSparksBlue"
+    },
+    {
+      "sprite": "fxCollisionSparksBlue"
+    },
+    {
+      "sprite": "fxImpactBigOrange"
+    },
+    {
+      "sprite": "fxCollisionSparksRed"
+    },
+    {
+      "sprite": "fxCollisionSparksOrange"
+    },
+    {
+      "sprite": "fxClawSlash"
+    },
+    {
+      "sprite": "fxClawSlash"
+    },
+    {
+      "sprite": "fxCollisionSparksOrange"
+    },
+    {
+      "sprite": "fxClawSlash"
+    },
+    {
+      "sprite": "fxCollisionSparksOrange"
+    },
+    {
+      "sprite": "fxExplosionOrangeSmoke"
+    },
+    {
+      "sprite": "fxCollisionSparksPurple"
+    },
+    {
+      "sprite": "fxExplosionPurpleSmoke"
+    },
+    {
+      "sprite": "fxExplosionPurpleSmoke"
+    },
+    {
+      "sprite": "fxClawSlash"
+    },
+    {
+      "sprite": "fxCollisionSparksGreen"
+    },
+    {
+      "sprite": "fxElectricalGroundUpGreen"
+    },
+    {
+      "sprite": "fxImpactWhiteMedium"
+    },
+    {
+      "sprite": "fxCollisionSparksGreen"
+    },
+    {
+      "sprite": "fxImpactWhiteMedium"
+    },
+    {
+      "sprite": "fxCollisionSparksOrange"
+    },
+    {
+      "sprite": "fxExplosionOrangeSmoke"
+    },
+    {
+      "sprite": "fxExplosionOrangeSmoke"
+    },
+    {
+      "sprite": "fxCollisionSparksOrange"
+    },
+    {
+      "sprite": "fxExplosionOrangeSmoke"
+    },
+    {
+      "sprite": "fxExplosionOrangeSmoke"
+    },
+    {
+      "sprite": "fxCollisionSparksBlue"
+    },
+    {
+      "sprite": "fxClawSlash"
+    },
+    {
+      "sprite": "fxCollisionSparksOrange"
+    },
+    {
+      "sprite": "fxExplosionOrangeSmoke"
+    },
+    {
+      "sprite": "fxExplosionOrangeSmoke"
+    },
+    {
+      "sprite": "fxClawSlash"
+    },
+    {
+      "sprite": "fxCollisionSparksRed"
+    },
+    {
+      "sprite": "fxClawSlash"
+    },
+    {
+      "sprite": "fxFaerieFireRed"
+    },
+    {
+      "sprite": "fxImpactBigOrange"
+    },
+    {
+      "sprite": "fxExplosionOrangeSmoke"
+    },
+    {
+      "sprite": "fxCollisionSparksOrange"
+    },
+    {
+      "sprite": "fxCollisionSparksPurple"
+    },
+    {
+      "sprite": "fxClawSlash"
+    },
+    {
+      "sprite": "fxFaerieFirePurple"
+    },
+    {
+      "sprite": "fxCollisionSparksOrange"
+    },
+    {
+      "sprite": "fxClawSlash"
+    },
+    {
+      "sprite": "fxCollisionSparksOrange"
+    },
+    {
+      "sprite": "fxClawSlash"
+    },
+    {
+      "sprite": "fxCollisionSparksBlue"
+    },
+    {
+      "sprite": "fxPlasmaBlueHorizontal"
+    },
+    {
+      "sprite": "fxImpactRingVerticalWhite"
+    },
+    {
+      "sprite": "fxCollisionSparksBlue"
+    },
+    {
+      "sprite": "fxPlasmaBlueHorizontal"
+    },
+    {
+      "sprite": "fxImpactRingVerticalWhite"
+    },
+    {
+      "sprite": "fxCollisionSparksOrange"
+    },
+    {
+      "sprite": "fxClawSlash"
+    },
+    {
+      "sprite": "fxClawSlash"
+    },
+    {
+      "sprite": "fxCollisionSparksOrange"
+    },
+    {
+      "sprite": "fxExplosionOrangeSmoke"
+    },
+    {
+      "sprite": "fxExplosionOrangeSmoke"
+    },
+    {
+      "sprite": "fxExplosionOrangeSmoke"
+    },
+    {
+      "sprite": "fxExplosionOrangeSmoke"
+    },
+    {
+      "sprite": "fxCollisionSparksOrange"
+    },
+    {
+      "sprite": "fxExplosionOrangeSmoke"
+    },
+    {
+      "sprite": "fxExplosionOrangeSmoke"
+    },
+    {
+      "sprite": "fxExplosionOrangeSmoke"
+    },
+    {
+      "sprite": "fxExplosionOrangeSmoke"
+    },
+    {
+      "sprite": "fxExplosionOrangeSmoke"
+    },
+    {
+      "sprite": "fxCollisionSparksOrange"
+    },
+    {
+      "sprite": "fxExplosionOrangeSmoke"
+    },
+    {
+      "sprite": "fxExplosionOrangeSmoke"
+    },
+    {
+      "sprite": "fxExplosionOrangeSmoke"
+    },
+    {
+      "sprite": "fxExplosionOrangeSmoke"
+    },
+    {
+      "sprite": "fxCollisionSparksOrange"
+    },
+    {
+      "sprite": "fxExplosionOrangeSmoke"
+    },
+    {
+      "sprite": "fxExplosionOrangeSmoke"
+    },
+    {
+      "sprite": "fxExplosionOrangeSmoke"
+    },
+    {
+      "sprite": "fxPlasmaBlueHorizontal"
+    },
+    {
+      "sprite": "fxElectricalGroundUpBlue"
+    },
+    {
+      "sprite": "fxPlasmaBlueHorizontal"
+    },
+    {
+      "sprite": "fxCollisionSparksOrange"
+    },
+    {
+      "sprite": "fxExplosionOrangeSmoke"
+    },
+    {
+      "sprite": "fxExplosionOrangeSmoke"
+    },
+    {
+      "sprite": "fxClawSlash"
+    },
+    {
+      "sprite": "fxImpactMediumBlue"
+    },
+    {
+      "sprite": "fxCollisionSparksBlue"
+    },
+    {
+      "sprite": "fxElectricalGroundUpBlue"
+    },
+    {
+      "sprite": "fxCollisionSparksPurple"
+    },
+    {
+      "sprite": "fxCrossSlash"
+    },
+    {
+      "sprite": "fxCrossSlash"
+    },
+    {
+      "sprite": "fxExplosionMediumBlueGround"
+    },
+    {
+      "sprite": "fxCollisionSparksRed"
+    },
+    {
+      "sprite": "fxElectricalGroundUpBlue"
+    },
+    {
+      "sprite": "fxElectricalGroundUpRed"
+    },
+    {
+      "sprite": "fxElectricalGroundUpRed"
+    },
+    {
+      "sprite": "fxElectricalGroundUpRed"
+    },
+    {
+      "sprite": "fxImpactMediumBlue"
+    },
+    {
+      "sprite": "fxCollisionSparksBlue"
+    },
+    {
+      "sprite": "fxPlasmaBlueHorizontal"
+    },
+    {
+      "sprite": "fxPlasmaBlueHorizontal"
+    },
+    {
+      "sprite": "fxElectricalGroundUpBlue"
+    },
+    {
+      "sprite": "fxPlasmaBlueHorizontal"
+    },
+    {
+      "sprite": "fxCollisionSparksBlue"
+    },
+    {
+      "sprite": "fxPlasmaBlueHorizontal"
+    },
+    {
+      "sprite": "fxPlasmaBlueHorizontal"
+    },
+    {
+      "sprite": "fxCollisionSparksRed"
+    },
+    {
+      "sprite": "fxPlasmaBlueHorizontal"
+    },
+    {
+      "sprite": "fxElectricalGroundUpBlue"
+    },
+    {
+      "sprite": "fxCrossSlash"
+    },
+    {
+      "sprite": "fxCrossSlash"
+    },
+    {
+      "sprite": "fxFaerieFirePurple"
+    },
+    {
+      "duration": 0.6
+    },
+    {
+      "sprite": "fxElectricalGroundUpBlue"
+    },
+    {
+      "sprite": "fxPlasmaBlueHorizontal"
+    },
+    {
+      "sprite": "fxPlasmaBlueHorizontal"
+    },
+    {
+      "sprite": "fxImpactRingVerticalWhite"
+    },
+    {
+      "sprite": "fxHeavensStrike"
+    },
+    {
+      "duration": 0.75
+    },
+    {
+      "sprite": "fxSmokeGround"
+    },
+    {
+      "sprite": "fxCollisionSparksPurple"
+    },
+    {
+      "sprite": "fxCrossSlash"
+    },
+    {
+      "sprite": "fxCrossSlash"
+    },
+    {
+      "duration": 0.6
+    },
+    {
+      "sprite": "fxCollisionSparksBlue"
+    },
+    {
+      "sprite": "fxPlasmaBlueHorizontal"
+    },
+    {
+      "sprite": "fxElectricalGroundUpBlue"
+    },
+    {
+      "sprite": "fxImpactBigOrange"
+    },
+    {
+      "sprite": "fxExplosionOrangeSmoke"
+    },
+    {
+      "sprite": "fxCollisionSparksOrange"
+    },
+    {
+      "sprite": "fxCollisionSparksRed"
+    },
+    {
+      "sprite": "fxElectricalGroundUpBlue"
+    },
+    {
+      "sprite": "fxElectricalGroundUpRed"
+    },
+    {
+      "sprite": "fxPlasmaBlueVertical"
+    },
+    {
+      "sprite": "fxCollisionSparksBlue"
+    },
+    {
+      "sprite": "fxImpactWhiteMedium"
+    },
+    {
+      "sprite": "fxFrozenIceBlock"
+    },
+    {
+      "sprite": "ForceField"
+    },
+    {
+      "sprite": "fxElectricalGroundUpBlue"
+    },
+    {
+      "sprite": "fxCollisionSparksOrange"
+    },
+    {
+      "sprite": "fxExplosionOrangeSmoke"
+    },
+    {
+      "sprite": "fxExplosionOrangeSmoke"
+    },
+    {
+      "sprite": "fxCollisionSparksBlue"
+    },
+    {
+      "duration": 0.5
+    },
+    {
+      "sprite": "fxExplosionMediumBlueGround"
+    },
+    {
+      "sprite": "fxPlasmaBlueHorizontal"
+    },
+    {
+      "sprite": "fxElectricalGroundUpBlue"
+    },
+    {
+      "sprite": "fxCollisionSparksOrange"
+    },
+    {
+      "sprite": "fxExplosionOrangeSmoke"
+    },
+    {
+      "sprite": "fxExplosionOrangeSmoke"
+    },
+    {
+      "sprite": "fxCollisionSparksBlue"
+    },
+    {
+      "sprite": "fxPlasmaBlueVertical"
+    },
+    {
+      "sprite": "fxPlasmaBlueVertical"
+    },
+    {
+      "sprite": "fxPlasmaBlueVertical"
+    },
+    {
+      "sprite": "fxCollisionSparksRed"
+    },
+    {
+      "duration": 0.75
+    },
+    {
+      "sprite": "fxClawSlash"
+    },
+    {
+      "sprite": "fxCollisionSparksOrange"
+    },
+    {
+      "sprite": "fxClawSlash"
+    },
+    {
+      "sprite": "fxClawSlash"
+    },
+    {
+      "sprite": "fxCollisionSparksOrange"
+    },
+    {
+      "sprite": "fxExplosionOrangeSmoke"
+    },
+    {
+      "sprite": "fxExplosionOrangeSmoke"
+    },
+    {
+      "sprite": "fxSearingChasm"
+    },
+    {
+      "duration": 0.5
+    },
+    {
+      "sprite": "fxExplosionMediumBlueGround"
+    },
+    {
+      "sprite": "fxCollisionSparksRed"
+    },
+    {
+      "sprite": "fxExplosionBigBall_MetalSlug"
+    },
+    {
+      "duration": 0.75
+    },
+    {
+      "sprite": "fxClawSlash"
+    },
+    {
+      "sprite": "fxCollisionSparksBlue"
+    },
+    {
+      "sprite": "fxPlasmaBlueVertical"
+    },
+    {
+      "sprite": "fxCollisionSparksBlue"
+    },
+    {
+      "sprite": "fxClawSlash"
+    },
+    {
+      "sprite": "fxClawSlash"
+    },
+    {
+      "sprite": "fxCollisionSparksOrange"
+    },
+    {
+      "sprite": "fxClawSlash"
+    },
+    {
+      "sprite": "fxClawSlash"
+    },
+    {
+      "sprite": "fxImpactRingVerticalWhite"
+    },
+    {
+      "sprite": "fxCollisionSparksBlue"
+    },
+    {
+      "sprite": "fxCollisionSparksBlue"
+    },
+    {
+      "sprite": "fxClawSlash"
+    },
+    {
+      "sprite": "fxCollisionSparksBlue"
+    },
+    {
+      "sprite": "fxPlasmaBlueHorizontal"
+    },
+    {
+      "sprite": "fxCollisionSparksBlue"
+    },
+    {
+      "sprite": "fxPlasmaBlueHorizontal"
+    },
+    {
+      "sprite": "fxImpactMediumBlue"
+    },
+    {
+      "sprite": "fxPlasmaBlueHorizontal"
+    },
+    {
+      "sprite": "fxExplosionBigBall_MetalSlug"
+    },
+    {
+      "duration": 0.75
+    },
+    {
+      "sprite": "fxExplosionBigBall_MetalSlug"
+    },
+    {
+      "duration": 0.75
+    },
+    {
+      "sprite": "fxExplosionPurpleSmoke"
+    },
+    {
+      "sprite": "fxExplosionPurpleSmoke"
+    },
+    {
+      "sprite": "fxFaerieFirePurple"
+    },
+    {
+      "sprite": "fxCollisionSparksPurple"
+    },
+    {
+      "sprite": "fxExplosionPurpleSmoke"
+    },
+    {
+      "sprite": "fxExplosionPurpleSmoke"
+    },
+    {
+      "sprite": "fxFaerieFirePurple"
+    },
+    {
+      "sprite": "fxImpactMediumBlue"
+    },
+    {
+      "sprite": "fxCollisionSparksBlue"
+    },
+    {
+      "sprite": "fxCollisionSparksGreen"
+    },
+    {
+      "sprite": "fxLightningHitGreen"
+    },
+    {
+      "sprite": "fxLightningHitGreen"
+    },
+    {
+      "sprite": "fxImpactMediumBlue"
+    },
+    {
+      "sprite": "fxPlasmaBlueHorizontal"
+    },
+    {
+      "sprite": "fxElectricalGroundUpBlue"
+    },
+    {
+      "sprite": "fxCollisionSparksOrange"
+    },
+    {
+      "sprite": "fxElectricalGroundUpYellow"
+    },
+    {
+      "sprite": "fxImpactRingVerticalOrange"
+    },
+    {
+      "sprite": "fxImpactRingVerticalOrange"
+    },
+    {
+      "sprite": "fxCollisionSparksBlue"
+    },
+    {
+      "sprite": "fxPlasmaBlueVertical"
+    },
+    {
+      "sprite": "fxPlasmaBlueVertical"
+    },
+    {
+      "sprite": "fxPlasmaBlueVertical"
+    },
+    {
+      "sprite": "fxCollisionSparksRed"
+    },
+    {
+      "sprite": "fxClawSlash"
+    },
+    {
+      "sprite": "fxImpactRingVerticalWhite"
+    },
+    {
+      "sprite": "fxPlasmaBlueHorizontal"
+    },
+    {
+      "sprite": "fxFaerieFirePurple"
+    },
+    {
+      "sprite": "fxSwirlRingsBlue"
+    },
+    {
+      "sprite": "fxExplosionGroundSmokeSwirl"
+    },
+    {
+      "sprite": "fxSmokeGround"
+    },
+    {
+      "sprite": "fxCollisionSparksGreen"
+    },
+    {
+      "sprite": "fxImpactMediumOrange"
+    },
+    {
+      "sprite": "fxCollisionSparksGreen"
+    },
+    {
+      "sprite": "fxElectricalGroundUpGreen"
+    },
+    {
+      "sprite": "fxExplosionOrangeSmoke"
+    },
+    {
+      "sprite": "fxExplosionOrangeSmoke"
+    },
+    {
+      "sprite": "fxImpactWhiteMedium"
+    },
+    {
+      "sprite": "fxCollisionSparksGreen"
+    },
+    {
+      "sprite": "fxImpactWhiteMedium"
+    },
+    {
+      "sprite": "fxImpactMediumOrange"
+    },
+    {
+      "sprite": "fxCollisionSparksGreen"
+    },
+    {
+      "sprite": "fxImpactMediumOrange"
+    },
+    {
+      "sprite": "fxImpactWhiteMedium"
+    },
+    {
+      "sprite": "fxCollisionSparksRed"
+    },
+    {
+      "sprite": "fxImpactMediumOrange"
+    },
+    {
+      "sprite": "fxImpactWhiteMedium"
+    },
+    {
+      "sprite": "fxCollisionSparksRed"
+    },
+    {
+      "sprite": "fxPlasmaRedVertical"
+    },
+    {
+      "sprite": "fxPlasmaBlueVertical"
+    },
+    {
+      "sprite": "fxCollisionSparksBlue"
+    },
+    {
+      "sprite": "fxElectricalGroundUpRed"
+    },
+    {
+      "sprite": "fxClawSlash"
+    },
+    {
+      "sprite": "fxElectricalGroundUpRed"
+    },
+    {
+      "sprite": "fxElectricalGroundUpRed"
+    },
+    {
+      "sprite": "fxElectricalGroundUpRed"
+    },
+    {
+      "sprite": "fxCollisionSparksOrange"
+    },
+    {
+      "sprite": "fxClawSlash"
+    },
+    {
+      "sprite": "fxClawSlash"
+    },
+    {
+      "sprite": "fxClawSlash"
+    },
+    {
+      "sprite": "fx_slashfrenzy"
+    },
+    {
+      "sprite": "fxCrossSlash"
+    },
+    {
+      "looping": true,
+      "sprite": "neutralMercGrenadierProjectile"
+    },
+    {
+      "sprite": "fxCollisionSparksBlue"
+    },
+    {
+      "sprite": "fxFaerieFireBlue"
+    },
+    {
+      "sprite": "fxCollisionSparksOrange"
+    },
+    {
+      "sprite": "fxCollisionSparksOrange"
+    },
+    {
+      "sprite": "fxImpactOrangeSmall"
+    },
+    {
+      "sprite": "fxCollisionSparksBlue"
+    },
+    {
+      "sprite": "fxPlasmaBlueHorizontal"
+    },
+    {
+      "sprite": "fxImpactRingVerticalWhite"
+    },
+    {
+      "impactAtStart": false,
+      "impactAtEnd": true,
+      "sprite": "fxChainLightningRed"
+    },
+    {
+      "sprite": "fxCollisionSparksRed"
+    },
+    {
+      "sprite": "fxElectricalGroundUpRed"
+    },
+    {
+      "sprite": "fxCollisionSparksRed"
+    },
+    {
+      "sprite": "fxElectricalGroundUpRed"
+    },
+    {
+      "sprite": "fxCollisionSparksOrange"
+    },
+    {
+      "sprite": "fxElectricalGroundUpRed"
+    },
+    {
+      "sprite": "fxExplosionMediumBlueGround"
+    },
+    {
+      "duration": 0.6
+    },
+    {
+      "sprite": "fxExplosionMediumBlueGround"
+    },
+    {
+      "sprite": "fxPlasmaBlueHorizontal"
+    },
+    {
+      "sprite": "fxImpactRingVerticalWhite"
+    },
+    {
+      "sprite": "fxCrossSlash"
+    },
+    {
+      "sprite": "fx_slashfrenzy"
+    },
+    {
+      "sprite": "fxCollisionSparksBlue"
+    },
+    {
+      "impactAtStart": false,
+      "impactAtEnd": true,
+      "sprite": "fxChainLightningBlue"
+    },
+    {
+      "sprite": "fx_fireslash"
+    },
+    {
+      "sprite": "fxFireTornado"
+    },
+    {
+      "sprite": "fxTeleportOrangeOrb"
+    },
+    {
+      "sprite": "fx_f3_starsfury"
+    },
+    {
+      "looping": true,
+      "sprite": "neutralFlamebloodWarlockProjectile"
+    },
+    {
+      "sprite": "fxCollisionSparksBlue"
+    },
+    {
+      "sprite": "fxImpactMediumBlue"
+    },
+    {
+      "sprite": "fxCollisionSparksBlue"
+    },
+    {
+      "sprite": "fxImpactBigOrange"
+    },
+    {
+      "sprite": "fxExplosionOrangeSmoke"
+    },
+    {
+      "sprite": "fxCollisionSparksOrange"
+    },
+    {
+      "sprite": "fxCollisionSparksBlue"
+    },
+    {
+      "sprite": "fxCollisionSparksBlue"
+    },
+    {
+      "sprite": "fxClawSlash"
+    },
+    {
+      "sprite": "fxClawSlash"
+    },
+    {
+      "sprite": "fxImpactOrangeSmall"
+    },
+    {
+      "sprite": "fxCollisionSparksPurple"
+    },
+    {
+      "sprite": "fxFaerieFireGreen"
+    },
+    {
+      "sprite": "fxCrossSlash"
+    },
+    {
+      "sprite": "fxCollisionSparksOrange"
+    },
+    {
+      "sprite": "fxClawSlash"
+    },
+    {
+      "sprite": "fxClawSlash"
+    },
+    {
+      "sprite": "fxImpactMediumBlue"
+    },
+    {
+      "sprite": "fxCollisionSparksBlue"
+    },
+    {
+      "sprite": "fxCollisionSparksRed"
+    },
+    {
+      "sprite": "fx_slashfrenzy"
+    },
+    {
+      "sprite": "fxImpactBigOrange"
+    },
+    {
+      "sprite": "fxCollisionSparksOrange"
+    },
+    {
+      "sprite": "fxImpactRingVerticalOrange"
+    },
+    {
+      "sprite": "fxExplosionOrangeSmoke"
+    },
+    {
+      "sprite": "fxImpactRingVerticalOrange"
+    },
+    {
+      "sprite": "fxExplosionMediumIcyWhite"
+    },
+    {
+      "sprite": "fxImpactRingVerticalOrange"
+    },
+    {
+      "impactAtStart": false,
+      "impactAtEnd": true,
+      "sprite": "fxChainLightningBlue"
+    },
+    {
+      "sprite": "fxPlasmaBlueHorizontal"
+    },
+    {
+      "sprite": "fxSmokeGround"
+    },
+    {
+      "impactAtStart": false,
+      "impactAtEnd": true,
+      "sprite": "fxChainLightningRed"
+    },
+    {
+      "sprite": "fxPlasmaBlueHorizontal"
+    },
+    {
+      "sprite": "fxSmokeGround"
+    },
+    {
+      "sprite": "fxImpactBigOrange"
+    },
+    {
+      "sprite": "fxCollisionSparksOrange"
+    },
+    {
+      "sprite": "fxImpactBigOrange"
+    },
+    {
+      "sprite": "fxCollisionSparksOrange"
+    },
+    {
+      "sprite": "fxImpactBigOrange"
+    },
+    {
+      "sprite": "fxCollisionSparksOrange"
+    },
+    {
+      "sprite": "fxImpactBigOrange"
+    },
+    {
+      "sprite": "fxCollisionSparksOrange"
+    }
+  ],
+  "UnitPrimaryAttackedFX": [
+    {
+      "looping": true,
+      "sprite": "fx_f3_blast"
+    },
+    {
+      "looping": true,
+      "sprite": "fx_f3_blaststarfire"
+    }
+  ],
+  "UnitDamagedFX": [
+    {
+      "sprite": "fxCollisionSparksOrange"
+    }
+  ],
+  "UnitDiedFX": [
+    {
+      "sprite": "fxSwirlRingsBlue"
+    },
+    {
+      "sprite": "fxCollisionSparksBlue"
+    }
+  ],
+  "ModifierTriggeredTargetFX": [
+    {
+      "sprite": "ForceField"
+    },
+    {
+      "sprite": "fx_f2_backstab"
+    },
+    {
+      "sprite": "fxBuffSimpleGold"
+    },
+    {
+      "sprite": "fxSwirlRingsGreen"
+    },
+    {
+      "sprite": "fxCrossSlash"
+    }
+  ],
+  "ModifierFX": [
+    {
+      "sprite": "unit_shadow"
+    },
+    {
+      "duration": 1.0,
+      "looping": true,
+      "sprite": "fxDistortionWaterBubble"
+    },
+    {
+      "sprite": "fxDistortionHexShield"
+    },
+    {
+      "looping": true,
+      "sprite": "decal_provoke"
+    },
+    {
+      "looping": true,
+      "sprite": "decal_provoked"
+    },
+    {
+      "looping": true,
+      "sprite": "decal_stunned"
+    },
+    {
+      "looping": true,
+      "sprite": "fx_flashfreeze_idle"
+    },
+    {
+      "looping": true,
+      "sprite": "decal_banded"
+    },
+    {
+      "looping": true,
+      "sprite": "decal_banded"
+    },
+    {
+      "looping": true,
+      "sprite": "fx_Doomed"
+    },
+    {
+      "looping": true,
+      "sprite": "fx_Doomed3"
+    },
+    {
+      "looping": true,
+      "sprite": "fx_Doomed2"
+    },
+    {
+      "looping": true,
+      "sprite": "fx_deathplagueicon"
+    }
+  ],
+  "ModifierTriggeredSourceFX": [
+    {
+      "duration": 1.0
+    },
+    {
+      "sprite": "fxBladestorm"
+    },
+    {
+      "sprite": "fxClawSlash"
+    },
+    {
+      "sprite": "fxClawSlash"
+    },
+    {
+      "sprite": "fxFaerieFireRed"
+    },
+    {
+      "sprite": "fx_slashfrenzy"
+    },
+    {
+      "sprite": "fx_f4_voidpulse"
+    },
+    {
+      "duration": 0.75
+    }
+  ],
+  "ModifierTriggeredFX": [
+    {
+      "sprite": "fx_f5_boundedlife"
+    },
+    {
+      "sprite": "fxYellowTeleporterBeam"
+    },
+    {
+      "sprite": "fxSiphon"
+    },
+    {
+      "sprite": "fxChainLightningBlue"
+    },
+    {
+      "sprite": "fxChainLightningRed"
+    },
+    {
+      "sprite": "fxImpactBigOrange"
+    },
+    {
+      "sprite": "fxCollisionSparksRed"
+    },
+    {
+      "sprite": "fxImpactBigOrange"
+    },
+    {
+      "sprite": "fxCollisionSparksRed"
+    },
+    {
+      "sprite": "fxImpactRingVerticalOrange"
+    },
+    {
+      "sprite": "fxCollisionSparksOrange"
+    },
+    {
+      "sprite": "fxImpactBigOrange"
+    },
+    {
+      "sprite": "fxCollisionSparksOrange"
+    },
+    {
+      "sprite": "fxImpactMediumBlue"
+    },
+    {
+      "sprite": "fxCollisionSparksBlue"
+    },
+    {
+      "sprite": "fxImpactBigOrange"
+    },
+    {
+      "sprite": "fxExplosionOrangeSmoke"
+    },
+    {
+      "sprite": "fxCollisionSparksOrange"
+    }
+  ],
+  "ModifierRemovedFX": [
+    {
+      "duration": 0.75,
+      "sprite": "fx_flashfreeze_disappear"
+    }
+  ]
+}
