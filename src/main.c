@@ -23,16 +23,11 @@ int main(void) {
 
     printf("\n=== DEBUG INFO ===\n");
     printf("1. Background texture: %d x %d pixels\n", board.background.width, board.background.height);
-    printf("2. Camera settings:\n");
-    printf("   Position: (%.2f, %.2f, %.2f)\n", render.camera.position.x, render.camera.position.y, render.camera.position.z);
-    printf("   Target:   (%.2f, %.2f, %.2f)\n", render.camera.target.x, render.camera.target.y, render.camera.target.z);
-    printf("   FOV Y:    %.2f world units visible vertically\n", render.camera.fovy);
-    printf("   Projection: %s\n", render.camera.projection == CAMERA_ORTHOGRAPHIC ? "ORTHOGRAPHIC" : "PERSPECTIVE");
-    printf("3. Board world-space size:\n");
-    printf("   1 tile = 1 world unit\n");
-    printf("   Board width:  %.1f world units (%d cols)\n", render.board_width, BOARD_COLS);
-    printf("   Board height: %.1f world units (%d rows)\n", render.board_height, BOARD_ROWS);
-    printf("4. Window size: %d x %d pixels\n", SCREEN_WIDTH, SCREEN_HEIGHT);
+    printf("2. Board origin: (%.2f, %.2f)\n", render.board_origin_x, render.board_origin_y);
+    printf("3. Board center Y: %.2f\n", render.board_center_y);
+    printf("4. Board size: %d cols x %d rows\n", BOARD_COLS, BOARD_ROWS);
+    printf("5. Tile size: %d pixels\n", TILE_SIZE);
+    printf("6. Window size: %d x %d pixels\n", SCREEN_WIDTH, SCREEN_HEIGHT);
     printf("==================\n\n");
 
     Texture2D shadow = LoadTexture("data/units/unit_shadow.png");
@@ -51,8 +46,9 @@ int main(void) {
     SpawnUnit(&units[unit_count], &render, (BoardPos){4, 2});
 
     if (fx_count < MAX_FX_INSTANCES) {
-        Vector3 spawn_pos = BoardToWorld(&render, 4, 2);
-        CreateSpawnFX(&fx_system, &fx_instances[fx_count], spawn_pos);
+        Vector2 spawn_screen = TileCenterScreen(&render, 4, 2);
+        Vector2 spawn_tilted = ApplyTilt(&render, spawn_screen);
+        CreateSpawnFX(&fx_system, &fx_instances[fx_count], spawn_tilted);
         fx_count++;
     }
 
@@ -78,9 +74,7 @@ int main(void) {
         ClearBackground(BLACK);
 
         DrawBackground(&board);
-
-        BeginMode3D(render.camera);
-
+        DrawBoardFloor(&render);
         DrawBoardGrid(&board, &render);
 
         bool hover_tiles[BOARD_COLS][BOARD_ROWS] = {0};
@@ -105,15 +99,12 @@ int main(void) {
             DrawUnit(&units[i], &render);
         }
 
-        EndMode3D();
-
         DrawFPS(10, 10);
 
         Vector2 mouse = GetMousePosition();
-        Vector3 world = ScreenPosToWorld(&render, mouse.x, mouse.y);
+        BoardPos board_pos = ScreenToBoard(&render, mouse);
         DrawText(TextFormat("Screen: %.0f, %.0f", mouse.x, mouse.y), 10, 30, 20, WHITE);
-        DrawText(TextFormat("World: %.2f, %.2f", world.x, world.z), 10, 50, 20, WHITE);
-        DrawText(TextFormat("Board: %d, %d", input.hover_pos.x, input.hover_pos.y), 10, 70, 20, WHITE);
+        DrawText(TextFormat("Board: %d, %d", board_pos.x, board_pos.y), 10, 50, 20, WHITE);
 
         EndDrawing();
     }

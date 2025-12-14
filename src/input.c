@@ -12,8 +12,7 @@ void InitInputState(InputState* state) {
 
 void UpdateInputState(InputState* state, RenderState* render, Unit* units, int unit_count) {
     Vector2 mouse = GetMousePosition();
-    Vector3 world_pos = ScreenPosToWorld(render, mouse.x, mouse.y);
-    BoardPos board_pos = WorldToBoard(render, world_pos);
+    BoardPos board_pos = ScreenToBoard(render, mouse);
 
     state->hover_pos = board_pos;
     state->hover_valid = IsValidBoardPos(board_pos.x, board_pos.y);

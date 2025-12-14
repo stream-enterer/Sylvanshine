@@ -40,10 +40,8 @@ typedef struct {
 
 typedef struct {
     Texture2D background;
-    Texture2D tile_move;
     Texture2D tiles_board;
     TileFrame grid_frame;
-    TileFrame hover_frame;
     TileFrame merged_large[MERGED_COUNT];
     TileFrame merged_hover[MERGED_COUNT];
 } Board;
@@ -51,16 +49,13 @@ typedef struct {
 void InitBoard(Board* board);
 void UnloadBoard(Board* board);
 void DrawBackground(Board* board);
+void DrawBoardFloor(RenderState* render);
 void DrawBoardGrid(Board* board, RenderState* render);
-void DrawTileHighlight(Board* board, RenderState* render, int col, int row, Color color);
-void DrawTileSprite(Board* board, RenderState* render, int col, int row, Color tint);
-void DrawTileFromSheet(Board* board, RenderState* render, int col, int row, TileFrame frame, Color tint);
-BoardPos WorldToBoard(RenderState* render, Vector3 world_pos);
 bool IsValidBoardPos(int col, int row);
 
 CornerValues GetMergedTileCornerValues(bool move_tiles[BOARD_COLS][BOARD_ROWS], int col, int row,
                                        bool hover_tiles[BOARD_COLS][BOARD_ROWS]);
-void DrawMergedTileCorner(Board* board, RenderState* render, int col, int row,
+void DrawMergedTileCorner(Board* board, RenderState* render, Vector2 tile_center,
                           TileFrame frame, TileCorner corner, Color tint);
 void DrawMergedMoveTiles(Board* board, RenderState* render,
                          bool move_tiles[BOARD_COLS][BOARD_ROWS],

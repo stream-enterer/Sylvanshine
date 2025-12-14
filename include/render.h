@@ -5,22 +5,23 @@
 
 #include <raylib.h>
 
-#define CAMERA_FOVY 7.0f
+#define TILT_COS 0.9613f
+#define TILT_SIN 0.2756f
 
 typedef struct {
-    Camera3D camera;
-    float board_width;
-    float board_height;
-    Vector3 board_center;
+    float board_origin_x;
+    float board_origin_y;
+    float board_center_y;
 } RenderState;
 
 void InitRenderState(RenderState* state);
-Vector3 BoardToWorld(RenderState* state, int col, int row);
-Vector3 ScreenPosToWorld(RenderState* state, float screen_x, float screen_y);
-void DrawTexturedQuad(Texture2D texture, Rectangle src, Vector3 center, float width, float height, float x_rotation, Color tint, bool flip_h);
-void DrawColoredQuad(Vector3 center, float width, float height, float x_rotation, Color color);
-void DrawFloorQuad(Vector3 center, float width, float depth, Color color);
-void DrawFloorTexturedQuad(Texture2D texture, Rectangle src, Vector3 center, float width, float depth, Color tint);
-void DrawFloorTexturedQuadRotated(Texture2D texture, Rectangle src, Vector3 center, float width, float depth, float y_rotation, bool atlas_rotated, Color tint);
+Vector2 TileCenterScreen(RenderState* state, int col, int row);
+Vector2 ApplyTilt(RenderState* state, Vector2 screen_pos);
+BoardPos ScreenToBoard(RenderState* state, Vector2 screen_pos);
+
+void DrawTileQuadColored(RenderState* state, Vector2 center, float half_size, Color color);
+void DrawTileQuadTextured(RenderState* state, Texture2D texture, Rectangle src, Vector2 center, float half_size, Color tint);
+void DrawTileQuadRotated(Texture2D texture, Rectangle src, Vector2 center, float half_size, float rotation, bool atlas_rotated, Color tint, RenderState* state);
+void DrawTexturedQuad2D(Texture2D texture, Rectangle src, Vector2 center, float width, float height, Color tint, bool flip_h);
 
 #endif

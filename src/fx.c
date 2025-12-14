@@ -3,8 +3,6 @@
 #include <stdio.h>
 #include <string.h>
 
-#define SPRITE_SCALE (1.0f / TILE_SIZE)
-
 static const char* SPAWN_FX_SPRITES[] = {
     "fxTeleportRecallWhite",
     "fx_f1_holyimmolation",
@@ -78,7 +76,7 @@ RSXMapping* FindRSXMapping(FXSystem* system, const char* rsx_name) {
     return NULL;
 }
 
-void CreateSpawnFX(FXSystem* system, FXInstance* fx, Vector3 position) {
+void CreateSpawnFX(FXSystem* system, FXInstance* fx, Vector2 position) {
     memset(fx, 0, sizeof(FXInstance));
     fx->position = position;
     fx->active = true;
@@ -150,13 +148,13 @@ void DrawFXInstance(FXInstance* fx, RenderState* render) {
         Rectangle src = GetCurrentFrameRect(&sprite->player);
         if (src.width == 0 || src.height == 0) continue;
 
-        float sprite_width = src.width * SPRITE_SCALE;
-        float sprite_height = src.height * SPRITE_SCALE;
+        float sprite_width = src.width;
+        float sprite_height = src.height;
 
-        Vector3 sprite_pos = fx->position;
-        sprite_pos.y = sprite_height * 0.5f + 0.01f * (float)i;
+        Vector2 sprite_pos = fx->position;
+        sprite_pos.y -= sprite_height * 0.5f;
 
-        DrawTexturedQuad(sprite->texture, src, sprite_pos, sprite_width, sprite_height, ENTITY_XYZ_ROTATION, WHITE, false);
+        DrawTexturedQuad2D(sprite->texture, src, sprite_pos, sprite_width, sprite_height, WHITE, false);
     }
 }
 

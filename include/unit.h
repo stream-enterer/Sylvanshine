@@ -21,9 +21,9 @@ typedef struct {
 
     BoardPos board_pos;
     BoardPos prev_board_pos;
-    Vector3 world_pos;
-    Vector3 move_start;
-    Vector3 move_target;
+    Vector2 screen_pos;
+    Vector2 move_start;
+    Vector2 move_target;
     float move_progress;
     float move_duration;
     int move_distance;
