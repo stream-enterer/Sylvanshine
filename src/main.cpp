@@ -3,6 +3,7 @@
 #include "types.hpp"
 #include "entity.hpp"
 #include "grid.hpp"
+#include "sdl_handles.hpp"
 #include <vector>
 #include <cstring>
 
@@ -72,7 +73,7 @@ RenderConfig parse_args(int argc, char* argv[]) {
     }
 }
 
-bool init(const RenderConfig& config, SDL_Window** window, SDL_Renderer** renderer) {
+bool init(const RenderConfig& config, WindowHandle& window, RendererHandle& renderer) {
     if (!SDL_Init(SDL_INIT_VIDEO)) {
         SDL_Log("SDL_Init failed: %s", SDL_GetError());
         return false;
@@ -83,11 +84,17 @@ bool init(const RenderConfig& config, SDL_Window** window, SDL_Renderer** render
         window_flags = SDL_WINDOW_FULLSCREEN;
     }
 
-    if (!SDL_CreateWindowAndRenderer("Duelyst Tactics", config.window_w, config.window_h, window_flags, window, renderer)) {
+    SDL_Window* raw_window = nullptr;
+    SDL_Renderer* raw_renderer = nullptr;
+
+    if (!SDL_CreateWindowAndRenderer("Duelyst Tactics", config.window_w, config.window_h, window_flags, &raw_window, &raw_renderer)) {
         SDL_Log("Window creation failed: %s", SDL_GetError());
         SDL_Quit();
         return false;
     }
+
+    window = WindowHandle(raw_window);
+    renderer = RendererHandle(raw_renderer);
 
     return true;
 }
@@ -179,34 +186,34 @@ void render(SDL_Renderer* renderer, const GameState& state, const RenderConfig& 
 
 int main(int argc, char* argv[]) {
     RenderConfig config = parse_args(argc, argv);
-    
-    SDL_Window* window = nullptr;
-    SDL_Renderer* renderer = nullptr;
 
-    if (!init(config, &window, &renderer)) {
+    WindowHandle window;
+    RendererHandle renderer;
+
+    if (!init(config, window, renderer)) {
         return 1;
     }
 
     GameState state;
-    
+
     Entity unit1;
-    if (!unit1.load(renderer, "f1_general")) {
+    if (!unit1.load(renderer.get(), "f1_general")) {
         SDL_Log("Failed to load unit 1");
         return 1;
     }
     unit1.set_board_position(config, {2, 2});
     state.units.push_back(std::move(unit1));
-    
+
     Entity unit2;
-    if (!unit2.load(renderer, "f1_general")) {
+    if (!unit2.load(renderer.get(), "f1_general")) {
         SDL_Log("Failed to load unit 2");
         return 1;
     }
     unit2.set_board_position(config, {6, 2});
     state.units.push_back(std::move(unit2));
-    
+
     Entity unit3;
-    if (!unit3.load(renderer, "f1_general")) {
+    if (!unit3.load(renderer.get(), "f1_general")) {
         SDL_Log("Failed to load unit 3");
         return 1;
     }
@@ -215,21 +222,20 @@ int main(int argc, char* argv[]) {
 
     bool running = true;
     Uint64 last_time = SDL_GetTicks();
-    
+
     while (running) {
         Uint64 current_time = SDL_GetTicks();
         float dt = (current_time - last_time) / 1000.0f;
         last_time = current_time;
-        
+
         handle_events(running, state, config);
         update(state, dt, config);
-        render(renderer, state, config);
-        
+        render(renderer.get(), state, config);
+
         SDL_Delay(16);
     }
 
-    SDL_DestroyRenderer(renderer);
-    SDL_DestroyWindow(window);
+    // RAII handles cleanup automatically
     SDL_Quit();
 
     return 0;
