@@ -3,10 +3,9 @@
 #include <string>
 #include <cmath>
 
-Entity::Entity() 
+Entity::Entity()
     : board_pos{0, 0}
     , screen_pos{0, 0}
-    , spritesheet(nullptr)
     , current_anim(nullptr)
     , anim_time(0.0f)
     , flip_x(false)
@@ -17,82 +16,36 @@ Entity::Entity()
     , move_duration(0.0f) {
 }
 
-Entity::~Entity() {
-    if (spritesheet) {
-        SDL_DestroyTexture(spritesheet);
-    }
-}
-
-Entity::Entity(Entity&& other) noexcept
-    : board_pos(other.board_pos)
-    , screen_pos(other.screen_pos)
-    , spritesheet(other.spritesheet)
-    , animations(std::move(other.animations))
-    , current_anim(other.current_anim)
-    , anim_time(other.anim_time)
-    , flip_x(other.flip_x)
-    , state(other.state)
-    , move_target(other.move_target)
-    , move_start_pos(other.move_start_pos)
-    , move_elapsed(other.move_elapsed)
-    , move_duration(other.move_duration) {
-    other.spritesheet = nullptr;
-    other.current_anim = nullptr;
-}
-
-Entity& Entity::operator=(Entity&& other) noexcept {
-    if (this != &other) {
-        if (spritesheet) {
-            SDL_DestroyTexture(spritesheet);
-        }
-        
-        board_pos = other.board_pos;
-        screen_pos = other.screen_pos;
-        spritesheet = other.spritesheet;
-        animations = std::move(other.animations);
-        current_anim = other.current_anim;
-        anim_time = other.anim_time;
-        flip_x = other.flip_x;
-        state = other.state;
-        move_target = other.move_target;
-        move_start_pos = other.move_start_pos;
-        move_elapsed = other.move_elapsed;
-        move_duration = other.move_duration;
-        
-        other.spritesheet = nullptr;
-        other.current_anim = nullptr;
-    }
-    return *this;
-}
+// Destructor, move constructor, and move assignment are compiler-generated
+// TextureHandle's RAII ensures proper cleanup
 
 bool Entity::load(SDL_Renderer* renderer, const char* unit_name) {
     std::string base_path = "data/units/";
     base_path += unit_name;
-    
+
     std::string spritesheet_path = base_path + "/spritesheet.png";
-    SDL_Surface* surface = IMG_Load(spritesheet_path.c_str());
+    SurfaceHandle surface(IMG_Load(spritesheet_path.c_str()));
     if (!surface) {
         SDL_Log("Failed to load spritesheet: %s - %s", spritesheet_path.c_str(), SDL_GetError());
         return false;
     }
-    
-    spritesheet = SDL_CreateTextureFromSurface(renderer, surface);
-    SDL_DestroySurface(surface);
-    
+
+    spritesheet = TextureHandle(SDL_CreateTextureFromSurface(renderer, surface.get()));
+
     if (!spritesheet) {
         SDL_Log("Failed to create texture: %s", SDL_GetError());
         return false;
     }
-    
-    SDL_SetTextureScaleMode(spritesheet, SDL_SCALEMODE_NEAREST);
-    
+
+    SDL_SetTextureScaleMode(spritesheet.get(), SDL_SCALEMODE_NEAREST);
+
     std::string anim_path = base_path + "/animations.txt";
     animations = load_animations(anim_path.c_str());
-    
+
     if (animations.animations.empty()) {
         return false;
     }
-    
+
     play_animation("idle");
     return true;
 }
@@ -138,17 +91,17 @@ void Entity::update(float dt, const RenderConfig& config) {
 
 void Entity::render(SDL_Renderer* renderer, const RenderConfig& config) const {
     if (!spritesheet || !current_anim || current_anim->frames.empty()) return;
-    
+
     int frame_idx = static_cast<int>(anim_time * current_anim->fps) % current_anim->frames.size();
     const SDL_Rect& src_rect = current_anim->frames[frame_idx].rect;
-    
+
     SDL_FRect src = {
         static_cast<float>(src_rect.x),
         static_cast<float>(src_rect.y),
         static_cast<float>(src_rect.w),
         static_cast<float>(src_rect.h)
     };
-    
+
     SDL_FRect dst;
     if (flip_x) {
         dst.x = screen_pos.x + src.w * 0.5f * config.scale;
@@ -161,8 +114,8 @@ void Entity::render(SDL_Renderer* renderer, const RenderConfig& config) const {
         dst.w = src.w * config.scale;
         dst.h = src.h * config.scale;
     }
-    
-    SDL_RenderTexture(renderer, spritesheet, &src, &dst);
+
+    SDL_RenderTexture(renderer, spritesheet.get(), &src, &dst);
 }
 
 void Entity::start_move(const RenderConfig& config, BoardPos target) {
