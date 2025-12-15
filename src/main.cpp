@@ -9,9 +9,8 @@
 constexpr int MOVE_RANGE = 3;
 
 struct GameState {
-    Entity player_unit;
-    BoardPos selected_tile{-1, -1};
-    bool unit_selected = false;
+    std::vector<Entity> units;
+    int selected_unit_idx = -1;
     std::vector<BoardPos> reachable_tiles;
 };
 
@@ -25,6 +24,29 @@ void print_help() {
     SDL_Log("CONTROLS:");
     SDL_Log("  Left click unit     Select unit and show movement range");
     SDL_Log("  Left click tile     Move selected unit to that tile");
+}
+
+int find_unit_at_pos(const GameState& state, BoardPos pos) {
+    for (size_t i = 0; i < state.units.size(); i++) {
+        if (state.units[i].board_pos == pos) {
+            return static_cast<int>(i);
+        }
+    }
+    return -1;
+}
+
+std::vector<BoardPos> get_occupied_positions(const GameState& state, int exclude_idx) {
+    std::vector<BoardPos> occupied;
+    for (size_t i = 0; i < state.units.size(); i++) {
+        if (static_cast<int>(i) != exclude_idx) {
+            if (state.units[i].is_moving()) {
+                occupied.push_back(state.units[i].move_target);
+            } else {
+                occupied.push_back(state.units[i].board_pos);
+            }
+        }
+    }
+    return occupied;
 }
 
 RenderConfig parse_args(int argc, char* argv[]) {
@@ -75,14 +97,17 @@ void handle_click(GameState& state, Vec2 mouse, const RenderConfig& config) {
     
     if (!clicked.is_valid()) return;
     
-    if (state.player_unit.is_moving()) return;
+    if (state.selected_unit_idx >= 0 && state.units[state.selected_unit_idx].is_moving()) {
+        return;
+    }
     
-    if (!state.unit_selected) {
-        if (clicked == state.player_unit.board_pos) {
-            state.unit_selected = true;
-            state.selected_tile = clicked;
-            state.reachable_tiles = get_reachable_tiles(clicked, MOVE_RANGE);
-            SDL_Log("Unit selected at (%d, %d)", clicked.x, clicked.y);
+    if (state.selected_unit_idx == -1) {
+        int unit_idx = find_unit_at_pos(state, clicked);
+        if (unit_idx >= 0) {
+            state.selected_unit_idx = unit_idx;
+            auto occupied = get_occupied_positions(state, unit_idx);
+            state.reachable_tiles = get_reachable_tiles(clicked, MOVE_RANGE, occupied);
+            SDL_Log("Unit %d selected at (%d, %d)", unit_idx, clicked.x, clicked.y);
         }
     } else {
         bool is_reachable = false;
@@ -94,12 +119,23 @@ void handle_click(GameState& state, Vec2 mouse, const RenderConfig& config) {
         }
         
         if (is_reachable) {
-            SDL_Log("Moving to (%d, %d)", clicked.x, clicked.y);
-            state.player_unit.start_move(config, clicked);
-            state.unit_selected = false;
+            auto occupied = get_occupied_positions(state, state.selected_unit_idx);
+            bool tile_occupied = false;
+            for (const auto& occ : occupied) {
+                if (clicked == occ) {
+                    tile_occupied = true;
+                    break;
+                }
+            }
+            
+            if (!tile_occupied) {
+                SDL_Log("Moving unit %d to (%d, %d)", state.selected_unit_idx, clicked.x, clicked.y);
+                state.units[state.selected_unit_idx].start_move(config, clicked);
+            }
+            state.selected_unit_idx = -1;
             state.reachable_tiles.clear();
         } else {
-            state.unit_selected = false;
+            state.selected_unit_idx = -1;
             state.reachable_tiles.clear();
         }
     }
@@ -119,7 +155,9 @@ void handle_events(bool& running, GameState& state, const RenderConfig& config) 
 }
 
 void update(GameState& state, float dt, const RenderConfig& config) {
-    state.player_unit.update(dt, config);
+    for (auto& unit : state.units) {
+        unit.update(dt, config);
+    }
 }
 
 void render(SDL_Renderer* renderer, const GameState& state, const RenderConfig& config) {
@@ -128,11 +166,13 @@ void render(SDL_Renderer* renderer, const GameState& state, const RenderConfig& 
     
     render_grid(renderer, config);
     
-    if (state.unit_selected) {
-        render_move_range(renderer, config, state.player_unit.board_pos, MOVE_RANGE);
+    if (state.selected_unit_idx >= 0) {
+        render_move_range(renderer, config, state.units[state.selected_unit_idx].board_pos, MOVE_RANGE);
     }
     
-    state.player_unit.render(renderer, config);
+    for (const auto& unit : state.units) {
+        unit.render(renderer, config);
+    }
     
     SDL_RenderPresent(renderer);
 }
@@ -148,12 +188,30 @@ int main(int argc, char* argv[]) {
     }
 
     GameState state;
-    if (!state.player_unit.load(renderer, "f1_general")) {
-        SDL_Log("Failed to load unit");
+    
+    Entity unit1;
+    if (!unit1.load(renderer, "f1_general")) {
+        SDL_Log("Failed to load unit 1");
         return 1;
     }
+    unit1.set_board_position(config, {2, 2});
+    state.units.push_back(std::move(unit1));
     
-    state.player_unit.set_board_position(config, {4, 2});
+    Entity unit2;
+    if (!unit2.load(renderer, "f1_general")) {
+        SDL_Log("Failed to load unit 2");
+        return 1;
+    }
+    unit2.set_board_position(config, {6, 2});
+    state.units.push_back(std::move(unit2));
+    
+    Entity unit3;
+    if (!unit3.load(renderer, "f1_general")) {
+        SDL_Log("Failed to load unit 3");
+        return 1;
+    }
+    unit3.set_board_position(config, {4, 1});
+    state.units.push_back(std::move(unit3));
 
     bool running = true;
     Uint64 last_time = SDL_GetTicks();

@@ -35,7 +35,8 @@ void render_tile_highlight(SDL_Renderer* renderer, const RenderConfig& config, B
 }
 
 void render_move_range(SDL_Renderer* renderer, const RenderConfig& config, BoardPos center, int range) {
-    auto tiles = get_reachable_tiles(center, range);
+    std::vector<BoardPos> empty_occupied;
+    auto tiles = get_reachable_tiles(center, range, empty_occupied);
     SDL_Color highlight = {255, 255, 255, 200};
     
     for (const auto& tile : tiles) {
@@ -43,7 +44,7 @@ void render_move_range(SDL_Renderer* renderer, const RenderConfig& config, Board
     }
 }
 
-std::vector<BoardPos> get_reachable_tiles(BoardPos from, int range) {
+std::vector<BoardPos> get_reachable_tiles(BoardPos from, int range, const std::vector<BoardPos>& occupied) {
     std::vector<BoardPos> result;
     
     for (int x = 0; x < BOARD_COLS; x++) {
@@ -53,7 +54,17 @@ std::vector<BoardPos> get_reachable_tiles(BoardPos from, int range) {
             
             int dist = std::abs(x - from.x) + std::abs(y - from.y);
             if (dist <= range) {
-                result.push_back(pos);
+                bool is_occupied = false;
+                for (const auto& occ : occupied) {
+                    if (pos == occ) {
+                        is_occupied = true;
+                        break;
+                    }
+                }
+                
+                if (!is_occupied) {
+                    result.push_back(pos);
+                }
             }
         }
     }

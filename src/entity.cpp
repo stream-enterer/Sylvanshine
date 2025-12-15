@@ -23,6 +23,48 @@ Entity::~Entity() {
     }
 }
 
+Entity::Entity(Entity&& other) noexcept
+    : board_pos(other.board_pos)
+    , screen_pos(other.screen_pos)
+    , spritesheet(other.spritesheet)
+    , animations(std::move(other.animations))
+    , current_anim(other.current_anim)
+    , anim_time(other.anim_time)
+    , flip_x(other.flip_x)
+    , state(other.state)
+    , move_target(other.move_target)
+    , move_start_pos(other.move_start_pos)
+    , move_elapsed(other.move_elapsed)
+    , move_duration(other.move_duration) {
+    other.spritesheet = nullptr;
+    other.current_anim = nullptr;
+}
+
+Entity& Entity::operator=(Entity&& other) noexcept {
+    if (this != &other) {
+        if (spritesheet) {
+            SDL_DestroyTexture(spritesheet);
+        }
+        
+        board_pos = other.board_pos;
+        screen_pos = other.screen_pos;
+        spritesheet = other.spritesheet;
+        animations = std::move(other.animations);
+        current_anim = other.current_anim;
+        anim_time = other.anim_time;
+        flip_x = other.flip_x;
+        state = other.state;
+        move_target = other.move_target;
+        move_start_pos = other.move_start_pos;
+        move_elapsed = other.move_elapsed;
+        move_duration = other.move_duration;
+        
+        other.spritesheet = nullptr;
+        other.current_anim = nullptr;
+    }
+    return *this;
+}
+
 bool Entity::load(SDL_Renderer* renderer, const char* unit_name) {
     std::string base_path = "data/units/";
     base_path += unit_name;

@@ -27,6 +27,10 @@ struct Entity {
     
     Entity();
     ~Entity();
+    Entity(Entity&& other) noexcept;
+    Entity& operator=(Entity&& other) noexcept;
+    Entity(const Entity&) = delete;
+    Entity& operator=(const Entity&) = delete;
     
     bool load(SDL_Renderer* renderer, const char* unit_name);
     void set_board_position(const RenderConfig& config, BoardPos pos);
