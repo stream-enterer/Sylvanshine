@@ -42,6 +42,8 @@ bool Entity::load(SDL_Renderer* renderer, const char* unit_name) {
         return false;
     }
     
+    SDL_SetTextureScaleMode(spritesheet, SDL_SCALEMODE_NEAREST);
+    
     std::string anim_path = base_path + "/animations.txt";
     animations = load_animations(anim_path.c_str());
     
@@ -53,9 +55,9 @@ bool Entity::load(SDL_Renderer* renderer, const char* unit_name) {
     return true;
 }
 
-void Entity::set_board_position(int window_w, int window_h, BoardPos pos) {
+void Entity::set_board_position(const RenderConfig& config, BoardPos pos) {
     board_pos = pos;
-    screen_pos = board_to_screen(window_w, window_h, pos);
+    screen_pos = board_to_screen(config, pos);
 }
 
 void Entity::play_animation(const char* name) {
@@ -66,7 +68,7 @@ void Entity::play_animation(const char* name) {
     }
 }
 
-void Entity::update(float dt, int window_w, int window_h) {
+void Entity::update(float dt, const RenderConfig& config) {
     if (!current_anim) return;
     
     if (state == EntityState::Moving) {
@@ -74,12 +76,12 @@ void Entity::update(float dt, int window_w, int window_h) {
         
         if (move_elapsed >= move_duration) {
             board_pos = move_target;
-            screen_pos = board_to_screen(window_w, window_h, board_pos);
+            screen_pos = board_to_screen(config, board_pos);
             state = EntityState::Idle;
             play_animation("idle");
         } else {
             float t = move_elapsed / move_duration;
-            Vec2 target_pos = board_to_screen(window_w, window_h, move_target);
+            Vec2 target_pos = board_to_screen(config, move_target);
             screen_pos.x = move_start_pos.x + (target_pos.x - move_start_pos.x) * t;
             screen_pos.y = move_start_pos.y + (target_pos.y - move_start_pos.y) * t;
         }
@@ -92,7 +94,7 @@ void Entity::update(float dt, int window_w, int window_h) {
     }
 }
 
-void Entity::render(SDL_Renderer* renderer, int window_w, int window_h) const {
+void Entity::render(SDL_Renderer* renderer, const RenderConfig& config) const {
     if (!spritesheet || !current_anim || current_anim->frames.empty()) return;
     
     int frame_idx = static_cast<int>(anim_time * current_anim->fps) % current_anim->frames.size();
@@ -107,21 +109,21 @@ void Entity::render(SDL_Renderer* renderer, int window_w, int window_h) const {
     
     SDL_FRect dst;
     if (flip_x) {
-        dst.x = screen_pos.x + src.w * 0.5f;
-        dst.y = screen_pos.y - src.h * 0.5f;
-        dst.w = -src.w;
-        dst.h = src.h;
+        dst.x = screen_pos.x + src.w * 0.5f * config.scale;
+        dst.y = screen_pos.y - src.h * 0.5f * config.scale;
+        dst.w = -src.w * config.scale;
+        dst.h = src.h * config.scale;
     } else {
-        dst.x = screen_pos.x - src.w * 0.5f;
-        dst.y = screen_pos.y - src.h * 0.5f;
-        dst.w = src.w;
-        dst.h = src.h;
+        dst.x = screen_pos.x - src.w * 0.5f * config.scale;
+        dst.y = screen_pos.y - src.h * 0.5f * config.scale;
+        dst.w = src.w * config.scale;
+        dst.h = src.h * config.scale;
     }
     
     SDL_RenderTexture(renderer, spritesheet, &src, &dst);
 }
 
-void Entity::start_move(int window_w, int window_h, BoardPos target) {
+void Entity::start_move(const RenderConfig& config, BoardPos target) {
     if (target == board_pos || !target.is_valid()) return;
     
     int dx = std::abs(target.x - board_pos.x);

@@ -12,6 +12,16 @@ constexpr float TILE_OFFSET_Y = 10.0f;
 constexpr float ENTITY_MOVE_DURATION_MODIFIER = 1.0f;
 constexpr float ENTITY_MOVE_CORRECTION = 0.2f;
 
+struct RenderConfig {
+    int window_w;
+    int window_h;
+    int scale;
+    
+    int tile_size() const { return TILE_SIZE * scale; }
+    float tile_offset_x() const { return TILE_OFFSET_X * scale; }
+    float tile_offset_y() const { return TILE_OFFSET_Y * scale; }
+};
+
 struct Vec2 {
     float x, y;
     
@@ -44,6 +54,6 @@ struct Animation {
     float duration() const { return frames.size() / static_cast<float>(fps); }
 };
 
-Vec2 board_to_screen(int window_w, int window_h, BoardPos pos);
-BoardPos screen_to_board(int window_w, int window_h, Vec2 screen);
+Vec2 board_to_screen(const RenderConfig& config, BoardPos pos);
+BoardPos screen_to_board(const RenderConfig& config, Vec2 screen);
 float calculate_move_duration(float anim_duration, int tile_count);

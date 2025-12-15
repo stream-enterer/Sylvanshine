@@ -29,11 +29,11 @@ struct Entity {
     ~Entity();
     
     bool load(SDL_Renderer* renderer, const char* unit_name);
-    void set_board_position(int window_w, int window_h, BoardPos pos);
+    void set_board_position(const RenderConfig& config, BoardPos pos);
     void play_animation(const char* name);
-    void update(float dt, int window_w, int window_h);
-    void render(SDL_Renderer* renderer, int window_w, int window_h) const;
+    void update(float dt, const RenderConfig& config);
+    void render(SDL_Renderer* renderer, const RenderConfig& config) const;
     
-    void start_move(int window_w, int window_h, BoardPos target);
+    void start_move(const RenderConfig& config, BoardPos target);
     bool is_moving() const { return state == EntityState::Moving; }
 };
