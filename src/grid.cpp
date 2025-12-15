@@ -44,6 +44,14 @@ void render_move_range(SDL_Renderer* renderer, const RenderConfig& config, Board
     }
 }
 
+void render_attack_range(SDL_Renderer* renderer, const RenderConfig& config, const std::vector<BoardPos>& attackable_tiles) {
+    SDL_Color highlight = {255, 100, 100, 200};
+    
+    for (const auto& tile : attackable_tiles) {
+        render_tile_highlight(renderer, config, tile, highlight);
+    }
+}
+
 std::vector<BoardPos> get_reachable_tiles(BoardPos from, int range, const std::vector<BoardPos>& occupied) {
     std::vector<BoardPos> result;
     
@@ -66,6 +74,21 @@ std::vector<BoardPos> get_reachable_tiles(BoardPos from, int range, const std::v
                     result.push_back(pos);
                 }
             }
+        }
+    }
+    
+    return result;
+}
+
+std::vector<BoardPos> get_attackable_tiles(BoardPos from, int range, const std::vector<BoardPos>& enemy_positions) {
+    std::vector<BoardPos> result;
+    
+    for (const auto& enemy_pos : enemy_positions) {
+        int dx = std::abs(enemy_pos.x - from.x);
+        int dy = std::abs(enemy_pos.y - from.y);
+        int dist = std::max(dx, dy);
+        if (dist <= range) {
+            result.push_back(enemy_pos);
         }
     }
     

@@ -13,6 +13,8 @@ struct GameState {
     std::vector<Entity> units;
     int selected_unit_idx = -1;
     std::vector<BoardPos> reachable_tiles;
+    std::vector<BoardPos> attackable_tiles;
+    Vec2 mouse_pos = {0.0f, 0.0f};
 };
 
 void print_help() {
@@ -25,6 +27,8 @@ void print_help() {
     SDL_Log("CONTROLS:");
     SDL_Log("  Left click unit     Select unit and show movement range");
     SDL_Log("  Left click tile     Move selected unit to that tile");
+    SDL_Log("  Left click enemy    Attack enemy in range");
+    SDL_Log("  Right click         Deselect unit");
 }
 
 int find_unit_at_pos(const GameState& state, BoardPos pos) {
@@ -48,6 +52,60 @@ std::vector<BoardPos> get_occupied_positions(const GameState& state, int exclude
         }
     }
     return occupied;
+}
+
+std::vector<BoardPos> get_enemy_positions(const GameState& state, int unit_idx) {
+    std::vector<BoardPos> enemies;
+    UnitType unit_type = state.units[unit_idx].type;
+    
+    for (size_t i = 0; i < state.units.size(); i++) {
+        if (static_cast<int>(i) != unit_idx && state.units[i].type != unit_type) {
+            if (state.units[i].can_act()) {
+                enemies.push_back(state.units[i].board_pos);
+            }
+        }
+    }
+    return enemies;
+}
+
+void clear_selection(GameState& state) {
+    if (state.selected_unit_idx >= 0) {
+        state.units[state.selected_unit_idx].restore_facing();
+    }
+    state.selected_unit_idx = -1;
+    state.reachable_tiles.clear();
+    state.attackable_tiles.clear();
+}
+
+void update_selected_ranges(GameState& state) {
+    if (state.selected_unit_idx < 0) return;
+    
+    BoardPos selected_pos = state.units[state.selected_unit_idx].board_pos;
+    
+    auto occupied = get_occupied_positions(state, state.selected_unit_idx);
+    state.reachable_tiles = get_reachable_tiles(selected_pos, MOVE_RANGE, occupied);
+    
+    auto enemy_positions = get_enemy_positions(state, state.selected_unit_idx);
+    state.attackable_tiles = get_attackable_tiles(
+        selected_pos,
+        state.units[state.selected_unit_idx].attack_range,
+        enemy_positions
+    );
+    
+    static size_t last_attackable_count = 0;
+    if (state.attackable_tiles.size() != last_attackable_count) {
+        SDL_Log("Attackable tiles updated: %zu enemies in range", state.attackable_tiles.size());
+        last_attackable_count = state.attackable_tiles.size();
+    }
+}
+
+void update_selected_facing(GameState& state, const RenderConfig& config) {
+    if (state.selected_unit_idx < 0) return;
+    
+    BoardPos mouse_board = screen_to_board(config, state.mouse_pos);
+    if (!mouse_board.is_valid()) return;
+    
+    state.units[state.selected_unit_idx].face_position(mouse_board);
 }
 
 RenderConfig parse_args(int argc, char* argv[]) {
@@ -99,52 +157,100 @@ bool init(const RenderConfig& config, WindowHandle& window, RendererHandle& rend
     return true;
 }
 
+void handle_select_click(GameState& state, BoardPos clicked) {
+    int unit_idx = find_unit_at_pos(state, clicked);
+    if (unit_idx < 0) return;
+    
+    if (!state.units[unit_idx].can_act()) return;
+    
+    if (state.selected_unit_idx >= 0 && state.selected_unit_idx != unit_idx) {
+        state.units[state.selected_unit_idx].restore_facing();
+    }
+    
+    state.selected_unit_idx = unit_idx;
+    state.units[unit_idx].store_facing();
+    update_selected_ranges(state);
+    
+    SDL_Log("Unit %d selected at (%d, %d)", unit_idx, clicked.x, clicked.y);
+}
+
+void handle_move_click(GameState& state, BoardPos clicked, const RenderConfig& config) {
+    bool is_reachable = false;
+    for (const auto& tile : state.reachable_tiles) {
+        if (tile == clicked) {
+            is_reachable = true;
+            break;
+        }
+    }
+    
+    if (!is_reachable) return;
+    
+    auto occupied = get_occupied_positions(state, state.selected_unit_idx);
+    for (const auto& occ : occupied) {
+        if (clicked == occ) return;
+    }
+    
+    int unit_idx = state.selected_unit_idx;
+    SDL_Log("Moving unit %d to (%d, %d)", unit_idx, clicked.x, clicked.y);
+    
+    state.selected_unit_idx = -1;
+    state.reachable_tiles.clear();
+    state.attackable_tiles.clear();
+    
+    state.units[unit_idx].start_move(config, clicked);
+}
+
+void handle_attack_click(GameState& state, BoardPos clicked) {
+    bool is_attackable = false;
+    for (const auto& tile : state.attackable_tiles) {
+        if (tile == clicked) {
+            is_attackable = true;
+            break;
+        }
+    }
+    
+    if (!is_attackable) return;
+    
+    int target_idx = find_unit_at_pos(state, clicked);
+    if (target_idx < 0) return;
+    
+    int attacker_idx = state.selected_unit_idx;
+    BoardPos target_pos = state.units[target_idx].board_pos;
+    
+    state.selected_unit_idx = -1;
+    state.reachable_tiles.clear();
+    state.attackable_tiles.clear();
+    
+    state.units[attacker_idx].face_position(target_pos);
+    state.units[attacker_idx].start_attack(target_idx);
+}
+
+void handle_selected_click(GameState& state, BoardPos clicked, const RenderConfig& config) {
+    int clicked_unit = find_unit_at_pos(state, clicked);
+    
+    if (clicked_unit >= 0) {
+        handle_attack_click(state, clicked);
+    } else {
+        handle_move_click(state, clicked, config);
+    }
+}
+
 void handle_click(GameState& state, Vec2 mouse, const RenderConfig& config) {
     BoardPos clicked = screen_to_board(config, mouse);
-    
     if (!clicked.is_valid()) return;
     
     if (state.selected_unit_idx >= 0 && state.units[state.selected_unit_idx].is_moving()) {
         return;
     }
     
+    if (state.selected_unit_idx >= 0 && state.units[state.selected_unit_idx].is_attacking()) {
+        return;
+    }
+    
     if (state.selected_unit_idx == -1) {
-        int unit_idx = find_unit_at_pos(state, clicked);
-        if (unit_idx >= 0) {
-            state.selected_unit_idx = unit_idx;
-            auto occupied = get_occupied_positions(state, unit_idx);
-            state.reachable_tiles = get_reachable_tiles(clicked, MOVE_RANGE, occupied);
-            SDL_Log("Unit %d selected at (%d, %d)", unit_idx, clicked.x, clicked.y);
-        }
+        handle_select_click(state, clicked);
     } else {
-        bool is_reachable = false;
-        for (const auto& tile : state.reachable_tiles) {
-            if (tile == clicked) {
-                is_reachable = true;
-                break;
-            }
-        }
-        
-        if (is_reachable) {
-            auto occupied = get_occupied_positions(state, state.selected_unit_idx);
-            bool tile_occupied = false;
-            for (const auto& occ : occupied) {
-                if (clicked == occ) {
-                    tile_occupied = true;
-                    break;
-                }
-            }
-            
-            if (!tile_occupied) {
-                SDL_Log("Moving unit %d to (%d, %d)", state.selected_unit_idx, clicked.x, clicked.y);
-                state.units[state.selected_unit_idx].start_move(config, clicked);
-            }
-            state.selected_unit_idx = -1;
-            state.reachable_tiles.clear();
-        } else {
-            state.selected_unit_idx = -1;
-            state.reachable_tiles.clear();
-        }
+        handle_selected_click(state, clicked, config);
     }
 }
 
@@ -154,9 +260,18 @@ void handle_events(bool& running, GameState& state, const RenderConfig& config) 
         if (event.type == SDL_EVENT_QUIT) {
             running = false;
         }
-        else if (event.type == SDL_EVENT_MOUSE_BUTTON_DOWN && event.button.button == SDL_BUTTON_LEFT) {
-            Vec2 mouse{static_cast<float>(event.button.x), static_cast<float>(event.button.y)};
-            handle_click(state, mouse, config);
+        else if (event.type == SDL_EVENT_MOUSE_BUTTON_DOWN) {
+            if (event.button.button == SDL_BUTTON_LEFT) {
+                Vec2 mouse{static_cast<float>(event.button.x), static_cast<float>(event.button.y)};
+                handle_click(state, mouse, config);
+            }
+            else if (event.button.button == SDL_BUTTON_RIGHT) {
+                clear_selection(state);
+            }
+        }
+        else if (event.type == SDL_EVENT_MOUSE_MOTION) {
+            state.mouse_pos = {static_cast<float>(event.motion.x), static_cast<float>(event.motion.y)};
+            update_selected_facing(state, config);
         }
     }
 }
@@ -165,6 +280,8 @@ void update(GameState& state, float dt, const RenderConfig& config) {
     for (auto& unit : state.units) {
         unit.update(dt, config);
     }
+    
+    update_selected_ranges(state);
 }
 
 void render(SDL_Renderer* renderer, const GameState& state, const RenderConfig& config) {
@@ -175,6 +292,7 @@ void render(SDL_Renderer* renderer, const GameState& state, const RenderConfig& 
     
     if (state.selected_unit_idx >= 0) {
         render_move_range(renderer, config, state.units[state.selected_unit_idx].board_pos, MOVE_RANGE);
+        render_attack_range(renderer, config, state.attackable_tiles);
     }
     
     for (const auto& unit : state.units) {
@@ -201,6 +319,7 @@ int main(int argc, char* argv[]) {
         SDL_Log("Failed to load unit 1");
         return 1;
     }
+    unit1.type = UnitType::Player;
     unit1.set_board_position(config, {2, 2});
     state.units.push_back(std::move(unit1));
 
@@ -209,6 +328,7 @@ int main(int argc, char* argv[]) {
         SDL_Log("Failed to load unit 2");
         return 1;
     }
+    unit2.type = UnitType::Enemy;
     unit2.set_board_position(config, {6, 2});
     state.units.push_back(std::move(unit2));
 
@@ -217,6 +337,7 @@ int main(int argc, char* argv[]) {
         SDL_Log("Failed to load unit 3");
         return 1;
     }
+    unit3.type = UnitType::Enemy;
     unit3.set_board_position(config, {4, 1});
     state.units.push_back(std::move(unit3));
 
@@ -235,7 +356,6 @@ int main(int argc, char* argv[]) {
         SDL_Delay(16);
     }
 
-    // RAII handles cleanup automatically
     SDL_Quit();
 
     return 0;

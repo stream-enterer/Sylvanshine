@@ -9,15 +9,18 @@ Entity::Entity()
     , current_anim(nullptr)
     , anim_time(0.0f)
     , flip_x(false)
+    , original_flip_x(false)
     , state(EntityState::Idle)
+    , type(UnitType::Player)
+    , attack_range(1)
     , move_target{0, 0}
     , move_start_pos{0, 0}
     , move_elapsed(0.0f)
-    , move_duration(0.0f) {
+    , move_duration(0.0f)
+    , target_entity_idx(-1)
+    , attack_elapsed(0.0f)
+    , attack_duration(0.0f) {
 }
-
-// Destructor, move constructor, and move assignment are compiler-generated
-// TextureHandle's RAII ensures proper cleanup
 
 bool Entity::load(SDL_Renderer* renderer, const char* unit_name) {
     std::string base_path = "data/units/";
@@ -74,11 +77,23 @@ void Entity::update(float dt, const RenderConfig& config) {
             screen_pos = board_to_screen(config, board_pos);
             state = EntityState::Idle;
             play_animation("idle");
+            SDL_Log("Unit finished moving to (%d, %d), now idle", board_pos.x, board_pos.y);
         } else {
             float t = move_elapsed / move_duration;
             Vec2 target_pos = board_to_screen(config, move_target);
             screen_pos.x = move_start_pos.x + (target_pos.x - move_start_pos.x) * t;
             screen_pos.y = move_start_pos.y + (target_pos.y - move_start_pos.y) * t;
+        }
+    }
+    
+    if (state == EntityState::Attacking) {
+        attack_elapsed += dt;
+        if (attack_elapsed >= attack_duration) {
+            SDL_Log("Unit completed attack on target %d", target_entity_idx);
+            state = EntityState::Idle;
+            play_animation("idle");
+            target_entity_idx = -1;
+            attack_elapsed = 0.0f;
         }
     }
     
@@ -134,8 +149,39 @@ void Entity::start_move(const RenderConfig& config, BoardPos target) {
     move_elapsed = 0.0f;
     move_duration = calculate_move_duration(run_anim->duration(), tile_count);
     
-    flip_x = (target.x < board_pos.x);
+    face_position(target);
     
     state = EntityState::Moving;
     play_animation("run");
+}
+
+void Entity::start_attack(int target_idx) {
+    if (!can_act()) return;
+    
+    const Animation* attack_anim = animations.find("attack");
+    if (!attack_anim) return;
+    
+    target_entity_idx = target_idx;
+    attack_elapsed = 0.0f;
+    attack_duration = attack_anim->duration();
+    state = EntityState::Attacking;
+    play_animation("attack");
+    
+    SDL_Log("Unit started attack on target %d", target_idx);
+}
+
+void Entity::face_position(BoardPos target) {
+    if (target.x < board_pos.x) {
+        flip_x = true;
+    } else if (target.x > board_pos.x) {
+        flip_x = false;
+    }
+}
+
+void Entity::store_facing() {
+    original_flip_x = flip_x;
+}
+
+void Entity::restore_facing() {
+    flip_x = original_flip_x;
 }
