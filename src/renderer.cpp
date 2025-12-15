@@ -44,15 +44,21 @@ bool Renderer::Initialize() {
         return false;
     }
 
-    SDL_GL_MakeCurrent(window_, gl_context_);
+    if (!SDL_GL_MakeCurrent(window_, gl_context_)) {
+        std::cerr << "Failed to make GL context current: " << SDL_GetError() << std::endl;
+        return false;
+    }
+
     SDL_GL_SetSwapInterval(1);
 
     glewExperimental = GL_TRUE;
+    while (glGetError() != GL_NO_ERROR) {}
     GLenum glew_err = glewInit();
     if (glew_err != GLEW_OK) {
         std::cerr << "Failed to initialize GLEW: " << glewGetErrorString(glew_err) << std::endl;
         return false;
     }
+    while (glGetError() != GL_NO_ERROR) {}
 
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
