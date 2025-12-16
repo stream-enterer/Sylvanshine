@@ -15,11 +15,18 @@ constexpr int MOVE_RANGE = 3;
 constexpr float TURN_TRANSITION_DELAY = 0.5f;
 constexpr float AI_ACTION_DELAY = 0.4f;
 
+enum class GamePhase {
+    Playing,
+    Victory,
+    Defeat
+};
+
 enum class TurnPhase {
     PlayerTurn,
     EnemyTurn,
     TurnTransition
 };
+
 constexpr float DAMAGE_NUMBER_DURATION = 1.0f;
 constexpr float DAMAGE_NUMBER_RISE_SPEED = 50.0f;
 
@@ -55,6 +62,7 @@ struct GameState {
     FXCache fx_cache;
     std::vector<FXEntity> active_fx;
     
+    GamePhase game_phase = GamePhase::Playing;
     TurnPhase turn_phase = TurnPhase::PlayerTurn;
     float turn_transition_timer = 0.0f;
     float ai_action_timer = 0.0f;
@@ -74,6 +82,8 @@ void print_help() {
     SDL_Log("  Left click tile     Move selected unit to that tile");
     SDL_Log("  Left click enemy    Attack enemy in range");
     SDL_Log("  Right click         Deselect unit");
+    SDL_Log("  Space               End turn early");
+    SDL_Log("  R                   Restart (after game over)");
 }
 
 int find_unit_at_pos(const GameState& state, BoardPos pos) {
@@ -236,6 +246,33 @@ bool any_units_busy(const GameState& state) {
     return false;
 }
 
+bool has_living_units(const GameState& state, UnitType type) {
+    for (const auto& unit : state.units) {
+        if (unit.type == type && !unit.is_dead()) {
+            return true;
+        }
+    }
+    return false;
+}
+
+void check_win_lose_condition(GameState& state) {
+    if (state.game_phase != GamePhase::Playing) return;
+    if (any_units_busy(state)) return;
+    
+    bool players_alive = has_living_units(state, UnitType::Player);
+    bool enemies_alive = has_living_units(state, UnitType::Enemy);
+    
+    if (!enemies_alive) {
+        state.game_phase = GamePhase::Victory;
+        clear_selection(state);
+        SDL_Log("=== VICTORY ===");
+    } else if (!players_alive) {
+        state.game_phase = GamePhase::Defeat;
+        clear_selection(state);
+        SDL_Log("=== DEFEAT ===");
+    }
+}
+
 int find_nearest_enemy(const GameState& state, int unit_idx) {
     const Entity& unit = state.units[unit_idx];
     int nearest_idx = -1;
@@ -338,6 +375,7 @@ void execute_ai_action(GameState& state, int unit_idx, const RenderConfig& confi
 }
 
 void update_ai(GameState& state, float dt, const RenderConfig& config) {
+    if (state.game_phase != GamePhase::Playing) return;
     if (state.turn_phase != TurnPhase::EnemyTurn) return;
     if (any_units_busy(state)) return;
     
@@ -613,6 +651,7 @@ void handle_selected_click(GameState& state, BoardPos clicked, const RenderConfi
 }
 
 void handle_click(GameState& state, Vec2 mouse, const RenderConfig& config) {
+    if (state.game_phase != GamePhase::Playing) return;
     if (state.turn_phase != TurnPhase::PlayerTurn) return;
     
     BoardPos clicked = screen_to_board(config, mouse);
@@ -633,16 +672,80 @@ void handle_click(GameState& state, Vec2 mouse, const RenderConfig& config) {
     }
 }
 
-void handle_events(bool& running, GameState& state, const RenderConfig& config) {
+void handle_end_turn(GameState& state) {
+    if (state.game_phase != GamePhase::Playing) return;
+    if (state.turn_phase != TurnPhase::PlayerTurn) return;
+    if (any_units_busy(state)) return;
+    
+    SDL_Log("Player ended turn early");
+    begin_turn_transition(state, TurnPhase::EnemyTurn);
+}
+
+Entity create_unit(SDL_Renderer* renderer, GameState& state, const RenderConfig& config, 
+                   const char* unit_name, UnitType type, int hp, int atk, BoardPos pos);
+
+void reset_game(GameState& state, SDL_Renderer* renderer, const RenderConfig& config) {
+    state.units.clear();
+    state.selected_unit_idx = -1;
+    state.reachable_tiles.clear();
+    state.attackable_tiles.clear();
+    state.floating_texts.clear();
+    state.pending_damage.clear();
+    state.active_fx.clear();
+    state.game_phase = GamePhase::Playing;
+    state.turn_phase = TurnPhase::PlayerTurn;
+    state.turn_transition_timer = 0.0f;
+    state.ai_action_timer = 0.0f;
+    state.ai_current_unit = -1;
+    state.has_acted.clear();
+    
+    Entity unit1 = create_unit(renderer, state, config, "f1_general", UnitType::Player, 25, 5, {2, 2});
+    if (unit1.spritesheet) {
+        state.units.push_back(std::move(unit1));
+    }
+
+    Entity unit2 = create_unit(renderer, state, config, "f1_general", UnitType::Enemy, 10, 2, {6, 2});
+    if (unit2.spritesheet) {
+        state.units.push_back(std::move(unit2));
+    }
+
+    Entity unit3 = create_unit(renderer, state, config, "f1_general", UnitType::Enemy, 5, 3, {4, 1});
+    if (unit3.spritesheet) {
+        state.units.push_back(std::move(unit3));
+    }
+
+    reset_actions(state);
+    SDL_Log("=== GAME RESET ===");
+    SDL_Log("=== PLAYER TURN ===");
+}
+
+void handle_events(bool& running, GameState& state, SDL_Renderer* renderer, const RenderConfig& config) {
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
         if (event.type == SDL_EVENT_QUIT) {
             running = false;
         }
+        else if (event.type == SDL_EVENT_KEY_DOWN) {
+            if (event.key.key == SDLK_SPACE) {
+                handle_end_turn(state);
+            }
+            else if (event.key.key == SDLK_R) {
+                if (state.game_phase != GamePhase::Playing) {
+                    reset_game(state, renderer, config);
+                }
+            }
+            else if (event.key.key == SDLK_ESCAPE) {
+                running = false;
+            }
+        }
         else if (event.type == SDL_EVENT_MOUSE_BUTTON_DOWN) {
             if (event.button.button == SDL_BUTTON_LEFT) {
                 Vec2 mouse{static_cast<float>(event.button.x), static_cast<float>(event.button.y)};
-                handle_click(state, mouse, config);
+                if (state.game_phase != GamePhase::Playing) {
+                    reset_game(state, renderer, config);
+                } else {
+                    handle_click(state, mouse, config);
+                }
             }
             else if (event.button.button == SDL_BUTTON_RIGHT) {
                 clear_selection(state);
@@ -650,7 +753,7 @@ void handle_events(bool& running, GameState& state, const RenderConfig& config) 
         }
         else if (event.type == SDL_EVENT_MOUSE_MOTION) {
             state.mouse_pos = {static_cast<float>(event.motion.x), static_cast<float>(event.motion.y)};
-            if (state.turn_phase == TurnPhase::PlayerTurn) {
+            if (state.game_phase == GamePhase::Playing && state.turn_phase == TurnPhase::PlayerTurn) {
                 update_selected_facing(state, config);
             }
         }
@@ -658,6 +761,7 @@ void handle_events(bool& running, GameState& state, const RenderConfig& config) 
 }
 
 void check_player_turn_end(GameState& state) {
+    if (state.game_phase != GamePhase::Playing) return;
     if (state.turn_phase != TurnPhase::PlayerTurn) return;
     if (any_units_busy(state)) return;
     if (!all_units_acted(state, UnitType::Player)) return;
@@ -676,8 +780,12 @@ void update(GameState& state, float dt, SDL_Renderer* renderer, const RenderConf
     update_floating_texts(state, dt, config);
     update_active_fx(state, dt);
     remove_dead_units(state);
-    update_selected_ranges(state);
     
+    check_win_lose_condition(state);
+    
+    if (state.game_phase != GamePhase::Playing) return;
+    
+    update_selected_ranges(state);
     update_turn_transition(state, dt);
     update_ai(state, dt, config);
     check_player_turn_end(state);
@@ -751,13 +859,59 @@ void render_turn_indicator(SDL_Renderer* renderer, const GameState& state, const
     SDL_RenderFillRect(renderer, &label);
 }
 
+void render_game_over_overlay(SDL_Renderer* renderer, const GameState& state, const RenderConfig& config) {
+    SDL_FRect fullscreen = {0, 0, static_cast<float>(config.window_w), static_cast<float>(config.window_h)};
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 180);
+    SDL_RenderFillRect(renderer, &fullscreen);
+    
+    float box_w = 400.0f * config.scale;
+    float box_h = 200.0f * config.scale;
+    float box_x = (config.window_w - box_w) * 0.5f;
+    float box_y = (config.window_h - box_h) * 0.5f;
+    
+    SDL_FRect box_bg = {box_x - 4, box_y - 4, box_w + 8, box_h + 8};
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+    SDL_RenderFillRect(renderer, &box_bg);
+    
+    SDL_FRect box = {box_x, box_y, box_w, box_h};
+    if (state.game_phase == GamePhase::Victory) {
+        SDL_SetRenderDrawColor(renderer, 50, 120, 50, 255);
+    } else {
+        SDL_SetRenderDrawColor(renderer, 120, 50, 50, 255);
+    }
+    SDL_RenderFillRect(renderer, &box);
+    
+    float title_w = 200.0f * config.scale;
+    float title_h = 60.0f * config.scale;
+    float title_x = box_x + (box_w - title_w) * 0.5f;
+    float title_y = box_y + 30.0f * config.scale;
+    
+    SDL_FRect title_rect = {title_x, title_y, title_w, title_h};
+    if (state.game_phase == GamePhase::Victory) {
+        SDL_SetRenderDrawColor(renderer, 100, 255, 100, 255);
+    } else {
+        SDL_SetRenderDrawColor(renderer, 255, 100, 100, 255);
+    }
+    SDL_RenderFillRect(renderer, &title_rect);
+    
+    float hint_w = 250.0f * config.scale;
+    float hint_h = 30.0f * config.scale;
+    float hint_x = box_x + (box_w - hint_w) * 0.5f;
+    float hint_y = box_y + box_h - 50.0f * config.scale;
+    
+    SDL_FRect hint_rect = {hint_x, hint_y, hint_w, hint_h};
+    SDL_SetRenderDrawColor(renderer, 200, 200, 200, 200);
+    SDL_RenderFillRect(renderer, &hint_rect);
+}
+
 void render(SDL_Renderer* renderer, const GameState& state, const RenderConfig& config) {
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
+    SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
     
     render_grid(renderer, config);
     
-    if (state.selected_unit_idx >= 0) {
+    if (state.selected_unit_idx >= 0 && state.game_phase == GamePhase::Playing) {
         render_move_range(renderer, config, state.units[state.selected_unit_idx].board_pos, MOVE_RANGE);
         render_attack_range(renderer, config, state.attackable_tiles);
     }
@@ -777,7 +931,12 @@ void render(SDL_Renderer* renderer, const GameState& state, const RenderConfig& 
     }
     
     render_floating_texts(renderer, state, config);
-    render_turn_indicator(renderer, state, config);
+    
+    if (state.game_phase == GamePhase::Playing) {
+        render_turn_indicator(renderer, state, config);
+    } else {
+        render_game_over_overlay(renderer, state, config);
+    }
     
     SDL_RenderPresent(renderer);
 }
@@ -814,7 +973,7 @@ int main(int argc, char* argv[]) {
         SDL_Log("Warning: Failed to load FX mappings, FX will not display");
     }
 
-    Entity unit1 = create_unit(renderer.get(), state, config, "f1_general", UnitType::Player, 25, 2, {2, 2});
+    Entity unit1 = create_unit(renderer.get(), state, config, "f1_general", UnitType::Player, 25, 5, {2, 2});
     if (unit1.spritesheet) {
         state.units.push_back(std::move(unit1));
     }
@@ -840,7 +999,7 @@ int main(int argc, char* argv[]) {
         float dt = (current_time - last_time) / 1000.0f;
         last_time = current_time;
 
-        handle_events(running, state, config);
+        handle_events(running, state, renderer.get(), config);
         update(state, dt, renderer.get(), config);
         render(renderer.get(), state, config);
 
