@@ -6,8 +6,32 @@
 #include "sdl_handles.hpp"
 #include <vector>
 #include <cstring>
+#include <algorithm>
 
 constexpr int MOVE_RANGE = 3;
+constexpr float DAMAGE_NUMBER_DURATION = 1.0f;
+constexpr float DAMAGE_NUMBER_RISE_SPEED = 50.0f;
+
+struct FloatingText {
+    Vec2 pos;
+    int value;
+    float elapsed;
+    float duration;
+    
+    bool is_expired() const { return elapsed >= duration; }
+    float get_alpha() const {
+        float t = elapsed / duration;
+        if (t < 0.2f) return t / 0.2f;
+        if (t > 0.7f) return 1.0f - (t - 0.7f) / 0.3f;
+        return 1.0f;
+    }
+};
+
+struct PendingDamage {
+    int attacker_idx;
+    int target_idx;
+    int damage;
+};
 
 struct GameState {
     std::vector<Entity> units;
@@ -15,6 +39,8 @@ struct GameState {
     std::vector<BoardPos> reachable_tiles;
     std::vector<BoardPos> attackable_tiles;
     Vec2 mouse_pos = {0.0f, 0.0f};
+    std::vector<FloatingText> floating_texts;
+    std::vector<PendingDamage> pending_damage;
 };
 
 void print_help() {
@@ -33,7 +59,7 @@ void print_help() {
 
 int find_unit_at_pos(const GameState& state, BoardPos pos) {
     for (size_t i = 0; i < state.units.size(); i++) {
-        if (state.units[i].board_pos == pos) {
+        if (state.units[i].board_pos == pos && !state.units[i].is_dead()) {
             return static_cast<int>(i);
         }
     }
@@ -43,7 +69,7 @@ int find_unit_at_pos(const GameState& state, BoardPos pos) {
 std::vector<BoardPos> get_occupied_positions(const GameState& state, int exclude_idx) {
     std::vector<BoardPos> occupied;
     for (size_t i = 0; i < state.units.size(); i++) {
-        if (static_cast<int>(i) != exclude_idx) {
+        if (static_cast<int>(i) != exclude_idx && !state.units[i].is_dead()) {
             if (state.units[i].is_moving()) {
                 occupied.push_back(state.units[i].move_target);
             } else {
@@ -59,7 +85,9 @@ std::vector<BoardPos> get_enemy_positions(const GameState& state, int unit_idx) 
     UnitType unit_type = state.units[unit_idx].type;
     
     for (size_t i = 0; i < state.units.size(); i++) {
-        if (static_cast<int>(i) != unit_idx && state.units[i].type != unit_type) {
+        if (static_cast<int>(i) != unit_idx && 
+            state.units[i].type != unit_type && 
+            !state.units[i].is_dead()) {
             if (state.units[i].can_act()) {
                 enemies.push_back(state.units[i].board_pos);
             }
@@ -69,7 +97,8 @@ std::vector<BoardPos> get_enemy_positions(const GameState& state, int unit_idx) 
 }
 
 void clear_selection(GameState& state) {
-    if (state.selected_unit_idx >= 0) {
+    if (state.selected_unit_idx >= 0 && 
+        state.selected_unit_idx < static_cast<int>(state.units.size())) {
         state.units[state.selected_unit_idx].restore_facing();
     }
     state.selected_unit_idx = -1;
@@ -79,6 +108,15 @@ void clear_selection(GameState& state) {
 
 void update_selected_ranges(GameState& state) {
     if (state.selected_unit_idx < 0) return;
+    if (state.selected_unit_idx >= static_cast<int>(state.units.size())) {
+        state.selected_unit_idx = -1;
+        return;
+    }
+    
+    if (state.units[state.selected_unit_idx].is_dead()) {
+        clear_selection(state);
+        return;
+    }
     
     BoardPos selected_pos = state.units[state.selected_unit_idx].board_pos;
     
@@ -91,21 +129,101 @@ void update_selected_ranges(GameState& state) {
         state.units[state.selected_unit_idx].attack_range,
         enemy_positions
     );
-    
-    static size_t last_attackable_count = 0;
-    if (state.attackable_tiles.size() != last_attackable_count) {
-        SDL_Log("Attackable tiles updated: %zu enemies in range", state.attackable_tiles.size());
-        last_attackable_count = state.attackable_tiles.size();
-    }
 }
 
 void update_selected_facing(GameState& state, const RenderConfig& config) {
     if (state.selected_unit_idx < 0) return;
+    if (state.selected_unit_idx >= static_cast<int>(state.units.size())) return;
     
     BoardPos mouse_board = screen_to_board(config, state.mouse_pos);
     if (!mouse_board.is_valid()) return;
     
     state.units[state.selected_unit_idx].face_position(mouse_board);
+}
+
+void spawn_damage_number(GameState& state, Vec2 pos, int damage, const RenderConfig& config) {
+    FloatingText ft;
+    ft.pos = pos;
+    ft.pos.y -= 30.0f * config.scale;
+    ft.value = damage;
+    ft.elapsed = 0.0f;
+    ft.duration = DAMAGE_NUMBER_DURATION;
+    state.floating_texts.push_back(ft);
+}
+
+void process_pending_damage(GameState& state, const RenderConfig& config) {
+    for (const auto& pd : state.pending_damage) {
+        if (pd.target_idx < 0 || pd.target_idx >= static_cast<int>(state.units.size())) {
+            continue;
+        }
+        
+        Entity& target = state.units[pd.target_idx];
+        if (target.is_dead()) continue;
+        
+        spawn_damage_number(state, target.screen_pos, pd.damage, config);
+        target.take_damage(pd.damage);
+    }
+    state.pending_damage.clear();
+}
+
+void check_attack_completion(GameState& state) {
+    for (size_t i = 0; i < state.units.size(); i++) {
+        Entity& unit = state.units[i];
+        if (!unit.is_attacking()) continue;
+        
+        int target_idx = unit.get_target_idx();
+        if (target_idx < 0) continue;
+        
+        float attack_progress = unit.attack_elapsed / unit.attack_duration;
+        if (attack_progress >= 0.5f && attack_progress - (16.0f / 1000.0f / unit.attack_duration) < 0.5f) {
+            PendingDamage pd;
+            pd.attacker_idx = static_cast<int>(i);
+            pd.target_idx = target_idx;
+            pd.damage = unit.attack_power;
+            state.pending_damage.push_back(pd);
+            SDL_Log("Attack from unit %zu hitting target %d for %d damage", i, target_idx, pd.damage);
+        }
+    }
+}
+
+void update_floating_texts(GameState& state, float dt, const RenderConfig& config) {
+    for (auto& ft : state.floating_texts) {
+        ft.elapsed += dt;
+        ft.pos.y -= DAMAGE_NUMBER_RISE_SPEED * config.scale * dt;
+    }
+    
+    state.floating_texts.erase(
+        std::remove_if(state.floating_texts.begin(), state.floating_texts.end(),
+            [](const FloatingText& ft) { return ft.is_expired(); }),
+        state.floating_texts.end()
+    );
+}
+
+void remove_dead_units(GameState& state) {
+    if (state.selected_unit_idx >= 0) {
+        if (state.units[state.selected_unit_idx].is_dead()) {
+            state.selected_unit_idx = -1;
+            state.reachable_tiles.clear();
+            state.attackable_tiles.clear();
+        }
+    }
+    
+    int removed_before_selected = 0;
+    for (int i = 0; i < static_cast<int>(state.units.size()); i++) {
+        if (state.units[i].is_dead() && i < state.selected_unit_idx) {
+            removed_before_selected++;
+        }
+    }
+    
+    state.units.erase(
+        std::remove_if(state.units.begin(), state.units.end(),
+            [](const Entity& e) { return e.is_dead(); }),
+        state.units.end()
+    );
+    
+    if (state.selected_unit_idx >= 0) {
+        state.selected_unit_idx -= removed_before_selected;
+    }
 }
 
 RenderConfig parse_args(int argc, char* argv[]) {
@@ -228,7 +346,7 @@ void handle_attack_click(GameState& state, BoardPos clicked) {
 void handle_selected_click(GameState& state, BoardPos clicked, const RenderConfig& config) {
     int clicked_unit = find_unit_at_pos(state, clicked);
     
-    if (clicked_unit >= 0) {
+    if (clicked_unit >= 0 && state.units[clicked_unit].type != state.units[state.selected_unit_idx].type) {
         handle_attack_click(state, clicked);
     } else {
         handle_move_click(state, clicked, config);
@@ -277,11 +395,43 @@ void handle_events(bool& running, GameState& state, const RenderConfig& config) 
 }
 
 void update(GameState& state, float dt, const RenderConfig& config) {
+    check_attack_completion(state);
+    process_pending_damage(state, config);
+    
     for (auto& unit : state.units) {
         unit.update(dt, config);
     }
     
+    update_floating_texts(state, dt, config);
+    remove_dead_units(state);
     update_selected_ranges(state);
+}
+
+void render_floating_texts(SDL_Renderer* renderer, const GameState& state, const RenderConfig& config) {
+    for (const auto& ft : state.floating_texts) {
+        float alpha = ft.get_alpha();
+        Uint8 a = static_cast<Uint8>(alpha * 255);
+        
+        float size = 12.0f * config.scale;
+        SDL_FRect rect = {
+            ft.pos.x - size * 0.5f,
+            ft.pos.y - size * 0.5f,
+            size,
+            size
+        };
+        
+        SDL_SetRenderDrawColor(renderer, 255, 50, 50, a);
+        SDL_RenderFillRect(renderer, &rect);
+        
+        SDL_FRect inner = {
+            rect.x + 2,
+            rect.y + 2,
+            rect.w - 4,
+            rect.h - 4
+        };
+        SDL_SetRenderDrawColor(renderer, 255, 200, 200, a);
+        SDL_RenderFillRect(renderer, &inner);
+    }
 }
 
 void render(SDL_Renderer* renderer, const GameState& state, const RenderConfig& config) {
@@ -296,8 +446,18 @@ void render(SDL_Renderer* renderer, const GameState& state, const RenderConfig& 
     }
     
     for (const auto& unit : state.units) {
-        unit.render(renderer, config);
+        if (!unit.is_dead()) {
+            unit.render(renderer, config);
+        }
     }
+    
+    for (const auto& unit : state.units) {
+        if (!unit.is_dead()) {
+            unit.render_hp_bar(renderer, config);
+        }
+    }
+    
+    render_floating_texts(renderer, state, config);
     
     SDL_RenderPresent(renderer);
 }
@@ -320,6 +480,7 @@ int main(int argc, char* argv[]) {
         return 1;
     }
     unit1.type = UnitType::Player;
+    unit1.set_stats(25, 2);
     unit1.set_board_position(config, {2, 2});
     state.units.push_back(std::move(unit1));
 
@@ -329,6 +490,7 @@ int main(int argc, char* argv[]) {
         return 1;
     }
     unit2.type = UnitType::Enemy;
+    unit2.set_stats(10, 2);
     unit2.set_board_position(config, {6, 2});
     state.units.push_back(std::move(unit2));
 
@@ -338,6 +500,7 @@ int main(int argc, char* argv[]) {
         return 1;
     }
     unit3.type = UnitType::Enemy;
+    unit3.set_stats(5, 3);
     unit3.set_board_position(config, {4, 1});
     state.units.push_back(std::move(unit3));
 

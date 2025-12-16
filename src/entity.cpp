@@ -13,13 +13,19 @@ Entity::Entity()
     , state(EntityState::Idle)
     , type(UnitType::Player)
     , attack_range(1)
+    , hp(10)
+    , max_hp(10)
+    , attack_power(2)
     , move_target{0, 0}
     , move_start_pos{0, 0}
     , move_elapsed(0.0f)
     , move_duration(0.0f)
     , target_entity_idx(-1)
     , attack_elapsed(0.0f)
-    , attack_duration(0.0f) {
+    , attack_duration(0.0f)
+    , death_elapsed(0.0f)
+    , death_duration(0.0f)
+    , death_complete(false) {
 }
 
 bool Entity::load(SDL_Renderer* renderer, const char* unit_name) {
@@ -56,6 +62,12 @@ bool Entity::load(SDL_Renderer* renderer, const char* unit_name) {
 void Entity::set_board_position(const RenderConfig& config, BoardPos pos) {
     board_pos = pos;
     screen_pos = board_to_screen(config, pos);
+}
+
+void Entity::set_stats(int health, int atk) {
+    hp = health;
+    max_hp = health;
+    attack_power = atk;
 }
 
 void Entity::play_animation(const char* name) {
@@ -97,17 +109,36 @@ void Entity::update(float dt, const RenderConfig& config) {
         }
     }
     
+    if (state == EntityState::Dying) {
+        death_elapsed += dt;
+        if (death_elapsed >= death_duration) {
+            death_complete = true;
+            SDL_Log("Unit death animation complete");
+        }
+    }
+    
     anim_time += dt;
     float frame_duration = 1.0f / current_anim->fps;
-    while (anim_time >= frame_duration * current_anim->frames.size()) {
-        anim_time -= frame_duration * current_anim->frames.size();
+    float anim_total_duration = frame_duration * current_anim->frames.size();
+    
+    if (state == EntityState::Dying) {
+        if (anim_time >= anim_total_duration) {
+            anim_time = anim_total_duration - 0.001f;
+        }
+    } else {
+        while (anim_time >= anim_total_duration) {
+            anim_time -= anim_total_duration;
+        }
     }
 }
 
 void Entity::render(SDL_Renderer* renderer, const RenderConfig& config) const {
     if (!spritesheet || !current_anim || current_anim->frames.empty()) return;
 
-    int frame_idx = static_cast<int>(anim_time * current_anim->fps) % current_anim->frames.size();
+    int frame_idx = static_cast<int>(anim_time * current_anim->fps);
+    if (frame_idx >= static_cast<int>(current_anim->frames.size())) {
+        frame_idx = current_anim->frames.size() - 1;
+    }
     const SDL_Rect& src_rect = current_anim->frames[frame_idx].rect;
 
     SDL_FRect src = {
@@ -131,6 +162,37 @@ void Entity::render(SDL_Renderer* renderer, const RenderConfig& config) const {
     }
 
     SDL_RenderTexture(renderer, spritesheet.get(), &src, &dst);
+}
+
+void Entity::render_hp_bar(SDL_Renderer* renderer, const RenderConfig& config) const {
+    if (is_dead()) return;
+    
+    float hp_percent = static_cast<float>(hp) / max_hp;
+    
+    float bar_width = 60.0f * config.scale;
+    float bar_height = 6.0f * config.scale;
+    float bar_x = screen_pos.x - bar_width * 0.5f;
+    float bar_y = screen_pos.y - 55.0f * config.scale;
+    
+    SDL_FRect bg = {bar_x - 1, bar_y - 1, bar_width + 2, bar_height + 2};
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+    SDL_RenderFillRect(renderer, &bg);
+    
+    SDL_FRect bg_inner = {bar_x, bar_y, bar_width, bar_height};
+    SDL_SetRenderDrawColor(renderer, 40, 40, 40, 255);
+    SDL_RenderFillRect(renderer, &bg_inner);
+    
+    if (hp > 0) {
+        SDL_FRect fg = {bar_x, bar_y, bar_width * hp_percent, bar_height};
+        if (hp_percent > 0.66f) {
+            SDL_SetRenderDrawColor(renderer, 100, 255, 100, 255);
+        } else if (hp_percent > 0.33f) {
+            SDL_SetRenderDrawColor(renderer, 255, 255, 100, 255);
+        } else {
+            SDL_SetRenderDrawColor(renderer, 255, 100, 100, 255);
+        }
+        SDL_RenderFillRect(renderer, &fg);
+    }
 }
 
 void Entity::start_move(const RenderConfig& config, BoardPos target) {
@@ -168,6 +230,33 @@ void Entity::start_attack(int target_idx) {
     play_animation("attack");
     
     SDL_Log("Unit started attack on target %d", target_idx);
+}
+
+void Entity::take_damage(int damage) {
+    hp -= damage;
+    if (hp < 0) hp = 0;
+    
+    SDL_Log("Unit took %d damage, HP now %d/%d", damage, hp, max_hp);
+    
+    if (hp == 0) {
+        start_death();
+    }
+}
+
+void Entity::start_death() {
+    state = EntityState::Dying;
+    death_elapsed = 0.0f;
+    death_complete = false;
+    
+    const Animation* death_anim = animations.find("death");
+    if (death_anim) {
+        death_duration = death_anim->duration();
+        play_animation("death");
+        SDL_Log("Unit starting death animation (%.2fs)", death_duration);
+    } else {
+        death_duration = 0.5f;
+        SDL_Log("No death animation, using fallback duration");
+    }
 }
 
 void Entity::face_position(BoardPos target) {
