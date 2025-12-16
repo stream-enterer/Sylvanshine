@@ -42,8 +42,10 @@ struct Entity {
     float move_duration;
     
     int target_entity_idx;
+    float attack_damage_delay;
     float attack_elapsed;
     float attack_duration;
+    bool attack_damage_dealt;
     
     float death_elapsed;
     float death_duration;
@@ -54,6 +56,7 @@ struct Entity {
     bool load(SDL_Renderer* renderer, const char* unit_name);
     void set_board_position(const RenderConfig& config, BoardPos pos);
     void set_stats(int health, int atk);
+    void set_timing(float damage_delay);
     void play_animation(const char* name);
     void update(float dt, const RenderConfig& config);
     void render(SDL_Renderer* renderer, const RenderConfig& config) const;
@@ -61,15 +64,18 @@ struct Entity {
     
     void start_move(const RenderConfig& config, BoardPos target);
     void start_attack(int target_idx);
+    void mark_damage_dealt();
     void take_damage(int damage);
     void start_death();
     void face_position(BoardPos target);
     void store_facing();
     void restore_facing();
+    
     bool is_moving() const { return state == EntityState::Moving; }
     bool is_attacking() const { return state == EntityState::Attacking; }
     bool is_dying() const { return state == EntityState::Dying; }
     bool is_dead() const { return death_complete; }
     bool can_act() const { return state == EntityState::Idle; }
     int get_target_idx() const { return target_entity_idx; }
+    bool should_deal_damage() const;
 };

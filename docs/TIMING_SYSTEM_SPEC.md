@@ -29,27 +29,27 @@ This document specifies the complete timing system for Duelyst, including attack
 │  [Action Queued]                                                         │
 │       │                                                                  │
 │       ▼                                                                  │
-│  ┌─────────────────────────────────────────────┐                        │
-│  │  PRE-ATTACK DELAY (attackDelay)             │                        │
-│  │  Default: 0.0s                              │                        │
-│  │  Range: 0.0 - 1.5s                          │                        │
-│  │  Purpose: Anticipation pause before swing   │                        │
-│  └─────────────────────────────────────────────┘                        │
+│  ┌─────────────────────────────────────────────────────────────────┐    │
+│  │  ATTACK ANIMATION STARTS IMMEDIATELY                            │    │
+│  │  - Attacker begins attack animation                             │    │
+│  │  - Attack swing sound plays at attackReleaseDelay (usually 0.0) │    │
+│  └─────────────────────────────────────────────────────────────────┘    │
 │       │                                                                  │
 │       ▼                                                                  │
-│  [Attack Animation Starts]                                               │
-│  [Attack Swing Sound Plays]                                              │
+│  ┌─────────────────────────────────────────────────────────────────┐    │
+│  │  DAMAGE POINT (attackDelay from animation start)                │    │
+│  │  Default: 0.5s                                                  │    │
+│  │  Range: 0.0 - 1.7s                                              │    │
+│  │  ─────────────────────────────────────────────                  │    │
+│  │  At this point:                                                 │    │
+│  │    ◄── Target takes damage                                      │    │
+│  │    ◄── Target plays hit reaction                                │    │
+│  │    ◄── Impact FX spawns on target                               │    │
+│  │    ◄── Impact sound plays                                       │    │
+│  └─────────────────────────────────────────────────────────────────┘    │
 │       │                                                                  │
 │       ▼                                                                  │
-│  ┌─────────────────────────────────────────────┐                        │
-│  │  RELEASE POINT (attackReleaseDelay)         │  ◄── DAMAGE HERE       │
-│  │  Default: 0.0s                              │  ◄── Impact Sound      │
-│  │  Range: 0.0 - 0.2s                          │  ◄── Impact FX         │
-│  │  Purpose: Point in anim where damage hits   │                        │
-│  └─────────────────────────────────────────────┘                        │
-│       │                                                                  │
-│       ▼                                                                  │
-│  [Animation Continues to End]                                            │
+│  [Attack Animation Continues to End]                                     │
 │       │                                                                  │
 │       ▼                                                                  │
 │  [Return to Idle/Breathing State]                                        │
@@ -57,52 +57,75 @@ This document specifies the complete timing system for Duelyst, including attack
 └─────────────────────────────────────────────────────────────────────────┘
 ```
 
-### Key Insight: Damage at Animation START
+### Critical Insight: Animation Starts Immediately
 
-**95%+ of units have attackReleaseDelay: 0.0**
+**The attack animation starts the instant the attack action is triggered.** There is NO pre-attack windup pause.
 
-This means damage applies the instant the attack animation begins, NOT at the midpoint. The animation is purely visual feedback after the damage has already been applied.
+The `attackDelay` value controls how long INTO the animation before the target takes damage and reacts. This creates the visual effect of the weapon swing connecting with the target at the right moment.
 
-### Source Code References
+### Source Code Evidence
 
-**UnitNode.js (attack sound timing):**
+**GameLayer.js (lines 3379-3418):**
 ```javascript
-const releaseDelay = (this.getAnimResource() && this.getAnimResource().attackReleaseDelay) || 0.0;
+// Source animation scheduled FIRST at current actionDelay
+sequenceSteps.push(cc.delayTime(actionDelay));
+sequenceSteps.push(cc.callFunc(() => {
+    _showActionForSource(action, ...);  // Attack animation STARTS here
+}));
+
+// THEN attackDelay is added to actionDelay
+const attackDelay = (animResource.attackDelay || 0.0) * CONFIG.ENTITY_ATTACK_DURATION_MODIFIER;
+actionDelay += attackDelay;  // Added AFTER source animation scheduled
+
+// Target reaction uses the UPDATED actionDelay
+const targetReactionDelay = actionDelay + impactDelay;
+sequenceSteps.push(cc.delayTime(targetReactionDelay));
+sequenceSteps.push(cc.callFunc(() => {
+    _showActionForTarget(action, ...);  // Target takes damage HERE
+}));
 ```
 
-**GameLayer.js (pre-attack delay):**
-```javascript
-const attackDelay = (_currentActionSourceNode.getAnimResource().attackDelay || 0.0) 
-                    * CONFIG.ENTITY_ATTACK_DURATION_MODIFIER;
-```
+**Key insight:** The source animation is scheduled BEFORE attackDelay is added. The target reaction is scheduled AFTER. This means attackDelay is the gap between animation start and damage.
 
-### Timing Values Distribution
+### Timing Values
 
-**attackDelay (pre-animation pause):**
+**attackDelay (time from animation start to damage):**
 
-| Range | Typical Units | Feel |
-|-------|--------------|------|
-| 0.0s | Default (most minions) | Instant |
-| 0.2-0.3s | Fast attackers (Songhai) | Quick |
-| 0.4-0.5s | Standard units | Normal |
-| 0.6-0.9s | Heavy hitters | Weighty |
-| 1.0-1.25s | Generals, big units | Dramatic |
-| 1.5s | Slow generals | Very dramatic |
+| Value | Typical Units | Visual Feel |
+|-------|--------------|-------------|
+| 0.0s | Fast minions | Instant hit |
+| 0.3-0.5s | Standard units (f1_general) | Normal swing |
+| 0.6-0.9s | Heavy hitters | Weighty impact |
+| 1.0-1.5s | Bosses, big units | Dramatic windup |
+| 1.7s | Chaos Knight boss | Maximum drama |
 
-**attackReleaseDelay (damage point in animation):**
+**attackReleaseDelay (time from animation start to swing sound):**
 
 | Value | Usage |
 |-------|-------|
-| 0.0s | 95%+ of all units (damage at anim start) |
-| 0.2s | ~4 Songhai generals (multi-hit feel) |
+| 0.0s | 95%+ of all units (sound at anim start) |
+| 0.2s | ~4 Songhai generals (delayed sound for multi-hit feel) |
+
+### Example: f1_general Attack
+
+```
+Attack animation: 23 frames @ 12 FPS = 1.917s duration
+attackDelay: 0.5s (from timing data)
+
+Timeline:
+T=0.0s   Attack animation STARTS, swing sound plays
+T=0.5s   Target takes damage, impact FX, hit reaction
+T=1.917s Attack animation ENDS, return to idle
+```
 
 ### Data File Format
 
 `timing/unit_timing.tsv`:
 ```
 unit_folder	card_id	attack_delay	attack_release_delay	source_file
+f1_general	Cards.Faction1.General	0.5	0.0	faction1.coffee
 neutral_golem_steel	Cards.Neutral.GolemMetallurgist	0.5	0.0	neutral.coffee
-f2_general_tier2	Cards.Faction2.General	0.5	0.2	faction2.coffee
+boss_chaosknight	Cards.Boss.Boss4	1.7	0.0	bosses.coffee
 ```
 
 ---
@@ -240,9 +263,9 @@ sequenceSteps = sequenceSteps.concat(
 │  │  total = base * (tiles + 1) - correction    │                        │
 │  │                                             │                        │
 │  │  Example (8 frame run @ 12fps = 0.667s):    │                        │
-│  │    1 tile: 0.667 * 2 - 0.133 = 1.20s        │                        │
-│  │    2 tiles: 0.667 * 3 - 0.133 = 1.87s       │                        │
-│  │    3 tiles: 0.667 * 4 - 0.133 = 2.54s       │                        │
+│  │    1 tile: 0.667 × 2 - 0.133 = 1.20s        │                        │
+│  │    2 tiles: 0.667 × 3 - 0.133 = 1.87s       │                        │
+│  │    3 tiles: 0.667 × 4 - 0.133 = 2.54s       │                        │
 │  └─────────────────────────────────────────────┘                        │
 │       │                                                                  │
 │       ▼                                                                  │
@@ -321,8 +344,8 @@ animation_duration = frame_count / fps
 
 | Event | Trigger Point | Sound Type |
 |-------|--------------|------------|
-| attack | Attack animation start | Swing/whoosh |
-| attackDamage | attackReleaseDelay point | Impact |
+| attack | Animation start + attackReleaseDelay | Swing/whoosh |
+| attackDamage | Animation start + attackDelay | Impact |
 
 ### Other Sound Events
 
@@ -355,6 +378,10 @@ neutral_sai    Cards.Neutral.SaberspineTiger  0.4           0.0                 
 f1_general     Cards.Faction1.General         0.5           0.0                   faction1.coffee
 ```
 
+**Column definitions:**
+- `attack_delay`: Time from animation START to when target takes damage
+- `attack_release_delay`: Time from animation START to when swing sound plays
+
 ### cosmetic_timing.tsv
 
 For general skins that override base timing:
@@ -383,34 +410,26 @@ CONFIG.ENTITY_ATTACK_DURATION_MODIFIER  1.0    attack
 void Entity::start_attack(int target_idx) {
     target_entity_idx = target_idx;
     attack_elapsed = 0.0f;
+    attack_damage_dealt = false;
     
-    // Get timing from unit data (default 0.0 if not specified)
-    attack_pre_delay = unit_data.attack_delay;  // pause before animation
-    attack_release_delay = unit_data.attack_release_delay;  // damage point
+    // attack_damage_delay loaded from unit_timing.tsv (default 0.5)
+    // This is when damage occurs, measured from animation START
     
     const Animation* attack_anim = animations.find("attack");
-    attack_duration = attack_pre_delay + attack_anim->duration();
+    attack_duration = attack_anim->duration();
     
-    state = EntityState::PreAttack;  // or skip if attack_pre_delay == 0
-    // Play attack swing sound at animation start (not at release)
+    // Animation starts IMMEDIATELY - no pre-attack pause
+    state = EntityState::Attacking;
+    play_animation("attack");
 }
 
 void Entity::update_attack(float dt) {
     attack_elapsed += dt;
     
-    // Pre-attack delay phase
-    if (attack_elapsed < attack_pre_delay) {
-        return;  // still in anticipation pause
-    }
-    
-    float anim_elapsed = attack_elapsed - attack_pre_delay;
-    
-    // Damage trigger point
-    if (!damage_applied && anim_elapsed >= attack_release_delay) {
-        apply_damage_to_target();
-        play_impact_sound();
-        spawn_impact_fx();
-        damage_applied = true;
+    // Damage trigger point (attack_damage_delay into animation)
+    if (!attack_damage_dealt && attack_elapsed >= attack_damage_delay) {
+        // Damage is dealt via callback/event system
+        attack_damage_dealt = true;
     }
     
     // Animation complete
@@ -418,6 +437,12 @@ void Entity::update_attack(float dt) {
         state = EntityState::Idle;
         play_animation("idle");
     }
+}
+
+bool Entity::should_deal_damage() const {
+    return state == EntityState::Attacking 
+        && !attack_damage_dealt 
+        && attack_elapsed >= attack_damage_delay;
 }
 ```
 
@@ -462,8 +487,7 @@ void Entity::update_death(float dt) {
 
 When unit has no timing data:
 ```cpp
-const float DEFAULT_ATTACK_DELAY = 0.0f;
-const float DEFAULT_ATTACK_RELEASE_DELAY = 0.0f;
+const float DEFAULT_ATTACK_DAMAGE_DELAY = 0.5f;  // Reasonable default
 const float DISSOLVE_DURATION = 1.0f;
 ```
 
@@ -478,7 +502,30 @@ Before implementation, verify:
 - [ ] Death animation exists for all units
 - [ ] Sound files exist for all events
 - [ ] Dissolve shader implemented (or opacity fade fallback)
-- [ ] Attack timing triggers damage at correct point (NOT 50%)
+- [ ] Attack animation starts IMMEDIATELY (no pre-attack windup)
+- [ ] Damage is dealt at `attack_delay` seconds INTO the animation
+
+---
+
+## Appendix: Common Mistakes
+
+### WRONG: Pre-attack windup state
+```cpp
+// DON'T DO THIS
+state = EntityState::AttackWindup;  // NO SUCH STATE EXISTS
+wait(attack_delay);
+play_animation("attack");
+deal_damage();  // Damage at animation START is wrong
+```
+
+### CORRECT: Animation-first, delayed damage
+```cpp
+// DO THIS
+play_animation("attack");  // Starts IMMEDIATELY
+state = EntityState::Attacking;
+// ... later, when elapsed >= attack_damage_delay ...
+deal_damage();  // Damage during animation
+```
 
 ---
 
@@ -487,7 +534,7 @@ Before implementation, verify:
 | File | Contains |
 |------|----------|
 | `app/view/nodes/cards/UnitNode.js` | showAttackState, showDeathState |
-| `app/view/layers/game/GameLayer.js` | Attack delay calculation |
+| `app/view/layers/game/GameLayer.js` | Attack sequencing (lines 3379-3418) |
 | `app/common/config.js` | All CONFIG constants |
 | `app/sdk/cards/factory/**/*.coffee` | Unit timing definitions |
 | `app/sdk/cosmetics/cosmeticsFactory.coffee` | General skin timing |

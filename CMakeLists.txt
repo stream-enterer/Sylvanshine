@@ -19,6 +19,7 @@ add_executable(${PROJECT_NAME}
     src/entity.cpp
     src/grid.cpp
     src/fx.cpp
+    src/timing_loader.cpp
 )
 
 target_link_libraries(${PROJECT_NAME} PRIVATE 

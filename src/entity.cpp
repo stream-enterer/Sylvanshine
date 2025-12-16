@@ -21,8 +21,10 @@ Entity::Entity()
     , move_elapsed(0.0f)
     , move_duration(0.0f)
     , target_entity_idx(-1)
+    , attack_damage_delay(0.5f)
     , attack_elapsed(0.0f)
     , attack_duration(0.0f)
+    , attack_damage_dealt(false)
     , death_elapsed(0.0f)
     , death_duration(0.0f)
     , death_complete(false) {
@@ -70,12 +72,26 @@ void Entity::set_stats(int health, int atk) {
     attack_power = atk;
 }
 
+void Entity::set_timing(float damage_delay) {
+    attack_damage_delay = damage_delay;
+}
+
 void Entity::play_animation(const char* name) {
     const Animation* anim = animations.find(name);
     if (anim) {
         current_anim = anim;
         anim_time = 0.0f;
     }
+}
+
+bool Entity::should_deal_damage() const {
+    if (state != EntityState::Attacking) return false;
+    if (attack_damage_dealt) return false;
+    return attack_elapsed >= attack_damage_delay;
+}
+
+void Entity::mark_damage_dealt() {
+    attack_damage_dealt = true;
 }
 
 void Entity::update(float dt, const RenderConfig& config) {
@@ -89,7 +105,6 @@ void Entity::update(float dt, const RenderConfig& config) {
             screen_pos = board_to_screen(config, board_pos);
             state = EntityState::Idle;
             play_animation("idle");
-            SDL_Log("Unit finished moving to (%d, %d), now idle", board_pos.x, board_pos.y);
         } else {
             float t = move_elapsed / move_duration;
             Vec2 target_pos = board_to_screen(config, move_target);
@@ -100,12 +115,12 @@ void Entity::update(float dt, const RenderConfig& config) {
     
     if (state == EntityState::Attacking) {
         attack_elapsed += dt;
+        
         if (attack_elapsed >= attack_duration) {
-            SDL_Log("Unit completed attack on target %d", target_entity_idx);
             state = EntityState::Idle;
             play_animation("idle");
             target_entity_idx = -1;
-            attack_elapsed = 0.0f;
+            attack_damage_dealt = false;
         }
     }
     
@@ -113,7 +128,6 @@ void Entity::update(float dt, const RenderConfig& config) {
         death_elapsed += dt;
         if (death_elapsed >= death_duration) {
             death_complete = true;
-            SDL_Log("Unit death animation complete");
         }
     }
     
@@ -226,10 +240,13 @@ void Entity::start_attack(int target_idx) {
     target_entity_idx = target_idx;
     attack_elapsed = 0.0f;
     attack_duration = attack_anim->duration();
+    attack_damage_dealt = false;
+    
     state = EntityState::Attacking;
     play_animation("attack");
     
-    SDL_Log("Unit started attack on target %d", target_idx);
+    SDL_Log("Attack started (duration: %.2fs, damage at: %.2fs)", 
+            attack_duration, attack_damage_delay);
 }
 
 void Entity::take_damage(int damage) {
@@ -252,10 +269,8 @@ void Entity::start_death() {
     if (death_anim) {
         death_duration = death_anim->duration();
         play_animation("death");
-        SDL_Log("Unit starting death animation (%.2fs)", death_duration);
     } else {
         death_duration = 0.5f;
-        SDL_Log("No death animation, using fallback duration");
     }
 }
 

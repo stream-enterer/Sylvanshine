@@ -4,6 +4,7 @@
 #include "entity.hpp"
 #include "grid.hpp"
 #include "fx.hpp"
+#include "timing_loader.hpp"
 #include "sdl_handles.hpp"
 #include <vector>
 #include <cstring>
@@ -61,6 +62,7 @@ struct GameState {
     std::vector<PendingDamage> pending_damage;
     FXCache fx_cache;
     std::vector<FXEntity> active_fx;
+    TimingData timing_data;
     
     GamePhase game_phase = GamePhase::Playing;
     TurnPhase turn_phase = TurnPhase::PlayerTurn;
@@ -429,23 +431,23 @@ void process_pending_damage(GameState& state, SDL_Renderer* renderer, const Rend
     state.pending_damage.clear();
 }
 
-void check_attack_completion(GameState& state) {
+void check_attack_damage(GameState& state) {
     for (size_t i = 0; i < state.units.size(); i++) {
         Entity& unit = state.units[i];
-        if (!unit.is_attacking()) continue;
+        
+        if (!unit.should_deal_damage()) continue;
         
         int target_idx = unit.get_target_idx();
-        if (target_idx < 0) continue;
+        if (target_idx < 0 || target_idx >= static_cast<int>(state.units.size())) continue;
         
-        float attack_progress = unit.attack_elapsed / unit.attack_duration;
-        if (attack_progress >= 0.5f && attack_progress - (16.0f / 1000.0f / unit.attack_duration) < 0.5f) {
-            PendingDamage pd;
-            pd.attacker_idx = static_cast<int>(i);
-            pd.target_idx = target_idx;
-            pd.damage = unit.attack_power;
-            state.pending_damage.push_back(pd);
-            SDL_Log("Attack from unit %zu hitting target %d for %d damage", i, target_idx, pd.damage);
-        }
+        PendingDamage pd;
+        pd.attacker_idx = static_cast<int>(i);
+        pd.target_idx = target_idx;
+        pd.damage = unit.attack_power;
+        state.pending_damage.push_back(pd);
+        
+        unit.mark_damage_dealt();
+        SDL_Log("Attack from unit %zu dealing %d damage to unit %d", i, pd.damage, target_idx);
     }
 }
 
@@ -770,7 +772,7 @@ void check_player_turn_end(GameState& state) {
 }
 
 void update(GameState& state, float dt, SDL_Renderer* renderer, const RenderConfig& config) {
-    check_attack_completion(state);
+    check_attack_damage(state);
     process_pending_damage(state, renderer, config);
     
     for (auto& unit : state.units) {
@@ -952,6 +954,9 @@ Entity create_unit(SDL_Renderer* renderer, GameState& state, const RenderConfig&
     unit.set_stats(hp, atk);
     unit.set_board_position(config, pos);
     
+    UnitTiming timing = state.timing_data.get(unit_name);
+    unit.set_timing(timing.attack_damage_delay);
+    
     spawn_unit_spawn_fx(state, renderer, unit.screen_pos);
     
     return unit;
@@ -971,6 +976,10 @@ int main(int argc, char* argv[]) {
     
     if (!state.fx_cache.load_mappings("data/fx/rsx_mapping.tsv", "data/fx/manifest.tsv")) {
         SDL_Log("Warning: Failed to load FX mappings, FX will not display");
+    }
+    
+    if (!state.timing_data.load("data/timing/unit_timing.tsv")) {
+        SDL_Log("Warning: Failed to load timing data, using defaults");
     }
 
     Entity unit1 = create_unit(renderer.get(), state, config, "f1_general", UnitType::Player, 25, 5, {2, 2});
