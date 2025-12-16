@@ -3,12 +3,23 @@
 #include "types.hpp"
 #include "entity.hpp"
 #include "grid.hpp"
+#include "fx.hpp"
 #include "sdl_handles.hpp"
 #include <vector>
 #include <cstring>
 #include <algorithm>
+#include <cmath>
+#include <limits>
 
 constexpr int MOVE_RANGE = 3;
+constexpr float TURN_TRANSITION_DELAY = 0.5f;
+constexpr float AI_ACTION_DELAY = 0.4f;
+
+enum class TurnPhase {
+    PlayerTurn,
+    EnemyTurn,
+    TurnTransition
+};
 constexpr float DAMAGE_NUMBER_DURATION = 1.0f;
 constexpr float DAMAGE_NUMBER_RISE_SPEED = 50.0f;
 
@@ -41,6 +52,14 @@ struct GameState {
     Vec2 mouse_pos = {0.0f, 0.0f};
     std::vector<FloatingText> floating_texts;
     std::vector<PendingDamage> pending_damage;
+    FXCache fx_cache;
+    std::vector<FXEntity> active_fx;
+    
+    TurnPhase turn_phase = TurnPhase::PlayerTurn;
+    float turn_transition_timer = 0.0f;
+    float ai_action_timer = 0.0f;
+    int ai_current_unit = -1;
+    std::vector<bool> has_acted;
 };
 
 void print_help() {
@@ -151,7 +170,206 @@ void spawn_damage_number(GameState& state, Vec2 pos, int damage, const RenderCon
     state.floating_texts.push_back(ft);
 }
 
-void process_pending_damage(GameState& state, const RenderConfig& config) {
+void spawn_fx_at_pos(GameState& state, SDL_Renderer* renderer, const std::string& rsx_name, Vec2 pos) {
+    FXEntity fx = create_fx(state.fx_cache, renderer, rsx_name, pos);
+    if (!fx.is_complete()) {
+        state.active_fx.push_back(std::move(fx));
+    }
+}
+
+void spawn_unit_spawn_fx(GameState& state, SDL_Renderer* renderer, Vec2 pos) {
+    spawn_fx_at_pos(state, renderer, "fxSmokeGround", pos);
+}
+
+void spawn_unit_death_fx(GameState& state, SDL_Renderer* renderer, Vec2 pos) {
+    spawn_fx_at_pos(state, renderer, "fxExplosionOrangeSmoke", pos);
+}
+
+void spawn_attack_fx(GameState& state, SDL_Renderer* renderer, Vec2 target_pos) {
+    spawn_fx_at_pos(state, renderer, "fxClawSlash", target_pos);
+    spawn_fx_at_pos(state, renderer, "fxImpactOrangeSmall", target_pos);
+}
+
+void reset_actions(GameState& state) {
+    state.has_acted.clear();
+    state.has_acted.resize(state.units.size(), false);
+}
+
+void start_player_turn(GameState& state) {
+    state.turn_phase = TurnPhase::PlayerTurn;
+    reset_actions(state);
+    SDL_Log("=== PLAYER TURN ===");
+}
+
+void start_enemy_turn(GameState& state) {
+    state.turn_phase = TurnPhase::EnemyTurn;
+    state.ai_current_unit = -1;
+    state.ai_action_timer = AI_ACTION_DELAY;
+    reset_actions(state);
+    clear_selection(state);
+    SDL_Log("=== ENEMY TURN ===");
+}
+
+void begin_turn_transition(GameState& state, TurnPhase next_phase) {
+    state.turn_phase = TurnPhase::TurnTransition;
+    state.turn_transition_timer = TURN_TRANSITION_DELAY;
+    state.ai_current_unit = (next_phase == TurnPhase::EnemyTurn) ? -1 : -2;
+}
+
+bool all_units_acted(const GameState& state, UnitType type) {
+    for (size_t i = 0; i < state.units.size(); i++) {
+        if (state.units[i].type == type && !state.units[i].is_dead()) {
+            if (i < state.has_acted.size() && !state.has_acted[i]) {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+bool any_units_busy(const GameState& state) {
+    for (const auto& unit : state.units) {
+        if (unit.is_moving() || unit.is_attacking() || unit.is_dying()) {
+            return true;
+        }
+    }
+    return false;
+}
+
+int find_nearest_enemy(const GameState& state, int unit_idx) {
+    const Entity& unit = state.units[unit_idx];
+    int nearest_idx = -1;
+    int nearest_dist = std::numeric_limits<int>::max();
+    
+    for (size_t i = 0; i < state.units.size(); i++) {
+        if (static_cast<int>(i) == unit_idx) continue;
+        if (state.units[i].type == unit.type) continue;
+        if (state.units[i].is_dead()) continue;
+        
+        int dx = std::abs(state.units[i].board_pos.x - unit.board_pos.x);
+        int dy = std::abs(state.units[i].board_pos.y - unit.board_pos.y);
+        int dist = dx + dy;
+        
+        if (dist < nearest_dist) {
+            nearest_dist = dist;
+            nearest_idx = static_cast<int>(i);
+        }
+    }
+    return nearest_idx;
+}
+
+BoardPos find_best_move_toward(const GameState& state, int unit_idx, BoardPos target) {
+    BoardPos from = state.units[unit_idx].board_pos;
+    auto occupied = get_occupied_positions(state, unit_idx);
+    auto reachable = get_reachable_tiles(from, MOVE_RANGE, occupied);
+    
+    if (reachable.empty()) return from;
+    
+    BoardPos best = reachable[0];
+    int best_dist = std::numeric_limits<int>::max();
+    
+    for (const auto& pos : reachable) {
+        int dx = std::abs(pos.x - target.x);
+        int dy = std::abs(pos.y - target.y);
+        int dist = dx + dy;
+        
+        if (dist < best_dist) {
+            best_dist = dist;
+            best = pos;
+        }
+    }
+    return best;
+}
+
+bool try_ai_attack(GameState& state, int unit_idx) {
+    Entity& unit = state.units[unit_idx];
+    auto player_positions = get_enemy_positions(state, unit_idx);
+    auto attackable = get_attackable_tiles(unit.board_pos, unit.attack_range, player_positions);
+    
+    if (attackable.empty()) return false;
+    
+    int target_idx = find_unit_at_pos(state, attackable[0]);
+    if (target_idx < 0) return false;
+    
+    unit.face_position(attackable[0]);
+    unit.start_attack(target_idx);
+    SDL_Log("AI unit %d attacking unit %d", unit_idx, target_idx);
+    return true;
+}
+
+bool try_ai_move(GameState& state, int unit_idx, const RenderConfig& config) {
+    int target_idx = find_nearest_enemy(state, unit_idx);
+    if (target_idx < 0) return false;
+    
+    BoardPos target_pos = state.units[target_idx].board_pos;
+    BoardPos best_move = find_best_move_toward(state, unit_idx, target_pos);
+    
+    if (best_move == state.units[unit_idx].board_pos) return false;
+    
+    state.units[unit_idx].start_move(config, best_move);
+    SDL_Log("AI unit %d moving to (%d, %d)", unit_idx, best_move.x, best_move.y);
+    return true;
+}
+
+int find_next_ai_unit(const GameState& state) {
+    for (size_t i = 0; i < state.units.size(); i++) {
+        if (state.units[i].type != UnitType::Enemy) continue;
+        if (state.units[i].is_dead()) continue;
+        if (i < state.has_acted.size() && state.has_acted[i]) continue;
+        if (!state.units[i].can_act()) continue;
+        return static_cast<int>(i);
+    }
+    return -1;
+}
+
+void execute_ai_action(GameState& state, int unit_idx, const RenderConfig& config) {
+    if (try_ai_attack(state, unit_idx)) {
+        state.has_acted[unit_idx] = true;
+        return;
+    }
+    
+    if (try_ai_move(state, unit_idx, config)) {
+        state.has_acted[unit_idx] = true;
+        return;
+    }
+    
+    state.has_acted[unit_idx] = true;
+    SDL_Log("AI unit %d has no valid action", unit_idx);
+}
+
+void update_ai(GameState& state, float dt, const RenderConfig& config) {
+    if (state.turn_phase != TurnPhase::EnemyTurn) return;
+    if (any_units_busy(state)) return;
+    
+    state.ai_action_timer -= dt;
+    if (state.ai_action_timer > 0) return;
+    
+    state.ai_action_timer = AI_ACTION_DELAY;
+    
+    int next_unit = find_next_ai_unit(state);
+    if (next_unit < 0) {
+        begin_turn_transition(state, TurnPhase::PlayerTurn);
+        return;
+    }
+    
+    state.ai_current_unit = next_unit;
+    execute_ai_action(state, next_unit, config);
+}
+
+void update_turn_transition(GameState& state, float dt) {
+    if (state.turn_phase != TurnPhase::TurnTransition) return;
+    
+    state.turn_transition_timer -= dt;
+    if (state.turn_transition_timer > 0) return;
+    
+    if (state.ai_current_unit == -1) {
+        start_enemy_turn(state);
+    } else {
+        start_player_turn(state);
+    }
+}
+
+void process_pending_damage(GameState& state, SDL_Renderer* renderer, const RenderConfig& config) {
     for (const auto& pd : state.pending_damage) {
         if (pd.target_idx < 0 || pd.target_idx >= static_cast<int>(state.units.size())) {
             continue;
@@ -161,7 +379,14 @@ void process_pending_damage(GameState& state, const RenderConfig& config) {
         if (target.is_dead()) continue;
         
         spawn_damage_number(state, target.screen_pos, pd.damage, config);
+        spawn_attack_fx(state, renderer, target.screen_pos);
+        
+        bool was_alive = target.hp > 0;
         target.take_damage(pd.damage);
+        
+        if (was_alive && target.hp <= 0) {
+            spawn_unit_death_fx(state, renderer, target.screen_pos);
+        }
     }
     state.pending_damage.clear();
 }
@@ -199,6 +424,18 @@ void update_floating_texts(GameState& state, float dt, const RenderConfig& confi
     );
 }
 
+void update_active_fx(GameState& state, float dt) {
+    for (auto& fx : state.active_fx) {
+        fx.update(dt);
+    }
+    
+    state.active_fx.erase(
+        std::remove_if(state.active_fx.begin(), state.active_fx.end(),
+            [](const FXEntity& fx) { return fx.is_complete(); }),
+        state.active_fx.end()
+    );
+}
+
 void remove_dead_units(GameState& state) {
     if (state.selected_unit_idx >= 0) {
         if (state.units[state.selected_unit_idx].is_dead()) {
@@ -209,8 +446,16 @@ void remove_dead_units(GameState& state) {
     }
     
     int removed_before_selected = 0;
-    for (int i = 0; i < static_cast<int>(state.units.size()); i++) {
-        if (state.units[i].is_dead() && i < state.selected_unit_idx) {
+    std::vector<bool> new_has_acted;
+    
+    for (size_t i = 0; i < state.units.size(); i++) {
+        if (!state.units[i].is_dead()) {
+            if (i < state.has_acted.size()) {
+                new_has_acted.push_back(state.has_acted[i]);
+            } else {
+                new_has_acted.push_back(false);
+            }
+        } else if (static_cast<int>(i) < state.selected_unit_idx) {
             removed_before_selected++;
         }
     }
@@ -220,6 +465,8 @@ void remove_dead_units(GameState& state) {
             [](const Entity& e) { return e.is_dead(); }),
         state.units.end()
     );
+    
+    state.has_acted = std::move(new_has_acted);
     
     if (state.selected_unit_idx >= 0) {
         state.selected_unit_idx -= removed_before_selected;
@@ -276,10 +523,14 @@ bool init(const RenderConfig& config, WindowHandle& window, RendererHandle& rend
 }
 
 void handle_select_click(GameState& state, BoardPos clicked) {
+    if (state.turn_phase != TurnPhase::PlayerTurn) return;
+    
     int unit_idx = find_unit_at_pos(state, clicked);
     if (unit_idx < 0) return;
     
+    if (state.units[unit_idx].type != UnitType::Player) return;
     if (!state.units[unit_idx].can_act()) return;
+    if (unit_idx < static_cast<int>(state.has_acted.size()) && state.has_acted[unit_idx]) return;
     
     if (state.selected_unit_idx >= 0 && state.selected_unit_idx != unit_idx) {
         state.units[state.selected_unit_idx].restore_facing();
@@ -311,6 +562,10 @@ void handle_move_click(GameState& state, BoardPos clicked, const RenderConfig& c
     int unit_idx = state.selected_unit_idx;
     SDL_Log("Moving unit %d to (%d, %d)", unit_idx, clicked.x, clicked.y);
     
+    if (unit_idx < static_cast<int>(state.has_acted.size())) {
+        state.has_acted[unit_idx] = true;
+    }
+    
     state.selected_unit_idx = -1;
     state.reachable_tiles.clear();
     state.attackable_tiles.clear();
@@ -335,6 +590,10 @@ void handle_attack_click(GameState& state, BoardPos clicked) {
     int attacker_idx = state.selected_unit_idx;
     BoardPos target_pos = state.units[target_idx].board_pos;
     
+    if (attacker_idx < static_cast<int>(state.has_acted.size())) {
+        state.has_acted[attacker_idx] = true;
+    }
+    
     state.selected_unit_idx = -1;
     state.reachable_tiles.clear();
     state.attackable_tiles.clear();
@@ -354,6 +613,8 @@ void handle_selected_click(GameState& state, BoardPos clicked, const RenderConfi
 }
 
 void handle_click(GameState& state, Vec2 mouse, const RenderConfig& config) {
+    if (state.turn_phase != TurnPhase::PlayerTurn) return;
+    
     BoardPos clicked = screen_to_board(config, mouse);
     if (!clicked.is_valid()) return;
     
@@ -389,22 +650,37 @@ void handle_events(bool& running, GameState& state, const RenderConfig& config) 
         }
         else if (event.type == SDL_EVENT_MOUSE_MOTION) {
             state.mouse_pos = {static_cast<float>(event.motion.x), static_cast<float>(event.motion.y)};
-            update_selected_facing(state, config);
+            if (state.turn_phase == TurnPhase::PlayerTurn) {
+                update_selected_facing(state, config);
+            }
         }
     }
 }
 
-void update(GameState& state, float dt, const RenderConfig& config) {
+void check_player_turn_end(GameState& state) {
+    if (state.turn_phase != TurnPhase::PlayerTurn) return;
+    if (any_units_busy(state)) return;
+    if (!all_units_acted(state, UnitType::Player)) return;
+    
+    begin_turn_transition(state, TurnPhase::EnemyTurn);
+}
+
+void update(GameState& state, float dt, SDL_Renderer* renderer, const RenderConfig& config) {
     check_attack_completion(state);
-    process_pending_damage(state, config);
+    process_pending_damage(state, renderer, config);
     
     for (auto& unit : state.units) {
         unit.update(dt, config);
     }
     
     update_floating_texts(state, dt, config);
+    update_active_fx(state, dt);
     remove_dead_units(state);
     update_selected_ranges(state);
+    
+    update_turn_transition(state, dt);
+    update_ai(state, dt, config);
+    check_player_turn_end(state);
 }
 
 void render_floating_texts(SDL_Renderer* renderer, const GameState& state, const RenderConfig& config) {
@@ -434,6 +710,47 @@ void render_floating_texts(SDL_Renderer* renderer, const GameState& state, const
     }
 }
 
+void render_active_fx(SDL_Renderer* renderer, const GameState& state, const RenderConfig& config) {
+    for (const auto& fx : state.active_fx) {
+        fx.render(renderer, config);
+    }
+}
+
+void render_turn_indicator(SDL_Renderer* renderer, const GameState& state, const RenderConfig& config) {
+    float indicator_w = 200.0f * config.scale;
+    float indicator_h = 40.0f * config.scale;
+    float x = (config.window_w - indicator_w) * 0.5f;
+    float y = 20.0f * config.scale;
+    
+    SDL_FRect bg = {x - 2, y - 2, indicator_w + 4, indicator_h + 4};
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 200);
+    SDL_RenderFillRect(renderer, &bg);
+    
+    SDL_FRect inner = {x, y, indicator_w, indicator_h};
+    
+    switch (state.turn_phase) {
+        case TurnPhase::PlayerTurn:
+            SDL_SetRenderDrawColor(renderer, 50, 150, 255, 255);
+            break;
+        case TurnPhase::EnemyTurn:
+            SDL_SetRenderDrawColor(renderer, 255, 80, 80, 255);
+            break;
+        case TurnPhase::TurnTransition:
+            SDL_SetRenderDrawColor(renderer, 150, 150, 150, 255);
+            break;
+    }
+    SDL_RenderFillRect(renderer, &inner);
+    
+    float bar_w = 60.0f * config.scale;
+    float bar_h = 20.0f * config.scale;
+    float bar_x = x + (indicator_w - bar_w) * 0.5f;
+    float bar_y = y + (indicator_h - bar_h) * 0.5f;
+    
+    SDL_FRect label = {bar_x, bar_y, bar_w, bar_h};
+    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 200);
+    SDL_RenderFillRect(renderer, &label);
+}
+
 void render(SDL_Renderer* renderer, const GameState& state, const RenderConfig& config) {
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
@@ -451,6 +768,8 @@ void render(SDL_Renderer* renderer, const GameState& state, const RenderConfig& 
         }
     }
     
+    render_active_fx(renderer, state, config);
+    
     for (const auto& unit : state.units) {
         if (!unit.is_dead()) {
             unit.render_hp_bar(renderer, config);
@@ -458,8 +777,25 @@ void render(SDL_Renderer* renderer, const GameState& state, const RenderConfig& 
     }
     
     render_floating_texts(renderer, state, config);
+    render_turn_indicator(renderer, state, config);
     
     SDL_RenderPresent(renderer);
+}
+
+Entity create_unit(SDL_Renderer* renderer, GameState& state, const RenderConfig& config, 
+                   const char* unit_name, UnitType type, int hp, int atk, BoardPos pos) {
+    Entity unit;
+    if (!unit.load(renderer, unit_name)) {
+        SDL_Log("Failed to load unit: %s", unit_name);
+        return unit;
+    }
+    unit.type = type;
+    unit.set_stats(hp, atk);
+    unit.set_board_position(config, pos);
+    
+    spawn_unit_spawn_fx(state, renderer, unit.screen_pos);
+    
+    return unit;
 }
 
 int main(int argc, char* argv[]) {
@@ -473,36 +809,28 @@ int main(int argc, char* argv[]) {
     }
 
     GameState state;
-
-    Entity unit1;
-    if (!unit1.load(renderer.get(), "f1_general")) {
-        SDL_Log("Failed to load unit 1");
-        return 1;
+    
+    if (!state.fx_cache.load_mappings("data/fx/rsx_mapping.tsv", "data/fx/manifest.tsv")) {
+        SDL_Log("Warning: Failed to load FX mappings, FX will not display");
     }
-    unit1.type = UnitType::Player;
-    unit1.set_stats(25, 2);
-    unit1.set_board_position(config, {2, 2});
-    state.units.push_back(std::move(unit1));
 
-    Entity unit2;
-    if (!unit2.load(renderer.get(), "f1_general")) {
-        SDL_Log("Failed to load unit 2");
-        return 1;
+    Entity unit1 = create_unit(renderer.get(), state, config, "f1_general", UnitType::Player, 25, 2, {2, 2});
+    if (unit1.spritesheet) {
+        state.units.push_back(std::move(unit1));
     }
-    unit2.type = UnitType::Enemy;
-    unit2.set_stats(10, 2);
-    unit2.set_board_position(config, {6, 2});
-    state.units.push_back(std::move(unit2));
 
-    Entity unit3;
-    if (!unit3.load(renderer.get(), "f1_general")) {
-        SDL_Log("Failed to load unit 3");
-        return 1;
+    Entity unit2 = create_unit(renderer.get(), state, config, "f1_general", UnitType::Enemy, 10, 2, {6, 2});
+    if (unit2.spritesheet) {
+        state.units.push_back(std::move(unit2));
     }
-    unit3.type = UnitType::Enemy;
-    unit3.set_stats(5, 3);
-    unit3.set_board_position(config, {4, 1});
-    state.units.push_back(std::move(unit3));
+
+    Entity unit3 = create_unit(renderer.get(), state, config, "f1_general", UnitType::Enemy, 5, 3, {4, 1});
+    if (unit3.spritesheet) {
+        state.units.push_back(std::move(unit3));
+    }
+
+    reset_actions(state);
+    SDL_Log("=== PLAYER TURN ===");
 
     bool running = true;
     Uint64 last_time = SDL_GetTicks();
@@ -513,7 +841,7 @@ int main(int argc, char* argv[]) {
         last_time = current_time;
 
         handle_events(running, state, config);
-        update(state, dt, config);
+        update(state, dt, renderer.get(), config);
         render(renderer.get(), state, config);
 
         SDL_Delay(16);

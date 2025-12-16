@@ -18,6 +18,7 @@ add_executable(${PROJECT_NAME}
     src/animation_loader.cpp
     src/entity.cpp
     src/grid.cpp
+    src/fx.cpp
 )
 
 target_link_libraries(${PROJECT_NAME} PRIVATE 

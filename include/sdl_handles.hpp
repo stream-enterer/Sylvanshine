@@ -1,7 +1,6 @@
 #pragma once
 #include <SDL3/SDL.h>
 
-// RAII wrapper for SDL_Texture*
 struct TextureHandle {
     SDL_Texture* ptr = nullptr;
 
@@ -32,7 +31,6 @@ struct TextureHandle {
     explicit operator bool() const { return ptr != nullptr; }
 };
 
-// RAII wrapper for SDL_Surface*
 struct SurfaceHandle {
     SDL_Surface* ptr = nullptr;
 
@@ -63,7 +61,6 @@ struct SurfaceHandle {
     explicit operator bool() const { return ptr != nullptr; }
 };
 
-// RAII wrapper for SDL_Renderer*
 struct RendererHandle {
     SDL_Renderer* ptr = nullptr;
 
@@ -94,7 +91,6 @@ struct RendererHandle {
     explicit operator bool() const { return ptr != nullptr; }
 };
 
-// RAII wrapper for SDL_Window*
 struct WindowHandle {
     SDL_Window* ptr = nullptr;
 
