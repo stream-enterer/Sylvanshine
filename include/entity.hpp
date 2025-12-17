@@ -4,12 +4,18 @@
 #include "sdl_handles.hpp"
 #include <SDL3/SDL.h>
 
+constexpr float FADE_FAST = 0.2f;
+constexpr float FADE_MEDIUM = 0.35f;
+constexpr float FADE_SLOW = 1.0f;
+
 enum class EntityState {
+    Spawning,
     Idle,
     Moving,
     Attacking,
     TakingDamage,
-    Dying
+    Dying,
+    Dissolving
 };
 
 enum class UnitType {
@@ -55,6 +61,15 @@ struct Entity {
     float death_duration;
     bool death_complete;
 
+    float spawn_elapsed;
+    float spawn_duration;
+    
+    float dissolve_elapsed;
+    float dissolve_duration;
+    float dissolve_seed;
+    
+    float opacity;
+
     Entity();
     
     bool load(SDL_Renderer* renderer, const char* unit_name);
@@ -74,15 +89,22 @@ struct Entity {
     void mark_damage_dealt();
     void take_damage(int damage);
     void start_death();
+    void start_dissolve();
     void face_position(BoardPos target);
     void store_facing();
     void restore_facing();
     
+    bool is_spawning() const { return state == EntityState::Spawning; }
     bool is_moving() const { return state == EntityState::Moving; }
     bool is_attacking() const { return state == EntityState::Attacking; }
     bool is_dying() const { return state == EntityState::Dying; }
+    bool is_dissolving() const { return state == EntityState::Dissolving; }
     bool is_dead() const { return death_complete; }
     bool can_act() const { return state == EntityState::Idle; }
     int get_target_idx() const { return target_entity_idx; }
     bool should_deal_damage() const;
+    
+    float get_opacity() const { return opacity; }
+    float get_dissolve_time() const { return dissolve_elapsed / dissolve_duration; }
+    float get_dissolve_seed() const { return dissolve_seed; }
 };

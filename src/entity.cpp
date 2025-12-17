@@ -2,6 +2,7 @@
 #include <SDL3_image/SDL_image.h>
 #include <string>
 #include <cmath>
+#include <cstdlib>
 
 TextureHandle Entity::shadow_texture;
 bool Entity::shadow_loaded = false;
@@ -17,7 +18,7 @@ Entity::Entity()
     , anim_time(0.0f)
     , flip_x(false)
     , original_flip_x(false)
-    , state(EntityState::Idle)
+    , state(EntityState::Spawning)
     , type(UnitType::Player)
     , attack_range(1)
     , hp(10)
@@ -34,7 +35,14 @@ Entity::Entity()
     , attack_damage_dealt(false)
     , death_elapsed(0.0f)
     , death_duration(0.0f)
-    , death_complete(false) {
+    , death_complete(false)
+    , spawn_elapsed(0.0f)
+    , spawn_duration(FADE_MEDIUM)
+    , dissolve_elapsed(0.0f)
+    , dissolve_duration(FADE_SLOW)
+    , dissolve_seed(0.0f)
+    , opacity(0.0f) {
+    dissolve_seed = static_cast<float>(std::rand()) / RAND_MAX * 100.0f;
 }
 
 bool Entity::load_shadow(SDL_Renderer* renderer) {
@@ -54,7 +62,6 @@ bool Entity::load_shadow(SDL_Renderer* renderer) {
     
     SDL_SetTextureScaleMode(shadow_texture.get(), SDL_SCALEMODE_NEAREST);
     SDL_SetTextureBlendMode(shadow_texture.get(), SDL_BLENDMODE_BLEND);
-    SDL_SetTextureAlphaMod(shadow_texture.get(), static_cast<Uint8>(SHADOW_OPACITY * 255));
     
     shadow_loaded = true;
     SDL_Log("Shadow texture loaded");
@@ -80,6 +87,7 @@ bool Entity::load(SDL_Renderer* renderer, const char* unit_name) {
     }
 
     SDL_SetTextureScaleMode(spritesheet.get(), SDL_SCALEMODE_NEAREST);
+    SDL_SetTextureBlendMode(spritesheet.get(), SDL_BLENDMODE_BLEND);
 
     std::string anim_path = base_path + "/animations.txt";
     animations = load_animations(anim_path.c_str());
@@ -89,6 +97,11 @@ bool Entity::load(SDL_Renderer* renderer, const char* unit_name) {
     }
 
     play_animation("idle");
+    
+    state = EntityState::Spawning;
+    spawn_elapsed = 0.0f;
+    opacity = 0.0f;
+    
     return true;
 }
 
@@ -128,6 +141,17 @@ void Entity::mark_damage_dealt() {
 void Entity::update(float dt, const RenderConfig& config) {
     if (!current_anim) return;
     
+    if (state == EntityState::Spawning) {
+        spawn_elapsed += dt;
+        float t = spawn_elapsed / spawn_duration;
+        opacity = t < 1.0f ? t : 1.0f;
+        
+        if (spawn_elapsed >= spawn_duration) {
+            state = EntityState::Idle;
+            opacity = 1.0f;
+        }
+    }
+    
     if (state == EntityState::Moving) {
         move_elapsed += dt;
         
@@ -158,7 +182,19 @@ void Entity::update(float dt, const RenderConfig& config) {
     if (state == EntityState::Dying) {
         death_elapsed += dt;
         if (death_elapsed >= death_duration) {
+            start_dissolve();
+        }
+    }
+    
+    if (state == EntityState::Dissolving) {
+        dissolve_elapsed += dt;
+        
+        float t = dissolve_elapsed / dissolve_duration;
+        opacity = 1.0f - (t < 1.0f ? t : 1.0f);
+        
+        if (dissolve_elapsed >= dissolve_duration) {
             death_complete = true;
+            opacity = 0.0f;
         }
     }
     
@@ -166,7 +202,7 @@ void Entity::update(float dt, const RenderConfig& config) {
     float frame_duration = 1.0f / current_anim->fps;
     float anim_total_duration = frame_duration * current_anim->frames.size();
     
-    if (state == EntityState::Dying) {
+    if (state == EntityState::Dying || state == EntityState::Dissolving) {
         if (anim_time >= anim_total_duration) {
             anim_time = anim_total_duration - 0.001f;
         }
@@ -191,11 +227,15 @@ void Entity::render_shadow(SDL_Renderer* renderer, const RenderConfig& config) c
         scaled_h
     };
     
+    Uint8 shadow_alpha = static_cast<Uint8>(SHADOW_OPACITY * 255 * opacity);
+    SDL_SetTextureAlphaMod(shadow_texture.get(), shadow_alpha);
+    
     SDL_RenderTexture(renderer, shadow_texture.get(), nullptr, &dst);
 }
 
 void Entity::render(SDL_Renderer* renderer, const RenderConfig& config) const {
     if (!spritesheet || !current_anim || current_anim->frames.empty()) return;
+    if (is_dead()) return;
 
     int frame_idx = static_cast<int>(anim_time * current_anim->fps);
     if (frame_idx >= static_cast<int>(current_anim->frames.size())) {
@@ -225,11 +265,15 @@ void Entity::render(SDL_Renderer* renderer, const RenderConfig& config) const {
         dst.h = src.h * config.scale;
     }
 
+    Uint8 alpha = static_cast<Uint8>(opacity * 255);
+    SDL_SetTextureAlphaMod(spritesheet.get(), alpha);
     SDL_RenderTexture(renderer, spritesheet.get(), &src, &dst);
 }
 
 void Entity::render_hp_bar(SDL_Renderer* renderer, const RenderConfig& config) const {
     if (is_dead()) return;
+    if (state == EntityState::Spawning && spawn_elapsed < spawn_duration * 0.5f) return;
+    if (state == EntityState::Dissolving) return;
     
     float hp_percent = static_cast<float>(hp) / max_hp;
     
@@ -238,22 +282,24 @@ void Entity::render_hp_bar(SDL_Renderer* renderer, const RenderConfig& config) c
     float bar_x = screen_pos.x - bar_width * 0.5f;
     float bar_y = screen_pos.y - 55.0f * config.scale;
     
+    Uint8 alpha = static_cast<Uint8>(opacity * 255);
+    
     SDL_FRect bg = {bar_x - 1, bar_y - 1, bar_width + 2, bar_height + 2};
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, alpha);
     SDL_RenderFillRect(renderer, &bg);
     
     SDL_FRect bg_inner = {bar_x, bar_y, bar_width, bar_height};
-    SDL_SetRenderDrawColor(renderer, 40, 40, 40, 255);
+    SDL_SetRenderDrawColor(renderer, 40, 40, 40, alpha);
     SDL_RenderFillRect(renderer, &bg_inner);
     
     if (hp > 0) {
         SDL_FRect fg = {bar_x, bar_y, bar_width * hp_percent, bar_height};
         if (hp_percent > 0.66f) {
-            SDL_SetRenderDrawColor(renderer, 100, 255, 100, 255);
+            SDL_SetRenderDrawColor(renderer, 100, 255, 100, alpha);
         } else if (hp_percent > 0.33f) {
-            SDL_SetRenderDrawColor(renderer, 255, 255, 100, 255);
+            SDL_SetRenderDrawColor(renderer, 255, 255, 100, alpha);
         } else {
-            SDL_SetRenderDrawColor(renderer, 255, 100, 100, 255);
+            SDL_SetRenderDrawColor(renderer, 255, 100, 100, alpha);
         }
         SDL_RenderFillRect(renderer, &fg);
     }
@@ -313,15 +359,23 @@ void Entity::take_damage(int damage) {
 void Entity::start_death() {
     state = EntityState::Dying;
     death_elapsed = 0.0f;
-    death_complete = false;
     
     const Animation* death_anim = animations.find("death");
     if (death_anim) {
         death_duration = death_anim->duration();
         play_animation("death");
     } else {
-        death_duration = 0.5f;
+        death_duration = 0.0f;
+        start_dissolve();
     }
+}
+
+void Entity::start_dissolve() {
+    state = EntityState::Dissolving;
+    dissolve_elapsed = 0.0f;
+    dissolve_duration = FADE_SLOW;
+    
+    SDL_Log("Dissolve started (duration: %.2fs)", dissolve_duration);
 }
 
 void Entity::face_position(BoardPos target) {
