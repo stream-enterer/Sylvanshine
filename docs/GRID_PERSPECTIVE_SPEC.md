@@ -1,272 +1,211 @@
-# Duelyst Grid Perspective & Sprite System
+# Grid Perspective Rendering Specification
 
-## Visual Settings Architecture
+## Overview
 
-Three independent player-adjustable factors:
+SDL3 perspective grid rendering using CPU-side transforms. No shaders or framebuffers.
 
-| Setting | Controls | Independent? |
-|---------|----------|--------------|
-| Screen Resolution | Window/display size | Yes |
-| UI Scale | Menus, HUD, cards in hand | Yes |
-| Game Scale | Units AND grid tiles together | **Tied** |
-
-**Why Unit + Grid are tied:** Sprites must match tile geometry for correct positioning, overlap, and attack animations.
-
-### Game Scale Options
-
-| Scale | Tile Size | Board Size | Minimum Resolution |
-|-------|-----------|------------|-------------------|
-| 1x | 95px | 855×475 | 720p (1280×720) |
-| 2x | 190px | 1710×950 | ~1080p (1920×1080) |
-| 3x | 285px | 2565×1425 | 1440p (2560×1440) |
-| 4x | 380px | 3420×1900 | 4K (3840×2160) |
-
-### Runtime Flow
-```cpp
-int max_game_scale = min(window_w / 855, window_h / 475);
-int game_scale = clamp(player_choice, 1, max_game_scale);
-float tile_size = 95.0f * game_scale;
-// UI scale is separate, doesn't affect board
-```
-
-### TODO
-- [ ] Zoom (camera distance adjustment, affects apparent size without changing pixel scale)
-- [ ] Fractional scaling (1.5x etc - accept blur, or render at higher scale and downsample)
+**Key insight:** SDL_RenderGeometry uses affine (linear) texture interpolation, not perspective-correct. Textured quads "fold" when transformed to trapezoids. Solution: render each grid line and tile highlight as individually transformed primitives.
 
 ---
 
 ## Constants
 
 ```cpp
-// Base values (1x scale)
+// Board geometry
 constexpr int BOARD_COLS = 9;
 constexpr int BOARD_ROWS = 5;
-constexpr float BASE_TILE_SIZE = 95.0f;
-constexpr float TILE_OFFSET_X = 0.0f;
-constexpr float TILE_OFFSET_Y = 10.0f;
+constexpr int TILE_SIZE = 95;  // Base pixels at 1x scale
 
 // Perspective
 constexpr float FOV_DEGREES = 60.0f;
-constexpr float BOARD_X_ROTATION = -16.0f;   // tiles (NEGATIVE)
-constexpr float ENTITY_X_ROTATION = -26.0f;  // sprites tilt more
+constexpr float BOARD_X_ROTATION = 16.0f;   // Positive = top recedes
+constexpr float ENTITY_X_ROTATION = 26.0f;  // Sprites tilt more (future)
+constexpr float DEG_TO_RAD = 3.14159265359f / 180.0f;
 
-// Sprite positioning
-constexpr float DEFAULT_SHADOW_OFFSET = 19.5f;  // CONFIG.DEPTH_OFFSET
+// Scaling
+// scale=1: 720p (1280×720), tile=95px, board=855×475
+// scale=2: 1080p (1920×1080), tile=190px, board=1710×950
 ```
 
 ---
 
-## Rotation Angles
+## Core Math
 
-| Layer | Rotation | Purpose |
-|-------|----------|---------|
-| Board/tiles | -16° | Base perspective tilt |
-| Entity sprites | -26° | Sprites "stand up" against foreshortened tiles |
-
-**Why different:** Entities at -26° appear more upright on the -16° tilted board, creating proper "standing" illusion.
-
-**Negative sign:** Tilts top away from camera (smaller), bottom toward camera (larger). Wrong sign = tiles taller than wide.
-
----
-
-## Coordinate Transforms
-
-### Board → Screen (flat, pre-perspective)
+### Eye Distance (zeye)
 ```cpp
-float tile_size = BASE_TILE_SIZE * game_scale;
-float board_w = BOARD_COLS * tile_size;
-float board_h = BOARD_ROWS * tile_size;
+float zeye = (window_h / 2.0f) / tan(FOV_DEGREES * 0.5f * DEG_TO_RAD);
+// At 720p: zeye = 360 / tan(30°) ≈ 623.5
+// At 1080p: zeye = 540 / tan(30°) ≈ 935.3
+```
 
-float origin_x = (window_w - board_w) / 2.0f + tile_size / 2.0f + TILE_OFFSET_X * game_scale;
-float origin_y = (window_h - board_h) / 2.0f + tile_size / 2.0f + TILE_OFFSET_Y * game_scale;
-
-Vec2 board_to_screen(int col, int row) {
-    return { col * tile_size + origin_x, row * tile_size + origin_y };
+### Perspective Transform
+```cpp
+Vec2 apply_perspective(Vec2 point, float center_x, float center_y, float zeye, float rotation_deg) {
+    float rel_x = point.x - center_x;
+    float rel_y = point.y - center_y;
+    
+    float angle_rad = rotation_deg * DEG_TO_RAD;
+    float cos_a = cos(angle_rad);
+    float sin_a = sin(angle_rad);
+    
+    float rotated_y = rel_y * cos_a;
+    float rotated_z = rel_y * sin_a;
+    
+    float depth = zeye - rotated_z;
+    float scale = zeye / depth;
+    
+    return {
+        rel_x * scale + center_x,
+        rotated_y * scale + center_y
+    };
 }
 ```
 
-### Screen → Perspective
-Transform through MVP matrix. Use -16° for tiles, -26° for sprites.
+### Board Origin (Analytical Centering)
 
----
+The flat board origin must be chosen so the perspective-transformed board is vertically centered.
 
-## Sprite Positioning System
+**Problem:** Perspective is non-linear. Simple offset doesn't work.
 
-### Core Concept
-- **Ground position** = tile center (where shadow renders)
-- **Sprite position** = lifted above ground based on sprite height and shadowOffset
-- **Sprite anchor** = center of sprite
-
-### shadowOffset Meaning
-Distance from sprite's **bottom edge** to the "feet" position. All units use default 19.5px (universal constant, no per-unit overrides).
-
-**Critical:** shadowOffset is multiplied by game_scale:
-```cpp
-float shadow_offset = DEFAULT_SHADOW_OFFSET * game_scale;
-```
-
-### Positioning Formula (from UnitNode.js)
-```cpp
-Vec2 ground_pos = board_to_screen(col, row);  // tile center
-
-// Shadow at ground
-draw_shadow(ground_pos);
-
-// Sprite lifted up
-// Formula: sprite_y = ground_y + sprite_height - (shadowOffset * 2.0)
-float sprite_y = ground_pos.y + sprite_height - (shadow_offset * 2.0f);
-draw_sprite({ground_pos.x, sprite_y});
-```
-
-### centerOffset Adjustment
-The node's logical center is also shifted up by shadowOffset:
-```cpp
-// Node center offset (for hit detection, targeting, etc.)
-center_offset.y += shadow_offset;
-```
-
-### Worked Example
-Sprite height = 100px, shadowOffset = 19.5px, game_scale = 1:
-```
-shadow_offset = 19.5 * 1 = 19.5
-
-sprite_center_y = ground_y + sprite_height - (shadow_offset * 2.0)
-                = ground_y + 100 - 39
-                = ground_y + 61
-
-sprite_bottom = sprite_center_y - (sprite_height / 2)
-              = ground_y + 61 - 50
-              = ground_y + 11
-
-feet_position = sprite_bottom + shadow_offset
-              = ground_y + 11 + 19.5
-              = ground_y + 30.5
-```
-
-The sprite is drawn centered at `ground_y + 61`. Its visual "feet" (19.5px up from sprite bottom) land at `ground_y + 30.5`, which after perspective transform aligns with the tile surface.
-
----
-
-## Shadow System
-
-Duelyst uses **two independent shadow systems**:
-
-### 1. Static Blob Shadow
-Simple pre-rendered ellipse (`unit_shadow.png`, 96×48) placed at ground position.
+**Solution:** Solve for flat origin `a` (relative to screen center) where transformed top and bottom are equidistant from center:
 
 ```cpp
-// UnitNode.js behavior
-shadow_sprite = load("unit_shadow.png");
-shadow_sprite.set_opacity(200);  // semi-transparent
-shadow_sprite.set_position(ground_pos);
-shadow_sprite.z_order = -9999;   // always behind entity
-```
+float board_origin_y() const {
+    float zeye = (window_h / 2.0f) / tan(FOV * 0.5f * DEG_TO_RAD);
+    float center_y = window_h * 0.5f;
+    float H = board_height();  // BOARD_ROWS * tile_size
+    
+    float s = sin(BOARD_X_ROTATION * DEG_TO_RAD);
+    
+    // Quadratic solution: perspective(a) + perspective(a+H) = 0
+    float discriminant = zeye * zeye + s * s * H * H;
+    float a = (zeye - s * H - sqrt(discriminant)) / (2.0f * s);
+    
+    return a + center_y;
+}
 
-- Used by all units
-- Fixed shape regardless of sprite
-- Fades in during spawn (`opacity 0 → 200` over `FADE_MEDIUM_DURATION`)
-
-### 2. Dynamic Projected Shadows
-Shader-based system that projects sprite silhouettes based on light positions.
-
-**How it works:**
-1. Sprites with `castsShadows: true` register as shadow casters
-2. Vertex shader (`ShadowVertex.glsl`) transforms sprite geometry:
-   - Calculates skew based on light-to-sprite angle
-   - Applies 45° cast matrix to "lay down" the shadow
-   - Stretches based on light altitude
-3. Fragment shader samples sprite's **alpha channel** (silhouette)
-4. Applies distance-based blur (farther from feet = blurrier)
-5. Fades by distance from light source
-
-**Quality levels:**
-- `ShadowHighQuality`: 7×7 box blur (49 texture samples)
-- `ShadowLowQuality`: 3×3 box blur (9 texture samples)
-
-**Key uniforms:**
-| Uniform | Purpose |
-|---------|---------|
-| `u_size` | Sprite dimensions |
-| `u_anchor` | Foot position (shadowOffset from bottom) |
-| `u_intensity` | Shadow darkness |
-| `u_blurShiftModifier` | Blur increase with distance |
-| `u_blurIntensityModifier` | Overall blur amount |
-
-**Vertex attributes:**
-| Attribute | Purpose |
-|-----------|---------|
-| `a_originRadius` | Light position (xyz) + radius (w) |
-
-### Implementation Priority
-For MVP, static blob shadow is sufficient. Dynamic shadows are a visual polish feature requiring:
-- Light system implementation
-- Per-sprite shadow caster registration
-- Additional render passes
-
----
-
-## Z-Ordering
-
-Sprites with higher board Y (farther back) render **first** → proper occlusion.
-
-```cpp
-// Sort entities by board_pos.y descending before rendering
-// Or use z-buffer with: z = -board_pos.y
-
-// Shadow always behind entity
-shadow_z_order = -9999;
-```
-
----
-
-## Camera Setup
-
-```cpp
-float zeye = (window_h / 2.0f) / tanf(FOV_DEGREES * 0.5f * DEG_TO_RAD);
-
-vec3 eye = { window_w/2.0f, window_h/2.0f, zeye };
-vec3 center = { window_w/2.0f, window_h/2.0f, 0.0f };
-vec3 up = { 0.0f, 1.0f, 0.0f };
-
-mat4 view = lookAt(eye, center, up);
+float board_origin_x() const {
+    return (window_w - board_width()) * 0.5f;
+}
 ```
 
 ---
 
 ## Rendering Pipeline
 
-### Pass 1: Tiles to framebuffer (flat 2D)
-- Orthographic projection
-- Each tile at board_to_screen() position
-- Result: flat grid texture
+### Grid Lines
+Transform each line endpoint, draw with SDL_RenderLine:
+```cpp
+for (int x = 0; x <= BOARD_COLS; x++) {
+    Vec2 top = transform(origin_x + x * tile_size, origin_y);
+    Vec2 bottom = transform(origin_x + x * tile_size, origin_y + board_height);
+    SDL_RenderLine(renderer, top.x, top.y, bottom.x, bottom.y);
+}
+// Same for horizontal lines
+```
 
-### Pass 2: Framebuffer to screen (perspective)
-- Apply MVP with -16° X rotation around screen center
-- Draw as textured quad via SDL_RenderGeometry or shader
+### Tile Highlights
+Transform 4 corners per tile, draw with SDL_RenderGeometry:
+```cpp
+void render_highlight(BoardPos pos, SDL_Color color) {
+    float x = origin_x + pos.x * tile_size;
+    float y = origin_y + pos.y * tile_size;
+    
+    Vec2 tl = transform(x, y);
+    Vec2 tr = transform(x + tile_size, y);
+    Vec2 br = transform(x + tile_size, y + tile_size);
+    Vec2 bl = transform(x, y + tile_size);
+    
+    SDL_Vertex vertices[4] = {tl, tr, br, bl};  // with color
+    int indices[6] = {0, 1, 2, 0, 2, 3};
+    SDL_RenderGeometry(renderer, nullptr, vertices, 4, indices, 6);
+}
+```
 
-### Pass 3: Sprites (perspective)
-- Position each sprite using shadowOffset formula
-- Apply MVP with -26° X rotation
-- Render back-to-front (high Y first)
-- Static shadows render at ground position, behind sprites
+### Entity Positioning
+Entities use `board_to_screen_perspective()`:
+```cpp
+Vec2 board_to_screen_perspective(BoardPos pos) {
+    Vec2 flat = {
+        board_origin_x() + (pos.x + 0.5f) * tile_size,
+        board_origin_y() + (pos.y + 0.5f) * tile_size
+    };
+    return apply_perspective(flat, center_x, center_y, zeye, BOARD_X_ROTATION);
+}
+```
 
-### Pass 4: Dynamic Shadows (optional, advanced)
-- For each light with `castsShadows: true`:
-  - For each sprite with `castsShadows: true`:
-    - Render shadow geometry using shadow shaders
-    - Accumulate into shadow buffer
-- Composite shadow buffer onto scene
+### Mouse Input (Inverse Transform)
+```cpp
+Vec2 inverse_perspective(Vec2 screen_point) {
+    float proj_x = screen_point.x - center_x;
+    float proj_y = screen_point.y - center_y;
+    
+    float cos_a = cos(rotation), sin_a = sin(rotation);
+    
+    float denom = zeye * cos_a + proj_y * sin_a;
+    float rel_y = (proj_y * zeye) / denom;
+    float depth = zeye - rel_y * sin_a;
+    float rel_x = proj_x * depth / zeye;
+    
+    return {rel_x + center_x, rel_y + center_y};
+}
+
+BoardPos screen_to_board_perspective(Vec2 screen) {
+    Vec2 flat = inverse_perspective(screen);
+    return {
+        floor((flat.x - origin_x) / tile_size),
+        floor((flat.y - origin_y) / tile_size)
+    };
+}
+```
 
 ---
 
-## Validation Checklist
+## File Structure
 
-- [ ] Tiles wider than tall (parallelograms)
-- [ ] Board is trapezoid (wider at bottom)
-- [ ] Sprites appear to "stand" on tiles
-- [ ] Near sprites (low Y) occlude far sprites (high Y)
-- [ ] Static shadows stay at tile centers
-- [ ] No gaps between tiles
-- [ ] Sprites align correctly at all game_scale values
+```
+include/
+  perspective.hpp   - PerspectiveConfig, apply_perspective_transform()
+  grid_renderer.hpp - GridRenderer struct
+  types.hpp         - RenderConfig with board_origin_y()
 
-**Wrong rotation sign symptom:** Tiles appear taller than wide.
+src/
+  perspective.cpp   - Transform implementations
+  grid_renderer.cpp - Grid/highlight rendering
+  types.cpp         - Coordinate conversions, analytical centering
+```
+
+---
+
+## Validation
+
+| Check | Pass Condition |
+|-------|----------------|
+| Tiles wider than tall | Top edge < bottom edge width |
+| Board is trapezoid | Vertical lines converge toward top |
+| Centered vertically | Top margin = bottom margin (±2px) |
+| Works at all scales | Test 720p (scale=1) and 1080p (scale=2) |
+| Mouse clicks land correctly | Click tile center → selects that tile |
+
+**Wrong rotation sign:** Tiles taller than wide, board inverted.
+
+---
+
+## Not Implemented (Future)
+
+- **Entity -26° rotation:** Sprites currently use board rotation. Should use steeper angle to "stand up" on tilted tiles.
+- **Shadow system:** Static blob shadows at ground position.
+- **Sprite positioning formula:** `sprite_y = ground_y + sprite_height - (shadowOffset * 2.0)`
+- **Z-ordering:** Sort by board_pos.y descending (far first).
+
+---
+
+## Common Bugs
+
+| Symptom | Cause | Fix |
+|---------|-------|-----|
+| Diagonal fold in grid | Affine texture interpolation | Don't use framebuffer; render lines directly |
+| Board clipped at bottom | Origin calculated for flat, not transformed board | Use analytical centering formula |
+| Board not centered | Adding offset after centering calculation | Remove stray offsets from board_origin_y() |
+| Tiles taller than wide | Wrong rotation sign | Use positive 16°, not negative |
+| Mouse clicks offset | Inverse transform incorrect | Check denom calculation in inverse_perspective |

@@ -20,6 +20,11 @@ struct RenderConfig {
     int tile_size() const { return TILE_SIZE * scale; }
     float tile_offset_x() const { return TILE_OFFSET_X * scale; }
     float tile_offset_y() const { return TILE_OFFSET_Y * scale; }
+    
+    float board_width() const { return static_cast<float>(BOARD_COLS * tile_size()); }
+    float board_height() const { return static_cast<float>(BOARD_ROWS * tile_size()); }
+    float board_origin_x() const { return (window_w - board_width()) * 0.5f + tile_offset_x(); }
+    float board_origin_y() const; // Defined in types.cpp - accounts for perspective
 };
 
 struct Vec2 {
@@ -55,5 +60,7 @@ struct Animation {
 };
 
 Vec2 board_to_screen(const RenderConfig& config, BoardPos pos);
+Vec2 board_to_screen_perspective(const RenderConfig& config, BoardPos pos);
 BoardPos screen_to_board(const RenderConfig& config, Vec2 screen);
+BoardPos screen_to_board_perspective(const RenderConfig& config, Vec2 screen);
 float calculate_move_duration(float anim_duration, int tile_count);

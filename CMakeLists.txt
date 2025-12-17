@@ -17,9 +17,10 @@ add_executable(${PROJECT_NAME}
     src/types.cpp
     src/animation_loader.cpp
     src/entity.cpp
-    src/grid.cpp
     src/fx.cpp
     src/timing_loader.cpp
+    src/grid_renderer.cpp
+    src/perspective.cpp
 )
 
 target_link_libraries(${PROJECT_NAME} PRIVATE 

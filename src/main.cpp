@@ -2,7 +2,7 @@
 #include <SDL3_image/SDL_image.h>
 #include "types.hpp"
 #include "entity.hpp"
-#include "grid.hpp"
+#include "grid_renderer.hpp"
 #include "fx.hpp"
 #include "timing_loader.hpp"
 #include "sdl_handles.hpp"
@@ -63,6 +63,7 @@ struct GameState {
     FXCache fx_cache;
     std::vector<FXEntity> active_fx;
     TimingData timing_data;
+    GridRenderer grid_renderer;
     
     GamePhase game_phase = GamePhase::Playing;
     TurnPhase turn_phase = TurnPhase::PlayerTurn;
@@ -166,7 +167,7 @@ void update_selected_facing(GameState& state, const RenderConfig& config) {
     if (state.selected_unit_idx < 0) return;
     if (state.selected_unit_idx >= static_cast<int>(state.units.size())) return;
     
-    BoardPos mouse_board = screen_to_board(config, state.mouse_pos);
+    BoardPos mouse_board = screen_to_board_perspective(config, state.mouse_pos);
     if (!mouse_board.is_valid()) return;
     
     state.units[state.selected_unit_idx].face_position(mouse_board);
@@ -656,7 +657,7 @@ void handle_click(GameState& state, Vec2 mouse, const RenderConfig& config) {
     if (state.game_phase != GamePhase::Playing) return;
     if (state.turn_phase != TurnPhase::PlayerTurn) return;
     
-    BoardPos clicked = screen_to_board(config, mouse);
+    BoardPos clicked = screen_to_board_perspective(config, mouse);
     if (!clicked.is_valid()) return;
     
     if (state.selected_unit_idx >= 0 && state.units[state.selected_unit_idx].is_moving()) {
@@ -906,16 +907,18 @@ void render_game_over_overlay(SDL_Renderer* renderer, const GameState& state, co
     SDL_RenderFillRect(renderer, &hint_rect);
 }
 
-void render(SDL_Renderer* renderer, const GameState& state, const RenderConfig& config) {
+void render(SDL_Renderer* renderer, GameState& state, const RenderConfig& config) {
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
     SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
     
-    render_grid(renderer, config);
+    state.grid_renderer.render(renderer, config);
     
     if (state.selected_unit_idx >= 0 && state.game_phase == GamePhase::Playing) {
-        render_move_range(renderer, config, state.units[state.selected_unit_idx].board_pos, MOVE_RANGE);
-        render_attack_range(renderer, config, state.attackable_tiles);
+        auto occupied = get_occupied_positions(state, state.selected_unit_idx);
+        state.grid_renderer.render_move_range(renderer, config,
+            state.units[state.selected_unit_idx].board_pos, MOVE_RANGE, occupied);
+        state.grid_renderer.render_attack_range(renderer, config, state.attackable_tiles);
     }
     
     for (const auto& unit : state.units) {
@@ -973,6 +976,11 @@ int main(int argc, char* argv[]) {
     }
 
     GameState state;
+    
+    if (!state.grid_renderer.init(renderer.get(), config)) {
+        SDL_Log("Failed to initialize grid renderer");
+        return 1;
+    }
     
     if (!state.fx_cache.load_mappings("data/fx/rsx_mapping.tsv", "data/fx/manifest.tsv")) {
         SDL_Log("Warning: Failed to load FX mappings, FX will not display");

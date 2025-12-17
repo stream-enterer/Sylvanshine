@@ -63,7 +63,7 @@ bool Entity::load(SDL_Renderer* renderer, const char* unit_name) {
 
 void Entity::set_board_position(const RenderConfig& config, BoardPos pos) {
     board_pos = pos;
-    screen_pos = board_to_screen(config, pos);
+    screen_pos = board_to_screen_perspective(config, pos);
 }
 
 void Entity::set_stats(int health, int atk) {
@@ -102,12 +102,12 @@ void Entity::update(float dt, const RenderConfig& config) {
         
         if (move_elapsed >= move_duration) {
             board_pos = move_target;
-            screen_pos = board_to_screen(config, board_pos);
+            screen_pos = board_to_screen_perspective(config, board_pos);
             state = EntityState::Idle;
             play_animation("idle");
         } else {
             float t = move_elapsed / move_duration;
-            Vec2 target_pos = board_to_screen(config, move_target);
+            Vec2 target_pos = board_to_screen_perspective(config, move_target);
             screen_pos.x = move_start_pos.x + (target_pos.x - move_start_pos.x) * t;
             screen_pos.y = move_start_pos.y + (target_pos.y - move_start_pos.y) * t;
         }
