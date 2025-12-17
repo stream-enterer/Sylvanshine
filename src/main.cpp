@@ -11,6 +11,7 @@
 #include <algorithm>
 #include <cmath>
 #include <limits>
+#include <numeric>
 
 constexpr int MOVE_RANGE = 3;
 constexpr float TURN_TRANSITION_DELAY = 0.5f;
@@ -907,6 +908,15 @@ void render_game_over_overlay(SDL_Renderer* renderer, const GameState& state, co
     SDL_RenderFillRect(renderer, &hint_rect);
 }
 
+std::vector<size_t> get_render_order(const GameState& state) {
+    std::vector<size_t> order(state.units.size());
+    std::iota(order.begin(), order.end(), 0);
+    std::sort(order.begin(), order.end(), [&](size_t a, size_t b) {
+        return state.units[a].screen_pos.y < state.units[b].screen_pos.y;
+    });
+    return order;
+}
+
 void render(SDL_Renderer* renderer, GameState& state, const RenderConfig& config) {
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
@@ -921,17 +931,19 @@ void render(SDL_Renderer* renderer, GameState& state, const RenderConfig& config
         state.grid_renderer.render_attack_range(renderer, config, state.attackable_tiles);
     }
     
-    for (const auto& unit : state.units) {
-        if (!unit.is_dead()) {
-            unit.render(renderer, config);
+    auto render_order = get_render_order(state);
+    
+    for (size_t idx : render_order) {
+        if (!state.units[idx].is_dead()) {
+            state.units[idx].render(renderer, config);
         }
     }
     
     render_active_fx(renderer, state, config);
     
-    for (const auto& unit : state.units) {
-        if (!unit.is_dead()) {
-            unit.render_hp_bar(renderer, config);
+    for (size_t idx : render_order) {
+        if (!state.units[idx].is_dead()) {
+            state.units[idx].render_hp_bar(renderer, config);
         }
     }
     
