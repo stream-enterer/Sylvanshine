@@ -199,6 +199,20 @@ Examples:
 
 ---
 
+## Sprite Positioning
+
+### shadowOffset (Universal Constant)
+All units use `shadowOffset = 19.5` (CONFIG.DEPTH_OFFSET). This is **not** per-unit data.
+
+Source investigation confirmed:
+- `UnitSprite.js` sets default `shadowOffset: CONFIG.DEPTH_OFFSET`
+- `UnitNode.js` falls back to this default; no per-unit overrides exist in codebase
+- No RSX resource files define per-unit shadow offsets
+
+See `GRID_PERSPECTIVE_SPEC.md` for positioning formula and usage.
+
+---
+
 ## Cross-Reference Keys
 
 | To find... | Use this key... | In this file... |
