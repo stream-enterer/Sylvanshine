@@ -162,15 +162,19 @@ void Entity::render(SDL_Renderer* renderer, const RenderConfig& config) const {
         static_cast<float>(src_rect.h)
     };
 
+    // Position sprite so feet (SHADOW_OFFSET from bottom) align with tile center
+    // SDL Y-down: dst.y is top of sprite, so sprite top = ground - (height - shadowOffset)
+    float sprite_top_y = screen_pos.y - (src.h - SHADOW_OFFSET) * config.scale;
+
     SDL_FRect dst;
     if (flip_x) {
         dst.x = screen_pos.x + src.w * 0.5f * config.scale;
-        dst.y = screen_pos.y - src.h * 0.5f * config.scale;
+        dst.y = sprite_top_y;
         dst.w = -src.w * config.scale;
         dst.h = src.h * config.scale;
     } else {
         dst.x = screen_pos.x - src.w * 0.5f * config.scale;
-        dst.y = screen_pos.y - src.h * 0.5f * config.scale;
+        dst.y = sprite_top_y;
         dst.w = src.w * config.scale;
         dst.h = src.h * config.scale;
     }

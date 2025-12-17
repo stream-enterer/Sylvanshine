@@ -5,9 +5,10 @@
 
 constexpr int BOARD_COLS = 9;
 constexpr int BOARD_ROWS = 5;
-constexpr int TILE_SIZE = 95;
+constexpr int TILE_SIZE = 48;  // Changed from 95 to match Duelyst sprite:tile ratio (~2.1:1)
 constexpr float TILE_OFFSET_X = 0.0f;
 constexpr float TILE_OFFSET_Y = 10.0f;
+constexpr float SHADOW_OFFSET = 19.5f;  // Sprite foot position from bottom (Duelyst DEPTH_OFFSET)
 
 constexpr float ENTITY_MOVE_DURATION_MODIFIER = 1.0f;
 constexpr float ENTITY_MOVE_CORRECTION = 0.2f;
