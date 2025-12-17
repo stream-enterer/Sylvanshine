@@ -23,6 +23,10 @@ struct Entity {
 
     TextureHandle spritesheet;
     AnimationSet animations;
+    
+    static TextureHandle shadow_texture;
+    static bool shadow_loaded;
+    
     const Animation* current_anim;
     float anim_time;
     bool flip_x;
@@ -60,7 +64,10 @@ struct Entity {
     void play_animation(const char* name);
     void update(float dt, const RenderConfig& config);
     void render(SDL_Renderer* renderer, const RenderConfig& config) const;
+    void render_shadow(SDL_Renderer* renderer, const RenderConfig& config) const;
     void render_hp_bar(SDL_Renderer* renderer, const RenderConfig& config) const;
+    
+    static bool load_shadow(SDL_Renderer* renderer);
     
     void start_move(const RenderConfig& config, BoardPos target);
     void start_attack(int target_idx);

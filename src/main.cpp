@@ -874,7 +874,7 @@ void render_game_over_overlay(SDL_Renderer* renderer, const GameState& state, co
     float box_y = (config.window_h - box_h) * 0.5f;
     
     SDL_FRect box_bg = {box_x - 4, box_y - 4, box_w + 8, box_h + 8};
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+    SDL_SetRenderDrawColor(renderer, 40, 40, 60, 255);
     SDL_RenderFillRect(renderer, &box_bg);
     
     SDL_FRect box = {box_x, box_y, box_w, box_h};
@@ -918,7 +918,7 @@ std::vector<size_t> get_render_order(const GameState& state) {
 }
 
 void render(SDL_Renderer* renderer, GameState& state, const RenderConfig& config) {
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+    SDL_SetRenderDrawColor(renderer, 40, 40, 60, 255);
     SDL_RenderClear(renderer);
     SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
     
@@ -932,6 +932,12 @@ void render(SDL_Renderer* renderer, GameState& state, const RenderConfig& config
     }
     
     auto render_order = get_render_order(state);
+    
+    for (size_t idx : render_order) {
+        if (!state.units[idx].is_dead()) {
+            state.units[idx].render_shadow(renderer, config);
+        }
+    }
     
     for (size_t idx : render_order) {
         if (!state.units[idx].is_dead()) {
@@ -1000,6 +1006,10 @@ int main(int argc, char* argv[]) {
     
     if (!state.timing_data.load("data/timing/unit_timing.tsv")) {
         SDL_Log("Warning: Failed to load timing data, using defaults");
+    }
+    
+    if (!Entity::load_shadow(renderer.get())) {
+        SDL_Log("Warning: Failed to load shadow texture");
     }
 
     Entity unit1 = create_unit(renderer.get(), state, config, "f1_general", UnitType::Player, 25, 5, {2, 2});

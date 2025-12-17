@@ -3,6 +3,13 @@
 #include <string>
 #include <cmath>
 
+TextureHandle Entity::shadow_texture;
+bool Entity::shadow_loaded = false;
+
+constexpr float SHADOW_OPACITY = 200.0f / 255.0f;
+constexpr float SHADOW_W = 96.0f;
+constexpr float SHADOW_H = 48.0f;
+
 Entity::Entity()
     : board_pos{0, 0}
     , screen_pos{0, 0}
@@ -28,6 +35,30 @@ Entity::Entity()
     , death_elapsed(0.0f)
     , death_duration(0.0f)
     , death_complete(false) {
+}
+
+bool Entity::load_shadow(SDL_Renderer* renderer) {
+    if (shadow_loaded) return true;
+    
+    SurfaceHandle surface(IMG_Load("data/unit_shadow.png"));
+    if (!surface) {
+        SDL_Log("Failed to load shadow: %s", SDL_GetError());
+        return false;
+    }
+    
+    shadow_texture = TextureHandle(SDL_CreateTextureFromSurface(renderer, surface.get()));
+    if (!shadow_texture) {
+        SDL_Log("Failed to create shadow texture: %s", SDL_GetError());
+        return false;
+    }
+    
+    SDL_SetTextureScaleMode(shadow_texture.get(), SDL_SCALEMODE_NEAREST);
+    SDL_SetTextureBlendMode(shadow_texture.get(), SDL_BLENDMODE_BLEND);
+    SDL_SetTextureAlphaMod(shadow_texture.get(), static_cast<Uint8>(SHADOW_OPACITY * 255));
+    
+    shadow_loaded = true;
+    SDL_Log("Shadow texture loaded");
+    return true;
 }
 
 bool Entity::load(SDL_Renderer* renderer, const char* unit_name) {
@@ -146,6 +177,23 @@ void Entity::update(float dt, const RenderConfig& config) {
     }
 }
 
+void Entity::render_shadow(SDL_Renderer* renderer, const RenderConfig& config) const {
+    if (!shadow_loaded || !shadow_texture) return;
+    if (is_dead()) return;
+    
+    float scaled_w = SHADOW_W * config.scale;
+    float scaled_h = SHADOW_H * config.scale;
+    
+    SDL_FRect dst = {
+        screen_pos.x - scaled_w * 0.5f,
+        screen_pos.y - scaled_h * 0.5f,
+        scaled_w,
+        scaled_h
+    };
+    
+    SDL_RenderTexture(renderer, shadow_texture.get(), nullptr, &dst);
+}
+
 void Entity::render(SDL_Renderer* renderer, const RenderConfig& config) const {
     if (!spritesheet || !current_anim || current_anim->frames.empty()) return;
 
@@ -162,8 +210,6 @@ void Entity::render(SDL_Renderer* renderer, const RenderConfig& config) const {
         static_cast<float>(src_rect.h)
     };
 
-    // Position sprite so feet (SHADOW_OFFSET from bottom) align with tile center
-    // SDL Y-down: dst.y is top of sprite, so sprite top = ground - (height - shadowOffset)
     float sprite_top_y = screen_pos.y - (src.h - SHADOW_OFFSET) * config.scale;
 
     SDL_FRect dst;
