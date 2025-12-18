@@ -77,6 +77,7 @@ struct GPURenderer {
     );
 
     void draw_quad_colored(const SDL_FRect& dst, SDL_FColor color);
+    void draw_quad_transformed(Vec2 tl, Vec2 tr, Vec2 br, Vec2 bl, SDL_FColor color);
     void draw_line(Vec2 start, Vec2 end, SDL_FColor color);
 
 private:

@@ -718,6 +718,72 @@ void GPURenderer::draw_quad_colored(const SDL_FRect& dst, SDL_FColor color) {
     SDL_DrawGPUIndexedPrimitives(render_pass, 6, 1, 0, 0, 0);
 }
 
+void GPURenderer::draw_quad_transformed(Vec2 tl, Vec2 tr, Vec2 br, Vec2 bl, SDL_FColor color) {
+    if (!render_pass || !color_pipeline) return;
+
+    float x0 = (tl.x / swapchain_w) * 2.0f - 1.0f;
+    float y0 = 1.0f - (tl.y / swapchain_h) * 2.0f;
+    float x1 = (tr.x / swapchain_w) * 2.0f - 1.0f;
+    float y1 = 1.0f - (tr.y / swapchain_h) * 2.0f;
+    float x2 = (br.x / swapchain_w) * 2.0f - 1.0f;
+    float y2 = 1.0f - (br.y / swapchain_h) * 2.0f;
+    float x3 = (bl.x / swapchain_w) * 2.0f - 1.0f;
+    float y3 = 1.0f - (bl.y / swapchain_h) * 2.0f;
+
+    ColorVertex vertices[4] = {
+        {x0, y0, color.r, color.g, color.b, color.a},
+        {x1, y1, color.r, color.g, color.b, color.a},
+        {x2, y2, color.r, color.g, color.b, color.a},
+        {x3, y3, color.r, color.g, color.b, color.a}
+    };
+
+    SDL_GPUTransferBufferCreateInfo transfer_info = {};
+    transfer_info.usage = SDL_GPU_TRANSFERBUFFERUSAGE_UPLOAD;
+    transfer_info.size = sizeof(vertices);
+
+    SDL_GPUTransferBuffer* transfer = SDL_CreateGPUTransferBuffer(device, &transfer_info);
+    void* map = SDL_MapGPUTransferBuffer(device, transfer, false);
+    std::memcpy(map, vertices, sizeof(vertices));
+    SDL_UnmapGPUTransferBuffer(device, transfer);
+
+    SDL_EndGPURenderPass(render_pass);
+
+    SDL_GPUCopyPass* copy = SDL_BeginGPUCopyPass(cmd_buffer);
+    SDL_GPUTransferBufferLocation src_loc = {};
+    src_loc.transfer_buffer = transfer;
+    SDL_GPUBufferRegion dst_region = {};
+    dst_region.buffer = quad_vertex_buffer;
+    dst_region.size = sizeof(vertices);
+    SDL_UploadToGPUBuffer(copy, &src_loc, &dst_region, false);
+    SDL_EndGPUCopyPass(copy);
+
+    SDL_GPUColorTargetInfo color_target = {};
+    color_target.texture = swapchain_texture;
+    color_target.load_op = SDL_GPU_LOADOP_LOAD;
+    color_target.store_op = SDL_GPU_STOREOP_STORE;
+    render_pass = SDL_BeginGPURenderPass(cmd_buffer, &color_target, 1, nullptr);
+
+    SDL_GPUViewport viewport = {0, 0, (float)swapchain_w, (float)swapchain_h, 0.0f, 1.0f};
+    SDL_SetGPUViewport(render_pass, &viewport);
+
+    SDL_Rect scissor = {0, 0, (int)swapchain_w, (int)swapchain_h};
+    SDL_SetGPUScissor(render_pass, &scissor);
+
+    SDL_ReleaseGPUTransferBuffer(device, transfer);
+
+    SDL_BindGPUGraphicsPipeline(render_pass, color_pipeline);
+
+    SDL_GPUBufferBinding vb_binding = {};
+    vb_binding.buffer = quad_vertex_buffer;
+    SDL_BindGPUVertexBuffers(render_pass, 0, &vb_binding, 1);
+
+    SDL_GPUBufferBinding ib_binding = {};
+    ib_binding.buffer = quad_index_buffer;
+    SDL_BindGPUIndexBuffer(render_pass, &ib_binding, SDL_GPU_INDEXELEMENTSIZE_16BIT);
+
+    SDL_DrawGPUIndexedPrimitives(render_pass, 6, 1, 0, 0, 0);
+}
+
 void GPURenderer::draw_line(Vec2 start, Vec2 end, SDL_FColor color) {
     if (!render_pass || !line_pipeline) return;
 

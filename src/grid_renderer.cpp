@@ -57,27 +57,7 @@ void GridRenderer::render_highlight(const RenderConfig& config,
     Vec2 br = transform_board_point(config, tile_x + ts, tile_y + ts);
     Vec2 bl = transform_board_point(config, tile_x, tile_y + ts);
 
-    float min_x = tl.x;
-    float max_x = tr.x;
-    float min_y = tl.y;
-    float max_y = bl.y;
-
-    if (tr.x < min_x) min_x = tr.x;
-    if (br.x < min_x) min_x = br.x;
-    if (bl.x < min_x) min_x = bl.x;
-    if (tr.x > max_x) max_x = tr.x;
-    if (br.x > max_x) max_x = br.x;
-    if (bl.x > max_x) max_x = bl.x;
-
-    if (tr.y < min_y) min_y = tr.y;
-    if (br.y < min_y) min_y = br.y;
-    if (bl.y < min_y) min_y = bl.y;
-    if (tr.y > max_y) max_y = tr.y;
-    if (br.y > max_y) max_y = br.y;
-    if (bl.y > max_y) max_y = bl.y;
-
-    SDL_FRect dst = {min_x, min_y, max_x - min_x, max_y - min_y};
-    g_gpu.draw_quad_colored(dst, color);
+    g_gpu.draw_quad_transformed(tl, tr, br, bl, color);
 }
 
 void GridRenderer::render_move_range(const RenderConfig& config,

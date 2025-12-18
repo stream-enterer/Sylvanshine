@@ -67,5 +67,7 @@ void main() {
     float noiseSmooth = 1.0 - smoothstep(noiseRangeMin, noiseRangeMax, noise);
     float noiseEdge = fract(1.0 - smoothstep(noiseRangeMin, noiseRangeMax + u_edgeFalloff, noise));
     
-    fragColor = vec4(max(color.rgb, vec3(ceil(noiseEdge))), color.a * (noiseSmooth + noiseEdge) * u_opacity);
+    float alpha = color.a * (noiseSmooth + noiseEdge) * u_opacity;
+    vec3 edgeGlow = vec3(smoothstep(0.1, 0.9, noiseEdge));
+    fragColor = vec4(mix(color.rgb, vec3(1.0), edgeGlow), alpha);
 }
