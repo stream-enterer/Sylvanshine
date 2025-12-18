@@ -313,7 +313,7 @@ bool GPURenderer::create_pipelines() {
 bool GPURenderer::create_quad_buffers() {
     SDL_GPUBufferCreateInfo vb_info = {};
     vb_info.usage = SDL_GPU_BUFFERUSAGE_VERTEX;
-    vb_info.size = sizeof(SpriteVertex) * 4;
+    vb_info.size = sizeof(ColorVertex) * 4;
 
     quad_vertex_buffer = SDL_CreateGPUBuffer(device, &vb_info);
     if (!quad_vertex_buffer) {
@@ -463,6 +463,15 @@ bool GPURenderer::begin_frame() {
     color_target.clear_color = {40.0f/255.0f, 40.0f/255.0f, 60.0f/255.0f, 1.0f};
 
     render_pass = SDL_BeginGPURenderPass(cmd_buffer, &color_target, 1, nullptr);
+
+    if (render_pass) {
+        SDL_GPUViewport viewport = {0, 0, (float)swapchain_w, (float)swapchain_h, 0.0f, 1.0f};
+        SDL_SetGPUViewport(render_pass, &viewport);
+
+        SDL_Rect scissor = {0, 0, (int)swapchain_w, (int)swapchain_h};
+        SDL_SetGPUScissor(render_pass, &scissor);
+    }
+
     return render_pass != nullptr;
 }
 
@@ -530,6 +539,12 @@ void GPURenderer::draw_sprite(const GPUTextureHandle& texture, const SDL_FRect& 
     color_target.load_op = SDL_GPU_LOADOP_LOAD;
     color_target.store_op = SDL_GPU_STOREOP_STORE;
     render_pass = SDL_BeginGPURenderPass(cmd_buffer, &color_target, 1, nullptr);
+
+    SDL_GPUViewport viewport = {0, 0, (float)swapchain_w, (float)swapchain_h, 0.0f, 1.0f};
+    SDL_SetGPUViewport(render_pass, &viewport);
+
+    SDL_Rect scissor = {0, 0, (int)swapchain_w, (int)swapchain_h};
+    SDL_SetGPUScissor(render_pass, &scissor);
 
     SDL_ReleaseGPUTransferBuffer(device, transfer);
 
@@ -612,6 +627,12 @@ void GPURenderer::draw_sprite_dissolve(const GPUTextureHandle& texture, const SD
     color_target.store_op = SDL_GPU_STOREOP_STORE;
     render_pass = SDL_BeginGPURenderPass(cmd_buffer, &color_target, 1, nullptr);
 
+    SDL_GPUViewport viewport = {0, 0, (float)swapchain_w, (float)swapchain_h, 0.0f, 1.0f};
+    SDL_SetGPUViewport(render_pass, &viewport);
+
+    SDL_Rect scissor = {0, 0, (int)swapchain_w, (int)swapchain_h};
+    SDL_SetGPUScissor(render_pass, &scissor);
+
     SDL_ReleaseGPUTransferBuffer(device, transfer);
 
     SDL_BindGPUGraphicsPipeline(render_pass, dissolve_pipeline);
@@ -676,6 +697,12 @@ void GPURenderer::draw_quad_colored(const SDL_FRect& dst, SDL_FColor color) {
     color_target.store_op = SDL_GPU_STOREOP_STORE;
     render_pass = SDL_BeginGPURenderPass(cmd_buffer, &color_target, 1, nullptr);
 
+    SDL_GPUViewport viewport = {0, 0, (float)swapchain_w, (float)swapchain_h, 0.0f, 1.0f};
+    SDL_SetGPUViewport(render_pass, &viewport);
+
+    SDL_Rect scissor = {0, 0, (int)swapchain_w, (int)swapchain_h};
+    SDL_SetGPUScissor(render_pass, &scissor);
+
     SDL_ReleaseGPUTransferBuffer(device, transfer);
 
     SDL_BindGPUGraphicsPipeline(render_pass, color_pipeline);
@@ -729,6 +756,12 @@ void GPURenderer::draw_line(Vec2 start, Vec2 end, SDL_FColor color) {
     color_target.load_op = SDL_GPU_LOADOP_LOAD;
     color_target.store_op = SDL_GPU_STOREOP_STORE;
     render_pass = SDL_BeginGPURenderPass(cmd_buffer, &color_target, 1, nullptr);
+
+    SDL_GPUViewport viewport = {0, 0, (float)swapchain_w, (float)swapchain_h, 0.0f, 1.0f};
+    SDL_SetGPUViewport(render_pass, &viewport);
+
+    SDL_Rect scissor = {0, 0, (int)swapchain_w, (int)swapchain_h};
+    SDL_SetGPUScissor(render_pass, &scissor);
 
     SDL_ReleaseGPUTransferBuffer(device, transfer);
 
