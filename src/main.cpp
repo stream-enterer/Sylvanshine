@@ -184,24 +184,24 @@ void spawn_damage_number(GameState& state, Vec2 pos, int damage, const RenderCon
     state.floating_texts.push_back(ft);
 }
 
-void spawn_fx_at_pos(GameState& state, SDL_Renderer* renderer, const std::string& rsx_name, Vec2 pos) {
-    FXEntity fx = create_fx(state.fx_cache, renderer, rsx_name, pos);
+void spawn_fx_at_pos(GameState& state, const std::string& rsx_name, Vec2 pos) {
+    FXEntity fx = create_fx(state.fx_cache, rsx_name, pos);
     if (!fx.is_complete()) {
         state.active_fx.push_back(std::move(fx));
     }
 }
 
-void spawn_unit_spawn_fx(GameState& state, SDL_Renderer* renderer, Vec2 pos) {
-    spawn_fx_at_pos(state, renderer, "fxSmokeGround", pos);
+void spawn_unit_spawn_fx(GameState& state, Vec2 pos) {
+    spawn_fx_at_pos(state, "fxSmokeGround", pos);
 }
 
-void spawn_unit_death_fx(GameState& state, SDL_Renderer* renderer, Vec2 pos) {
-    spawn_fx_at_pos(state, renderer, "fxExplosionOrangeSmoke", pos);
+void spawn_unit_death_fx(GameState& state, Vec2 pos) {
+    spawn_fx_at_pos(state, "fxExplosionOrangeSmoke", pos);
 }
 
-void spawn_attack_fx(GameState& state, SDL_Renderer* renderer, Vec2 target_pos) {
-    spawn_fx_at_pos(state, renderer, "fxClawSlash", target_pos);
-    spawn_fx_at_pos(state, renderer, "fxImpactOrangeSmall", target_pos);
+void spawn_attack_fx(GameState& state, Vec2 target_pos) {
+    spawn_fx_at_pos(state, "fxClawSlash", target_pos);
+    spawn_fx_at_pos(state, "fxImpactOrangeSmall", target_pos);
 }
 
 void reset_actions(GameState& state) {
@@ -411,23 +411,23 @@ void update_turn_transition(GameState& state, float dt) {
     }
 }
 
-void process_pending_damage(GameState& state, SDL_Renderer* renderer, const RenderConfig& config) {
+void process_pending_damage(GameState& state, const RenderConfig& config) {
     for (const auto& pd : state.pending_damage) {
         if (pd.target_idx < 0 || pd.target_idx >= static_cast<int>(state.units.size())) {
             continue;
         }
-        
+
         Entity& target = state.units[pd.target_idx];
         if (target.is_dead()) continue;
-        
+
         spawn_damage_number(state, target.screen_pos, pd.damage, config);
-        spawn_attack_fx(state, renderer, target.screen_pos);
-        
+        spawn_attack_fx(state, target.screen_pos);
+
         bool was_alive = target.hp > 0;
         target.take_damage(pd.damage);
-        
+
         if (was_alive && target.hp <= 0) {
-            spawn_unit_death_fx(state, renderer, target.screen_pos);
+            spawn_unit_death_fx(state, target.screen_pos);
         }
     }
     state.pending_damage.clear();
@@ -538,7 +538,7 @@ RenderConfig parse_args(int argc, char* argv[]) {
     }
 }
 
-bool init(const RenderConfig& config, WindowHandle& window, RendererHandle& renderer) {
+bool init(const RenderConfig& config, WindowHandle& window) {
     if (!SDL_Init(SDL_INIT_VIDEO)) {
         SDL_Log("SDL_Init failed: %s", SDL_GetError());
         return false;
@@ -549,17 +549,16 @@ bool init(const RenderConfig& config, WindowHandle& window, RendererHandle& rend
         window_flags = SDL_WINDOW_FULLSCREEN;
     }
 
-    SDL_Window* raw_window = nullptr;
-    SDL_Renderer* raw_renderer = nullptr;
+    SDL_Window* raw_window = SDL_CreateWindow("Duelyst Tactics",
+        config.window_w, config.window_h, window_flags);
 
-    if (!SDL_CreateWindowAndRenderer("Duelyst Tactics", config.window_w, config.window_h, window_flags, &raw_window, &raw_renderer)) {
+    if (!raw_window) {
         SDL_Log("Window creation failed: %s", SDL_GetError());
         SDL_Quit();
         return false;
     }
 
     window = WindowHandle(raw_window);
-    renderer = RendererHandle(raw_renderer);
 
     return true;
 }
@@ -685,10 +684,10 @@ void handle_end_turn(GameState& state) {
     begin_turn_transition(state, TurnPhase::EnemyTurn);
 }
 
-Entity create_unit(SDL_Renderer* renderer, GameState& state, const RenderConfig& config, 
+Entity create_unit(GameState& state, const RenderConfig& config,
                    const char* unit_name, UnitType type, int hp, int atk, BoardPos pos);
 
-void reset_game(GameState& state, SDL_Renderer* renderer, const RenderConfig& config) {
+void reset_game(GameState& state, const RenderConfig& config) {
     state.units.clear();
     state.selected_unit_idx = -1;
     state.reachable_tiles.clear();
@@ -702,19 +701,19 @@ void reset_game(GameState& state, SDL_Renderer* renderer, const RenderConfig& co
     state.ai_action_timer = 0.0f;
     state.ai_current_unit = -1;
     state.has_acted.clear();
-    
-    Entity unit1 = create_unit(renderer, state, config, "f1_general", UnitType::Player, 25, 5, {2, 2});
-    if (unit1.spritesheet) {
+
+    Entity unit1 = create_unit(state, config, "f1_general", UnitType::Player, 25, 5, {2, 2});
+    if (unit1.spritesheet.ptr) {
         state.units.push_back(std::move(unit1));
     }
 
-    Entity unit2 = create_unit(renderer, state, config, "f1_general", UnitType::Enemy, 10, 2, {6, 2});
-    if (unit2.spritesheet) {
+    Entity unit2 = create_unit(state, config, "f1_general", UnitType::Enemy, 10, 2, {6, 2});
+    if (unit2.spritesheet.ptr) {
         state.units.push_back(std::move(unit2));
     }
 
-    Entity unit3 = create_unit(renderer, state, config, "f1_general", UnitType::Enemy, 5, 3, {4, 1});
-    if (unit3.spritesheet) {
+    Entity unit3 = create_unit(state, config, "f1_general", UnitType::Enemy, 5, 3, {4, 1});
+    if (unit3.spritesheet.ptr) {
         state.units.push_back(std::move(unit3));
     }
 
@@ -723,7 +722,7 @@ void reset_game(GameState& state, SDL_Renderer* renderer, const RenderConfig& co
     SDL_Log("=== PLAYER TURN ===");
 }
 
-void handle_events(bool& running, GameState& state, SDL_Renderer* renderer, const RenderConfig& config) {
+void handle_events(bool& running, GameState& state, const RenderConfig& config) {
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
         if (event.type == SDL_EVENT_QUIT) {
@@ -735,7 +734,7 @@ void handle_events(bool& running, GameState& state, SDL_Renderer* renderer, cons
             }
             else if (event.key.key == SDLK_R) {
                 if (state.game_phase != GamePhase::Playing) {
-                    reset_game(state, renderer, config);
+                    reset_game(state, config);
                 }
             }
             else if (event.key.key == SDLK_ESCAPE) {
@@ -746,7 +745,7 @@ void handle_events(bool& running, GameState& state, SDL_Renderer* renderer, cons
             if (event.button.button == SDL_BUTTON_LEFT) {
                 Vec2 mouse{static_cast<float>(event.button.x), static_cast<float>(event.button.y)};
                 if (state.game_phase != GamePhase::Playing) {
-                    reset_game(state, renderer, config);
+                    reset_game(state, config);
                 } else {
                     handle_click(state, mouse, config);
                 }
@@ -773,33 +772,32 @@ void check_player_turn_end(GameState& state) {
     begin_turn_transition(state, TurnPhase::EnemyTurn);
 }
 
-void update(GameState& state, float dt, SDL_Renderer* renderer, const RenderConfig& config) {
+void update(GameState& state, float dt, const RenderConfig& config) {
     check_attack_damage(state);
-    process_pending_damage(state, renderer, config);
-    
+    process_pending_damage(state, config);
+
     for (auto& unit : state.units) {
         unit.update(dt, config);
     }
-    
+
     update_floating_texts(state, dt, config);
     update_active_fx(state, dt);
     remove_dead_units(state);
-    
+
     check_win_lose_condition(state);
-    
+
     if (state.game_phase != GamePhase::Playing) return;
-    
+
     update_selected_ranges(state);
     update_turn_transition(state, dt);
     update_ai(state, dt, config);
     check_player_turn_end(state);
 }
 
-void render_floating_texts(SDL_Renderer* renderer, const GameState& state, const RenderConfig& config) {
+void render_floating_texts(const GameState& state, const RenderConfig& config) {
     for (const auto& ft : state.floating_texts) {
         float alpha = ft.get_alpha();
-        Uint8 a = static_cast<Uint8>(alpha * 255);
-        
+
         float size = 12.0f * config.scale;
         SDL_FRect rect = {
             ft.pos.x - size * 0.5f,
@@ -807,105 +805,95 @@ void render_floating_texts(SDL_Renderer* renderer, const GameState& state, const
             size,
             size
         };
-        
-        SDL_SetRenderDrawColor(renderer, 255, 50, 50, a);
-        SDL_RenderFillRect(renderer, &rect);
-        
+
+        g_gpu.draw_quad_colored(rect, {1.0f, 50.0f/255.0f, 50.0f/255.0f, alpha});
+
         SDL_FRect inner = {
             rect.x + 2,
             rect.y + 2,
             rect.w - 4,
             rect.h - 4
         };
-        SDL_SetRenderDrawColor(renderer, 255, 200, 200, a);
-        SDL_RenderFillRect(renderer, &inner);
+        g_gpu.draw_quad_colored(inner, {1.0f, 200.0f/255.0f, 200.0f/255.0f, alpha});
     }
 }
 
-void render_active_fx(SDL_Renderer* renderer, const GameState& state, const RenderConfig& config) {
+void render_active_fx(const GameState& state, const RenderConfig& config) {
     for (const auto& fx : state.active_fx) {
-        fx.render(renderer, config);
+        fx.render(config);
     }
 }
 
-void render_turn_indicator(SDL_Renderer* renderer, const GameState& state, const RenderConfig& config) {
+void render_turn_indicator(const GameState& state, const RenderConfig& config) {
     float indicator_w = 200.0f * config.scale;
     float indicator_h = 40.0f * config.scale;
     float x = (config.window_w - indicator_w) * 0.5f;
     float y = 20.0f * config.scale;
-    
+
     SDL_FRect bg = {x - 2, y - 2, indicator_w + 4, indicator_h + 4};
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 200);
-    SDL_RenderFillRect(renderer, &bg);
-    
+    g_gpu.draw_quad_colored(bg, {0.0f, 0.0f, 0.0f, 200.0f/255.0f});
+
     SDL_FRect inner = {x, y, indicator_w, indicator_h};
-    
+
+    SDL_FColor inner_color;
     switch (state.turn_phase) {
         case TurnPhase::PlayerTurn:
-            SDL_SetRenderDrawColor(renderer, 50, 150, 255, 255);
+            inner_color = {50.0f/255.0f, 150.0f/255.0f, 1.0f, 1.0f};
             break;
         case TurnPhase::EnemyTurn:
-            SDL_SetRenderDrawColor(renderer, 255, 80, 80, 255);
+            inner_color = {1.0f, 80.0f/255.0f, 80.0f/255.0f, 1.0f};
             break;
         case TurnPhase::TurnTransition:
-            SDL_SetRenderDrawColor(renderer, 150, 150, 150, 255);
+            inner_color = {150.0f/255.0f, 150.0f/255.0f, 150.0f/255.0f, 1.0f};
             break;
     }
-    SDL_RenderFillRect(renderer, &inner);
-    
+    g_gpu.draw_quad_colored(inner, inner_color);
+
     float bar_w = 60.0f * config.scale;
     float bar_h = 20.0f * config.scale;
     float bar_x = x + (indicator_w - bar_w) * 0.5f;
     float bar_y = y + (indicator_h - bar_h) * 0.5f;
-    
+
     SDL_FRect label = {bar_x, bar_y, bar_w, bar_h};
-    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 200);
-    SDL_RenderFillRect(renderer, &label);
+    g_gpu.draw_quad_colored(label, {1.0f, 1.0f, 1.0f, 200.0f/255.0f});
 }
 
-void render_game_over_overlay(SDL_Renderer* renderer, const GameState& state, const RenderConfig& config) {
+void render_game_over_overlay(const GameState& state, const RenderConfig& config) {
     SDL_FRect fullscreen = {0, 0, static_cast<float>(config.window_w), static_cast<float>(config.window_h)};
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 180);
-    SDL_RenderFillRect(renderer, &fullscreen);
-    
+    g_gpu.draw_quad_colored(fullscreen, {0.0f, 0.0f, 0.0f, 180.0f/255.0f});
+
     float box_w = 400.0f * config.scale;
     float box_h = 200.0f * config.scale;
     float box_x = (config.window_w - box_w) * 0.5f;
     float box_y = (config.window_h - box_h) * 0.5f;
-    
+
     SDL_FRect box_bg = {box_x - 4, box_y - 4, box_w + 8, box_h + 8};
-    SDL_SetRenderDrawColor(renderer, 40, 40, 60, 255);
-    SDL_RenderFillRect(renderer, &box_bg);
-    
+    g_gpu.draw_quad_colored(box_bg, {40.0f/255.0f, 40.0f/255.0f, 60.0f/255.0f, 1.0f});
+
     SDL_FRect box = {box_x, box_y, box_w, box_h};
-    if (state.game_phase == GamePhase::Victory) {
-        SDL_SetRenderDrawColor(renderer, 50, 120, 50, 255);
-    } else {
-        SDL_SetRenderDrawColor(renderer, 120, 50, 50, 255);
-    }
-    SDL_RenderFillRect(renderer, &box);
-    
+    SDL_FColor box_color = state.game_phase == GamePhase::Victory ?
+        SDL_FColor{50.0f/255.0f, 120.0f/255.0f, 50.0f/255.0f, 1.0f} :
+        SDL_FColor{120.0f/255.0f, 50.0f/255.0f, 50.0f/255.0f, 1.0f};
+    g_gpu.draw_quad_colored(box, box_color);
+
     float title_w = 200.0f * config.scale;
     float title_h = 60.0f * config.scale;
     float title_x = box_x + (box_w - title_w) * 0.5f;
     float title_y = box_y + 30.0f * config.scale;
-    
+
     SDL_FRect title_rect = {title_x, title_y, title_w, title_h};
-    if (state.game_phase == GamePhase::Victory) {
-        SDL_SetRenderDrawColor(renderer, 100, 255, 100, 255);
-    } else {
-        SDL_SetRenderDrawColor(renderer, 255, 100, 100, 255);
-    }
-    SDL_RenderFillRect(renderer, &title_rect);
-    
+    SDL_FColor title_color = state.game_phase == GamePhase::Victory ?
+        SDL_FColor{100.0f/255.0f, 1.0f, 100.0f/255.0f, 1.0f} :
+        SDL_FColor{1.0f, 100.0f/255.0f, 100.0f/255.0f, 1.0f};
+    g_gpu.draw_quad_colored(title_rect, title_color);
+
     float hint_w = 250.0f * config.scale;
     float hint_h = 30.0f * config.scale;
     float hint_x = box_x + (box_w - hint_w) * 0.5f;
     float hint_y = box_y + box_h - 50.0f * config.scale;
-    
+
     SDL_FRect hint_rect = {hint_x, hint_y, hint_w, hint_h};
-    SDL_SetRenderDrawColor(renderer, 200, 200, 200, 200);
-    SDL_RenderFillRect(renderer, &hint_rect);
+    g_gpu.draw_quad_colored(hint_rect, {200.0f/255.0f, 200.0f/255.0f, 200.0f/255.0f, 200.0f/255.0f});
 }
 
 std::vector<size_t> get_render_order(const GameState& state) {
@@ -917,69 +905,67 @@ std::vector<size_t> get_render_order(const GameState& state) {
     return order;
 }
 
-void render(SDL_Renderer* renderer, GameState& state, const RenderConfig& config) {
-    SDL_SetRenderDrawColor(renderer, 40, 40, 60, 255);
-    SDL_RenderClear(renderer);
-    SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
-    
-    state.grid_renderer.render(renderer, config);
-    
+void render(GameState& state, const RenderConfig& config) {
+    g_gpu.begin_frame();
+
+    state.grid_renderer.render(config);
+
     if (state.selected_unit_idx >= 0 && state.game_phase == GamePhase::Playing) {
         auto occupied = get_occupied_positions(state, state.selected_unit_idx);
-        state.grid_renderer.render_move_range(renderer, config,
+        state.grid_renderer.render_move_range(config,
             state.units[state.selected_unit_idx].board_pos, MOVE_RANGE, occupied);
-        state.grid_renderer.render_attack_range(renderer, config, state.attackable_tiles);
+        state.grid_renderer.render_attack_range(config, state.attackable_tiles);
     }
-    
+
     auto render_order = get_render_order(state);
-    
+
     for (size_t idx : render_order) {
         if (!state.units[idx].is_dead()) {
-            state.units[idx].render_shadow(renderer, config);
+            state.units[idx].render_shadow(config);
         }
     }
-    
+
     for (size_t idx : render_order) {
         if (!state.units[idx].is_dead()) {
-            state.units[idx].render(renderer, config);
+            state.units[idx].render(config);
         }
     }
-    
-    render_active_fx(renderer, state, config);
-    
+
+    render_active_fx(state, config);
+
     for (size_t idx : render_order) {
         if (!state.units[idx].is_dead()) {
-            state.units[idx].render_hp_bar(renderer, config);
+            state.units[idx].render_hp_bar(config);
         }
     }
-    
-    render_floating_texts(renderer, state, config);
-    
+
+    render_floating_texts(state, config);
+
     if (state.game_phase == GamePhase::Playing) {
-        render_turn_indicator(renderer, state, config);
+        render_turn_indicator(state, config);
     } else {
-        render_game_over_overlay(renderer, state, config);
+        render_game_over_overlay(state, config);
     }
-    
-    SDL_RenderPresent(renderer);
+
+    g_gpu.end_frame();
 }
 
-Entity create_unit(SDL_Renderer* renderer, GameState& state, const RenderConfig& config, 
+Entity create_unit(GameState& state, const RenderConfig& config,
                    const char* unit_name, UnitType type, int hp, int atk, BoardPos pos) {
     Entity unit;
-    if (!unit.load(renderer, unit_name)) {
+    if (!unit.load(unit_name)) {
         SDL_Log("Failed to load unit: %s", unit_name);
         return unit;
     }
     unit.type = type;
     unit.set_stats(hp, atk);
     unit.set_board_position(config, pos);
-    
+
     UnitTiming timing = state.timing_data.get(unit_name);
     unit.set_timing(timing.attack_damage_delay);
-    
-    spawn_unit_spawn_fx(state, renderer, unit.screen_pos);
-    
+
+    spawn_unit_spawn_fx(state, unit.screen_pos);
+
     return unit;
 }
 
@@ -987,43 +973,47 @@ int main(int argc, char* argv[]) {
     RenderConfig config = parse_args(argc, argv);
 
     WindowHandle window;
-    RendererHandle renderer;
 
-    if (!init(config, window, renderer)) {
+    if (!init(config, window)) {
+        return 1;
+    }
+
+    if (!g_gpu.init(window.get())) {
+        SDL_Log("Failed to initialize GPU renderer");
         return 1;
     }
 
     GameState state;
-    
-    if (!state.grid_renderer.init(renderer.get(), config)) {
+
+    if (!state.grid_renderer.init(config)) {
         SDL_Log("Failed to initialize grid renderer");
         return 1;
     }
-    
+
     if (!state.fx_cache.load_mappings("data/fx/rsx_mapping.tsv", "data/fx/manifest.tsv")) {
         SDL_Log("Warning: Failed to load FX mappings, FX will not display");
     }
-    
+
     if (!state.timing_data.load("data/timing/unit_timing.tsv")) {
         SDL_Log("Warning: Failed to load timing data, using defaults");
     }
-    
-    if (!Entity::load_shadow(renderer.get())) {
+
+    if (!Entity::load_shadow()) {
         SDL_Log("Warning: Failed to load shadow texture");
     }
 
-    Entity unit1 = create_unit(renderer.get(), state, config, "f1_general", UnitType::Player, 25, 5, {2, 2});
-    if (unit1.spritesheet) {
+    Entity unit1 = create_unit(state, config, "f1_general", UnitType::Player, 25, 5, {2, 2});
+    if (unit1.spritesheet.ptr) {
         state.units.push_back(std::move(unit1));
     }
 
-    Entity unit2 = create_unit(renderer.get(), state, config, "f1_general", UnitType::Enemy, 10, 2, {6, 2});
-    if (unit2.spritesheet) {
+    Entity unit2 = create_unit(state, config, "f1_general", UnitType::Enemy, 10, 2, {6, 2});
+    if (unit2.spritesheet.ptr) {
         state.units.push_back(std::move(unit2));
     }
 
-    Entity unit3 = create_unit(renderer.get(), state, config, "f1_general", UnitType::Enemy, 5, 3, {4, 1});
-    if (unit3.spritesheet) {
+    Entity unit3 = create_unit(state, config, "f1_general", UnitType::Enemy, 5, 3, {4, 1});
+    if (unit3.spritesheet.ptr) {
         state.units.push_back(std::move(unit3));
     }
 
@@ -1038,13 +1028,14 @@ int main(int argc, char* argv[]) {
         float dt = (current_time - last_time) / 1000.0f;
         last_time = current_time;
 
-        handle_events(running, state, renderer.get(), config);
-        update(state, dt, renderer.get(), config);
-        render(renderer.get(), state, config);
+        handle_events(running, state, config);
+        update(state, dt, config);
+        render(state, config);
 
         SDL_Delay(16);
     }
 
+    g_gpu.shutdown();
     SDL_Quit();
 
     return 0;

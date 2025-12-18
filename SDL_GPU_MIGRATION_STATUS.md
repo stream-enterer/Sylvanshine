@@ -1,5 +1,9 @@
 # SDL_GPU Migration Status
 
+**Current Status:** Code migration complete ✅ | Awaiting shader compilation and testing
+
+**Last Updated:** 2025-12-18
+
 ## ✅ COMPLETED WORK
 
 ### 1. GPU Renderer Core Infrastructure
@@ -36,11 +40,39 @@
 - ✅ Updated `GridRenderer::render_move_range()` and `render_attack_range()`
 - ✅ Changed `SDL_Color` → `SDL_FColor` throughout
 
+### 5. Main.cpp Complete Migration
+- ✅ Removed SDL_Renderer creation and RendererHandle from init()
+- ✅ Added separate g_gpu.init() call in main()
+- ✅ Updated all FX spawn functions: removed SDL_Renderer parameter
+- ✅ Updated all game state functions: process_pending_damage, handle_events, update
+- ✅ Updated all rendering functions: render, render_floating_texts, render_active_fx, etc.
+- ✅ Updated create_unit() to not take SDL_Renderer
+- ✅ Changed all `if (unit.spritesheet)` to `if (unit.spritesheet.ptr)`
+- ✅ Wrapped entire render loop with `g_gpu.begin_frame()` / `g_gpu.end_frame()`
+- ✅ **All SDL_Renderer references completely removed from codebase**
+
 ## 🔧 REMAINING WORK
 
-### 1. Main.cpp Call Site Updates
+**Build Requirements:**
+- SDL3 with GPU support (pkg-config: `sdl3`)
+- Vulkan SDK with `glslc` shader compiler
 
-You need to update all call sites in `src/main.cpp`:
+### 1. Main.cpp Call Site Updates ✅ COMPLETE
+
+All call sites in `src/main.cpp` have been updated (commit: 30287b91):
+
+- ✅ Removed SDL_Renderer creation from init()
+- ✅ Updated main() to initialize GPU separately
+- ✅ Removed SDL_Renderer parameters from all FX functions
+- ✅ Removed SDL_Renderer parameters from all game state functions
+- ✅ Updated all Entity and GridRenderer call sites
+- ✅ Replaced SDL_RenderClear/Present with g_gpu.begin_frame/end_frame
+- ✅ Wrapped render loop with GPU frame boundaries
+
+**All SDL_Renderer references have been removed from the codebase.**
+
+<details>
+<summary>Click to see code examples</summary>
 
 #### Remove SDL_Renderer Creation
 ```cpp
@@ -135,7 +167,9 @@ g_gpu.draw_quad_colored(rect, {r, g, b, a});
 g_gpu.draw_quad_colored(dst, color);
 ```
 
-### 2. Shader Compilation
+</details>
+
+### 2. Shader Compilation (TODO)
 
 Compile the GLSL shaders to SPIR-V:
 
