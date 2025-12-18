@@ -1,7 +1,7 @@
 #pragma once
 #include "types.hpp"
 #include "animation_loader.hpp"
-#include "sdl_handles.hpp"
+#include "gpu_renderer.hpp"
 #include <SDL3/SDL.h>
 
 constexpr float FADE_FAST = 0.2f;
@@ -27,10 +27,10 @@ struct Entity {
     BoardPos board_pos;
     Vec2 screen_pos;
 
-    TextureHandle spritesheet;
+    GPUTextureHandle spritesheet;
     AnimationSet animations;
-    
-    static TextureHandle shadow_texture;
+
+    static GPUTextureHandle shadow_texture;
     static bool shadow_loaded;
     
     const Animation* current_anim;
@@ -71,18 +71,18 @@ struct Entity {
     float opacity;
 
     Entity();
-    
-    bool load(SDL_Renderer* renderer, const char* unit_name);
+
+    bool load(const char* unit_name);
     void set_board_position(const RenderConfig& config, BoardPos pos);
     void set_stats(int health, int atk);
     void set_timing(float damage_delay);
     void play_animation(const char* name);
     void update(float dt, const RenderConfig& config);
-    void render(SDL_Renderer* renderer, const RenderConfig& config) const;
-    void render_shadow(SDL_Renderer* renderer, const RenderConfig& config) const;
-    void render_hp_bar(SDL_Renderer* renderer, const RenderConfig& config) const;
-    
-    static bool load_shadow(SDL_Renderer* renderer);
+    void render(const RenderConfig& config) const;
+    void render_shadow(const RenderConfig& config) const;
+    void render_hp_bar(const RenderConfig& config) const;
+
+    static bool load_shadow();
     
     void start_move(const RenderConfig& config, BoardPos target);
     void start_attack(int target_idx);

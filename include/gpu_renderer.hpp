@@ -10,6 +10,11 @@ struct SpriteVertex {
     float u, v;
 };
 
+struct ColorVertex {
+    float x, y;
+    float r, g, b, a;
+};
+
 struct SpriteUniforms {
     float opacity;
     float dissolve_time;
@@ -38,6 +43,8 @@ struct GPURenderer {
     SDL_Window* window = nullptr;
     SDL_GPUGraphicsPipeline* sprite_pipeline = nullptr;
     SDL_GPUGraphicsPipeline* dissolve_pipeline = nullptr;
+    SDL_GPUGraphicsPipeline* color_pipeline = nullptr;
+    SDL_GPUGraphicsPipeline* line_pipeline = nullptr;
     SDL_GPUBuffer* quad_vertex_buffer = nullptr;
     SDL_GPUBuffer* quad_index_buffer = nullptr;
     SDL_GPUSampler* default_sampler = nullptr;
@@ -52,7 +59,7 @@ struct GPURenderer {
     void end_frame();
 
     void draw_sprite(
-        GPUTextureHandle& texture,
+        const GPUTextureHandle& texture,
         const SDL_FRect& src,
         const SDL_FRect& dst,
         bool flip_x,
@@ -60,7 +67,7 @@ struct GPURenderer {
     );
 
     void draw_sprite_dissolve(
-        GPUTextureHandle& texture,
+        const GPUTextureHandle& texture,
         const SDL_FRect& src,
         const SDL_FRect& dst,
         bool flip_x,
@@ -70,6 +77,7 @@ struct GPURenderer {
     );
 
     void draw_quad_colored(const SDL_FRect& dst, SDL_FColor color);
+    void draw_line(Vec2 start, Vec2 end, SDL_FColor color);
 
 private:
     SDL_GPUCommandBuffer* cmd_buffer = nullptr;
