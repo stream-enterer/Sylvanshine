@@ -4,7 +4,7 @@
 #include <cmath>
 #include <cstdlib>
 
-TextureHandle Entity::shadow_texture;
+GPUTextureHandle Entity::shadow_texture;
 bool Entity::shadow_loaded = false;
 
 constexpr float SHADOW_OPACITY = 200.0f / 255.0f;
@@ -45,49 +45,31 @@ Entity::Entity()
     dissolve_seed = static_cast<float>(std::rand()) / RAND_MAX * 100.0f;
 }
 
-bool Entity::load_shadow(SDL_Renderer* renderer) {
+bool Entity::load_shadow() {
     if (shadow_loaded) return true;
-    
-    SurfaceHandle surface(IMG_Load("data/unit_shadow.png"));
-    if (!surface) {
-        SDL_Log("Failed to load shadow: %s", SDL_GetError());
-        return false;
-    }
-    
-    shadow_texture = TextureHandle(SDL_CreateTextureFromSurface(renderer, surface.get()));
+
+    shadow_texture = g_gpu.load_texture("data/unit_shadow.png");
     if (!shadow_texture) {
-        SDL_Log("Failed to create shadow texture: %s", SDL_GetError());
+        SDL_Log("Failed to load shadow texture");
         return false;
     }
-    
-    SDL_SetTextureScaleMode(shadow_texture.get(), SDL_SCALEMODE_NEAREST);
-    SDL_SetTextureBlendMode(shadow_texture.get(), SDL_BLENDMODE_BLEND);
-    
+
     shadow_loaded = true;
     SDL_Log("Shadow texture loaded");
     return true;
 }
 
-bool Entity::load(SDL_Renderer* renderer, const char* unit_name) {
+bool Entity::load(const char* unit_name) {
     std::string base_path = "data/units/";
     base_path += unit_name;
 
     std::string spritesheet_path = base_path + "/spritesheet.png";
-    SurfaceHandle surface(IMG_Load(spritesheet_path.c_str()));
-    if (!surface) {
-        SDL_Log("Failed to load spritesheet: %s - %s", spritesheet_path.c_str(), SDL_GetError());
-        return false;
-    }
-
-    spritesheet = TextureHandle(SDL_CreateTextureFromSurface(renderer, surface.get()));
+    spritesheet = g_gpu.load_texture(spritesheet_path.c_str());
 
     if (!spritesheet) {
-        SDL_Log("Failed to create texture: %s", SDL_GetError());
+        SDL_Log("Failed to load spritesheet: %s", spritesheet_path.c_str());
         return false;
     }
-
-    SDL_SetTextureScaleMode(spritesheet.get(), SDL_SCALEMODE_NEAREST);
-    SDL_SetTextureBlendMode(spritesheet.get(), SDL_BLENDMODE_BLEND);
 
     std::string anim_path = base_path + "/animations.txt";
     animations = load_animations(anim_path.c_str());
@@ -97,11 +79,11 @@ bool Entity::load(SDL_Renderer* renderer, const char* unit_name) {
     }
 
     play_animation("idle");
-    
+
     state = EntityState::Spawning;
     spawn_elapsed = 0.0f;
     opacity = 0.0f;
-    
+
     return true;
 }
 
@@ -213,28 +195,27 @@ void Entity::update(float dt, const RenderConfig& config) {
     }
 }
 
-void Entity::render_shadow(SDL_Renderer* renderer, const RenderConfig& config) const {
-    if (!shadow_loaded || !shadow_texture) return;
+void Entity::render_shadow(const RenderConfig& config) const {
+    if (!shadow_loaded || !shadow_texture.ptr) return;
     if (is_dead()) return;
-    
+
     float scaled_w = SHADOW_W * config.scale;
     float scaled_h = SHADOW_H * config.scale;
-    
+
+    SDL_FRect src = {0, 0, static_cast<float>(shadow_texture.width), static_cast<float>(shadow_texture.height)};
     SDL_FRect dst = {
         screen_pos.x - scaled_w * 0.5f,
         screen_pos.y - scaled_h * 0.5f,
         scaled_w,
         scaled_h
     };
-    
-    Uint8 shadow_alpha = static_cast<Uint8>(SHADOW_OPACITY * 255 * opacity);
-    SDL_SetTextureAlphaMod(shadow_texture.get(), shadow_alpha);
-    
-    SDL_RenderTexture(renderer, shadow_texture.get(), nullptr, &dst);
+
+    float shadow_alpha = SHADOW_OPACITY * opacity;
+    g_gpu.draw_sprite(shadow_texture, src, dst, false, shadow_alpha);
 }
 
-void Entity::render(SDL_Renderer* renderer, const RenderConfig& config) const {
-    if (!spritesheet || !current_anim || current_anim->frames.empty()) return;
+void Entity::render(const RenderConfig& config) const {
+    if (!spritesheet.ptr || !current_anim || current_anim->frames.empty()) return;
     if (is_dead()) return;
 
     int frame_idx = static_cast<int>(anim_time * current_anim->fps);
@@ -253,55 +234,48 @@ void Entity::render(SDL_Renderer* renderer, const RenderConfig& config) const {
     float sprite_top_y = screen_pos.y - (src.h - SHADOW_OFFSET) * config.scale;
 
     SDL_FRect dst;
-    if (flip_x) {
-        dst.x = screen_pos.x + src.w * 0.5f * config.scale;
-        dst.y = sprite_top_y;
-        dst.w = -src.w * config.scale;
-        dst.h = src.h * config.scale;
-    } else {
-        dst.x = screen_pos.x - src.w * 0.5f * config.scale;
-        dst.y = sprite_top_y;
-        dst.w = src.w * config.scale;
-        dst.h = src.h * config.scale;
-    }
+    dst.x = screen_pos.x - src.w * 0.5f * config.scale;
+    dst.y = sprite_top_y;
+    dst.w = src.w * config.scale;
+    dst.h = src.h * config.scale;
 
-    Uint8 alpha = static_cast<Uint8>(opacity * 255);
-    SDL_SetTextureAlphaMod(spritesheet.get(), alpha);
-    SDL_RenderTexture(renderer, spritesheet.get(), &src, &dst);
+    if (state == EntityState::Dissolving) {
+        float dissolve_time = get_dissolve_time();
+        g_gpu.draw_sprite_dissolve(spritesheet, src, dst, flip_x, opacity, dissolve_time, dissolve_seed);
+    } else {
+        g_gpu.draw_sprite(spritesheet, src, dst, flip_x, opacity);
+    }
 }
 
-void Entity::render_hp_bar(SDL_Renderer* renderer, const RenderConfig& config) const {
+void Entity::render_hp_bar(const RenderConfig& config) const {
     if (is_dead()) return;
     if (state == EntityState::Spawning && spawn_elapsed < spawn_duration * 0.5f) return;
     if (state == EntityState::Dissolving) return;
-    
+
     float hp_percent = static_cast<float>(hp) / max_hp;
-    
+
     float bar_width = 60.0f * config.scale;
     float bar_height = 6.0f * config.scale;
     float bar_x = screen_pos.x - bar_width * 0.5f;
     float bar_y = screen_pos.y - 55.0f * config.scale;
-    
-    Uint8 alpha = static_cast<Uint8>(opacity * 255);
-    
+
+    float alpha = opacity;
+
     SDL_FRect bg = {bar_x - 1, bar_y - 1, bar_width + 2, bar_height + 2};
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, alpha);
-    SDL_RenderFillRect(renderer, &bg);
-    
+    g_gpu.draw_quad_colored(bg, {0.0f, 0.0f, 0.0f, alpha});
+
     SDL_FRect bg_inner = {bar_x, bar_y, bar_width, bar_height};
-    SDL_SetRenderDrawColor(renderer, 40, 40, 40, alpha);
-    SDL_RenderFillRect(renderer, &bg_inner);
-    
+    g_gpu.draw_quad_colored(bg_inner, {40.0f/255.0f, 40.0f/255.0f, 40.0f/255.0f, alpha});
+
     if (hp > 0) {
         SDL_FRect fg = {bar_x, bar_y, bar_width * hp_percent, bar_height};
         if (hp_percent > 0.66f) {
-            SDL_SetRenderDrawColor(renderer, 100, 255, 100, alpha);
+            g_gpu.draw_quad_colored(fg, {100.0f/255.0f, 1.0f, 100.0f/255.0f, alpha});
         } else if (hp_percent > 0.33f) {
-            SDL_SetRenderDrawColor(renderer, 255, 255, 100, alpha);
+            g_gpu.draw_quad_colored(fg, {1.0f, 1.0f, 100.0f/255.0f, alpha});
         } else {
-            SDL_SetRenderDrawColor(renderer, 255, 100, 100, alpha);
+            g_gpu.draw_quad_colored(fg, {1.0f, 100.0f/255.0f, 100.0f/255.0f, alpha});
         }
-        SDL_RenderFillRect(renderer, &fg);
     }
 }
 

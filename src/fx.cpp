@@ -97,74 +97,65 @@ bool FXCache::load_mappings(const char* rsx_mapping_path, const char* manifest_p
     return true;
 }
 
-FXAsset* FXCache::get_asset(SDL_Renderer* renderer, const std::string& folder) {
+FXAsset* FXCache::get_asset(const std::string& folder) {
     auto it = loaded_assets.find(folder);
     if (it != loaded_assets.end()) {
         return &it->second;
     }
-    
+
     auto manifest_it = manifest.find(folder);
     if (manifest_it == manifest.end()) {
         SDL_Log("FX folder not in manifest: %s", folder.c_str());
         return nullptr;
     }
-    
+
     const FXManifestEntry& entry = manifest_it->second;
-    
-    SurfaceHandle surface(IMG_Load(entry.spritesheet_path.c_str()));
-    if (!surface) {
-        SDL_Log("Failed to load FX spritesheet: %s - %s", entry.spritesheet_path.c_str(), SDL_GetError());
-        return nullptr;
-    }
-    
+
     FXAsset asset;
-    asset.texture = TextureHandle(SDL_CreateTextureFromSurface(renderer, surface.get()));
-    if (!asset.texture) {
-        SDL_Log("Failed to create FX texture: %s", SDL_GetError());
+    asset.texture = g_gpu.load_texture(entry.spritesheet_path.c_str());
+    if (!asset.texture.ptr) {
+        SDL_Log("Failed to load FX spritesheet: %s", entry.spritesheet_path.c_str());
         return nullptr;
     }
-    
-    SDL_SetTextureScaleMode(asset.texture.get(), SDL_SCALEMODE_NEAREST);
-    SDL_SetTextureBlendMode(asset.texture.get(), SDL_BLENDMODE_BLEND);
-    
+
     std::string anim_path = "data/fx/" + folder + "/animations.txt";
     asset.animations = load_animations(anim_path.c_str());
-    
+
     loaded_assets[folder] = std::move(asset);
     SDL_Log("Loaded FX asset: %s", folder.c_str());
-    
+
     return &loaded_assets[folder];
 }
 
-const Animation* FXCache::get_animation(SDL_Renderer* renderer, const std::string& rsx_name) {
+const Animation* FXCache::get_animation(const std::string& rsx_name) {
     auto mapping_it = rsx_mappings.find(rsx_name);
     if (mapping_it == rsx_mappings.end()) {
         SDL_Log("RSX name not found: %s", rsx_name.c_str());
         return nullptr;
     }
-    
+
     const RSXMapping& mapping = mapping_it->second;
-    FXAsset* asset = get_asset(renderer, mapping.folder);
+    FXAsset* asset = get_asset(mapping.folder);
     if (!asset) {
         return nullptr;
     }
-    
+
     return asset->animations.find(rsx_name.c_str());
 }
 
-SDL_Texture* FXCache::get_texture(SDL_Renderer* renderer, const std::string& rsx_name) {
+const GPUTextureHandle* FXCache::get_texture(const std::string& rsx_name) {
     auto mapping_it = rsx_mappings.find(rsx_name);
     if (mapping_it == rsx_mappings.end()) {
         return nullptr;
     }
-    
+
     const RSXMapping& mapping = mapping_it->second;
-    FXAsset* asset = get_asset(renderer, mapping.folder);
+    FXAsset* asset = get_asset(mapping.folder);
     if (!asset) {
         return nullptr;
     }
-    
-    return asset->texture.get();
+
+    return &asset->texture;
 }
 
 FXEntity::FXEntity()
@@ -187,48 +178,48 @@ void FXEntity::update(float dt) {
     }
 }
 
-void FXEntity::render(SDL_Renderer* renderer, const RenderConfig& config) const {
-    if (complete || !spritesheet || !anim || anim->frames.empty()) return;
-    
+void FXEntity::render(const RenderConfig& config) const {
+    if (complete || !spritesheet || !spritesheet->ptr || !anim || anim->frames.empty()) return;
+
     int frame_idx = static_cast<int>(elapsed * anim->fps);
     if (frame_idx >= static_cast<int>(anim->frames.size())) {
         frame_idx = anim->frames.size() - 1;
     }
-    
+
     const SDL_Rect& src_rect = anim->frames[frame_idx].rect;
-    
+
     SDL_FRect src = {
         static_cast<float>(src_rect.x),
         static_cast<float>(src_rect.y),
         static_cast<float>(src_rect.w),
         static_cast<float>(src_rect.h)
     };
-    
+
     float scaled_w = src.w * config.scale * scale;
     float scaled_h = src.h * config.scale * scale;
-    
+
     SDL_FRect dst = {
         pos.x - scaled_w * 0.5f,
         pos.y - scaled_h * 0.5f,
         scaled_w,
         scaled_h
     };
-    
-    SDL_RenderTexture(renderer, spritesheet, &src, &dst);
+
+    g_gpu.draw_sprite(*spritesheet, src, dst, false, 1.0f);
 }
 
-FXEntity create_fx(FXCache& cache, SDL_Renderer* renderer, const std::string& rsx_name, Vec2 position) {
+FXEntity create_fx(FXCache& cache, const std::string& rsx_name, Vec2 position) {
     FXEntity fx;
     fx.pos = position;
-    fx.anim = cache.get_animation(renderer, rsx_name);
-    fx.spritesheet = cache.get_texture(renderer, rsx_name);
+    fx.anim = cache.get_animation(rsx_name);
+    fx.spritesheet = cache.get_texture(rsx_name);
     fx.elapsed = 0.0f;
     fx.complete = (fx.anim == nullptr || fx.spritesheet == nullptr);
     fx.scale = 1.0f;
-    
+
     if (fx.complete) {
         SDL_Log("Failed to create FX: %s", rsx_name.c_str());
     }
-    
+
     return fx;
 }
