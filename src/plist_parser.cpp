@@ -3,6 +3,7 @@
 #include <sstream>
 #include <regex>
 #include <algorithm>
+#include <cstring>
 #include <SDL3/SDL.h>
 
 namespace {
