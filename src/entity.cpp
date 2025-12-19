@@ -1,4 +1,5 @@
 #include "entity.hpp"
+#include "asset_paths.hpp"
 #include <SDL3_image/SDL_image.h>
 #include <string>
 #include <cmath>
@@ -48,22 +49,21 @@ Entity::Entity()
 bool Entity::load_shadow() {
     if (shadow_loaded) return true;
 
-    shadow_texture = g_gpu.load_texture("data/unit_shadow.png");
+    std::string shadow_path = AssetPaths::get_shadow_texture_path();
+    shadow_texture = g_gpu.load_texture(shadow_path.c_str());
     if (!shadow_texture) {
-        SDL_Log("Failed to load shadow texture");
+        SDL_Log("Failed to load shadow texture: %s", shadow_path.c_str());
         return false;
     }
 
     shadow_loaded = true;
-    SDL_Log("Shadow texture loaded");
+    SDL_Log("Shadow texture loaded from: %s", shadow_path.c_str());
     return true;
 }
 
 bool Entity::load(const char* unit_name) {
-    std::string base_path = "data/units/";
-    base_path += unit_name;
-
-    std::string spritesheet_path = base_path + "/spritesheet.png";
+    // Load spritesheet from Duelyst repository
+    std::string spritesheet_path = AssetPaths::get_unit_spritesheet_path(unit_name);
     spritesheet = g_gpu.load_texture(spritesheet_path.c_str());
 
     if (!spritesheet) {
@@ -71,10 +71,12 @@ bool Entity::load(const char* unit_name) {
         return false;
     }
 
-    std::string anim_path = base_path + "/animations.txt";
-    animations = load_animations(anim_path.c_str());
+    // Load animations from Duelyst plist format
+    std::string plist_path = AssetPaths::get_unit_plist_path(unit_name);
+    animations = load_animations_from_plist(unit_name, plist_path.c_str());
 
     if (animations.animations.empty()) {
+        SDL_Log("Failed to load animations from plist: %s", plist_path.c_str());
         return false;
     }
 
@@ -84,6 +86,7 @@ bool Entity::load(const char* unit_name) {
     spawn_elapsed = 0.0f;
     opacity = 0.0f;
 
+    SDL_Log("Loaded unit '%s' from Duelyst repo", unit_name);
     return true;
 }
 

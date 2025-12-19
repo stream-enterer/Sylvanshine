@@ -1,4 +1,6 @@
 #include "fx.hpp"
+#include "asset_paths.hpp"
+#include "plist_parser.hpp"
 #include <SDL3_image/SDL_image.h>
 #include <fstream>
 #include <sstream>
@@ -56,33 +58,36 @@ bool parse_fx_manifest(const char* filepath, std::unordered_map<std::string, FXM
         SDL_Log("Failed to open FX manifest file: %s", filepath);
         return false;
     }
-    
+
     std::string line;
     bool first_line = true;
-    
+
     while (std::getline(file, line)) {
         if (line.empty()) continue;
         if (first_line) {
             first_line = false;
             continue;
         }
-        
+
         size_t tab1 = line.find('\t');
         if (tab1 == std::string::npos) continue;
-        
+
         size_t tab2 = line.find('\t', tab1 + 1);
         if (tab2 == std::string::npos) continue;
-        
+
         FXManifestEntry entry;
         entry.folder = line.substr(0, tab1);
-        entry.spritesheet_path = "data/" + line.substr(tab1 + 1, tab2 - tab1 - 1);
-        
+
+        // Build path to Duelyst FX spritesheet
+        // The folder name (e.g., "fx_clawslash") maps to fx_clawslash.png in Duelyst repo
+        entry.spritesheet_path = AssetPaths::get_fx_spritesheet_path(entry.folder);
+
         std::string anims_str = line.substr(tab2 + 1);
         entry.animations = split_string(anims_str, ',');
-        
+
         manifest[entry.folder] = entry;
     }
-    
+
     SDL_Log("Loaded %zu FX manifest entries", manifest.size());
     return true;
 }
@@ -118,11 +123,16 @@ FXAsset* FXCache::get_asset(const std::string& folder) {
         return nullptr;
     }
 
-    std::string anim_path = "data/fx/" + folder + "/animations.txt";
-    asset.animations = load_animations(anim_path.c_str());
+    // Load animations from Duelyst plist format
+    std::string plist_path = AssetPaths::get_fx_plist_path(folder);
+    asset.animations = load_animations_from_plist(folder, plist_path.c_str());
+
+    if (asset.animations.animations.empty()) {
+        SDL_Log("Warning: No animations loaded from FX plist: %s", plist_path.c_str());
+    }
 
     loaded_assets[folder] = std::move(asset);
-    SDL_Log("Loaded FX asset: %s", folder.c_str());
+    SDL_Log("Loaded FX asset: %s from Duelyst repo", folder.c_str());
 
     return &loaded_assets[folder];
 }

@@ -1,4 +1,5 @@
 #include "animation_loader.hpp"
+#include "plist_parser.hpp"
 #include <fstream>
 #include <sstream>
 #include <cstring>
@@ -74,4 +75,15 @@ AnimationSet load_animations(const char* filepath) {
     
     SDL_Log("Loaded %zu animations from %s", set.animations.size(), filepath);
     return set;
+}
+
+AnimationSet load_animations_from_plist(const std::string& unit_name, const char* plist_path) {
+    PlistData plist = parse_plist(plist_path);
+
+    if (plist.frames.empty()) {
+        SDL_Log("Failed to load animations from plist: %s", plist_path);
+        return AnimationSet{};
+    }
+
+    return plist_to_animations(plist, unit_name);
 }
