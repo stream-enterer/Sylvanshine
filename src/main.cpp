@@ -5,6 +5,7 @@
 #include "grid_renderer.hpp"
 #include "fx.hpp"
 #include "timing_loader.hpp"
+#include "asset_paths.hpp"
 #include "sdl_handles.hpp"
 #include <vector>
 #include <cstring>
@@ -972,6 +973,12 @@ Entity create_unit(GameState& state, const RenderConfig& config,
 int main(int argc, char* argv[]) {
     RenderConfig config = parse_args(argc, argv);
 
+    // Initialize asset paths (must be done before any asset loading)
+    if (!AssetPaths::init()) {
+        SDL_Log("Warning: Duelyst repo path not configured. Some assets may fail to load.");
+        SDL_Log("Set DUELYST_REPO_PATH in CMake: cmake -DDUELYST_REPO_PATH=/path/to/duelyst ..");
+    }
+
     WindowHandle window;
 
     if (!init(config, window)) {
@@ -990,11 +997,16 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    if (!state.fx_cache.load_mappings("data/fx/rsx_mapping.tsv", "data/fx/manifest.tsv")) {
+    // Load FX mappings (still from local data directory)
+    std::string rsx_mapping_path = AssetPaths::get_local_data_path() + "/fx/rsx_mapping.tsv";
+    std::string manifest_path = AssetPaths::get_local_data_path() + "/fx/manifest.tsv";
+    if (!state.fx_cache.load_mappings(rsx_mapping_path.c_str(), manifest_path.c_str())) {
         SDL_Log("Warning: Failed to load FX mappings, FX will not display");
     }
 
-    if (!state.timing_data.load("data/timing/unit_timing.tsv")) {
+    // Load timing data (still from local data directory)
+    std::string timing_path = AssetPaths::get_timing_path("unit_timing.tsv");
+    if (!state.timing_data.load(timing_path.c_str())) {
         SDL_Log("Warning: Failed to load timing data, using defaults");
     }
 
