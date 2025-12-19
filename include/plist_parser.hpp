@@ -1,5 +1,6 @@
 #pragma once
 #include "types.hpp"
+#include "animation_loader.hpp"
 #include <string>
 #include <vector>
 #include <unordered_map>
