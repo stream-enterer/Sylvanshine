@@ -1,0 +1,14 @@
+name	class	type	total_turns	total_actions	actions_per_turn	instruction_count	has_board_setup	has_opponent_agent	card_setup_count
+BeginnerFlyingChallenge1	BeginnerFlyingChallenge1	tutorial	1	2	{"0":2}	0	true	true	9
+BeginnerRangedChallenge1	BeginnerRangedChallenge1	tutorial	1	2	{"0":2}	0	true	true	11
+lesson1	LessonOne	tutorial	4	15	{"0":5,"1":5,"2":3,"3":2}	3	true	true	0
+lesson2	LessonTwo	tutorial	4	13	{"0":1,"1":5,"2":4,"3":3}	3	true	true	0
+lesson3	LessonThree	tutorial	5	26	{"0":4,"1":5,"2":6,"3":8,"4":3}	38	true	true	0
+lesson4	LessonFour	tutorial	4	25	{"0":4,"1":10,"2":9,"3":2}	1	true	true	0
+challenge	challenge	base	0	0	{}	0	true	true	2
+challengeCategory	challengeCategory	base	0	0	{}	0	false	false	0
+challengeFactory	challengeFactory	base	0	0	{}	0	false	false	0
+challengeRemote	ChallengeRemote	base	1	2	{"0":2}	1	false	true	0
+instruction	Instruction	base	0	0	{}	0	false	false	0
+sandbox	Sandbox	base	0	0	{}	0	false	true	0
+sandboxDeveloper	SandboxDeveloper	base	0	0	{}	0	false	false	0

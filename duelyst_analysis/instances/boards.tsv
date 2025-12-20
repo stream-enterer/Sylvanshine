@@ -1,0 +1,3 @@
+board_id	name	dimensions	spawn_positions	mana_tile_positions	description
+default_board	Default Duelyst Board	9x5 (9 columns, 5 rows)	Player 1: (0,2) or nearby; Player 2: (8,2) or nearby	(4,0), (4,4), (5,2)	Standard Duelyst board with 9 columns and 5 rows. Center position is (4,2). Mana tiles spawn at 3 predefined locations at game start.
+challenge_board	Challenge Board	9x5 (9 columns, 5 rows)	Custom per challenge	Custom per challenge	Custom board used in challenge mode. Starts completely empty except for generals, which are positioned according to challenge requirements.

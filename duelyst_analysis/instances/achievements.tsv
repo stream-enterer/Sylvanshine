@@ -1,0 +1,58 @@
+id	class_name	title	description	progress_required	reward_type	reward_amount	enabled	trigger_type	category
+bronze_special_purchased	ShopAchievement	i18next:achievements.bronze_starter_bundle_title	i18next:achievements.bronze_starter_bundle_desc	1	cards	multiple	True	armory	armory
+gold_special_purchased	ShopAchievement	i18next:achievements.gold_starter_bundle_title	i18next:achievements.gold_starter_bundle_desc	1	cards	multiple	True	armory	armory
+namaste	NamasteAchievement	i18next:achievements.namaste_title	i18next:achievements.namaste_desc	1	gold	100 # TODO: will be snowchaser	False	armory	armory
+silver_special_purchased	ShopAchievement	i18next:achievements.silver_starter_bundle_title	i18next:achievements.silver_starter_bundle_desc	1	cards	multiple	True	armory	armory
+welcomeToCrafting	WelcomeToCraftingAchievement	i18next:achievements.welcome_to_crafting_title	i18next:achievements.welcome_to_crafting_desc	1	spirit	90	False	disenchanting	crafting
+bloodborn	BloodbornAchievement	i18next:achievements.bloodborn_title	i18next:achievements.bloodborn_desc	1	spiritOrb	1	False	faction_progress	faction progress
+worldExplorer	WorldExplorerAchievement	i18next:achievements.world_explorer_title	i18next:achievements.world_explorer_desc	1	factionLegendaryCard	1	True	faction_progress	faction progress
+bestOfFriends	BestOfFriendsAchievement	i18next:achievements.best_of_friends_title	i18next:achievements.best_of_friends_desc	1	spiritOrb	1	True	game	game
+enteringGauntletAchievement	EnteringGauntletAchievement	i18next:achievements.entering_gauntlet_title	i18next:achievements.entering_gauntlet_desc	20	gauntletTicket	1	True	game	game
+helpingHand	HelpingHandAchievement	i18next:achievements.helping_hand_title	i18next:achievements.helping_hand_desc	10	gold	100	True	game	game
+homeTurf	HomeTurfAchievement	Home Turf	You've won 5 games as Player One. Enjoy a free Premium Battle Map on us!	5	newRandomCosmetics	multiple	False	game	game
+theArtOfWarAchievement	TheArtOfWarAchievement	i18next:achievements.art_of_war_title	i18next:achievements.art_of_war_desc	50	gold	100	True	game	game
+collectorSupreme	CollectorSupremeAchievement	i18next:achievements.collector_supreme_title	i18next:achievements.collector_supreme_desc	1	neutralEpicCard, neutralRareCard	1, 1	True	collection	inventory
+earthSister	SisterAchievement	i18next:achievements.earth_sister_title	i18next:achievements.earth_sister_desc	1	cards	multiple	True	collection	inventory
+firstCosmeticChestAchievement	FirstCosmeticChestAchievement	i18next:achievements.key_mythron_title	i18next:achievements.key_mythron_desc	1	bronzeCrateKey	1	True	cosmetic_chest	inventory
+lightningSister	SisterAchievement	i18next:achievements.storm_sister_title	i18next:achievements.storm_sister_desc	1	cards	multiple	True	collection	inventory
+sandSister	SisterAchievement	i18next:achievements.sand_sister_title	i18next:achievements.sand_sister_desc	1	cards	multiple	True	collection	inventory
+shadowSister	SisterAchievement	i18next:achievements.shadow_sister_title	i18next:achievements.shadow_sister_desc	1	cards	multiple	True	collection	inventory
+sunSister	SisterAchievement	i18next:achievements.sun_sister_title	i18next:achievements.sun_sister_desc	1	cards	multiple	True	collection	inventory
+swornSister	SisterAchievement	i18next:achievements.sworn_sister_title	i18next:achievements.sworn_sister_desc	1	cards	multiple	True	collection	inventory
+windSister	SisterAchievement	i18next:achievements.wind_sister_title	i18next:achievements.wind_sister_desc	1	cards	multiple	True	collection	inventory
+bnPromoAchievement	BNPromoAchievement	BANDAI NAMCO PARTNERSHIP EVENT	Here's a FREE GIFT CRATE to celebrate our new partnership!	1	giftChests	multiple	True	login	login
+christmasLoginAchievement	ChristmasLoginAchievement	HAPPY WINTER HOLIDAYS	ALL THE SNOWCHASERS HAVE GONE OUT TO PLAY, SO TAKE THESE GIFTS TO CELEBRATE THIS SPECIAL DAY	1	giftChests	multiple	True	login	login
+coreshatterLoginAchievement	CoreshatterLoginAchievement	Trials of Mythron Expansion Launch	Enjoy 3 Trials of Mythron Spirit Orbs to kickstart your collection!	1	giftChests	multiple	True	login	login
+earlyFeb2018LoginAchievement	EarlyFeb2018LoginAchievement	i18next:achievements.early_feb_2018_login_achievement_title	i18next:achievements.early_feb_2018_login_achievement_desc	1	giftChests	multiple	True	login	login
+fathersDayLoginAchievement	FathersDayLoginAchievement	HAPPY FATHER'S DAY	HERE'S 3 SHIM'ZAR ORBS TO CELEBRATE	1	giftChests	multiple	True	login	login
+fourthOfJulyLoginAchievement	FourthOfJulyLoginAchievement	4TH OF JULY CELEBRATION	HERE'S 3 ANCIENT ORBS TO CELEBRATE	1	giftChests	multiple	True	login	login
+Frostfire2017BonusLoginAchievement	Frostfire2017BonusLoginAchievement	It's the most festive time of the season!	Here's 2 special Frostfire Loot Crates full of festive goodies.	1	giftChests	multiple	True	login	login
+frostfire2017LoginAchievement	Frostfire2017LoginAchievement	Frostfire Festival Has Arrived!	Here's a special Frostfire Loot Crate full of festive goodies.	1	giftChests	multiple	True	login	login
+halloweenLoginAchievement	HalloweenLoginAchievement	HAPPY HALLOWEEN	HERE'S 3 MYTHRON TREATS TO CELEBRATE	1	giftChests	multiple	True	login	login
+laborDayLoginAchievement	LaborDayLoginAchievement	HAPPY LABOR DAY	HERE'S 3 IMMORTAL ORBS TO CELEBRATE	1	giftChests	multiple	True	login	login
+memorialDayLoginAchievement	MemorialDayLoginAchievement	HAPPY MEMORIAL DAY	HERE'S 3 CORE ORBS TO CELEBRATE	1	giftChests	multiple	True	login	login
+midAugLoginAchievement	MidAugLoginAchievement	Thanks for playing Duelyst	Enjoy 3 Unearthed Prophecy Spirit Orbs on us for being a great community!	1	giftChests	multiple	True	login	login
+midNov2017LoginAchievement	MidNov2017LoginAchievement	Immortal Vanguard Expansion Launch	Enjoy 3 Immortal Vanguard Spirit Orbs to kickstart your collection!	1	giftChests	multiple	True	login	login
+newPlayerGoldLoginAchievement	NewPlayerGoldLoginAchievement	Welcome to Duelyst!	Use Gold to buy Spirit Orbs.	1	gold	2500	True	login	login
+newPlayerSpiritLoginAchievement	NewPlayerSpiritLoginAchievement	Welcome to Duelyst!	Use Spirit to craft cards in the Collection menu.	1	spirit	50000	True	login	login
+summerLoginAchievement	SummerLoginAchievement	SUMMER TIME CELEBRATION	HERE'S 3 UNEARTHED ORBS TO CELEBRATE	1	giftChests	multiple	True	login	login
+thanksgivingLoginAchievement	ThanksgivingLoginAchievement	HAPPY THANKSGIVING	WE'RE THANKFUL TODAY FOR OUR LOVING FANS, SO WE'RE GIVING BACK WITH A SPECIAL GIFT	1	giftChests	multiple	True	login	login
+mythron1	MythronOrb1Achievement	First Trial	You've opened 1 Mythron Orb, here's a brand new Mythron card. You'll get another after opening 10 more orbs.	1	mythronCard	1	True	spirit_orb	orb opening
+mythron2	MythronOrb2Achievement	Second Trial	You've opened 11 Mythron Orbs, here's a brand new Mythron card. You'll get another after opening 10 more orbs.	11	mythronCard	1	True	spirit_orb	orb opening
+mythron3	MythronOrb3Achievement	Third Trial	You've opened 21 Mythron Orbs, here's a brand new Mythron card. You'll get another after opening 10 more orbs.	21	mythronCard	1	True	spirit_orb	orb opening
+mythron4	MythronOrb4Achievement	Fourth Trial	You've opened 31 Mythron Orbs, here's a brand new Mythron card. You'll get another after opening 10 more orbs.	31	mythronCard	1	True	spirit_orb	orb opening
+mythron5	MythronOrb5Achievement	Fifth Trial	You've opened 41 Mythron Orbs, here's a brand new Mythron card. You'll get another after opening 10 more orbs.	41	mythronCard	1	True	spirit_orb	orb opening
+mythron6	MythronOrb6Achievement	Sixth Trial	You've opened 51 Mythron Orbs, here's a brand new Mythron card. You'll get another after opening 10 more orbs.	51	mythronCard	1	True	spirit_orb	orb opening
+mythron7	MythronOrb7Achievement	Seventh Trial	You've opened 61 Mythron Orbs, here's a brand new Mythron card.	61	mythronCard	1	True	spirit_orb	orb opening
+epicQuestor	EpicQuestorAchievement	i18next:achievements.epic_questor_title	i18next:achievements.epic_questor_desc	5	neutralEpicCard	1	True	quest	quest
+indominatableSpirit	IndomitableSpiritAchievement	i18next:achievements.indomitable_spirit_title	i18next:achievements.indomitable_spirit_desc	100	gold	100	True	quest	quest
+journeymanQuestor	JourneymanQuestorAchievement	i18next:achievements.journeyman_questor_title	i18next:achievements.journeyman_questor_desc	1	neutralEpicCard	1	True	quest	quest
+legendaryQuestor	LegendaryQuestorAchievement	i18next:achievements.legendary_questor_title	i18next:achievements.legendary_questor_desc	13	neutralLegendaryCard	1	True	quest	quest
+silverDivisionAchievement	SilverDivisionAchievement	i18next:achievements.silver_division_title	i18next:achievements.silver_division_desc	1	spiritOrb	1	False	rank	rank
+first_referral_purchase	FirstReferralPurchase	i18next:achievements.referral_title	i18next:achievements.referral_desc	1	cosmetics	multiple	True	referral	referral
+wartechGeneralFaction1Achievement	WartechGeneralFaction1Achievement	i18next:factions.faction_1_abbreviated_name	i18next:factions.faction_1_abbreviated_name	10	cards	multiple	True	game	wartech
+wartechGeneralFaction2Achievement	WartechGeneralFaction2Achievement	i18next:factions.faction_2_abbreviated_name	i18next:factions.faction_2_abbreviated_name	10	cards	multiple	True	game	wartech
+wartechGeneralFaction3Achievement	WartechGeneralFaction3Achievement	i18next:factions.faction_3_abbreviated_name	i18next:factions.faction_3_abbreviated_name	10	cards	multiple	True	game	wartech
+wartechGeneralFaction4Achievement	WartechGeneralFaction4Achievement	i18next:factions.faction_4_abbreviated_name	i18next:factions.faction_4_abbreviated_name	10	cards	multiple	True	game	wartech
+wartechGeneralFaction5Achievement	WartechGeneralFaction5Achievement	i18next:factions.faction_5_abbreviated_name	i18next:factions.faction_5_abbreviated_name	10	cards	multiple	True	game	wartech
+wartechGeneralFaction6Achievement	WartechGeneralFaction6Achievement	i18next:factions.faction_6_abbreviated_name	i18next:factions.faction_6_abbreviated_name	10	cards	multiple	True	game	wartech

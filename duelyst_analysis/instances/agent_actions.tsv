@@ -1,0 +1,14 @@
+type	name	params	source	turn	description
+action_type	_createBaseAgentAction	type	agentActions.coffee		
+action_type	_createBaseSoftAgentAction	softActionType	agentActions.coffee		
+action_type	createAgentActionMoveUnit	unitTag;deltaXY	agentActions.coffee		
+action_type	createAgentActionAttackWithUnit	unitTag;attackTargetPosition;targetPositionIsAbsolute=true	agentActions.coffee		
+action_type	createAgentActionPlayCard	handIndex;targetPosition	agentActions.coffee		
+action_type	createAgentActionPlayCardFindPosition	handIndex;positionFilter	agentActions.coffee		
+action_type	createAgentActionPlayFollowup	followupCardId;sourcePosition;targetPosition	agentActions.coffee		
+action_type	createSDKActionFromAgentAction	agent;agentAction	agentActions.coffee		
+action_type	createAgentSoftActionTagUnitAtPosition	unitTag;position	agentActions.coffee		
+action_type	createAgentSoftActionShowInstructionLabels	instructionLabels	agentActions.coffee		
+action_type	executeSoftActionForAgent	agent;agentSoftAction	agentActions.coffee		
+action_usage	createAgentSoftActionShowInstructionLabels	[       label:"Say your prayers."       isSpeech:true       yPosition:.7       isPersistent: true   	challengeRemote	0	
+action_usage	createAgentActionPlayCardFindPosition	0,((	challengeRemote	0	

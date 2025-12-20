@@ -1,0 +1,450 @@
+id	type_name	name	description	rarity_id	enabled	purchasable	unlockable	order	rsx_resource	unlock_method	sub_type	faction_id	card_id	skin_num	pkg_id	always_visible	chest_type
+40001	Scene	cosmetics.scene_magaari_name	cosmetics.scene_magaari_desc	Fixed	true	false	false	ORDER_SCENES		default					MagaariEmberHighlands	true	
+40002	Scene	cosmetics.scene_obsidian_woods_name	cosmetics.scene_obsidian_woods_desc	Fixed	true	false	false	ORDER_SCENES		default					ObsidianWoods	true	
+40003	Scene	cosmetics.scene_frostfire_festival_name	cosmetics.scene_frostfire_festival_desc	Fixed	true	false	false	ORDER_SCENES		default					FrostfireMainMenu	true	
+40004	Scene	cosmetics.scene_city_of_kaero_name	cosmetics.scene_city_of_kaero_desc	Fixed	true	false	false	ORDER_SCENES		default					VetruvianMainMenu	true	
+40005	Scene	cosmetics.scene_unearthed_prophecy_name	cosmetics.scene_unearthed_prophecy_desc	Fixed	true	false	false	ORDER_SCENES		default					ShimzarMainMenu	true	
+1000001	CardSkin	cosmetics.skin_argeon_m2_name	cosmetics.skin_argeon_m2_desc	Legendary	true	true	false	ORDER_CARD_SKINS	f1GeneralTier2GIF	purchase	MK2 Generals	Faction1	Faction1.General	1		true	
+1000016	CardSkin	cosmetics.skin_rogue_legacy_name	cosmetics.skin_rogue_legacy_desc	Legendary	true	false	true	ORDER_CARD_SKINS	f1GeneralRogueLegacyGIF	unlockable		Faction1	Faction1.General	2		true	
+1000002	CardSkin	cosmetics.skin_ziran_m2_name	cosmetics.skin_ziran_m2_desc	Legendary	true	true	false	ORDER_CARD_SKINS	f1AltGeneralTier2GIF	purchase	MK2 Generals	Faction1	Faction1.AltGeneral	1		true	
+1000026	CardSkin	cosmetics.skin_brome_m2_name	cosmetics.skin_brome_m2_desc	Legendary	true	true	false	ORDER_CARD_SKINS	f1IVGeneralTier2GIF	purchase	MK2 Generals	Faction1	Faction1.ThirdGeneral	1		true	
+1000003	CardSkin	cosmetics.skin_kaleos_m2_name	cosmetics.skin_kaleos_m2_desc	Legendary	true	true	false	ORDER_CARD_SKINS	f2GeneralTier2GIF	purchase	MK2 Generals	Faction2	Faction2.General	1		true	
+1000015	CardSkin	cosmetics.skin_dogehai_name	cosmetics.skin_dogehai_desc	Legendary	true	false	true	ORDER_CARD_SKINS	f2GeneralDogehaiGIF	unlockable		Faction2	Faction2.General	2		true	
+1000004	CardSkin	cosmetics.skin_reva_m2_name	cosmetics.skin_reva_m2_desc	Legendary	true	true	false	ORDER_CARD_SKINS	f2AltGeneralTier2GIF	purchase	MK2 Generals	Faction2	Faction2.AltGeneral	1		true	
+1000027	CardSkin	cosmetics.skin_shidai_m2_name	cosmetics.skin_shidai_m2_desc	Legendary	true	true	false	ORDER_CARD_SKINS	f2IVGeneralTier2GIF	purchase	MK2 Generals	Faction2	Faction2.ThirdGeneral	1		true	
+1000005	CardSkin	cosmetics.skin_zirix_m2_name	cosmetics.skin_zirix_m2_desc	Legendary	true	true	false	ORDER_CARD_SKINS	f3GeneralTier2GIF	purchase	MK2 Generals	Faction3	Faction3.General	1		true	
+1000023	CardSkin	cosmetics.skin_zirix_festive_name	cosmetics.skin_zirix_festive_desc	Legendary	true	true	true	ORDER_CARD_SKINS	f3GeneralFestiveGIF	purchase	Festive	Faction3	Faction3.General	2		true	
+1000006	CardSkin	cosmetics.skin_sajj_m2_name	cosmetics.skin_sajj_m2_desc	Legendary	true	true	false	ORDER_CARD_SKINS	f3AltGeneralTier2GIF	purchase	MK2 Generals	Faction3	Faction3.AltGeneral	1		true	
+1000028	CardSkin	cosmetics.skin_ciphyron_m2_name	cosmetics.skin_ciphyron_m2_desc	Legendary	true	true	false	ORDER_CARD_SKINS	f3IVGeneralTier2GIF	purchase	MK2 Generals	Faction3	Faction3.ThirdGeneral	1		true	
+1000007	CardSkin	cosmetics.skin_lilithe_m2_name	cosmetics.skin_lilithe_m2_desc	Legendary	true	true	false	ORDER_CARD_SKINS	f4GeneralTier2GIF	purchase	MK2 Generals	Faction4	Faction4.General	1		true	
+1000008	CardSkin	cosmetics.skin_cassyva_m2_name	cosmetics.skin_cassyva_m2_desc	Legendary	true	true	false	ORDER_CARD_SKINS	f4AltGeneralTier2GIF	purchase	MK2 Generals	Faction4	Faction4.AltGeneral	1		true	
+1000029	CardSkin	cosmetics.skin_maehv_m2_name	cosmetics.skin_maehv_m2_desc	Legendary	true	true	false	ORDER_CARD_SKINS	f4IVGeneralTier2GIF	purchase	MK2 Generals	Faction4	Faction4.ThirdGeneral	1		true	
+1000009	CardSkin	cosmetics.skin_vaath_m2_name	cosmetics.skin_vaath_m2_desc	Legendary	true	true	false	ORDER_CARD_SKINS	f5GeneralTier2GIF	purchase	MK2 Generals	Faction5	Faction5.General	1		true	
+1000010	CardSkin	cosmetics.skin_starhorn_m2_name	cosmetics.skin_starhorn_m2_desc	Legendary	true	true	false	ORDER_CARD_SKINS	f5AltGeneralTier2GIF	purchase	MK2 Generals	Faction5	Faction5.AltGeneral	1		true	
+1000030	CardSkin	cosmetics.skin_ragnora_m2_name	cosmetics.skin_ragnora_m2_desc	Legendary	true	true	false	ORDER_CARD_SKINS	f5IVGeneralTier2GIF	purchase	MK2 Generals	Faction5	Faction5.ThirdGeneral	1		true	
+1000011	CardSkin	cosmetics.skin_faie_m2_name	cosmetics.skin_faie_m2_desc	Legendary	true	true	false	ORDER_CARD_SKINS	f6GeneralTier2GIF	purchase	MK2 Generals	Faction6	Faction6.General	1		true	
+1000024	CardSkin	cosmetics.skin_faie_festive_name	cosmetics.skin_faie_festive_desc	Legendary	true	true	true	ORDER_CARD_SKINS	f6GeneralFestiveGIF	purchase	Festive	Faction6	Faction6.General	2		true	
+1000012	CardSkin	cosmetics.skin_kara_m2_name	cosmetics.skin_kara_m2_desc	Legendary	true	true	false	ORDER_CARD_SKINS	f6AltGeneralTier2GIF	purchase	MK2 Generals	Faction6	Faction6.AltGeneral	1		true	
+1000031	CardSkin	cosmetics.skin_ilena_m2_name	cosmetics.skin_ilena_m2_desc	Legendary	true	true	false	ORDER_CARD_SKINS	f6IVGeneralTier2GIF	purchase	MK2 Generals	Faction6	Faction6.ThirdGeneral	1		true	
+1000013	CardSkin	cosmetics.skin_sarlac_prime_name	cosmetics.skin_sarlac_prime_desc	Legendary	true	false	true	ORDER_CARD_SKINS		unlockable		Neutral	Neutral.SarlacTheEternal	1		true	
+1000014	CardSkin	cosmetics.skin_keeper_name	cosmetics.skin_keeper_desc	Legendary	true	false	true	ORDER_CARD_SKINS		unlockable		Neutral	Neutral.KeeperOfTheVale	1		true	
+1000017	CardSkin	cosmetics.skin_darkjammer_name	cosmetics.skin_darkjammer_desc	Legendary	true	false	true	ORDER_CARD_SKINS		unlockable		Neutral	Neutral.Spelljammer	1		true	
+1000018	CardSkin	cosmetics.skin_frostfire_tiger_name	cosmetics.skin_frostfire_tiger_desc	Legendary	true	true	true	ORDER_CARD_SKINS	neutralFrostfireTigerGIF	purchase	Festive	Neutral	Neutral.SaberspineTiger	1		true	
+1000019	CardSkin	cosmetics.skin_festive_snowchaser_name	cosmetics.skin_festive_snowchaser_desc	Legendary	true	true	true	ORDER_CARD_SKINS	f6FestiveSnowchaserGIF	purchase	Festive	Faction6	Faction6.WyrBeast	1		true	
+1000020	CardSkin	Elyx Stormblade MK2	Elyx Stormblade MK2	Legendary	true	false	true	ORDER_CARD_SKINS		unlockable		Faction1	Faction1.ElyxStormblade	1		true	
+1000021	CardSkin	Healing Mystic Bandai Namco	Healing Mystic Bandai Namco	Legendary	true	false	true	ORDER_CARD_SKINS		unlockable		Neutral	Neutral.HealingMystic	1		true	
+1000022	CardSkin	Healing Mystic Twitch	Healing Mystic Twitch	Legendary	true	false	true	ORDER_CARD_SKINS		unlockable		Neutral	Neutral.HealingMystic	2		true	
+1000025	CardSkin	cosmetics.skin_zyx_festive_name	cosmetics.skin_zyx_festive_desc	Legendary	true	true	true	ORDER_CARD_SKINS	neutralZyxFestiveGIF	purchase	Festive	Neutral	Neutral.Zyx	1		true	
+1000032	CardSkin	Mirkblood Devourer	This skin was used in the Umbra boss battle	Epic	true	true	true	ORDER_CARD_SKINS	mirkbloodDevourerBossGIF	purchase	Boss	Neutral	Neutral.MirkbloodDevourer	1		true	
+1000033	CardSkin	Dreadnought	This skin was used in the Boreal Juggernaut boss battle	Epic	true	true	true	ORDER_CARD_SKINS	dreadnoughtBossGIF	purchase	Boss	Magmar	Faction5.Dreadnaught	1		true	
+1000034	CardSkin	Ironclad	This skin was used in the Cade the Desolator boss battle	Epic	true	true	true	ORDER_CARD_SKINS	ironcladBossGIF	purchase	Boss	Neutral	Neutral.Ironclad	1		true	
+1000035	CardSkin	Grandmaster Zendo	This skin was used in the Shinkage Zendo boss battle	Epic	true	true	true	ORDER_CARD_SKINS	zendoBossGIF	purchase	Boss	Songhai	Faction2.GrandmasterZendo	1		true	
+1000036	CardSkin	Z0r	This skin was used in the D3cepticle boss battle	Epic	true	true	true	ORDER_CARD_SKINS	z0rBossGIF	purchase	Boss	Neutral	Neutral.Z0r	1		true	
+1000037	CardSkin	Chassis of Mechaz0r	This skin was used in the D3cepticle boss battle	Epic	true	true	true	ORDER_CARD_SKINS	mechaz0rChassisBossGIF	purchase	Boss	Neutral	Neutral.Mechaz0rChassis	1		true	
+1000038	CardSkin	Helm of Mechaz0r	This skin was used in the D3cepticle boss battle	Epic	true	true	true	ORDER_CARD_SKINS	mechaz0rHelmBossGIF	purchase	Boss	Neutral	Neutral.Mechaz0rHelm	1		true	
+1000039	CardSkin	Alter Rexx	This skin was used in the D3cepticle boss battle	Epic	true	true	true	ORDER_CARD_SKINS	alterRexxBossGIF	purchase	Boss	Neutral	Neutral.AlterRexx	1		true	
+1000040	CardSkin	Sword of Mechaz0r	This skin was used in the D3cepticle boss battle	Epic	true	true	true	ORDER_CARD_SKINS	mechaz0rSwordBossGIF	purchase	Boss	Neutral	Neutral.Mechaz0rSword	1		true	
+1000041	CardSkin	Wings of Mechaz0r	This skin was used in the D3cepticle boss battle	Epic	true	true	true	ORDER_CARD_SKINS	mechaz0rWingsBossGIF	purchase	Boss	Neutral	Neutral.Mechaz0rWings	1		true	
+1000042	CardSkin	Zukong	This skin was used in the Wu'jin the Trickster boss battle	Epic	true	true	true	ORDER_CARD_SKINS	zukongBossGIF	purchase	Boss	Neutral	Neutral.Zukong	1		true	
+1000043	CardSkin	War Talon	This skin was used in the Solfist boss battle	Epic	true	true	true	ORDER_CARD_SKINS	wartalonBossGIF	purchase	Boss	Neutral	Neutral.WarTalon	1		true	
+1000044	CardSkin	EMP	This skin was used in the Automaton 8 boss battle	Epic	true	true	true	ORDER_CARD_SKINS	empBossGIF	purchase	Boss	Neutral	Neutral.EMP	1		true	
+1000045	CardSkin	Archon Spellbinder	This skin was used in the Orias the Heretic boss battle	Epic	true	true	true	ORDER_CARD_SKINS	archonBossGIF	purchase	Boss	Neutral	Neutral.ArchonSpellbinder	1		true	
+1000046	CardSkin	Bastion	This skin was used in the Orias the Heretic boss battle	Epic	true	true	true	ORDER_CARD_SKINS	bastionBossGIF	purchase	Boss	Neutral	Neutral.Bastion	1		true	
+1000047	CardSkin	The High Hand	This skin was used in the Malyk boss battle	Epic	true	true	true	ORDER_CARD_SKINS	highHandBossGIF	purchase	Boss	Neutral	Neutral.TheHighHand	1		true	
+1000048	CardSkin	Black solus	This skin was used in the Archonis boss battle	Epic	true	true	true	ORDER_CARD_SKINS	blackSolusBossGIF	purchase	Boss	Abyssian	Faction4.BlackSolus	1		true	
+1000049	CardSkin	Calculator	This skin was used in the Paragon of Light boss battle	Epic	true	true	true	ORDER_CARD_SKINS	calculatorBossGIF	purchase	Boss	Neutral	Neutral.Calculator	1		true	
+1000050	CardSkin	Chakkram	This skin was used in the Scion of the Void boss battle	Epic	true	true	true	ORDER_CARD_SKINS	chakkramBossGIF	purchase	Boss	Neutral	Neutral.Chakkram	1		true	
+1000051	CardSkin	Inquisitor Kron	This skin was used in the High Templar Kron boss battle	Epic	true	true	true	ORDER_CARD_SKINS	kronBossGIF	purchase	Boss	Neutral	Neutral.InquisitorKron	1		true	
+1000052	CardSkin	Meltdown	This skin was used in the Megapenti boss battle	Epic	true	true	true	ORDER_CARD_SKINS	meltdownBossGIF	purchase	Boss	Neutral	Neutral.Meltdown	1		true	
+1000053	CardSkin	Arcane Devourer	This skin was used in the Rin the Shadowsworn boss battle	Epic	true	true	true	ORDER_CARD_SKINS	arcaneDevourerBossGIF	purchase	Boss	Faction4	Faction4.ArcaneDevourer	1		true	
+1000054	CardSkin	Trinity Wing	This skin was used in the Skfall Tyrant boss battle	Epic	true	true	true	ORDER_CARD_SKINS	trinityWingBossGIF	purchase	Boss	Neutral	Neutral.TrinityWing	1		true	
+1000055	CardSkin	Furiosa	This skin was used in the Cindera boss battle	Epic	true	true	true	ORDER_CARD_SKINS	furiosaBossGIF	purchase	Boss	Abyssian	Faction4.Furosa	1		true	
+1000056	CardSkin	Arclyte Sentinel	This skin was used in the Crystalline Champion boss battle	Epic	true	true	true	ORDER_CARD_SKINS	arclyteSentinelBossGIF	purchase	Boss	Lyonar	Faction1.ArclyteSentinel	1		true	
+1000057	CardSkin	Rancour	This skin was used in the Xel boss battle	Epic	true	true	true	ORDER_CARD_SKINS	rancourBossGIF	purchase	Boss	Magmar	Faction5.Rancour	1		true	
+1000058	CardSkin	Sworn Avenger	This skin was used in the Skurge boss battle	Epic	true	true	true	ORDER_CARD_SKINS	swornAvengerBossGIF	purchase	Boss	Neutral	Neutral.SwornAvenger	1		true	
+1000059	CardSkin	Sworn Defender	This skin was used in the Skurge boss battle	Epic	true	true	true	ORDER_CARD_SKINS	swornDefenderBossGIF	purchase	Boss	Neutral	Neutral.SwornDefender	1		true	
+1000060	CardSkin	Quartermaster Gauj	This skin was used in the Shadow Lord boss battle	Epic	true	true	true	ORDER_CARD_SKINS	quartermasterGaujBossGIF	purchase	Boss	Neutral	Neutral.QuartermasterGauj	1		true	
+1000061	CardSkin	Alabaster Titan	This skin was used in the Archmagus Vol boss battle	Epic	true	true	true	ORDER_CARD_SKINS	alabasterTitanBossGIF	purchase	Boss	Lyonar	Faction1.AlabasterTitan	1		true	
+1000062	CardSkin	Radiant Dragoon	This skin was used in the Archmagus Vol boss battle	Epic	true	true	true	ORDER_CARD_SKINS	radiantDragoonBossGIF	purchase	Boss	Lyonar	Faction1.RadiantDragoon	1		true	
+1000063	CardSkin	Tethermancer	This skin was used in the Taskmaster Beatrix boss battle	Epic	true	true	true	ORDER_CARD_SKINS	tethermancerBossGIF	purchase	Boss	Neutral	Neutral.Tethermancer	1		true	
+1000064	CardSkin	Drogon	This skin was used in the Grym the Vengeful boss battle	Epic	true	true	true	ORDER_CARD_SKINS	drogonBossGIF	purchase	Boss	Magmar	Faction5.Drogon	1		true	
+1000065	CardSkin	Pantheran	This skin was used in the Nahlgol boss battle	Epic	true	true	true	ORDER_CARD_SKINS	pantheranBossGIF	purchase	Boss	Vetruvian	Faction3.Pantheran	1		true	
+1000066	CardSkin	Lysian Brawler	This skin was used in the Wolfpunch boss battle	Epic	true	true	true	ORDER_CARD_SKINS	lysianBrawlerBossGIF	purchase	Boss	Lyonar	Faction1.LysianBrawler	1		true	
+1000067	CardSkin	Death Knell	This skin was used in the Unhallowed boss battle	Epic	true	true	true	ORDER_CARD_SKINS	deathKnellBossGIF	purchase	Boss	Abyssian	Faction4.DeathKnell	1		true	
+1000068	CardSkin	Draugar Lord	This skin was used in the Santaur the Terrible boss battle	Epic	true	true	true	ORDER_CARD_SKINS	draugerLordBossGIF	purchase	Boss	Vanar	Faction6.PrismaticGiant	1		true	
+1000069	CardSkin	Night Watcher	This skin was used in the Legion boss battle	Epic	true	true	true	ORDER_CARD_SKINS	nightWatcherBossGIF	purchase	Boss	Neutral	Neutral.NightWatcher	1		true	
+1000070	CardSkin	Calligrapher	This skin was used in the Harmony boss battle	Epic	true	true	true	ORDER_CARD_SKINS	calligrapherBossGIF	purchase	Boss	Songhai	Faction2.Calligrapher	1		true	
+1000071	CardSkin	Pandora	This skin was used in the Andromeda boss battle	Epic	true	true	true	ORDER_CARD_SKINS	pandoraBossGIF	purchase	Boss	Neutral	Neutral.Pandora	1		true	
+1000072	CardSkin	Grandmaster Nosh-Rak	This skin was used in the Invader boss battle	Epic	true	true	true	ORDER_CARD_SKINS	grandmasterNoshRakBossGIF	purchase	Boss	Vetruvian	Faction3.GrandmasterNoshRak	1		true	
+1000073	CardSkin	Ironcliffe Guardian	This skin was used in the Invader boss battle	Epic	true	true	true	ORDER_CARD_SKINS	ironcliffeGuardianBossGIF	purchase	Boss	Lyonar	Faction1.IroncliffeGuardian	1		true	
+1000074	CardSkin	Celestial Phantom	This skin was used in the Soulstealer boss battle	Epic	true	true	true	ORDER_CARD_SKINS	celestialPhantomBossGIF	purchase	Boss	Songhai	Faction2.CelestialPhantom	1		true	
+1000075	CardSkin	Grailmaster	This skin was used in the Kahlmar the Spell Eater boss battle	Epic	true	true	true	ORDER_CARD_SKINS	grailmasterBossGIF	purchase	Boss	Neutral	Neutral.Grailmaster	1		true	
+10001	CardBack	cosmetics.cardback_classic_name	cosmetics.cardback_classic_desc	Common	true	false	false	ORDER_CARD_BACKS	card_back	default						true	
+10002	CardBack	cosmetics.cardback_redstark_name	cosmetics.cardback_redstark_desc	Epic	true	true	false	ORDER_CARD_BACKS	card_back_agenor	purchase						true	
+10004	CardBack	cosmetics.cardback_sienna_name	cosmetics.cardback_sienna_desc	Epic	true	true	false	ORDER_CARD_BACKS	card_back_gauntlet	purchase						true	
+10005	CardBack	cosmetics.cardback_dance_of_dreams_name	cosmetics.cardback_dance_of_dreams_desc	Epic	true	true	false	ORDER_CARD_BACKS	card_back_magma	purchase						true	
+40005	CardBack	cosmetics.cardback_shimzar_name	cosmetics.cardback_shimzar_desc	Epic	true	true	true	ORDER_CARD_BACKS	card_back_shimzar	purchase						false	
+10003	CardBack	cosmetics.cardback_azurite_name	cosmetics.cardback_azurite_desc	Epic	true	true	false	ORDER_CARD_BACKS	card_back_lyonar_gears	purchase						true	
+10007	CardBack	cosmetics.cardback_humble_bundle_name	cosmetics.cardback_humble_bundle_desc	Epic	true	false	true	ORDER_CARD_BACKS	card_back_humblebundle	unlockable						false	
+10008	CardBack	cosmetics.cardback_dawn_of_duelysts_name	cosmetics.cardback_dawn_of_duelysts_desc	Epic	true	false	true	ORDER_CARD_BACKS	card_back_dawnduelysts	unlockable						false	
+10009	CardBack	cosmetics.cardback_snowchaser_cup_name	cosmetics.cardback_snowchaser_cup_desc	Epic	true	true	true	ORDER_CARD_BACKS	card_back_snowchaser	purchase						false	
+20001	ProfileIcon	cosmetics.icon_tree_of_eyos_name		Fixed	true	false	false	ORDER_PROFILE_ICONS	portrait_tree	default	Neutral					true	
+20007	ProfileIcon	cosmetics.icon_abyssal_crawler_name	cosmetics.icon_abyssal_crawler_desc	Common	true	true	false	ORDER_PROFILE_ICONS	portrait_abyssian_abyssalcrawler	purchase	Abyssian	Faction4				true	
+20008	ProfileIcon	cosmetics.icon_cassyva_name	cosmetics.icon_cassyva_desc	Common	true	true	false	ORDER_PROFILE_ICONS	portrait_abyssian_cassyvasoulreaper1	purchase	Abyssian	Faction4				true	
+20109	ProfileIcon	cosmetics.icon_maehv_name	cosmetics.icon_maehv_desc	Common	true	true	false	ORDER_PROFILE_ICONS	portrait_abyssian_maehv1	purchase	Abyssian	Faction4				true	
+20009	ProfileIcon	cosmetics.icon_abyssian_crest_name	cosmetics.icon_abyssian_crest_desc	Rare	true	true	false	ORDER_PROFILE_ICONS	portrait_abyssian_crest	purchase	Abyssian	Faction4				true	
+20010	ProfileIcon	cosmetics.icon_gloomchaser_name	cosmetics.icon_gloomchaser_desc	Common	true	true	false	ORDER_PROFILE_ICONS	portrait_abyssian_gloomchaser	purchase	Abyssian	Faction4				true	
+20011	ProfileIcon	cosmetics.icon_shadow_sister_name	cosmetics.icon_shadow_sister_desc	Rare	true	true	false	ORDER_PROFILE_ICONS	portrait_abyssian_kelainosister	purchase	Abyssian	Faction4				true	
+20012	ProfileIcon	cosmetics.icon_lilithe_name	cosmetics.icon_lilithe_desc	Common	true	true	false	ORDER_PROFILE_ICONS	portrait_abyssian_lilithe1	purchase	Abyssian	Faction4				true	
+20013	ProfileIcon	cosmetics.icon_lilithe_mk2_name	cosmetics.icon_lilithe_mk2_desc	Rare	true	true	false	ORDER_PROFILE_ICONS	portrait_abyssian_lilithe2	purchase	Abyssian	Faction4				true	
+20014	ProfileIcon	cosmetics.icon_vorpal_reaver_name	cosmetics.icon_vorpal_reaver_desc	Rare	true	true	false	ORDER_PROFILE_ICONS	portrait_abyssian_vorpalreaver	purchase	Abyssian	Faction4				true	
+20015	ProfileIcon	cosmetics.icon_wraithling_name	cosmetics.icon_wraithling_desc	Common	true	true	false	ORDER_PROFILE_ICONS	portrait_abyssian_wraithling	purchase	Abyssian	Faction4				true	
+20016	ProfileIcon	cosmetics.icon_frostfire_2015_name	cosmetics.icon_frostfire_2015_desc	Common	true	true	false	ORDER_PROFILE_ICONS	portrait_frostfire	purchase	Neutral					true	
+20017	ProfileIcon	cosmetics.icon_arclyte_sentinel_name	cosmetics.icon_arclyte_sentinel_desc	Rare	true	true	false	ORDER_PROFILE_ICONS	portrait_lyonar_arclytesentinel	purchase	Lyonar	Faction1				true	
+20018	ProfileIcon	cosmetics.icon_argeon_name	cosmetics.icon_argeon_desc	Common	true	true	false	ORDER_PROFILE_ICONS	portrait_lyonar_argeonhighmayne1	purchase	Lyonar	Faction1				true	
+20019	ProfileIcon	cosmetics.icon_argeon_mk2_name	cosmetics.icon_argeon_mk2_desc	Rare	true	true	false	ORDER_PROFILE_ICONS	portrait_lyonar_argeonhighmayne2	purchase	Lyonar	Faction1				true	
+20020	ProfileIcon	cosmetics.icon_lyonar_crest_name	cosmetics.icon_lyonar_crest_desc	Rare	true	true	false	ORDER_PROFILE_ICONS	portrait_lyonar_crest	purchase	Lyonar	Faction1				true	
+20021	ProfileIcon	cosmetics.icon_lightchaser_name	cosmetics.icon_lightchaser_desc	Common	true	true	false	ORDER_PROFILE_ICONS	portrait_lyonar_lightchaser	purchase	Lyonar	Faction1				true	
+20022	ProfileIcon	cosmetics.icon_silverguard_knight_name	cosmetics.icon_silverguard_knight_desc	Common	true	true	false	ORDER_PROFILE_ICONS	portrait_lyonar_silverguardknight	purchase	Lyonar	Faction1				true	
+20023	ProfileIcon	cosmetics.icon_sun_sister_name	cosmetics.icon_sun_sister_desc	Rare	true	true	false	ORDER_PROFILE_ICONS	portrait_lyonar_steropesister	purchase	Lyonar	Faction1				true	
+20024	ProfileIcon	cosmetics.icon_suntide_maiden_name	cosmetics.icon_suntide_maiden_desc	Rare	true	true	false	ORDER_PROFILE_ICONS	portrait_lyonar_suntidemaiden	purchase	Lyonar	Faction1				true	
+20025	ProfileIcon	cosmetics.icon_windblade_adept_name	cosmetics.icon_windblade_adept_desc	Common	true	true	false	ORDER_PROFILE_ICONS	portrait_lyonar_windbladeadept	purchase	Lyonar	Faction1				true	
+20026	ProfileIcon	cosmetics.icon_ziran_name	cosmetics.icon_ziran_desc	Common	true	true	false	ORDER_PROFILE_ICONS	portrait_lyonar_ziransunforge1	purchase	Lyonar	Faction1				true	
+20106	ProfileIcon	cosmetics.icon_brome_name	cosmetics.icon_brome_desc	Common	true	true	false	ORDER_PROFILE_ICONS	portrait_lyonar_brome1	purchase	Lyonar	Faction1				true	
+20027	ProfileIcon	cosmetics.icon_magmar_crest_name	cosmetics.icon_magmar_crest_desc	Rare	true	true	false	ORDER_PROFILE_ICONS	portrait_magmar_crest	purchase	Magmar	Faction5				true	
+20028	ProfileIcon	cosmetics.icon_dreadnought_name	cosmetics.icon_dreadnought_desc	Rare	true	true	false	ORDER_PROFILE_ICONS	portrait_magmar_dreadnought	purchase	Magmar	Faction5				true	
+20029	ProfileIcon	cosmetics.icon_elucidator_name	cosmetics.icon_elucidator_desc	Common	true	true	false	ORDER_PROFILE_ICONS	portrait_magmar_elucidator	purchase	Magmar	Faction5				true	
+20030	ProfileIcon	cosmetics.icon_makantor_name	cosmetics.icon_makantor_desc	Rare	true	true	false	ORDER_PROFILE_ICONS	portrait_magmar_makantorwarbeast	purchase	Magmar	Faction5				true	
+20031	ProfileIcon	cosmetics.icon_phalanxar_name	cosmetics.icon_phalanxar_desc	Common	true	true	false	ORDER_PROFILE_ICONS	portrait_magmar_phalanxar	purchase	Magmar	Faction5				true	
+20032	ProfileIcon	cosmetics.icon_silithar_elder_name	cosmetics.icon_silithar_elder_desc	Rare	true	true	false	ORDER_PROFILE_ICONS	portrait_magmar_silitharelder	purchase	Magmar	Faction5				true	
+20033	ProfileIcon	cosmetics.icon_starhorn_1_name	cosmetics.icon_starhorn_1_desc	Common	true	true	false	ORDER_PROFILE_ICONS	portrait_magmar_starhorn1	purchase	Magmar	Faction5				true	
+20034	ProfileIcon	cosmetics.icon_starhorn_2_name	cosmetics.icon_starhorn_2_desc	Rare	true	true	false	ORDER_PROFILE_ICONS	portrait_magmar_starhorn2	purchase	Magmar	Faction5				true	
+20107	ProfileIcon	cosmetics.icon_ragnora_name	cosmetics.icon_ragnora_desc	Common	true	true	false	ORDER_PROFILE_ICONS	portrait_magmar_ragnora1	purchase	Magmar	Faction5				true	
+20035	ProfileIcon	cosmetics.icon_taygete_name	cosmetics.icon_taygete_desc	Rare	true	true	false	ORDER_PROFILE_ICONS	portrait_magmar_taygetesister	purchase	Magmar	Faction5				true	
+20036	ProfileIcon	cosmetics.icon_vaath_name	cosmetics.icon_vaath_desc	Common	true	true	false	ORDER_PROFILE_ICONS	portrait_magmar_vaath1	purchase	Magmar	Faction5				true	
+20037	ProfileIcon	cosmetics.icon_vaath_mk2_name	cosmetics.icon_vaath_mk2_desc	Rare	true	true	false	ORDER_PROFILE_ICONS	portrait_magmar_vaath2	purchase	Magmar	Faction5				true	
+20038	ProfileIcon	cosmetics.icon_veteran_silithar_name	cosmetics.icon_veteran_silithar_desc	Common	true	true	false	ORDER_PROFILE_ICONS	portrait_magmar_veteransilithar	purchase	Magmar	Faction5				true	
+20039	ProfileIcon	cosmetics.icon_young_silithar_name	cosmetics.icon_young_silithar_desc	Common	true	true	false	ORDER_PROFILE_ICONS	portrait_magmar_youngsilithar	purchase	Magmar	Faction5				true	
+20040	ProfileIcon	cosmetics.icon_beastmaster_name	cosmetics.icon_beastmaster_desc	Common	true	true	false	ORDER_PROFILE_ICONS	portrait_neutral_beastmaster	purchase	Neutral					true	
+20041	ProfileIcon	cosmetics.icon_cannon_mech_name	cosmetics.icon_cannon_mech_desc	Rare	true	true	false	ORDER_PROFILE_ICONS	portrait_neutral_cannonofmechaz0r	purchase	Neutral					true	
+20042	ProfileIcon	cosmetics.icon_chassis_mech_name	cosmetics.icon_chassis_mech_desc	Rare	true	true	false	ORDER_PROFILE_ICONS	portrait_neutral_chassisofmechaz0r	purchase	Neutral					true	
+20043	ProfileIcon	cosmetics.icon_gnasher_name	cosmetics.icon_gnasher_desc	Common	true	true	false	ORDER_PROFILE_ICONS	portrait_neutral_gnasher	purchase	Neutral					true	
+20044	ProfileIcon	cosmetics.icon_golden_mantella_name	cosmetics.icon_golden_mantella_desc	Common	true	true	false	ORDER_PROFILE_ICONS	portrait_neutral_goldenmantella	purchase	Neutral					true	
+20045	ProfileIcon	cosmetics.icon_grincher_name	cosmetics.icon_grincher_desc	Rare	true	true	false	ORDER_PROFILE_ICONS	portrait_neutral_grincher	purchase	Neutral					true	
+20046	ProfileIcon	cosmetics.icon_helm_mech_name	cosmetics.icon_helm_mech_desc	Rare	true	true	false	ORDER_PROFILE_ICONS	portrait_neutral_helmofmechaz0r	purchase	Neutral					true	
+20047	ProfileIcon	cosmetics.icon_hydrax_name	cosmetics.icon_hydrax_desc	Rare	true	true	false	ORDER_PROFILE_ICONS	portrait_neutral_hydrax1	purchase	Neutral					true	
+20048	ProfileIcon	cosmetics.icon_hydrax_2_name	cosmetics.icon_hydrax_2_desc	Rare	true	true	false	ORDER_PROFILE_ICONS	portrait_neutral_hydrax2	purchase	Neutral					true	
+20049	ProfileIcon	cosmetics.icon_ion_name	cosmetics.icon_ion_desc	Rare	true	true	false	ORDER_PROFILE_ICONS	portrait_neutral_ion	purchase	Neutral					true	
+20050	ProfileIcon	cosmetics.icon_lady_locke_name	cosmetics.icon_lady_locke_desc	Rare	true	true	false	ORDER_PROFILE_ICONS	portrait_neutral_ladylocke	purchase	Neutral					true	
+20051	ProfileIcon	cosmetics.icon_sworn_sister_name	cosmetics.icon_sworn_sister_desc	Rare	true	true	false	ORDER_PROFILE_ICONS	portrait_neutral_lkiansister	purchase	Neutral					true	
+20052	ProfileIcon	cosmetics.icon_mechaz0r_name	cosmetics.icon_mechaz0r_desc	Rare	true	true	false	ORDER_PROFILE_ICONS	portrait_neutral_mechaz0r	purchase	Neutral					true	
+20053	ProfileIcon	cosmetics.icon_dex_name	cosmetics.icon_dex_desc	Rare	true	true	false	ORDER_PROFILE_ICONS	portrait_neutral_nip	purchase	Neutral					true	
+20054	ProfileIcon	cosmetics.icon_rawr_name	cosmetics.icon_rawr_desc	Rare	true	true	false	ORDER_PROFILE_ICONS	portrait_neutral_rawr	purchase	Neutral					true	
+20055	ProfileIcon	cosmetics.icon_rok_name	cosmetics.icon_rok_desc	Rare	true	true	false	ORDER_PROFILE_ICONS	portrait_neutral_rok	purchase	Neutral					true	
+20056	ProfileIcon	cosmetics.icon_rook_name	cosmetics.icon_rook_desc	Rare	true	true	false	ORDER_PROFILE_ICONS	portrait_neutral_rook	purchase	Neutral					true	
+20057	ProfileIcon	cosmetics.icon_silverbeak_name	cosmetics.icon_silverbeak_desc	Common	true	true	false	ORDER_PROFILE_ICONS	portrait_neutral_silverbeak	purchase	Neutral					true	
+20058	ProfileIcon	cosmetics.icon_soboro_name	cosmetics.icon_soboro_desc	Rare	true	true	false	ORDER_PROFILE_ICONS	portrait_neutral_soboro	purchase	Neutral					true	
+20059	ProfileIcon	cosmetics.icon_sword_mech_name	cosmetics.icon_sword_mech_desc	Rare	true	true	false	ORDER_PROFILE_ICONS	portrait_neutral_swordofmechaz0r	purchase	Neutral					true	
+20060	ProfileIcon	cosmetics.icon_wings_mech_name	cosmetics.icon_wings_mech_desc	Rare	true	true	false	ORDER_PROFILE_ICONS	portrait_neutral_wingsofmechaz0r	purchase	Neutral					true	
+20061	ProfileIcon	cosmetics.icon_z0r_name	cosmetics.icon_z0r_desc	Rare	true	true	false	ORDER_PROFILE_ICONS	portrait_neutral_z0r	purchase	Neutral					true	
+20062	ProfileIcon	cosmetics.icon_zukong_name	cosmetics.icon_zukong_desc	Rare	true	true	false	ORDER_PROFILE_ICONS	portrait_neutral_zukong	purchase	Neutral					true	
+20065	ProfileIcon	cosmetics.icon_storm_sister_name	cosmetics.icon_storm_sister_desc	Rare	true	true	false	ORDER_PROFILE_ICONS	portrait_songhai_alkyonesister	purchase	Songhai	Faction2				true	
+20066	ProfileIcon	cosmetics.icon_songhai_crest_name	cosmetics.icon_songhai_crest_desc	Rare	true	true	false	ORDER_PROFILE_ICONS	portrait_songhai_crest	purchase	Songhai	Faction2				true	
+20067	ProfileIcon	cosmetics.icon_gorehorn_name	cosmetics.icon_gorehorn_desc	Common	true	true	false	ORDER_PROFILE_ICONS	portrait_songhai_gorehorn	purchase	Songhai	Faction2				true	
+20068	ProfileIcon	cosmetics.icon_zendo_name	cosmetics.icon_zendo_desc	Rare	true	true	false	ORDER_PROFILE_ICONS	portrait_songhai_grandmasterzendo	purchase	Songhai	Faction2				true	
+20069	ProfileIcon	cosmetics.icon_heartseeker_name	cosmetics.icon_heartseeker_desc	Common	true	true	false	ORDER_PROFILE_ICONS	portrait_songhai_heartseeker	purchase	Songhai	Faction2				true	
+20070	ProfileIcon	cosmetics.icon_kaido_assassin_name	cosmetics.icon_kaido_assassin_desc	Common	true	true	false	ORDER_PROFILE_ICONS	portrait_songhai_kaidoassassin	purchase	Songhai	Faction2				true	
+20071	ProfileIcon	cosmetics.icon_kaleos_name	cosmetics.icon_kaleos_desc	Common	true	true	false	ORDER_PROFILE_ICONS	portrait_songhai_kaleosxaan1	purchase	Songhai	Faction2				true	
+20072	ProfileIcon	cosmetics.icon_reva_name	cosmetics.icon_reva_desc	Common	true	true	false	ORDER_PROFILE_ICONS	portrait_songhai_revaeventide1	purchase	Songhai	Faction2				true	
+20073	ProfileIcon	cosmetics.icon_reva_mk2_name	cosmetics.icon_reva_mk2_desc	Rare	true	true	false	ORDER_PROFILE_ICONS	portrait_songhai_revaeventide2	purchase	Songhai	Faction2				true	
+20108	ProfileIcon	cosmetics.icon_shidai_name	cosmetics.icon_shidai_name	Common	true	true	false	ORDER_PROFILE_ICONS	portrait_songhai_shidai1	purchase	Songhai	Faction2				true	
+20074	ProfileIcon	cosmetics.icon_scarlet_viper_name	cosmetics.icon_scarlet_viper_desc	Common	true	true	false	ORDER_PROFILE_ICONS	portrait_songhai_scarletviper	purchase	Songhai	Faction2				true	
+20075	ProfileIcon	cosmetics.icon_tusk_boar_name	cosmetics.icon_tusk_boar_desc	Rare	true	true	false	ORDER_PROFILE_ICONS	portrait_songhai_tuskboar	purchase	Songhai	Faction2				true	
+20076	ProfileIcon	cosmetics.icon_widowmaker_name	cosmetics.icon_widowmaker_desc	Common	true	true	false	ORDER_PROFILE_ICONS	portrait_songhai_widowmaker	purchase	Songhai	Faction2				true	
+20077	ProfileIcon	cosmetics.icon_arctic_displacer_name	cosmetics.icon_arctic_displacer_desc	Common	true	true	false	ORDER_PROFILE_ICONS	portrait_vanar_arcticdisplacer	purchase	Vanar	Faction6				true	
+20078	ProfileIcon	cosmetics.icon_vanar_crest_name	cosmetics.icon_vanar_crest_desc	Rare	true	true	false	ORDER_PROFILE_ICONS	portrait_vanar_crest	purchase	Vanar	Faction6				true	
+20079	ProfileIcon	cosmetics.icon_draugar_lord_name	cosmetics.icon_draugar_lord_desc	Rare	true	true	false	ORDER_PROFILE_ICONS	portrait_vanar_draugarlord	purchase	Vanar	Faction6				true	
+20080	ProfileIcon	cosmetics.icon_warbird_name	cosmetics.icon_warbird_desc	Common	true	true	false	ORDER_PROFILE_ICONS	portrait_vanar_faiebloodwing_warbird	purchase	Vanar	Faction6				true	
+20081	ProfileIcon	cosmetics.icon_faie_name	cosmetics.icon_faie_desc	Common	true	true	false	ORDER_PROFILE_ICONS	portrait_vanar_faiebloodwing1	purchase	Vanar	Faction6				true	
+20082	ProfileIcon	cosmetics.icon_faie_mk2_name	cosmetics.icon_faie_mk2_desc	Rare	true	true	false	ORDER_PROFILE_ICONS	portrait_vanar_faiebloodwing2	purchase	Vanar	Faction6				true	
+20083	ProfileIcon	cosmetics.icon_glacial_elemental_name	cosmetics.icon_glacial_elemental_desc	Common	true	true	false	ORDER_PROFILE_ICONS	portrait_vanar_glacialelemental	purchase	Vanar	Faction6				true	
+20084	ProfileIcon	cosmetics.icon_hearth_sister_name	cosmetics.icon_hearth_sister_desc	Common	true	true	false	ORDER_PROFILE_ICONS	portrait_vanar_hearthsister	purchase	Vanar	Faction6				true	
+20085	ProfileIcon	cosmetics.icon_iceblade_dryad_name	cosmetics.icon_iceblade_dryad_desc	Rare	true	true	false	ORDER_PROFILE_ICONS	portrait_vanar_icebladedryad	purchase	Vanar	Faction6				true	
+20086	ProfileIcon	cosmetics.icon_kara_name	cosmetics.icon_kara_desc	Common	true	true	false	ORDER_PROFILE_ICONS	portrait_vanar_karawinterblade1	purchase	Vanar	Faction6				true	
+20087	ProfileIcon	cosmetics.icon_kara_mk2_name	cosmetics.icon_kara_mk2_desc	Rare	true	true	false	ORDER_PROFILE_ICONS	portrait_vanar_karawinterblade2	purchase	Vanar	Faction6				true	
+20110	ProfileIcon	cosmetics.icon_ilena_name	cosmetics.icon_ilena_desc	Common	true	true	false	ORDER_PROFILE_ICONS	portrait_vanar_ilena1	purchase	Vanar	Faction6				true	
+20088	ProfileIcon	cosmetics.icon_wind_sister_name	cosmetics.icon_wind_sister_desc	Rare	true	true	false	ORDER_PROFILE_ICONS	portrait_vanar_maiasister	purchase	Vanar	Faction6				true	
+20089	ProfileIcon	cosmetics.icon_razorback_name	cosmetics.icon_razorback_desc	Rare	true	true	false	ORDER_PROFILE_ICONS	portrait_vanar_razorback	purchase	Vanar	Faction6				true	
+20090	ProfileIcon	cosmetics.icon_snowchaser_name	cosmetics.icon_snowchaser_desc	Rare	true	true	false	ORDER_PROFILE_ICONS	portrait_vanar_snowchaser	purchase	Vanar	Faction6				true	
+20091	ProfileIcon	cosmetics.icon_wolfraven_name	cosmetics.icon_wolfraven_desc	Common	true	true	false	ORDER_PROFILE_ICONS	portrait_vanar_wolfraven	purchase	Vanar	Faction6				true	
+20102	ProfileIcon	cosmetics.icon_vetruvian_crest_name	cosmetics.icon_vetruvian_crest_desc	Rare	true	true	false	ORDER_PROFILE_ICONS	portrait_vetruvian_crest	purchase	Vetruvian	Faction3				true	
+20092	ProfileIcon	cosmetics.icon_mirage_master_name	cosmetics.icon_mirage_master_desc	Common	true	true	false	ORDER_PROFILE_ICONS	portrait_vetruvian_miragemaster	purchase	Vetruvian	Faction3				true	
+20093	ProfileIcon	cosmetics.icon_pax_name	cosmetics.icon_pax_desc	Rare	true	true	false	ORDER_PROFILE_ICONS	portrait_vetruvian_pax	purchase	Vetruvian	Faction3				true	
+20094	ProfileIcon	cosmetics.icon_pyromancer_name	cosmetics.icon_pyromancer_desc	Common	true	true	false	ORDER_PROFILE_ICONS	portrait_vetruvian_pyromancer	purchase	Vetruvian	Faction3				true	
+20095	ProfileIcon	cosmetics.icon_rae_name	cosmetics.icon_rae_desc	Rare	true	true	false	ORDER_PROFILE_ICONS	portrait_vetruvian_rae	purchase	Vetruvian	Faction3				true	
+20096	ProfileIcon	cosmetics.icon_sand_sister_name	cosmetics.icon_sand_sister_desc	Rare	true	true	false	ORDER_PROFILE_ICONS	portrait_vetruvian_saonsister	purchase	Vetruvian	Faction3				true	
+20097	ProfileIcon	cosmetics.icon_sajj_name	cosmetics.icon_sajj_desc	Common	true	true	false	ORDER_PROFILE_ICONS	portrait_vetruvian_scionesssajj1	purchase	Vetruvian	Faction3				true	
+20111	ProfileIcon	cosmetics.icon_ciphyron_name	cosmetics.icon_ciphyron_desc	Common	true	true	false	ORDER_PROFILE_ICONS	portrait_vetruvian_ciphyron1	purchase	Vetruvian	Faction3				true	
+20098	ProfileIcon	cosmetics.icon_starfire_scarab_name	cosmetics.icon_starfire_scarab_desc	Common	true	true	false	ORDER_PROFILE_ICONS	portrait_vetruvian_starfirescarab	purchase	Vetruvian	Faction3				true	
+20099	ProfileIcon	cosmetics.icon_windshrike_name	cosmetics.icon_windshrike_desc	Common	true	true	false	ORDER_PROFILE_ICONS	portrait_vetruvian_windshrike	purchase	Vetruvian	Faction3				true	
+20100	ProfileIcon	cosmetics.icon_zirix_name	cosmetics.icon_zirix_desc	Common	true	true	false	ORDER_PROFILE_ICONS	portrait_vetruvian_zirixstarstrider1	purchase	Vetruvian	Faction3				true	
+20101	ProfileIcon	cosmetics.icon_zirix_mk2_name	cosmetics.icon_zirix_mk2_desc	Common	true	true	false	ORDER_PROFILE_ICONS	portrait_vetruvian_zirixstarstrider2	purchase	Vetruvian	Faction3				true	
+20002	ProfileIcon	cosmetics.icon_bloodmoon_ruins_name	cosmetics.icon_bloodmoon_ruins_desc	Common	true	false	false	ORDER_PROFILE_ICONS	portrait_bloodmoon	default	Neutral					true	
+20003	ProfileIcon	cosmetics.icon_crystal_caverns_name	cosmetics.icon_crystal_caverns_desc	Common	true	false	false	ORDER_PROFILE_ICONS	portrait_crystal_caverns	default	Neutral					true	
+20004	ProfileIcon	cosmetics.icon_kaero_name	cosmetics.icon_kaero_desc	Common	true	false	false	ORDER_PROFILE_ICONS	portrait_kaero	default	Neutral					true	
+20006	ProfileIcon	cosmetics.icon_whistling_blades_name	cosmetics.icon_whistling_blades_desc	Common	true	false	false	ORDER_PROFILE_ICONS	portrait_whistling_blade	default	Neutral					true	
+20063	ProfileIcon	cosmetics.icon_obsidian_woods_name	cosmetics.icon_obsidian_woods_desc	Common	true	false	false	ORDER_PROFILE_ICONS	portrait_obsidian_woods	default	Neutral					true	
+20064	ProfileIcon	cosmetics.icon_rashas_tomb_name	cosmetics.icon_rashas_tomb_desc	Common	true	false	false	ORDER_PROFILE_ICONS	portrait_rashas_tomb	default	Neutral					true	
+20103	ProfileIcon	cosmetics.icon_grandmaster_name	cosmetics.icon_grandmaster_desc	Common	true	false	true	ORDER_PROFILE_ICONS	portrait_grandmaster_portrait	unlockable	Neutral					false	
+20104	ProfileIcon	Emperor Sargos	Emperor Sargos	Common	true	true	false	ORDER_PROFILE_ICONS	portrait_tournament_dawnofduelysts1	purchase	Neutral					false	
+20105	ProfileIcon	The Coming of Rasha	The Coming of Rasha	Common	true	true	false	ORDER_PROFILE_ICONS	portrait_tournament_dawnofduelysts2	purchase	Neutral					false	
+20112	ProfileIcon	Aer Pridebeak	Aer Pridebeak	Rare	true	true	false	ORDER_PROFILE_ICONS	portrait_aer	purchase	Neutral					false	
+20113	ProfileIcon	Frizzing Mystic	Frizzing Mystic	Rare	true	true	false	ORDER_PROFILE_ICONS	portrait_frizzing_mystic	purchase	Neutral					false	
+20114	ProfileIcon	Gibbet	Gibbet	Rare	true	true	false	ORDER_PROFILE_ICONS	portrait_gibbet	purchase	Abyssian					false	
+20115	ProfileIcon	Orbo the Ostentatious	Orbo the Ostentatious	Rare	true	true	false	ORDER_PROFILE_ICONS	portrait_orbo	purchase	Neutral					false	
+20116	ProfileIcon	Fifth Canopic	Fifth Canopic	Rare	true	true	false	ORDER_PROFILE_ICONS	portrait_canopic	purchase	Vetruvian					false	
+20117	ProfileIcon	Yggdra's Voracity	Yggdra's Voracity	Rare	true	true	false	ORDER_PROFILE_ICONS	portrait_veracity	purchase	Vanar					false	
+20118	ProfileIcon	Indominus	Indominus	Rare	true	true	false	ORDER_PROFILE_ICONS	portrait_indominus	purchase	Lyonar					false	
+20119	ProfileIcon	Spriggen	Spriggen	Rare	true	true	false	ORDER_PROFILE_ICONS	portrait_spriggen	purchase	Neutral					false	
+20120	ProfileIcon	Eternity Painter	Eternity Painter	Rare	true	true	false	ORDER_PROFILE_ICONS	portrait_eternityPainter	purchase	Songhai					false	
+20121	ProfileIcon	Skull Prophet	Skull Prophet	Rare	true	true	false	ORDER_PROFILE_ICONS	portrait_skullProphet	purchase	Abyssian					false	
+20122	ProfileIcon	Sinister Silhouette	Sinister Silhouette	Rare	true	true	false	ORDER_PROFILE_ICONS	portrait_sinisterSilhouette	purchase	Neutral					false	
+1	Emote	cosmetics.emote_hello_name		Fixed	true	false	false			default	Other					true	
+2	Emote	cosmetics.emote_glhf_name		Fixed	true	false	false			default	Other					true	
+3	Emote	cosmetics.emote_well_played_name		Fixed	true	false	false			default	Other					true	
+4	Emote	cosmetics.emote_oops_name		Fixed	true	false	false			default	Other					true	
+2001	Emote	So Happy!	cosmetics.emote_hm_happy_desc	Epic	true	true	false		emote_healing_mystic_happy	purchase	Neutral					true	
+2002	Emote	So Sad!	cosmetics.emote_hm_sad_desc	Epic	true	true	false		emote_healing_mystic_sad	purchase	Neutral	Neutral				true	
+2003	Emote	Yay!	cosmetics.emote_hm_thumbs_up_desc	Epic	true	true	false		emote_healing_mystic_thumbs_up	purchase	Neutral	Neutral				true	
+2004	Emote	Huh!?	cosmetics.emote_hm_surprise_desc	Epic	true	true	false		emote_healing_mystic_confused	purchase	Neutral	Neutral				true	
+2005	Emote	Blink	cosmetics.emote_hm_blink_desc	Epic	true	true	false		emote_healing_mystic_blink	purchase	Neutral	Neutral				true	
+2012	Emote	Peace!			false	false	true		emote_alpha_iceblade_dryad	unlockable	Alpha	Neutral				false	
+2011	Emote	Yeah Baby!			true	false	true		emote_alpha_rook	unlockable	Alpha	Neutral				false	
+2013	Emote	Blargh!			false	false	true		emote_alpha_lightchaser	unlockable	Alpha	Neutral				false	
+2014	Emote	Happy Holidays!	cosmetics.emote_holiday_snowchaser_desc	Epic	true	true	true		emote_neutral_snowchaser_holiday_2015	purchase	Neutral	Neutral				false	
+2101	Emote	cosmetics.emote_cannon_mech_name	cosmetics.emote_cannon_mech_desc	Rare	true	true	false		emote_mechaz0r_cannon_confused	purchase	Neutral	Neutral				true	
+2102	Emote	cosmetics.emote_chassis_mech_name	cosmetics.emote_chassis_mech_desc	Rare	true	true	false		emote_mechaz0r_chassis_angry	purchase	Neutral	Neutral				true	
+2103	Emote	cosmetics.emote_helm_mech_name	cosmetics.emote_helm_mech_desc	Rare	true	true	false		emote_mechaz0r_helm_taunt	purchase	Neutral	Neutral				true	
+2104	Emote	cosmetics.emote_mechaz0r_name	cosmetics.emote_mechaz0r_desc	Epic	true	true	false		emote_mechaz0r_sad	purchase	Neutral	Neutral				true	
+2105	Emote	cosmetics.emote_sword_mech_name	cosmetics.emote_sword_mech_desc	Rare	true	true	false		emote_mechaz0r_sword_frustrated	purchase	Neutral	Neutral				true	
+2106	Emote	cosmetics.emote_wings_mech_name	cosmetics.emote_wings_mech_desc	Rare	true	true	false		emote_mechaz0r_wings_happy	purchase	Neutral	Neutral				true	
+2107	Emote	cosmetics.emote_lady_locke_name	cosmetics.emote_lady_locke_desc	Rare	true	true	false		emote_ladylocke	purchase	Neutral	Neutral				true	
+2108	Emote	cosmetics.emote_phalanxar_name	cosmetics.emote_phalanxar_desc	Epic	true	true	false		emote_phalanxar_thumbsdown	purchase	Neutral	Neutral				true	
+2109	Emote	cosmetics.emote_snowchaser_bow_name	cosmetics.emote_snowchaser_bow_desc	Rare	true	true	false		emote_snowchaser_bow	purchase	Neutral	Neutral				true	
+2110	Emote	cosmetics.emote_hollow_grovekeeper_name	cosmetics.emote_hollow_grovekeeper_desc		true	false	true		emote_hollowgrovekeeper	unlockable	Neutral	Neutral				false	
+2111	Emote	cosmetics.emote_lightbender_name	cosmetics.emote_lightbender_desc		true	false	true		emote_lightbender	unlockable	Neutral	Neutral				false	
+2112	Emote	cosmetics.emote_primus_fist_name	cosmetics.emote_primus_fist_desc		true	false	true		emote_primusfist	unlockable	Neutral	Neutral				false	
+2113	Emote	cosmetics.emote_zenrui_name	cosmetics.emote_zenrui_desc		true	false	true		emote_zenrui	unlockable	Neutral	Neutral				false	
+2114	Emote	cosmetics.emote_fog_bow_name	cosmetics.emote_fog_bow_desc		true	false	true		emote_fog_bow	unlockable	Neutral	Neutral				false	
+2115	Emote	cosmetics.emote_fog_confused_name	cosmetics.emote_fog_confused_desc		true	false	true		emote_fog_confused	unlockable	Neutral	Neutral				false	
+2116	Emote	cosmetics.emote_fog_gg_name	cosmetics.emote_fog_gg_desc		true	false	true		emote_fog_dead	unlockable	Neutral	Neutral				false	
+2117	Emote	cosmetics.emote_fog_sweat_name	cosmetics.emote_fog_sweat_desc		true	false	true		emote_fog_frustrated	unlockable	Neutral	Neutral				false	
+2118	Emote	cosmetics.emote_fog_happy_name	cosmetics.emote_fog_happy_desc		true	false	true		emote_fog_happy	unlockable	Neutral	Neutral				false	
+2119	Emote	cosmetics.emote_fog_cry_name	cosmetics.emote_fog_cry_desc		true	false	true		emote_fog_sad	unlockable	Neutral	Neutral				false	
+2120	Emote	cosmetics.emote_fog_sleep_name	cosmetics.emote_fog_sleep_desc		true	false	true		emote_fog_sleep	unlockable	Neutral	Neutral				false	
+2121	Emote	cosmetics.emote_fog_smile_name	cosmetics.emote_fog_smile_desc		true	false	true		emote_fog_sunglasses	unlockable	Neutral	Neutral				false	
+2122	Emote	cosmetics.emote_fog_surprised_name	cosmetics.emote_fog_surprised_desc		true	false	true		emote_fog_surprised	unlockable	Neutral	Neutral				false	
+2123	Emote	cosmetics.emote_fog_kiss_name	cosmetics.emote_fog_kiss_desc		true	false	true		emote_fog_taunt_alt	unlockable	Neutral	Neutral				false	
+2124	Emote	cosmetics.emote_fog_wink_name	cosmetics.emote_fog_wink_desc		true	false	true		emote_fog_taunt	unlockable	Neutral	Neutral				false	
+3001	Emote	Taunt		Common	true	true	false		emote_f1_taunt	purchase	Lyonar	Faction1				true	
+3002	Emote	Angry		Common	true	true	false		emote_f1_angry	purchase	Lyonar	Faction1				true	
+3003	Emote	Confused		Common	true	true	false		emote_f1_confused	purchase	Lyonar	Faction1				true	
+3004	Emote	Sad		Common	true	true	false		emote_f1_sad	purchase	Lyonar	Faction1				true	
+3005	Emote	Frustrated		Common	true	true	false		emote_f1_frustrated	purchase	Lyonar	Faction1				true	
+3006	Emote	Surprised		Common	true	true	false		emote_f1_surprised	purchase	Lyonar	Faction1				true	
+3007	Emote	Bow		Rare	true	true	false		emote_f1_bow	purchase	Lyonar	Faction1				true	
+3008	Emote	Sleep		Rare	true	true	false		emote_f1_sleep	purchase	Lyonar	Faction1				true	
+3009	Emote	Sunglasses		Epic	true	true	false		emote_f1_sunglasses	purchase	Lyonar	Faction1				true	
+3010	Emote	Happy		Common	true	false	false		emote_basic_happy	default	Lyonar	Faction1				true	
+3011	Emote	Kiss	cosmetics.emote_argeon_love_desc	Common	true	true	false		emote_f1_kiss	purchase	Lyonar	Faction1				true	
+4001	Emote	Taunt		Common	true	true	false		emote_f2_taunt	purchase	Songhai	Faction2				true	
+4002	Emote	Happy		Common	true	true	false		emote_f2_happy	purchase	Songhai	Faction2				true	
+4003	Emote	Confused		Common	true	true	false		emote_f2_confused	purchase	Songhai	Faction2				true	
+4004	Emote	Sad		Common	true	true	false		emote_f2_sad	purchase	Songhai	Faction2				true	
+4005	Emote	Frustrated		Common	true	true	false		emote_f2_frustrated	purchase	Songhai	Faction2				true	
+4006	Emote	Surprised		Common	true	true	false		emote_f2_surprised	purchase	Songhai	Faction2				true	
+4007	Emote	Bow		Rare	true	true	false		emote_f2_bow	purchase	Songhai	Faction2				true	
+4008	Emote	Sleep		Rare	true	true	false		emote_f2_sleep	purchase	Songhai	Faction2				true	
+4009	Emote	Sunglasses		Epic	true	true	false		emote_f2_sunglasses	purchase	Songhai	Faction2				true	
+4010	Emote	Angry		Common	true	false	false		emote_basic_angry	default	Songhai	Faction2				true	
+4011	Emote	Kiss	cosmetics.emote_kaleos_love_desc	Common	true	true	false		emote_f2_kiss	purchase	Songhai	Faction2				true	
+5001	Emote	Taunt		Common	true	true	false		emote_f3_taunt	purchase	Vetruvian	Faction3				true	
+5002	Emote	Happy		Common	true	true	false		emote_f3_happy	purchase	Vetruvian	Faction3				true	
+5003	Emote	Angry		Common	true	true	false		emote_f3_angry	purchase	Vetruvian	Faction3				true	
+5004	Emote	Sad		Common	true	true	false		emote_f3_sad	purchase	Vetruvian	Faction3				true	
+5005	Emote	Frustrated		Common	true	true	false		emote_f3_frustrated	purchase	Vetruvian	Faction3				true	
+5006	Emote	Surprised		Common	true	true	false		emote_f3_surprised	purchase	Vetruvian	Faction3				true	
+5007	Emote	Bow		Rare	true	true	false		emote_f3_bow	purchase	Vetruvian	Faction3				true	
+5008	Emote	Sleep		Rare	true	true	false		emote_f3_sleep	purchase	Vetruvian	Faction3				true	
+5009	Emote	Sunglasses		Epic	true	true	false		emote_f3_sunglasses	purchase	Vetruvian	Faction3				true	
+5010	Emote	Confused		Common	true	false	false		emote_basic_confused	default	Vetruvian	Faction3				true	
+5011	Emote	Kiss	cosmetics.emote_zirix_love_desc	Common	true	true	false		emote_f3_kiss	purchase	Vetruvian	Faction3				true	
+6001	Emote	Taunt		Common	true	true	false		emote_f4_teal_taunt	purchase	Abyssian	Faction4				true	
+6002	Emote	Happy		Common	true	true	false		emote_f4_teal_happy	purchase	Abyssian	Faction4				true	
+6003	Emote	Angry		Common	true	true	false		emote_f4_teal_angry	purchase	Abyssian	Faction4				true	
+6004	Emote	Confused		Common	true	true	false		emote_f4_teal_confused	purchase	Abyssian	Faction4				true	
+6005	Emote	Sad		Common	true	true	false		emote_f4_teal_sad	purchase	Abyssian	Faction4				true	
+6006	Emote	Surprised		Common	true	true	false		emote_f4_teal_surprised	purchase	Abyssian	Faction4				true	
+6007	Emote	Bow		Rare	true	true	false		emote_f4_teal_bow	purchase	Abyssian	Faction4				true	
+6008	Emote	Sleep		Rare	true	true	false		emote_f4_teal_sleep	purchase	Abyssian	Faction4				true	
+6009	Emote	Sunglasses		Epic	true	true	false		emote_f4_teal_sunglasses	purchase	Abyssian	Faction4				true	
+6010	Emote	Frustrated		Common	true	false	false		emote_f4_teal_frustrated	default	Abyssian	Faction4				true	
+6011	Emote	Kiss	cosmetics.emote_lilithe_love_desc	Common	true	true	false		emote_f4_teal_kiss	purchase	Abyssian	Faction4				true	
+7001	Emote	Taunt		Common	true	true	false		emote_f5_taunt	purchase	Magmar	Faction5				true	
+7002	Emote	Happy		Common	true	true	false		emote_f5_happy	purchase	Magmar	Faction5				true	
+7003	Emote	Angry		Common	true	true	false		emote_f5_angry	purchase	Magmar	Faction5				true	
+7004	Emote	Confused		Common	true	true	false		emote_f5_confused	purchase	Magmar	Faction5				true	
+7005	Emote	Frustrated		Common	true	true	false		emote_f5_frustrated	purchase	Magmar	Faction5				true	
+7006	Emote	Surprised		Common	true	true	false		emote_f5_surprised	purchase	Magmar	Faction5				true	
+7007	Emote	Bow		Rare	true	true	false		emote_f5_bow	purchase	Magmar	Faction5				true	
+7008	Emote	Sleep		Rare	true	true	false		emote_f5_sleep	purchase	Magmar	Faction5				true	
+7009	Emote	Sunglasses		Epic	true	true	false		emote_f5_sunglasses	purchase	Magmar	Faction5				true	
+7010	Emote	Sad		Common	true	false	false		emote_basic_sad	default	Magmar	Faction5				true	
+7011	Emote	Kiss	cosmetics.emote_vaath_love_desc	Common	true	true	false		emote_f5_kiss	purchase	Magmar	Faction5				true	
+8001	Emote	Frustrated		Common	true	true	false		emote_f6_frustrated	purchase	Vanar	Faction6				true	
+8002	Emote	Happy		Common	true	true	false		emote_f6_happy	purchase	Vanar	Faction6				true	
+8003	Emote	Angry		Common	true	true	false		emote_f6_angry	purchase	Vanar	Faction6				true	
+8004	Emote	Confused		Common	true	true	false		emote_f6_confused	purchase	Vanar	Faction6				true	
+8005	Emote	Sad		Common	true	true	false		emote_f6_sad	purchase	Vanar	Faction6				true	
+8006	Emote	Surprised		Common	true	true	false		emote_f6_surprised	purchase	Vanar	Faction6				true	
+8007	Emote	Bow		Rare	true	true	false		emote_f6_bow	purchase	Vanar	Faction6				true	
+8008	Emote	Sleep		Rare	true	true	false		emote_f6_sleep	purchase	Vanar	Faction6				true	
+8009	Emote	Sunglasses		Epic	true	true	false		emote_f6_sunglasses	purchase	Vanar	Faction6				true	
+8010	Emote	Taunt	cosmetics.emote_faie_love_desc	Common	true	true	false		emote_f6_taunt	purchase	Vanar	Faction6				true	
+8011	Emote	Kiss	cosmetics.emote_faie_kiss_desc	Common	true	false	false		emote_basic_kiss	default	Vanar	Faction6				true	
+3101	Emote	Taunt	cosmetics.emote_ziran_wink_desc	Common	true	true	false		emote_f1_alt_taunt	purchase	Lyonar	Faction1				true	
+3102	Emote	Angry	cosmetics.emote_ziran_angry_desc	Common	true	true	false		emote_f1_alt_angry	purchase	Lyonar	Faction1				true	
+3103	Emote	cosmetics.emote_ziran_confused_name	cosmetics.emote_ziran_confused_desc	Common	true	true	false		emote_f1_alt_confused	purchase	Lyonar	Faction1				true	
+3104	Emote	Sad	cosmetics.emote_ziran_crying_desc	Common	true	true	false		emote_f1_alt_sad	purchase	Lyonar	Faction1				true	
+3105	Emote	Frustrated	cosmetics.emote_ziran_frustrated_desc	Common	true	true	false		emote_f1_alt_frustrated	purchase	Lyonar	Faction1				true	
+3106	Emote	Surprised	cosmetics.emote_ziran_surprised_desc	Common	true	true	false		emote_f1_alt_surprised	purchase	Lyonar	Faction1				true	
+3107	Emote	Bow	cosmetics.emote_ziran_bow_desc	Rare	true	true	false		emote_f1_alt_bow	purchase	Lyonar	Faction1				true	
+3108	Emote	Sleep	cosmetics.emote_ziran_sleep_desc	Rare	true	true	false		emote_f1_alt_sleep	purchase	Lyonar	Faction1				true	
+3109	Emote	Sunglasses	cosmetics.emote_ziran_sunglasses_desc	Epic	true	true	false		emote_f1_alt_sunglasses	purchase	Lyonar	Faction1				true	
+3110	Emote	Happy	cosmetics.emote_ziran_happy_desc	Common	true	true	false		emote_f1_alt_happy	purchase	Lyonar	Faction1				true	
+3111	Emote	Kiss	cosmetics.emote_ziran_love_desc	Common	true	true	false		emote_f1_alt_kiss	purchase	Lyonar	Faction1				true	
+4101	Emote	Taunt	cosmetics.emote_reva_wink_desc	Common	true	true	false		emote_f2_alt_taunt	purchase	Songhai	Faction2				true	
+4102	Emote	Happy	cosmetics.emote_reva_happy_desc	Common	true	true	false		emote_f2_alt_happy	purchase	Songhai	Faction2				true	
+4103	Emote	Confused	cosmetics.emote_reva_confused_desc	Common	true	true	false		emote_f2_alt_confused	purchase	Songhai	Faction2				true	
+4104	Emote	Sad	cosmetics.emote_reva_sad_desc	Common	true	true	false		emote_f2_alt_sad	purchase	Songhai	Faction2				true	
+4105	Emote	Frustrated	cosmetics.emote_reva_frustrated_desc	Common	true	true	false		emote_f2_alt_frustrated	purchase	Songhai	Faction2				true	
+4106	Emote	Surprised	cosmetics.emote_reva_surprised_desc	Common	true	true	false		emote_f2_alt_surprised	purchase	Songhai	Faction2				true	
+4107	Emote	Bow	cosmetics.emote_reva_bow_desc	Rare	true	true	false		emote_f2_alt_bow	purchase	Songhai	Faction2				true	
+4108	Emote	Sleep	cosmetics.emote_reva_sleep_desc	Rare	true	true	false		emote_f2_alt_sleep	purchase	Songhai	Faction2				true	
+4109	Emote	Sunglasses	cosmetics.emote_reva_sunglasses_desc	Epic	true	true	false		emote_f2_alt_sunglasses	purchase	Songhai	Faction2				true	
+4110	Emote	Angry	cosmetics.emote_reva_angry_desc	Common	true	true	false		emote_f2_alt_angry	purchase	Songhai	Faction2				true	
+4111	Emote	Kiss	cosmetics.emote_reva_love_desc	Common	true	true	false		emote_f2_alt_kiss	purchase	Songhai	Faction2				true	
+5101	Emote	Taunt	cosmetics.emote_sajj_wink_desc	Common	true	true	false		emote_f3_alt_taunt	purchase	Vetruvian	Faction3				true	
+5102	Emote	Happy	cosmetics.emote_sajj_happy_desc	Common	true	true	false		emote_f3_alt_happy	purchase	Vetruvian	Faction3				true	
+5103	Emote	Angry	cosmetics.emote_sajj_angry_desc	Common	true	true	false		emote_f3_alt_angry	purchase	Vetruvian	Faction3				true	
+5104	Emote	Sad	cosmetics.emote_sajj_sad_desc	Common	true	true	false		emote_f3_alt_sad	purchase	Vetruvian	Faction3				true	
+5105	Emote	Frustrated	cosmetics.emote_sajj_frustrated_desc	Common	true	true	false		emote_f3_alt_frustrated	purchase	Vetruvian	Faction3				true	
+5106	Emote	Surprised	cosmetics.emote_sajj_surprised_desc	Common	true	true	false		emote_f3_alt_surprised	purchase	Vetruvian	Faction3				true	
+5107	Emote	Bow	cosmetics.emote_sajj_bow_desc	Rare	true	true	false		emote_f3_alt_bow	purchase	Vetruvian	Faction3				true	
+5108	Emote	Sleep	cosmetics.emote_sajj_sleep_desc	Rare	true	true	false		emote_f3_alt_sleep	purchase	Vetruvian	Faction3				true	
+5109	Emote	Sunglasses	cosmetics.emote_sajj_sunglasses_desc	Epic	true	true	false		emote_f3_alt_sunglasses	purchase	Vetruvian	Faction3				true	
+5110	Emote	Confused	cosmetics.emote_sajj_confused_desc	Common	true	true	false		emote_f3_alt_confused	purchase	Vetruvian	Faction3				true	
+5111	Emote	Kiss	cosmetics.emote_sajj_love_desc	Common	true	true	false		emote_f3_alt_kiss	purchase	Vetruvian	Faction3				true	
+6101	Emote	Taunt	cosmetics.emote_cassyva_wink_desc	Common	true	true	false		emote_f4_alt_taunt	purchase	Abyssian	Faction4				true	
+6102	Emote	Happy	cosmetics.emote_cassyva_happy_desc	Common	true	true	false		emote_f4_alt_happy	purchase	Abyssian	Faction4				true	
+6103	Emote	Angry	cosmetics.emote_cassyva_angry_desc	Common	true	true	false		emote_f4_alt_angry	purchase	Abyssian	Faction4				true	
+6104	Emote	Confused	cosmetics.emote_cassyva_confused_desc	Common	true	true	false		emote_f4_alt_confused	purchase	Abyssian	Faction4				true	
+6105	Emote	Sad	cosmetics.emote_cassyva_sad_desc	Common	true	true	false		emote_f4_alt_sad	purchase	Abyssian	Faction4				true	
+6106	Emote	Surprised	cosmetics.emote_cassyva_surprised_desc	Common	true	true	false		emote_f4_alt_surprised	purchase	Abyssian	Faction4				true	
+6107	Emote	Bow	cosmetics.emote_cassyva_bow_desc	Rare	true	true	false		emote_f4_alt_bow	purchase	Abyssian	Faction4				true	
+6108	Emote	Sleep	cosmetics.emote_cassyva_sleep_desc	Rare	true	true	false		emote_f4_alt_sleep	purchase	Abyssian	Faction4				true	
+6109	Emote	Sunglasses	cosmetics.emote_cassyva_sunglasses_desc	Epic	true	true	false		emote_f4_alt_sunglasses	purchase	Abyssian	Faction4				true	
+6110	Emote	Frustrated	cosmetics.emote_cassyva_frustrated_desc	Common	true	true	false		emote_f4_alt_frustrated	purchase	Abyssian	Faction4				true	
+6111	Emote	Kiss	cosmetics.emote_cassyva_love_desc	Common	true	true	false		emote_f4_alt_kiss	purchase	Abyssian	Faction4				true	
+7101	Emote	Taunt	cosmetics.emote_starhorn_wink_desc	Common	true	true	false		emote_f5_alt_taunt	purchase	Magmar	Faction5				true	
+7102	Emote	Happy	cosmetics.emote_starhorn_happy_desc	Common	true	true	false		emote_f5_alt_happy	purchase	Magmar	Faction5				true	
+7103	Emote	Angry	cosmetics.emote_starhorn_angry_desc	Common	true	true	false		emote_f5_alt_angry	purchase	Magmar	Faction5				true	
+7104	Emote	Confused	cosmetics.emote_starhorn_confused_desc	Common	true	true	false		emote_f5_alt_confused	purchase	Magmar	Faction5				true	
+7105	Emote	Frustrated	cosmetics.emote_starhorn_frustrated_desc	Common	true	true	false		emote_f5_alt_frustrated	purchase	Magmar	Faction5				true	
+7106	Emote	Surprised	cosmetics.emote_starhorn_surprised_desc	Common	true	true	false		emote_f5_alt_surprised	purchase	Magmar	Faction5				true	
+7107	Emote	Bow	cosmetics.emote_starhorn_bow_desc	Rare	true	true	false		emote_f5_alt_bow	purchase	Magmar	Faction5				true	
+7108	Emote	Sleep	cosmetics.emote_starhorn_sleep_desc	Rare	true	true	false		emote_f5_alt_sleep	purchase	Magmar	Faction5				true	
+7109	Emote	Sunglasses	cosmetics.emote_starhorn_sunglasses_desc	Epic	true	true	false		emote_f5_alt_sunglasses	purchase	Magmar	Faction5				true	
+7110	Emote	Sad	cosmetics.emote_starhorn_sad_desc	Common	true	true	false		emote_f5_alt_sad	purchase	Magmar	Faction5				true	
+7111	Emote	Kiss	cosmetics.emote_starhorn_love_desc	Common	true	true	false		emote_f5_alt_kiss	purchase	Magmar	Faction5				true	
+8101	Emote	Frustrated	cosmetics.emote_kara_frustrated_desc	Common	true	true	false		emote_f6_alt_frustrated	purchase	Vanar	Faction6				true	
+8102	Emote	Happy	cosmetics.emote_kara_happy_desc	Common	true	true	false		emote_f6_alt_happy	purchase	Vanar	Faction6				true	
+8103	Emote	Angry	cosmetics.emote_kara_angry_desc	Common	true	true	false		emote_f6_alt_angry	purchase	Vanar	Faction6				true	
+8104	Emote	Confused	cosmetics.emote_kara_confused_desc	Common	true	true	false		emote_f6_alt_confused	purchase	Vanar	Faction6				true	
+8105	Emote	Sad	cosmetics.emote_kara_sad_desc	Common	true	true	false		emote_f6_alt_sad	purchase	Vanar	Faction6				true	
+8106	Emote	Surprised	cosmetics.emote_kara_surprised_desc	Common	true	true	false		emote_f6_alt_surprised	purchase	Vanar	Faction6				true	
+8107	Emote	Bow	cosmetics.emote_kara_bow_desc	Rare	true	true	false		emote_f6_alt_bow	purchase	Vanar	Faction6				true	
+8108	Emote	Sleep	cosmetics.emote_kara_sleep_desc	Rare	true	true	false		emote_f6_alt_sleep	purchase	Vanar	Faction6				true	
+8109	Emote	Sunglasses	cosmetics.emote_kara_sunglasses_desc	Epic	true	true	false		emote_f6_alt_sunglasses	purchase	Vanar	Faction6				true	
+8110	Emote	Taunt	cosmetics.emote_kara_wink_desc	Common	true	true	false		emote_f6_alt_taunt	purchase	Vanar	Faction6				true	
+8111	Emote	Kiss	cosmetics.emote_kara_love_desc	Common	true	true	false		emote_f6_alt_kiss	purchase	Vanar	Faction6				true	
+3201	Emote	Taunt	cosmetics.emote_brome_wink_desc	Common	true	true	false		emote_f1_third_taunt	purchase	Lyonar	Faction1				true	
+3202	Emote	Angry	cosmetics.emote_brome_angry_desc	Common	true	true	false		emote_f1_third_angry	purchase	Lyonar	Faction1				true	
+3203	Emote	cosmetics.emote_brome_confused_name	cosmetics.emote_brome_confused_desc	Common	true	true	false		emote_f1_third_confused	purchase	Lyonar	Faction1				true	
+3204	Emote	Sad	cosmetics.emote_brome_crying_desc	Common	true	true	false		emote_f1_third_sad	purchase	Lyonar	Faction1				true	
+3205	Emote	Frustrated	cosmetics.emote_brome_frustrated_desc	Common	true	true	false		emote_f1_third_frustrated	purchase	Lyonar	Faction1				true	
+3206	Emote	Surprised	cosmetics.emote_brome_surprised_desc	Common	true	true	false		emote_f1_third_surprised	purchase	Lyonar	Faction1				true	
+3207	Emote	Bow	cosmetics.emote_brome_bow_desc	Rare	true	true	false		emote_f1_third_bow	purchase	Lyonar	Faction1				true	
+3208	Emote	Sleep	cosmetics.emote_brome_sleep_desc	Rare	true	true	false		emote_f1_third_sleep	purchase	Lyonar	Faction1				true	
+3209	Emote	Sunglasses	cosmetics.emote_brome_sunglasses_desc	Epic	true	true	false		emote_f1_third_sunglasses	purchase	Lyonar	Faction1				true	
+3210	Emote	Happy	cosmetics.emote_brome_happy_desc	Common	true	true	false		emote_f1_third_happy	purchase	Lyonar	Faction1				true	
+3211	Emote	Kiss	cosmetics.emote_brome_love_desc	Common	true	true	false		emote_f1_third_kiss	purchase	Lyonar	Faction1				true	
+4201	Emote	Taunt	cosmetics.emote_shidai_wink_desc	Common	true	true	false		emote_f2_third_taunt	purchase	Songhai	Faction2				true	
+4202	Emote	Happy	cosmetics.emote_shidai_happy_desc	Common	true	true	false		emote_f2_third_happy	purchase	Songhai	Faction2				true	
+4203	Emote	Confused	cosmetics.emote_shidai_confused_desc	Common	true	true	false		emote_f2_third_confused	purchase	Songhai	Faction2				true	
+4204	Emote	Sad	cosmetics.emote_shidai_sad_desc	Common	true	true	false		emote_f2_third_sad	purchase	Songhai	Faction2				true	
+4205	Emote	Frustrated	cosmetics.emote_shidai_frustrated_desc	Common	true	true	false		emote_f2_third_frustrated	purchase	Songhai	Faction2				true	
+4206	Emote	Surprised	cosmetics.emote_shidai_surprised_desc	Common	true	true	false		emote_f2_third_surprised	purchase	Songhai	Faction2				true	
+4207	Emote	Bow	cosmetics.emote_shidai_bow_desc	Rare	true	true	false		emote_f2_third_bow	purchase	Songhai	Faction2				true	
+4208	Emote	Sleep	cosmetics.emote_shidai_sleep_desc	Rare	true	true	false		emote_f2_third_sleep	purchase	Songhai	Faction2				true	
+4209	Emote	Sunglasses	cosmetics.emote_shidai_sunglasses_desc	Epic	true	true	false		emote_f2_third_sunglasses	purchase	Songhai	Faction2				true	
+4210	Emote	Angry	cosmetics.emote_shidai_angry_desc	Common	true	true	false		emote_f2_third_angry	purchase	Songhai	Faction2				true	
+4211	Emote	Kiss	cosmetics.emote_shidai_love_desc	Common	true	true	false		emote_f2_third_kiss	purchase	Songhai	Faction2				true	
+5201	Emote	Taunt	cosmetics.emote_ciphyron_wink_desc	Common	true	true	false		emote_f3_third_taunt	purchase	Vetruvian	Faction3				true	
+5202	Emote	Happy	cosmetics.emote_ciphyron_happy_desc	Common	true	true	false		emote_f3_third_happy	purchase	Vetruvian	Faction3				true	
+5203	Emote	Angry	cosmetics.emote_ciphyron_angry_desc	Common	true	true	false		emote_f3_third_angry	purchase	Vetruvian	Faction3				true	
+5204	Emote	Sad	cosmetics.emote_ciphyron_sad_desc	Common	true	true	false		emote_f3_third_sad	purchase	Vetruvian	Faction3				true	
+5205	Emote	Frustrated	cosmetics.emote_ciphyron_frustrated_desc	Common	true	true	false		emote_f3_third_frustrated	purchase	Vetruvian	Faction3				true	
+5206	Emote	Surprised	cosmetics.emote_ciphyron_surprised_desc	Common	true	true	false		emote_f3_third_surprised	purchase	Vetruvian	Faction3				true	
+5207	Emote	Bow	cosmetics.emote_ciphyron_bow_desc	Rare	true	true	false		emote_f3_third_bow	purchase	Vetruvian	Faction3				true	
+5208	Emote	Sleep	cosmetics.emote_ciphyron_sleep_desc	Rare	true	true	false		emote_f3_third_sleep	purchase	Vetruvian	Faction3				true	
+5209	Emote	Sunglasses	cosmetics.emote_ciphyron_sunglasses_desc	Epic	true	true	false		emote_f3_third_sunglasses	purchase	Vetruvian	Faction3				true	
+5210	Emote	Confused	cosmetics.emote_ciphyron_confused_desc	Common	true	true	false		emote_f3_third_confused	purchase	Vetruvian	Faction3				true	
+5211	Emote	Kiss	cosmetics.emote_ciphyron_love_desc	Common	true	true	false		emote_f3_third_kiss	purchase	Vetruvian	Faction3				true	
+6201	Emote	Taunt	cosmetics.emote_maehv_wink_desc	Common	true	true	false		emote_f4_third_taunt	purchase	Abyssian	Faction4				true	
+6202	Emote	Happy	cosmetics.emote_maehv_happy_desc	Common	true	true	false		emote_f4_third_happy	purchase	Abyssian	Faction4				true	
+6203	Emote	Angry	cosmetics.emote_maehv_angry_desc	Common	true	true	false		emote_f4_third_angry	purchase	Abyssian	Faction4				true	
+6204	Emote	Confused	cosmetics.emote_maehv_confused_desc	Common	true	true	false		emote_f4_third_confused	purchase	Abyssian	Faction4				true	
+6205	Emote	Sad	cosmetics.emote_maehv_sad_desc	Common	true	true	false		emote_f4_third_sad	purchase	Abyssian	Faction4				true	
+6206	Emote	Surprised	cosmetics.emote_maehv_surprised_desc	Common	true	true	false		emote_f4_third_surprised	purchase	Abyssian	Faction4				true	
+6207	Emote	Bow	cosmetics.emote_maehv_bow_desc	Rare	true	true	false		emote_f4_third_bow	purchase	Abyssian	Faction4				true	
+6208	Emote	Sleep	cosmetics.emote_maehv_sleep_desc	Rare	true	true	false		emote_f4_third_sleep	purchase	Abyssian	Faction4				true	
+6209	Emote	Sunglasses	cosmetics.emote_maehv_sunglasses_desc	Epic	true	true	false		emote_f4_third_sunglasses	purchase	Abyssian	Faction4				true	
+6210	Emote	Frustrated	cosmetics.emote_maehv_frustrated_desc	Common	true	true	false		emote_f4_third_frustrated	purchase	Abyssian	Faction4				true	
+6211	Emote	Kiss	cosmetics.emote_maehv_love_desc	Common	true	true	false		emote_f4_third_kiss	purchase	Abyssian	Faction4				true	
+7201	Emote	Taunt	cosmetics.emote_ragnora_wink_desc	Common	true	true	false		emote_f5_third_taunt	purchase	Magmar	Faction5				true	
+7202	Emote	Happy	cosmetics.emote_ragnora_happy_desc	Common	true	true	false		emote_f5_third_happy	purchase	Magmar	Faction5				true	
+7203	Emote	Angry	cosmetics.emote_ragnora_angry_desc	Common	true	true	false		emote_f5_third_angry	purchase	Magmar	Faction5				true	
+7204	Emote	Confused	cosmetics.emote_ragnora_confused_desc	Common	true	true	false		emote_f5_third_confused	purchase	Magmar	Faction5				true	
+7205	Emote	Frustrated	cosmetics.emote_ragnora_frustrated_desc	Common	true	true	false		emote_f5_third_frustrated	purchase	Magmar	Faction5				true	
+7206	Emote	Surprised	cosmetics.emote_ragnora_surprised_desc	Common	true	true	false		emote_f5_third_surprised	purchase	Magmar	Faction5				true	
+7207	Emote	Bow	cosmetics.emote_ragnora_bow_desc	Rare	true	true	false		emote_f5_third_bow	purchase	Magmar	Faction5				true	
+7208	Emote	Sleep	cosmetics.emote_ragnora_sleep_desc	Rare	true	true	false		emote_f5_third_sleep	purchase	Magmar	Faction5				true	
+7209	Emote	Sunglasses	cosmetics.emote_ragnora_sunglasses_desc	Epic	true	true	false		emote_f5_third_sunglasses	purchase	Magmar	Faction5				true	
+7210	Emote	Sad	cosmetics.emote_ragnora_sad_desc	Common	true	true	false		emote_f5_third_sad	purchase	Magmar	Faction5				true	
+7211	Emote	Kiss	cosmetics.emote_ragnora_love_desc	Common	true	true	false		emote_f5_third_kiss	purchase	Magmar	Faction5				true	
+8201	Emote	Frustrated	cosmetics.emote_ilena_frustrated_desc	Common	true	true	false		emote_f6_third_frustrated	purchase	Vanar	Faction6				true	
+8202	Emote	Happy	cosmetics.emote_ilena_happy_desc	Common	true	true	false		emote_f6_third_happy	purchase	Vanar	Faction6				true	
+8203	Emote	Angry	cosmetics.emote_ilena_angry_desc	Common	true	true	false		emote_f6_third_angry	purchase	Vanar	Faction6				true	
+8204	Emote	Confused	cosmetics.emote_ilena_confused_desc	Common	true	true	false		emote_f6_third_confused	purchase	Vanar	Faction6				true	
+8205	Emote	Sad	cosmetics.emote_ilena_sad_desc	Common	true	true	false		emote_f6_third_sad	purchase	Vanar	Faction6				true	
+8206	Emote	Surprised	cosmetics.emote_ilena_surprised_desc	Common	true	true	false		emote_f6_third_surprised	purchase	Vanar	Faction6				true	
+8207	Emote	Bow	cosmetics.emote_ilena_bow_desc	Rare	true	true	false		emote_f6_third_bow	purchase	Vanar	Faction6				true	
+8208	Emote	Sleep	cosmetics.emote_ilena_sleep_desc	Rare	true	true	false		emote_f6_third_sleep	purchase	Vanar	Faction6				true	
+8209	Emote	Sunglasses	cosmetics.emote_ilena_sunglasses_desc	Epic	true	true	false		emote_f6_third_sunglasses	purchase	Vanar	Faction6				true	
+8210	Emote	Taunt	cosmetics.emote_ilena_wink_desc	Common	true	true	false		emote_f6_third_taunt	purchase	Vanar	Faction6				true	
+8211	Emote	Kiss	cosmetics.emote_ilena_love_desc	Common	true	true	false		emote_f6_third_kiss	purchase	Vanar	Faction6				true	
+50001	BattleMap	cosmetics.battlemap_magmar_name	cosmetics.battlemap_magmar_desc	Legendary	true	true	false	ORDER_SCENES	shop_battle_map_magmar	purchase						true	
+50002	BattleMap	cosmetics.battlemap_abyssian_name	cosmetics.battlemap_abyssian_desc	Legendary	true	true	false	ORDER_SCENES	shop_battle_map_abyssian	purchase						true	
+50003	BattleMap	cosmetics.battlemap_redrock_name	cosmetics.battlemap_redrock_desc	Legendary	true	true	false	ORDER_SCENES	shop_battle_map_redrock	purchase						true	
+50004	BattleMap	cosmetics.battlemap_vanar_name	cosmetics.battlemap_vanar_desc	Legendary	true	true	false	ORDER_SCENES	shop_battle_map_vanar	purchase						true	

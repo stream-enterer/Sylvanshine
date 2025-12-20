@@ -1,0 +1,9 @@
+reference_type	reference_name	severity	notes
+DEPRECATED	CONFIG.ATTACKABLE_TARGET_GLOW_EXPAND_MODIFIER	info	Commented out in config.js:873 - deprecated
+JSDOC_ONLY	CONFIG.AUDIO_CROSSFADE_DURATION	info	Referenced in JSDoc comment only - uses CONFIG.MUSIC_CROSSFADE_DURATION
+DEAD_CODE	CONFIG.FORMATTING_TAGS	info	Referenced but not defined - dead code reference
+FALSE_POSITIVE	CONFIG.PATTERN_1	info	Not a real constant - pattern matched CONFIG.PATTERN_1x1, CONFIG.PATTERN_1X3
+FALSE_POSITIVE	CONFIG.PATTERN_3	info	Not a real constant - pattern matched CONFIG.PATTERN_3x3, CONFIG.PATTERN_3X1
+EVENTS_CONSTANT	EVENTS.premium_currency_dirty_change	low	Event used but not indexed - edge case
+RSX_CONSTANTS	(7065 total)	info	Resource keys - tracked in resources.js, not individual constants
+IMPORTS	(relative paths)	info	Imports use relative paths; resolved at runtime

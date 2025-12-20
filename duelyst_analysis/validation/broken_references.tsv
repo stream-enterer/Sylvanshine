@@ -1,0 +1,10 @@
+reference_type	source	target	severity	notes
+info	data_consistency	all_checks	passed	All cross-references validated successfully
+stat	units	664	info	Total units documented
+stat	cards	1116	info	Total cards documented
+stat	fx	240	info	Total FX documented
+stat	particles	63	info	Total particles documented
+stat	modifiers	719	info	Total modifiers documented (added 2 missing)
+fixed	units.tsv	ModifierOpeningGambitTeleportAllNearby	resolved	Added to modifiers.tsv
+fixed	units.tsv	ModifierOpponentSummonWatchBuffMinionInHand	resolved	Added to modifiers.tsv
+info	units.tsv	null	info	Placeholder value, not a real modifier

@@ -1,0 +1,241 @@
+rsx_name	fx_type	category	file_path	frame_prefix	frame_delay	is_16bit	has_plist	related_sounds	usage_context	used_by_cards
+FloatingShield	sprite_animation	buff_effect	resources/fx/fx_defense.png	fx_floatingshield_	0.2	true	yes			0
+ForceField	sprite_animation	buff_effect	resources/fx/fx_defense.png	fx_forcefield_	0.1	true	yes			0
+fxBuffSimpleGold	sprite_animation	buff_effect	resources/fx/fx_buff.png	fx_buff_	0.08	true	yes			0
+fxDistortionHexShield	sprite_animation	buff_effect	resources/fx/fx_distortion_hex_shield.png	distortion_hex_shield_	0.04		yes			0
+fxBloodGround	sprite_animation	damage_effect	resources/fx/fx_bloodground.png	fx_bloodground_	0.08	true	yes		Unknown.Spell	1
+fxBloodGround2	sprite_animation	damage_effect	resources/fx/fx_bloodground.png	fx_bloodground2_	0.08	true	yes		Unknown.Spell	1
+fxBloodGround3	sprite_animation	damage_effect	resources/fx/fx_bloodground.png	fx_bloodground3_	0.08	true	yes		Unknown.Spell	1
+fxBloodGround4	sprite_animation	damage_effect	resources/fx/fx_bloodground.png	fx_bloodground4_	0.08	true	yes		Unknown.Spell	1
+fxDamageDecal	sprite_animation	damage_effect	resources/fx/fx_damagedecal.png	fx_damagedecal_	0.08		yes			0
+fx_deathplagueicon	sprite_animation	damage_effect	resources/fx/fx_deathplagueicon.png	fx_deathplagueicon_	0.08	true	yes			0
+fx_f1_aperionssurge	sprite_animation	faction1_lyonar	resources/fx/fx_f1_aperionssurge.png	fx_f1_aperionssurge_	0.08	true	yes			0
+fx_f1_aurynnexus	sprite_animation	faction1_lyonar	resources/fx/fx_f1_aurynnexus.png	fx_f1_aurynnexus_	0.08	true	yes		Faction1.Spell; Faction1.Faction1	2
+fx_f1_bbs_afterglow	sprite_animation	faction1_lyonar	resources/fx/fx_f1_bbs_afterglow.png	fx_f1_bbs_afterglow_	0.08	true	yes		Faction1.Spell	1
+fx_f1_bbs_conscript	sprite_animation	faction1_lyonar	resources/fx/fx_f1_bbs_kingsguard.png	fx_f1_bbs_kingsguard_	0.08	true	yes		Faction1.Faction1	1
+fx_f1_bbs_roar	sprite_animation	faction1_lyonar	resources/fx/fx_f1_bbs_roar.png	fx_f1_bbs_roar_	0.08	true	yes		Faction1.Spell	1
+fx_f1_circlelife	sprite_animation	faction1_lyonar	resources/fx/fx_f1_circlelife.png	fx_f1_circlelife_	0.08	true	yes		Faction1.Faction1	1
+fx_f1_decimate	sprite_animation	faction1_lyonar	resources/fx/fx_f1_decimate.png	fx_f1_decimate_	0.08	true	yes		Faction1.Faction1	1
+fx_f1_divinebond	sprite_animation	faction1_lyonar	resources/fx/fx_f1_divinebond.png	fx_f1_divinebond_	0.08	true	yes	sfx_spell_divinebond	Faction1.Faction1	1
+fx_f1_holyimmolation	sprite_animation	faction1_lyonar	resources/fx/fx_f1_inmolation.png	fx_f1_inmolation_	0.08	true	yes		Faction1.Faction1	1
+fx_f1_lasting_judgment	sprite_animation	faction1_lyonar	resources/fx/fx_f1_lasting_judgment.png	fx_f1_lasting_judgment_	0.08	true	yes	sfx_spell_lastingjudgement		0
+fx_f1_lionheartblessing	sprite_animation	faction1_lyonar	resources/fx/fx_f1_lionheartblessing.png	fx_f1_lionheartblessing_	0.08	true	yes	sfx_spell_lionheartblessing	Faction1.Faction1; Faction1.Faction1	2
+fx_f1_martyrdom	sprite_animation	faction1_lyonar	resources/fx/fx_f1_martyrdom.png	fx_f1_martyrdom_	0.08	true	yes	sfx_spell_martyrdom	Faction1.Faction1	1
+fx_f1_skyphalanx	sprite_animation	faction1_lyonar	resources/fx/fx_f1_skyphalanx.png	fx_f1_skyphalanx_	0.08	true	yes		Faction1.Spell	1
+fx_f1_sunbloom	sprite_animation	faction1_lyonar	resources/fx/fx_f1_sunbloom.png	fx_f1_sunbloom_	0.08	true	yes	sfx_spell_sunbloom	Faction1.Faction1	1
+fx_f1_truestrike	sprite_animation	faction1_lyonar	resources/fx/fx_f1_truestrike.png	fx_f1_truestrike_	0.08	true	yes	sfx_spell_truestrike	Faction1.Faction1; Unknown.Spell	2
+fx_f1_warsurge	sprite_animation	faction1_lyonar	resources/fx/fx_f1_warsurge.png	fx_f1_warsurge_	0.08	true	yes	sfx_spell_warsurge	Faction1.Faction1; Faction1.Faction1	2
+fx_f2_ancestralpact	sprite_animation	faction2_songhai	resources/fx/fx_f2_ancestralpact.png	fx_f2_ancestralpact_	0.08	true	yes			0
+fx_f2_backstab	sprite_animation	faction2_songhai	resources/fx/fx_f2_backstab.png	fx_f2_backstab_	0.08	true	yes			0
+fx_f2_bbs_arcaneheart	sprite_animation	faction2_songhai	resources/fx/fx_f2_bbs_arcaneheart.png	fx_f2_bbs_arcaneheart_	0.08	true	yes		Faction2.Faction2	1
+fx_f2_bbs_blink	sprite_animation	faction2_songhai	resources/fx/fx_f2_bbs_blink.png	fx_f2_bbs_blink_	0.08	true	yes		Faction2.Spell	1
+fx_f2_bbs_petalflurry	sprite_animation	faction2_songhai	resources/fx/fx_f2_bbs_spellsword.png	fx_f2_bbs_spellsword_	0.08	true	yes		Faction2.Faction2	1
+fx_f2_deathstrikeseal	sprite_animation	faction2_songhai	resources/fx/fx_f2_deathstrikeseal.png	fx_f2_deathstrikeseal_	0.08	true	yes	sfx_spell_deathstrikeseal	Faction2.Faction2	1
+fx_f2_eightgates_blue	sprite_animation	faction2_songhai	resources/fx/fx_f2_eightgates_bluelotus.png	fx_f2_eightgates_bluelotus_	0.08	true	yes	sfx_neutral_bluetipscorpion_attack_impact; sfx_neutral_bluetipscorpion_attack_swing; sfx_neutral_bluetipscorpion_death	Faction2.Spell	1
+fx_f2_eightgates_purpleflame	sprite_animation	faction2_songhai	resources/fx/fx_f2_eightgates_purpleflame.png	fx_f2_eightgates_purpleflame_	0.08	true	yes		Faction2.Spell	1
+fx_f2_eightgates_teal	sprite_animation	faction2_songhai	resources/fx/fx_f2_eightgates_teallotus.png	fx_f2_eightgates_teallotus_	0.08	true	yes		Faction2.Spell	1
+fx_f2_heavenseclipse	sprite_animation	faction2_songhai	resources/fx/fx_f2_heavenseclipse.png	fx_f2_heavenseclipse_	0.08	true	yes		Faction2.Spell; Neutral.Spell	2
+fx_f2_innerfocus	sprite_animation	faction2_songhai	resources/fx/fx_f2_innerfocus.png	fx_f2_innerfocus_	0.08	true	yes	sfx_spell_innerfocus	Faction2.Spell	1
+fx_f2_killingedge	sprite_animation	faction2_songhai	resources/fx/fx_f2_killingedge.png	fx_f2_killingedge_	0.08	true	yes		Faction2.Spell	1
+fx_f2_koanofhorns	sprite_animation	faction2_songhai	resources/fx/fx_f2_koanofhorns.png	fx_f2_koanofhorns_	0.08	true	yes		Faction2.Faction2	1
+fx_f2_manavortex	sprite_animation	faction2_songhai	resources/fx/fx_f2_manavortex.png	fx_f2_manavortex_	0.08	true	yes	sfx_spell_manavortex	Faction2.Spell	1
+fx_f2_mistdragonseal	sprite_animation	faction2_songhai	resources/fx/fx_f2_mistdragonseal.png	fx_f2_mistdragonseal_	0.08	true	yes	sfx_spell_mistdragonseal_alt	Faction2.Spell	1
+fx_f2_onyxbearseal	sprite_animation	faction2_songhai	resources/fx/fx_f2_onyxbearseal.png	fx_f2_onyxbearseal_	0.08	true	yes	sfx_spell_onyxbearseal	Faction2.Spell; Boss.BossSpell; Boss.Boss; Boss.Boss; Faction2.Faction2	6
+fx_f2_phoenixfire	sprite_animation	faction2_songhai	resources/fx/fx_f2_phoenixfire.png	fx_f2_phoenixfire_	0.08	true	yes	sfx_spell_phoenixfire	Faction2.Spell; Faction2.Spell	2
+fx_f2_saberspineseal	sprite_animation	faction2_songhai	resources/fx/fx_f2_saberspineseal.png	fx_f2_saberspineseal_	0.08	true	yes		Faction2.Spell	1
+fx_f2_spiraltechnique02	sprite_animation	faction2_songhai	resources/fx/fx_f2_spiraltechnique02.png	fx_f2_spiraltechnique02_	0.08	true	yes		Faction2.Spell	1
+fx_f2_teleportsmoke	sprite_animation	faction2_songhai	resources/fx/fx_f2_teleport.png	fx_f2_teleport_	0.08	true	yes			0
+fx_f2_twilightreiki	sprite_animation	faction2_songhai	resources/fx/fx_f2_twilightreiki.png	fx_f2_twilightreiki_	0.08	true	yes		Faction2.Faction2	1
+fx_f2_twinstrike	sprite_animation	faction2_songhai	resources/fx/fx_f2_twinstrike.png	fx_f2_twinstrike_	0.08	true	yes	sfx_spell_twinstrike	Faction2.Spell	1
+fx_f2_twinstrike_part2	sprite_animation	faction2_songhai	resources/fx/fx_f2_twinstrike_part2.png	fx_f2_twinstrike_part2_	0.08	true	yes	sfx_spell_twinstrike	Faction2.Spell	1
+fx_f3_aurorastears	sprite_animation	faction3_vetruvian	resources/fx/fx_f3_aurorastears.png	fx_f3_aurorastears_	0.08	true	yes		Faction3.Spell	1
+fx_f3_bbs_decension	sprite_animation	faction3_vetruvian	resources/fx/fx_f3_bbs_hex.png	fx_f3_bbs_hex_	0.08	true	yes		Faction3.Spell	1
+fx_f3_bbs_ironshroud	sprite_animation	faction3_vetruvian	resources/fx/fx_f3_bbs_ironshroud.png	fx_f3_bbs_ironshroud_	0.08	true	yes			0
+fx_f3_bbs_psyonicstrike	sprite_animation	faction3_vetruvian	resources/fx/fx_f3_bbs_psyonicstrike.png	fx_f3_bbs_psyonicstrike_	0.08	true	yes		Neutral.Neutral	1
+fx_f3_blast	sprite_animation	faction3_vetruvian	resources/fx/fx_f3_blast.png	fx_f3_blast_	0.08	true	yes	sfx_spell_blaststarfire		0
+fx_f3_blaststarfire	sprite_animation	faction3_vetruvian	resources/fx/fx_f3_blaststarfire.png	fx_f3_blaststarfire_	0.08	true	yes	sfx_spell_blaststarfire		0
+fx_f3_blindscorch	sprite_animation	faction3_vetruvian	resources/fx/fx_f3_blindscorch.png	fx_f3_blindscorch_	0.08	true	yes	sfx_spell_blindscorch	Faction3.Spell	1
+fx_f3_boneswarm	sprite_animation	faction3_vetruvian	resources/fx/fx_f3_boneswarm.png	fx_f3_boneswarm_	0.08	true	yes	sfx_spell_boneswarm	Faction3.Faction3	1
+fx_f3_cataclysmicfault	sprite_animation	faction3_vetruvian	resources/fx/fx_f3_cataclysmicfault.png	fx_f3_cataclysmicfault_	0.08	true	yes		Faction3.Tile	1
+fx_f3_circleofdessication	sprite_animation	faction3_vetruvian	resources/fx/f3_fx_circleofdessication.png	f3_fx_circleofdessication_	0.08	true	yes			0
+fx_f3_cosmicflesh	sprite_animation	faction3_vetruvian	resources/fx/fx_f3_cosmicflesh.png	fx_f3_cosmicflesh_	0.08	true	yes	sfx_spell_cosmicflesh	Faction3.Spell; Faction3.Faction3	2
+fx_f3_dominatewill	sprite_animation	faction3_vetruvian	resources/fx/fx_f3_dominatewill.png	fx_f3_dominatewill_	0.08	true	yes			0
+fx_f3_drainmorale	sprite_animation	faction3_vetruvian	resources/fx/fx_f3_drainmorale.png	fx_f3_drainmorale_	0.08	true	yes	sfx_spell_drainmorale		0
+fx_f3_entropicdecay	sprite_animation	faction3_vetruvian	resources/fx/f3_fx_entropicdecay.png	f3_fx_entropicdecay_	0.08	true	yes	sfx_spell_entropicdecay	Faction3.Spell	1
+fx_f3_fountainofyouth	sprite_animation	faction3_vetruvian	resources/fx/fx_f3_fountainofyouth.png	fx_f3_fountainofyouth_	0.08	true	yes	sfx_spell_fountainofyouth	Faction3.Faction3	1
+fx_f3_rashascurse	sprite_animation	faction3_vetruvian	resources/fx/fx_f3_rashascurse.png	fx_f3_rashascurse_	0.08	true	yes		Faction3.Spell	1
+fx_f3_scionsfirstwish	sprite_animation	faction3_vetruvian	resources/fx/fx_f3_scionsfirstwish.png	fx_f3_scionsfirstwish_	0.08	true	yes	sfx_spell_scionsfirstwish	Faction3.Spell	1
+fx_f3_scionssecondwish	sprite_animation	faction3_vetruvian	resources/fx/fx_f3_scionssecondwish.png	fx_f3_scionssecondwish_	0.08	true	yes		Faction3.Spell	1
+fx_f3_scionsthirdwish	sprite_animation	faction3_vetruvian	resources/fx/fx_f3_scionsthirdwish.png	fx_f3_scionsthirdwish_	0.08	true	yes		Faction3.Spell	1
+fx_f3_starsfury	sprite_animation	faction3_vetruvian	resources/fx/fx_f3_starsfury.png	fx_f3_starsfury_	0.08	true	yes	sfx_spell_starsfury	Faction3.Faction3	1
+fx_f4_bbs_abyssalscar	sprite_animation	faction4_abyssian	resources/fx/fx_f4_bbs_abyssalscar.png	fx_f4_bbs_abyssalscar_	0.08	true	yes		Faction4.Faction4; Faction4.Tile	2
+fx_f4_bbs_malice	sprite_animation	faction4_abyssian	resources/fx/fx_f4_bbs_husk.png	fx_f4_bbs_husk_	0.08	true	yes		Faction4.Faction4; Faction4.Faction4	2
+fx_f4_bbs_shadowspawn	sprite_animation	faction4_abyssian	resources/fx/fx_f4_bbs_shadowspawn.png	fx_f4_bbs_shadowspawn_	0.08	true	yes		Faction4.Faction4; Faction4.Faction4	2
+fx_f4_consumingrebirth	sprite_animation	faction4_abyssian	resources/fx/fx_f4_consumingrebirth.png	fx_f4_consumingrebirth_	0.08	true	yes		Faction4.Spell	1
+fx_f4_curseofagony	sprite_animation	faction4_abyssian	resources/fx/fx_f4_curseofagony.png	fx_f4_curseofagony_	0.08	true	yes		Faction4.Faction4; Faction4.Faction4	2
+fx_f4_daemoniclure	sprite_animation	faction4_abyssian	resources/fx/fx_f4_daemoniclure.png	fx_f4_daemoniclure_	0.08	true	yes	sfx_spell_daemoniclure	Faction4.Spell; Neutral.Neutral	2
+fx_f4_darkfiresacrifice	sprite_animation	faction4_abyssian	resources/fx/fx_f4_darkfiresacrifice.png	fx_f4_darkfiresacrifice_	0.08	true	yes	sfx_spell_darkfiresacrifice		0
+fx_f4_darkfiretransformation	sprite_animation	faction4_abyssian	resources/fx/fx_f4_darkfiretransformation.png	fx_f4_darkfiretransformation_	0.08	true	yes			0
+fx_f4_darkseed	sprite_animation	faction4_abyssian	resources/fx/fx_f4_darkseed.png	fx_f4_darkseed_	0.08	true	yes	sfx_spell_darkseed	Faction4.Faction4	1
+fx_f4_deathfire_crescendo	sprite_animation	faction4_abyssian	resources/fx/fx_f4_deathfire_crescendo.png	fx_f4_deathfire_crescendo_	0.08	true	yes	sfx_spell_deathfirecrescendo	Faction4.Tile	1
+fx_f4_doom	sprite_animation	faction4_abyssian	resources/fx/fx_f4_doom.png	fx_f4_doom_	0.08	true	yes		Faction4.Faction4	1
+fx_f4_nethersummoning	sprite_animation	faction4_abyssian	resources/fx/fx_f4_nethersummoning.png	fx_f4_nethersummoning_	0.08	true	yes	sfx_spell_nethersummoning	Faction4.Spell; Neutral.Neutral	2
+fx_f4_obliterate	sprite_animation	faction4_abyssian	resources/fx/fx_f4_obliterate.png	fx_f4_obliterate_	0.08	true	yes		Faction4.Faction4	1
+fx_f4_riteundervault	sprite_animation	faction4_abyssian	resources/fx/fx_f4_riteundervault.png	fx_f4_riteundervault_	0.08	true	yes			0
+fx_f4_shadownova	sprite_animation	faction4_abyssian	resources/fx/fx_f4_shadownova.png	fx_f4_shadownova_	0.08	true	yes	sfx_spell_shadownova	Faction4.Spell	1
+fx_f4_shadowreflection	sprite_animation	faction4_abyssian	resources/fx/fx_f4_shadowreflection.png	fx_f4_shadowreflection_	0.08	true	yes	sfx_spell_shadowreflection	Faction4.Faction4	1
+fx_f4_soulshatterpact	sprite_animation	faction4_abyssian	resources/fx/fx_f4_soulshatterpact.png	fx_f4_soulshatterpact_	0.08	true	yes	sfx_spell_soulshatterpact	Faction4.Faction4; Faction6.Faction6	2
+fx_f4_voidpulse	sprite_animation	faction4_abyssian	resources/fx/fx_f4_voidpulse.png	fx_f4_voidpulse_	0.08	true	yes	sfx_spell_voidpulse; sfx_spell_voidpulse02	Faction4.Tile	1
+fx_f4_wraithlingfury	sprite_animation	faction4_abyssian	resources/fx/fx_f4_wraithlingfury.png	fx_f4_wraithlingfury_t_	0.08	true	yes		Faction4.Faction4	1
+fx_f5_amplification	sprite_animation	faction5_magmar	resources/fx/fx_f5_amplification.png	fx_f5_amplification_	0.08	true	yes	sfx_spell_amplification	Faction5.Spell	1
+fx_f5_bbs_egg	sprite_animation	faction5_magmar	resources/fx/fx_f5_bbs_egg.png	fx_f5_bbs_egg_	0.08	true	yes		Faction5.Spell	1
+fx_f5_bbs_overload	sprite_animation	faction5_magmar	resources/fx/fx_f5_bbs_overload.png	fx_f5_bbs_overload_	0.08	true	yes		Faction5.Spell	1
+fx_f5_bbs_seekingeye	sprite_animation	faction5_magmar	resources/fx/fx_f5_bbs_seekingeye.png	fx_f5_bbs_seekingeye_	0.08	true	yes		Faction5.Spell	1
+fx_f5_boundedlife	sprite_animation	faction5_magmar	resources/fx/fx_f5_boundedlife.png	fx_f5_boundedlife_	0.08	true	yes	sfx_spell_boundedlifeforce		0
+fx_f5_earthsphere	sprite_animation	faction5_magmar	resources/fx/fx_f5_earthsphere.png	fx_f5_earthsphere_	0.08	true	yes		Faction5.Spell	1
+fx_f5_earthsphere_blue	sprite_animation	faction5_magmar	resources/fx/fx_f5_earthsphere_blue.png	fx_f5_earthsphere_blue_	0.08	true	yes	sfx_neutral_bluetipscorpion_attack_impact; sfx_neutral_bluetipscorpion_attack_swing; sfx_neutral_bluetipscorpion_death	Faction5.Spell	1
+fx_f5_earthsphere_orange	sprite_animation	faction5_magmar	resources/fx/fx_f5_earthsphere_orange.png	fx_f5_earthsphere_orange_	0.08	true	yes		Faction5.Spell	1
+fx_f5_evolutionaryapex	sprite_animation	faction5_magmar	resources/fx/fx_f5_evolutionaryapex.png	fx_f5_evolutionaryapex_	0.08	true	yes		Faction5.Tile	1
+fx_f5_flamingstampede	sprite_animation	faction5_magmar	resources/fx/f5_fx_flamingstampede.png	f5_fx_flamingstampede_	0.08	true	yes		Faction5.Faction5	1
+fx_f5_flashreincarnation	sprite_animation	faction5_magmar	resources/fx/fx_f5_flashreincarnation.png	fx_f5_flashreincarnation_	0.08	true	yes	sfx_spell_flashreincarnation	Faction5.Spell	1
+fx_f5_fractalreplication	sprite_animation	faction5_magmar	resources/fx/fx_f5_fractalreplication.png	fx_f5_fractalreplication_	0.08	true	yes	sfx_spell_fractalreplication	Faction5.Spell	1
+fx_f5_kinectequilibrium	sprite_animation	faction5_magmar	resources/fx/fx_f5_kinectequilibrium.png	fx_f5_kinectequilibrium_	0.08	true	yes			0
+fx_f5_manaburn	sprite_animation	faction5_magmar	resources/fx/fx_f5_manaburn.png	fx_f5_manaburn_	0.08	true	yes	sfx_spell_manaburn		0
+fx_f5_mindsteal	sprite_animation	faction5_magmar	resources/fx/fx_f5_mindsteal.png	fx_f5_mindsteal_	0.08	true	yes		Faction5.Faction5; Faction5.Faction5	2
+fx_f5_naturalselection	sprite_animation	faction5_magmar	resources/fx/fx_f5_naturalselection.png	fx_f5_naturalselection_	0.08	true	yes	sfx_spell_naturalselection	Faction5.Faction5	1
+fx_f5_tremor	sprite_animation	faction5_magmar	resources/fx/fx_f5_tremor.png	fx_f5_tremor_	0.08	true	yes		Faction5.Spell	1
+fx_f6_bbs_crystallize	sprite_animation	faction6_vanar	resources/fx/fx_f6_bbs_stun.png	fx_f6_bbs_stun_	0.08	true	yes		Faction6.Faction6	1
+fx_f6_bbs_kinectsurge	sprite_animation	faction6_vanar	resources/fx/fx_f6_bbs_kinectsurge.png	fx_f6_bbs_kinectsurge_	0.08	true	yes			0
+fx_f6_bbs_warbird	sprite_animation	faction6_vanar	resources/fx/fx_f6_bbs_warbird.png	fx_f6_bbs_warbird_	0.08	true	yes		Faction6.Faction6	1
+fx_f6_chromaticcold	sprite_animation	faction6_vanar	resources/fx/fx_f6_chromaticcold.png	fx_f6_chromaticcold_	0.08	true	yes		Faction6.Spell	1
+fx_f6_cryogenesis	sprite_animation	faction6_vanar	resources/fx/fx_f6_cryogenesis.png	fx_f6_cryogenesis_	0.08	true	yes		Faction6.Faction6; Faction6.Faction6	2
+fx_f6_hailstoneprison	sprite_animation	faction6_vanar	resources/fx/fx_f6_hailstoneprison.png	fx_f6_hailstoneprison_	0.08	true	yes		Faction6.Faction6	1
+fx_f6_markofsolitude	sprite_animation	faction6_vanar	resources/fx/fx_f6_markofsolitude.png	fx_f6_markofsolitude_	0.08	true	yes		Faction6.Spell	1
+fx_f6_mesmerize	sprite_animation	faction6_vanar	resources/fx/fx_f6_mesmerize.png	fx_f6_mesmerize_	0.08	true	yes		Faction6.Spell; Faction6.Faction6	2
+fx_f6_perfectreflection	sprite_animation	faction6_vanar	resources/fx/fx_f6_perfectreflection.png	fx_f6_perfectreflection_	0.08	true	yes			0
+fx_f6_spiritofthewild	sprite_animation	faction6_vanar	resources/fx/fx_f6_spiritofthewild.png	fx_f6_spiritofthewild_	0.08	true	yes		Faction6.Faction6	1
+fx_f6_winterswake	sprite_animation	faction6_vanar	resources/fx/f6_fx_winterswake.png	f6_fx_winterswake_	0.08	true	yes		Faction6.Faction6	1
+electrical_fx	sprite_sheet	generic	resources/fx/fx_electrical.png			true	yes			0
+f1CasterProjectile	sprite_animation	generic	resources/fx/fx_f1_casterprojectile.png	fx_f1casterprojectile_	0.08	true	yes			0
+f1CasterProjectileCharge	sprite_animation	generic	resources/fx/fx_f1_casterprojectile.png	fx_f1casterprojectilecharge_	0.08	true	yes			0
+fxArtifactBreak	sprite_animation	generic	resources/fx/fx_artifactbreak.png	fx_artifactbreak_	0.08	true	yes			0
+fxArtifactHit	sprite_animation	generic	resources/fx/fx_artifacthit.png	fx_artifacthit_	0.08	true	yes			0
+fxBladestorm	sprite_animation	generic	resources/fx/fx_bladestorm.png	fx_bladestorm_	0.08	true	yes			0
+fxBlueWaterSplash	sprite_animation	generic	resources/fx/fx_bluewatersplash.png	fx_bluewatersplash_	0.08	true	yes			0
+fxBubbleEnergySootGround	sprite_animation	generic	resources/fx/fx_disintegrate.png	fx_disintegrate_	0.08	true	yes		Unknown.Spell	1
+fxChainLightningBlue	sprite_animation	generic	resources/fx/fx_chainlightning.png	fx_chainlightningblue_	0.04	true	yes			0
+fxChainLightningRed	sprite_animation	generic	resources/fx/fx_redlightning.png	fx_redlightning_	0.04	true	yes			0
+fxClawSlash	sprite_animation	generic	resources/fx/fx_clawslash.png	fx_clawslash_	0.07	true	yes			0
+fxCleanse	sprite_animation	generic	resources/fx/fx_cleanse.png	fx_cleanse_ripples_	0.08	true	yes			0
+fxCrossSlash	sprite_animation	generic	resources/fx/fx_f2.png	fx_f2_general_attack_	0.07	true	yes			0
+fxDevour	sprite_animation	generic	resources/fx/fx_f2.png	fx_f2_special_devour_	0.08	true	yes			0
+fxDistortionWaterBubble	sprite_animation	generic	resources/fx/fx_distortion_water_bubble.png	distortion_water_bubble_	0.08		yes			0
+fxElectricalGroundUpBlue	sprite_animation	generic	resources/fx/fx_explosionblueelectrical.png	fx_explosionblueelectrical_	0.08	true	yes		Unknown.Spell	1
+fxElectricalGroundUpGreen	sprite_animation	generic	resources/fx/fx_explosiongreenelectrical.png	fx_explosiongreenelectrical_	0.08	true	yes		Unknown.Spell	1
+fxElectricalGroundUpRed	sprite_animation	generic	resources/fx/fx_explosionredelectrical.png	fx_explosionredelectrical_	0.08	true	yes		Unknown.Spell	1
+fxElectricalGroundUpYellow	sprite_animation	generic	resources/fx/fx_explosionyellowelectrical.png	fx_explosionyellowelectrical_	0.08	true	yes		Unknown.Spell	1
+fxEnergyHaloGround	sprite_animation	generic	resources/fx/fx_energyhaloground.png	fx_energyhaloground_	0.08	true	yes		Unknown.Spell	1
+fxFaerieFireBlack	sprite_animation	generic	resources/fx/fx_fairiefire.png	fx_fairiefireblack_	0.08	true	yes			0
+fxFaerieFireBlue	sprite_animation	generic	resources/fx/fx_fairiefire.png	fx_fairiefireblue_	0.08	true	yes			0
+fxFaerieFireDeepRed	sprite_animation	generic	resources/fx/fx_fairiefire.png	fx_fairiefirered_	0.08	true	yes			0
+fxFaerieFireGreen	sprite_animation	generic	resources/fx/fx_fairiefire.png	fx_fairiefiregreen_	0.08	true	yes			0
+fxFaerieFirePurple	sprite_animation	generic	resources/fx/fx_fairiefire.png	fx_fairiefirepurple_	0.08	true	yes			0
+fxFaerieFireRed	sprite_animation	generic	resources/fx/fx_fairiefire.png	fx_fairiefireyellow_	0.08	true	yes			0
+fxFireTornado	sprite_animation	generic	resources/fx/fx_firetornado.png	fx_firetornado_	0.08	true	yes		Faction3.Spell; Faction3.Spell; Faction3.Spell; Faction3.Spell; Faction5.Spell	9
+fxFirefallGround	sprite_animation	generic	resources/fx/fx_firefallground.png	fx_firefallground_	0.1	true	yes		Unknown.Spell	1
+fxFluidCardShapePuff	sprite_animation	generic	resources/fx/fx_fluid_card_shape_puff.png	fluid-card-shape	0.04		yes			0
+fxFluidPuff	sprite_animation	generic	resources/fx/fx_fluid_puff.png	fluid-	0.01	true	yes			0
+fxFootStepDust	sprite_animation	generic	resources/fx/fx_smoke.png	fx_footstepdust_	0.08	true	yes			0
+fxFrozenIceBlock	sprite_animation	generic	resources/fx/fx_frozen.png	fx_frozen_	0.08	true	yes			0
+fxHeavensStrike	sprite_animation	generic	resources/fx/fx_heavenlystrike.png	fx_heavenlystrike_	0.08	true	yes			0
+fxHolyTileIdle	sprite_animation	generic	resources/fx/fx_f1_hallowedground.png	fx_f1_hallowedground_idle_	1	true	yes		Faction5.Faction5	1
+fxLightningHitGreen	sprite_animation	generic	resources/fx/fx_lightninghitgreen.png	fx_lightninghitgreen_	0.08	true	yes			0
+fxPlasmaBlueHorizontal	sprite_animation	generic	resources/fx/fx_plasma.png	fx_blueplasma_	0.08	true	yes			0
+fxPlasmaBlueVertical	sprite_animation	generic	resources/fx/fx_blueplasma_vertical.png	fx_blueplasma_vertical_	0.08	true	yes			0
+fxPlasmaRedVertical	sprite_animation	generic	resources/fx/fx_redplasma_vertical.png	fx_redplasma_vertical_	0.08	true	yes			0
+fxPrimalTileIdle	sprite_animation	generic	resources/fx/fx_f5_primalmojo.png	fx_f5_primalmojo_idle_	1	true	yes			0
+fxRadialBlueNoise	sprite_animation	generic	resources/fx/fx_radial_bluenoise.png	fx_radial_bluenoise_	0.04		yes			0
+fxSandTileIdle	sprite_animation	generic	resources/fx/fx_f3_sandportal.png	fx_f3_sandportal_idle_	1	true	yes			0
+fxSearingChasm	sprite_animation	generic	resources/fx/fx_searingchasm.png	fx_searingchasm_	0.08	true	yes			0
+fxShadowCreepIdle	sprite_animation	generic	resources/fx/fx_shadowcreep.png	fx_shadowcreep_idle_	1	true	yes			0
+fxSiphon	sprite_animation	generic	resources/fx/fx_f2.png	fx_f2_support_syphon_	0.08	true	yes			0
+fxSmokeGround	sprite_animation	generic	resources/fx/fx_smoke2.png	fx_smokeground_	0.08	true	yes		Unknown.Spell	1
+fxSwirlRingsBlue	sprite_animation	generic	resources/fx/fx_swirl.png	fx_swirlloop_	0.08	true	yes			0
+fxSwirlRingsGreen	sprite_animation	generic	resources/fx/fx_heal.png	fx_heal_	0.08	true	yes			0
+fxTendrilsGreen	sprite_animation	generic	resources/fx/fx_roots.png	fx_roots_	0.1	true	yes			0
+fx_Doomed	sprite_animation	generic	resources/fx/fx_doom.png	fx_doom_1turn_	0.08	true	yes		Faction4.Faction4	1
+fx_Doomed2	sprite_animation	generic	resources/fx/fx_doom.png	fx_doom_2turns_	0.08	true	yes		Faction4.Faction4	1
+fx_Doomed3	sprite_animation	generic	resources/fx/fx_doom.png	fx_doom_3turns_	0.08	true	yes		Faction4.Faction4	1
+fx_animalslash	sprite_animation	generic	resources/fx/fx_animalslash.png	fx_animalslash_	0.08	true	yes			0
+fx_beamfire	sprite_animation	generic	resources/fx/fx_beamfire.png	fx_beamfire_	0.08	true	yes			0
+fx_beamlaser	sprite_animation	generic	resources/fx/fx_beamlaser.png	fx_beamlaser_	0.08	true	yes			0
+fx_beamtesla	sprite_animation	generic	resources/fx/fx_beamtesla.png	fx_beamtesla_	0.08	true	yes			0
+fx_bigfirehitspark	sprite_animation	generic	resources/fx/fx_bigfirehitspark.png	fx_bigfirehitspark_	0.08	true	yes			0
+fx_bladebreaker	sprite_sheet	generic	resources/fx/fx_bladebreaker.png			true	yes	sfx_spell_bladebreaker		0
+fx_bouldersphere	sprite_animation	generic	resources/fx/fx_bouldersphere.png	fx_bouldersphere_	0.08	true	yes			0
+fx_carddraw	sprite_animation	generic	resources/fx/fx_carddraw.png	fx_carddraw_	0.08		yes			0
+fx_crossslash	sprite_animation	generic	resources/fx/fx_crossslash.png	fx_crossslash_	0.08	true	yes			0
+fx_crossslash_x	sprite_animation	generic	resources/fx/fx_crossslash_x.png	fx_crossslash_x_	0.08	true	yes			0
+fx_electricsphere	sprite_animation	generic	resources/fx/fx_electricsphere.png	fx_electricsphere_	0.08	true	yes			0
+fx_fireslash	sprite_animation	generic	resources/fx/fx_fireslash.png	fx_fireslash_	0.08	true	yes			0
+fx_flamesphere	sprite_animation	generic	resources/fx/fx_flamesphere.png	fx_flamesphere_	0.08	true	yes			0
+fx_flashfreeze_appear	sprite_animation	generic	resources/fx/f6_flashfreeze.png	f6_flashfreeze_appear_	0.08	true	yes	sfx_loot_crate_reward_disappear	Faction6.Spell	1
+fx_flashfreeze_disappear	sprite_animation	generic	resources/fx/f6_flashfreeze.png	f6_flashfreeze_disappear_	0.08	true	yes	sfx_loot_crate_reward_disappear	Faction6.Spell	1
+fx_flashfreeze_idle	sprite_animation	generic	resources/fx/f6_flashfreeze.png	f6_flashfreeze_idle_	0.08	true	yes		Faction6.Spell	1
+fx_multislash_full	sprite_animation	generic	resources/fx/fx_multislash_full.png	fx_multislash_full_	0.08	true	yes			0
+fx_multislash_intro	sprite_animation	generic	resources/fx/fx_multislash_intro.png	fx_multislash_intro_	0.08	true	yes			0
+fx_multislash_outro	sprite_animation	generic	resources/fx/fx_multislash_outro.png	fx_multislash_outro_	0.08	true	yes			0
+fx_neutral_riddle	sprite_animation	generic	resources/fx/fx_neutral_riddle.png	fx_neutral_riddle_	0.08	true	yes	sfx_neutral_alcuinloremaster_attack_impact; sfx_neutral_alcuinloremaster_attack_swing; sfx_neutral_alcuinloremaster_death	Unknown.Spell	1
+fx_ringswirl	sprite_animation	generic	resources/fx/fx_ringswirl.png	fx_ringswirl_	0.08	true	yes			0
+fx_slashfrenzy	sprite_animation	generic	resources/fx/fx_slashfrenzy.png	fx_slashfrenzy_	0.08	true	yes			0
+fx_tornadoswirl	sprite_animation	generic	resources/fx/fx_tornadoswirl.png	fx_tornadoswirl_	0.08	true	yes			0
+fx_vortexswirl	sprite_animation	generic	resources/fx/fx_vortexswirl.png	fx_vortexswirl_	0.08	true	yes			0
+fx_winner	sprite_animation	generic	resources/fx/fx_winner.png	fx_winner_	0.08	true	yes			0
+BloodExplosionBig	sprite_animation	impact_effect	resources/fx/fx_blood_explosion.png	fx_bloodbig_	0.04	true	yes			0
+BloodExplosionMedium	sprite_animation	impact_effect	resources/fx/fx_blood_explosion.png	fx_bloodmedium_	0.08	true	yes			0
+fxCollisionSparksBlue	sprite_animation	impact_effect	resources/fx/fx_collision.png	fx_collisionsparksblue_	0.08	true	yes			0
+fxCollisionSparksGreen	sprite_animation	impact_effect	resources/fx/fx_collisionsparkgreen.png	fx_collisionsparksgreen_	0.08	true	yes			0
+fxCollisionSparksOrange	sprite_animation	impact_effect	resources/fx/fx_collision.png	fx_collisionsparks_	0.08	true	yes			0
+fxCollisionSparksPurple	sprite_animation	impact_effect	resources/fx/fx_collisionsparkpurple.png	fx_collisionsparksrpurple_	0.08	true	yes			0
+fxCollisionSparksRed	sprite_animation	impact_effect	resources/fx/fx_collisionsparkred.png	fx_collisionsparksred_	0.08	true	yes			0
+fxExplosionBigBall_MetalSlug	sprite_animation	impact_effect	resources/fx/fx_blood_explosion.png	fx_explosionbig_	0.08	true	yes			0
+fxExplosionBigWhiteHot	sprite_animation	impact_effect	resources/fx/fx_whiteexplosion.png	fx_whitehotbig_	0.08	true	yes			0
+fxExplosionGroundSmokeSwirl	sprite_animation	impact_effect	resources/fx/fx_smoke.png	fx_explosiondarkplume_	0.08	true	yes		Unknown.Spell	1
+fxExplosionMediumBlueGround	sprite_animation	impact_effect	resources/fx/fx_explosionblue.png	fx_explosionmediumblue_ground_	0.08	true	yes		Unknown.Spell	1
+fxExplosionMediumIcyWhite	sprite_animation	impact_effect	resources/fx/fx_smoke.png	fx_explosionwhitesmokemedium_	0.08	true	yes		Neutral.Neutral; Faction6.Spell	2
+fxExplosionMediumWhiteHot	sprite_animation	impact_effect	resources/fx/fx_whiteexplosion.png	fx_whitehotmedium_	0.08	true	yes			0
+fxExplosionOrangeSmoke	sprite_animation	impact_effect	resources/fx/fx_explosionorangesmoke.png	fx_explosionorangesmoke_	0.08	true	yes			0
+fxExplosionPurpleSmoke	sprite_animation	impact_effect	resources/fx/fx_explosionpurplesmoke.png	fx_explosionpurplesmoke_	0.08	true	yes			0
+fxImpactBigOrange	sprite_animation	impact_effect	resources/fx/fx_impact.png	fx_impactorangebig_	0.08	true	yes		Faction4.Faction4	1
+fxImpactBlueBig	sprite_animation	impact_effect	resources/fx/fx_impactblue.png	fx_impactbluebig_	0.08	true	yes			0
+fxImpactBlueMed	sprite_animation	impact_effect	resources/fx/fx_impactblue.png	fx_impactbluemedium_	0.08	true	yes			0
+fxImpactBlueSmall	sprite_animation	impact_effect	resources/fx/fx_impactblue.png	fx_impactbluesmall_	0.08	true	yes			0
+fxImpactGreenBig	sprite_animation	impact_effect	resources/fx/fx_impactgreen.png	fx_impactgreenbig_	0.08	true	yes			0
+fxImpactGreenMed	sprite_animation	impact_effect	resources/fx/fx_impactgreen.png	fx_impactgreenmedium_	0.08	true	yes			0
+fxImpactGreenSmall	sprite_animation	impact_effect	resources/fx/fx_impactgreen.png	fx_impactgreensmall_	0.08	true	yes			0
+fxImpactMediumBlue	sprite_animation	impact_effect	resources/fx/fx_impact.png	fx_impactbluemedium_	0.08	true	yes			0
+fxImpactMediumOrange	sprite_animation	impact_effect	resources/fx/fx_impact.png	fx_impactorangemedium_	0.08	true	yes			0
+fxImpactOrangeSmall	sprite_animation	impact_effect	resources/fx/fx_impact2.png	fx_impactorangesmall_	0.08	true	yes			0
+fxImpactRedBig	sprite_animation	impact_effect	resources/fx/fx_impactred.png	fx_impactredbig_	0.08	true	yes			0
+fxImpactRedMed	sprite_animation	impact_effect	resources/fx/fx_impactred.png	fx_impactredmedium_	0.08	true	yes			0
+fxImpactRedSmall	sprite_animation	impact_effect	resources/fx/fx_impactred.png	fx_impactredsmall_	0.08	true	yes			0
+fxImpactRingVerticalOrange	sprite_animation	impact_effect	resources/fx/fx_fireimpact.png	fx_fireimpact_	0.07	true	yes			0
+fxImpactRingVerticalWhite	sprite_animation	impact_effect	resources/fx/fx_impact_verticalring.png	fx_impact_verticalring_	0.07	true	yes			0
+fxImpactWhiteMedium	sprite_animation	impact_effect	resources/fx/fx_impact2.png	fx_impactbrightwhitemedium_	0.08	true	yes			0
+fxHolyTileSpawn	sprite_animation	spawn_effect	resources/fx/fx_f1_hallowedground.png	fx_f1_hallowedground_	0.08	true	yes		Faction5.Faction5	1
+fxPrimalTileSpawn	sprite_animation	spawn_effect	resources/fx/fx_f5_primalmojo.png	fx_f5_primalmojo_	0.08	true	yes			0
+fxSandTileSpawn	sprite_animation	spawn_effect	resources/fx/fx_f3_sandportal.png	fx_f3_sandportal_	0.08	true	yes			0
+fxShadowCreepSpawn	sprite_animation	spawn_effect	resources/fx/fx_shadowcreep.png	fx_shadowcreep_spawn_	0.08	true	yes			0
+fxSummonLegendary	sprite_animation	spawn_effect	resources/fx/fx_summonlegendary.png	fx_summonlegendary_	0.06	true	yes	sfx_summonlegendary		0
+fxSummonMythron	sprite_animation	spawn_effect	resources/fx/fx_summonmythron.png	fx_summonmythron_	0.06	true	yes			0
+fxTeleportBlueOrb	sprite_animation	spawn_effect	resources/fx/fx_teleportblueorb.png	fx_teleportblueorb_	0.08	true	yes			0
+fxTeleportOrangeOrb	sprite_animation	spawn_effect	resources/fx/fx_teleportorangeorb.png	fx_teleportorangeorb_	0.08	true	yes			0
+fxTeleportPurpleOrb	sprite_animation	spawn_effect	resources/fx/fx_teleportpurpleorb.png	fx_teleportpurpleorb_	0.08	true	yes			0
+fxTeleportRecall	sprite_animation	spawn_effect	resources/fx/fx_teleportrecall.png	fx_teleportrecall_	0.08	true	yes			0
+fxTeleportRecall2	sprite_animation	spawn_effect	resources/fx/fx_teleportrecall2.png	fx_teleportrecall2_	0.08	true	yes			0
+fxTeleportRecallBlue	sprite_animation	spawn_effect	resources/fx/fx_teleportrecallblue.png	fx_teleportrecallblue_	0.08	true	yes			0
+fxTeleportRecallGreen	sprite_animation	spawn_effect	resources/fx/fx_teleportrecallgreen.png	fx_teleportrecallgreen_	0.08	true	yes			0
+fxTeleportRecallRed	sprite_animation	spawn_effect	resources/fx/fx_teleportrecallred.png	fx_teleportrecallred_	0.08	true	yes			0
+fxTeleportRecallWhite	sprite_animation	spawn_effect	resources/fx/fx_teleportrecallwhite.png	fx_teleportrecallwhite_	0.08	true	yes			0
+fxTeleportYellowOrb	sprite_animation	spawn_effect	resources/fx/fx_teleportyelloworb.png	fx_teleportyelloworb_	0.08	true	yes			0
+fxYellowTeleporterBeam	sprite_animation	spawn_effect	resources/fx/fx_martyrdom.png	fx_martyrdom_	0.08	true	yes			0

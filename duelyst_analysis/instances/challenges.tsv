@@ -1,0 +1,52 @@
+challenge_id	name	description	category	difficulty	faction	starting_mana_player	starting_mana_opponent	starting_hand_size_player	starting_hand_size_opponent	board_template	snapshot_turn	gold_reward	icon	setup_description
+Lesson1	Knowledge is Power	Learn the basics of movement and combat	tutorial	Tutorial	Neutral	default	default	0	4	0	3	0	speech_portrait_calibero	General at (2,2) vs General at (5,2), both with 10 HP. Tutorial introduces movement, health, and attack.
+Lesson2	Ready Player Two	Learn about playing cards and mana	tutorial	Tutorial	Neutral	default	default	varies	varies	0	varies	0	speech_portrait_calibero	Teaches card playing, mana system, and basic strategy.
+Lesson4	The Artifact Itself	Learn about artifacts	tutorial	Tutorial	Neutral	default	default	varies	varies	0	varies	0	speech_portrait_calibero	Introduces artifact equipment and usage.
+BeginnerLyonarChallenge1	Swiftness of Movement	Beginner Lyonar challenge	beginner	Beginner	Lyonar	5	default	varies	varies	0	0	5	speech_portrait_lyonar_side	Player general at (2,2), opponent general at (6,2) with 3 HP. Player has Silverguard Squire and Azurite Lion. Must win in one turn.
+BeginnerLyonarChallenge2	Divine Zeal	Beginner Lyonar challenge	beginner2	Beginner	Lyonar	varies	default	varies	varies	0	varies	10	speech_portrait_lyonar_side	Focuses on Lyonar faction mechanics and divine abilities.
+BeginnerLyonarChallenge3	Power of Wisdom	Beginner Lyonar challenge	beginner	Beginner	Lyonar	varies	default	varies	varies	0	varies	5	speech_portrait_lyonar_side	Advanced Lyonar tactics challenge.
+BeginnerLyonarChallenge4	Honor the Fallen	Beginner Lyonar challenge	starter	Beginner	Lyonar	varies	default	varies	varies	0	varies	5	speech_portrait_lyonar_side	Teaches Lyonar honor mechanics.
+AdvancedLyonarChallenge1	Desperation	Advanced Lyonar challenge	contest1	Advanced	Lyonar	varies	default	varies	varies	0	varies	5	speech_portrait_lyonar_side	Advanced tactical challenge for Lyonar.
+AdvancedLyonarChallenge2	Inspiring Presence	Advanced Lyonar challenge	expert	Advanced	Lyonar	varies	default	varies	varies	0	varies	5	speech_portrait_lyonar_side	Complex Lyonar strategy challenge.
+BeginnerSonghaiChallenge1	Evolution to Ash	Beginner Songhai challenge	advanced	Beginner	Songhai	varies	default	varies	varies	0	varies	5	speech_portrait_songhai_side	Songhai faction introduction.
+BeginnerSonghaiChallenge2	Path of the Mistwalkers	Beginner Songhai challenge	starter	Beginner	Songhai	varies	default	varies	varies	0	varies	10	speech_portrait_songhai_side	Movement and positioning mechanics.
+BeginnerSonghaiChallenge3	Chaos Control	Beginner Songhai challenge	beginner	Beginner	Songhai	varies	default	varies	varies	0	varies	5	speech_portrait_songhai_side	Control strategy challenge.
+BeginnerSonghaiChallenge4	Leaf on the Wind	Beginner Songhai challenge	keywords	Beginner	Songhai	varies	default	varies	varies	0	varies	5	speech_portrait_songhai_side	Flying keyword introduction.
+BeginnerSonghaiChallenge5	Eye of the Tiger	Beginner Songhai challenge	beginner2	Beginner	Songhai	varies	default	varies	varies	0	varies	5	speech_portrait_songhai_side	Songhai combat tactics.
+MediumSonghaiChallenge1	Songhai Shuffle	Medium Songhai challenge	vault1	Medium	Songhai	varies	default	varies	varies	0	varies	5	speech_portrait_songhai_side	Intermediate Songhai puzzle.
+MediumSonghaiChallenge2	Jack of Blades	Medium Songhai challenge	beginner	Medium	Songhai	varies	default	varies	varies	0	varies	5	speech_portrait_songhai_side	Advanced blade mechanics.
+AdvancedSonghaiChallenge1	The Stronger Scythe	Advanced Songhai challenge	contest1	Advanced	Songhai	varies	default	varies	varies	0	varies	5	speech_portrait_songhai_side	Complex Songhai strategy.
+BeginnerVetruvianChallenge1	Ready for a Blast	Beginner Vetruvian challenge	beginner2	Beginner	Vetruvian	varies	default	varies	varies	0	varies	5	speech_portrait_vetruvian_side	Vetruvian blast mechanics.
+BeginnerVetruvianChallenge2	Relics Reclaimed	Beginner Vetruvian challenge	expert	Beginner	Vetruvian	varies	default	varies	varies	0	varies	5	speech_portrait_vetruvian_side	Artifact and relic mechanics.
+BeginnerVetruvianChallenge3	Call to Action	Beginner Vetruvian challenge with Shadow Creep tiles	keywords	Beginner	Vetruvian	varies	default	varies	varies	0	varies	10	speech_portrait_vetruvian_side	Board has 8 Shadow Creep tiles at positions (4,0-4), (5,0-4). Teaches dealing with enemy tiles.
+BeginnerVetruvianChallenge4	Bad to the Bone	Beginner Vetruvian challenge	beginner	Beginner	Vetruvian	varies	default	varies	varies	0	varies	5	speech_portrait_vetruvian_side	Dervish summoning mechanics.
+BeginnerVetruvianChallenge5	Ties that Bind	Beginner Vetruvian challenge	starter	Beginner	Vetruvian	varies	default	varies	varies	0	varies	5	speech_portrait_vetruvian_side	Faction synergy challenge.
+MediumVetruvianChallenge1	Knowledge of the Scions	Medium Vetruvian challenge with Mana tiles	beginner	Medium	Vetruvian	varies	default	varies	varies	0	varies	5	speech_portrait_vetruvian_side	Board has Mana tiles at (4,0) and (5,2). Strategic resource management.
+MediumVetruvianChallenge2	Winds of Change	Medium Vetruvian challenge	advanced	Medium	Vetruvian	varies	default	varies	varies	0	varies	5	speech_portrait_vetruvian_side	Transformation and positioning puzzle.
+AdvancedVetruvianChallenge1	Patience	Advanced Vetruvian challenge	contest1	Advanced	Vetruvian	varies	default	varies	varies	0	varies	5	speech_portrait_vetruvian_side	Complex timing and resource challenge.
+AdvancedVetruvianChallenge2	Wishful Thinking	Advanced Vetruvian challenge	vault1	Advanced	Vetruvian	varies	default	varies	varies	0	varies	5	speech_portrait_vetruvian_side	Advanced Vetruvian strategy.
+BeginnerAbyssianChallenge1	Shadow Ritual	Beginner Abyssian challenge	beginner2	Beginner	Abyssian	varies	default	varies	varies	0	varies	10	speech_portrait_abyssian_side	Shadow Creep introduction.
+BeginnerAbyssianChallenge2	Engulf the Flame	Beginner Abyssian challenge	expert	Beginner	Abyssian	varies	default	varies	varies	0	varies	5	speech_portrait_abyssian_side	Shadow Creep spreading tactics.
+BeginnerAbyssianChallenge3	Power Overwhelming	Beginner Abyssian challenge	advanced	Beginner	Abyssian	varies	default	varies	varies	0	varies	5	speech_portrait_abyssian_side	Shadow Creep damage mechanics.
+BeginnerAbyssianChallenge4	Creeping Darkness	Beginner Abyssian challenge	keywords	Beginner	Abyssian	varies	default	varies	varies	0	varies	10	speech_portrait_abyssian_side	Advanced Shadow Creep strategies.
+BeginnerAbyssianChallenge5	Gifts Unforgiven	Beginner Abyssian challenge	beginner	Beginner	Abyssian	varies	default	varies	varies	0	varies	10	speech_portrait_abyssian_side	Sacrifice and death mechanics.
+BeginnerAbyssianChallenge6	Alluring Demise	Beginner Abyssian challenge	starter	Beginner	Abyssian	varies	default	varies	varies	0	varies	5	speech_portrait_abyssian_side	Lure and control tactics.
+MediumAbyssianChallenge1	Shadows of Light	Medium Abyssian challenge	vault1	Medium	Abyssian	varies	default	varies	varies	0	varies	5	speech_portrait_abyssian_side	Shadow/light contrast puzzle.
+AdvancedAbyssianChallenge1	Malediction	Advanced Abyssian challenge	contest2	Advanced	Abyssian	varies	default	varies	varies	0	varies	5	speech_portrait_abyssian_side	Complex curse mechanics.
+BeginnerMagmarChallenge1	Beast of War	Beginner Magmar challenge	beginner2	Beginner	Magmar	varies	default	varies	varies	0	varies	5	speech_portrait_magmar_side	Beast synergy introduction.
+BeginnerMagmarChallenge2	Breaking the Bad	Beginner Magmar challenge	expert	Beginner	Magmar	varies	default	varies	varies	0	varies	5	speech_portrait_magmar_side	Egg hatching mechanics.
+BeginnerMagmarChallenge3	Crushing Reach	Beginner Magmar challenge	keywords	Beginner	Magmar	varies	default	varies	varies	0	varies	10	speech_portrait_magmar_side	Ranged and reach mechanics.
+BeginnerMagmarChallenge4	Shattered Memories	Beginner Magmar challenge	beginner	Beginner	Magmar	varies	default	varies	varies	0	varies	5	speech_portrait_magmar_side	Rebirth mechanics.
+MediumMagmarChallenge1	In a Frenzy	Medium Magmar challenge	vault1	Medium	Magmar	varies	default	varies	varies	0	varies	5	speech_portrait_magmar_side	Frenzy keyword puzzle.
+AdvancedMagmarChallenge1	Mind Game	Advanced Magmar challenge	contest2	Advanced	Magmar	varies	default	varies	varies	0	varies	5	speech_portrait_magmar_side	Complex Magmar tactics.
+BeginnerVanarChallenge1	Freezing Sand	Beginner Vanar challenge	vault1	Beginner	Vanar	varies	default	varies	varies	0	varies	5	speech_portrait_vanar_side	Stun mechanics introduction.
+BeginnerVanarChallenge2	Frozen Shadows	Beginner Vanar challenge	advanced	Beginner	Vanar	varies	default	varies	varies	0	varies	5	speech_portrait_vanar_side	Freeze and Shadow Creep interaction.
+BeginnerVanarChallenge3	Final Whispers	Beginner Vanar challenge	expert	Beginner	Vanar	varies	default	varies	varies	0	varies	5	speech_portrait_vanar_side	Dying Wish mechanics.
+BeginnerVanarChallenge4	Approaching Cold	Beginner Vanar challenge	beginner	Beginner	Vanar	varies	default	varies	varies	0	varies	10	speech_portrait_vanar_side	Wall and obstruction tactics.
+BeginnerVanarChallenge5	Behind Enemy Lines	Beginner Vanar challenge	starter	Beginner	Vanar	varies	default	varies	varies	0	varies	10	speech_portrait_vanar_side	Infiltrate mechanics.
+AdvancedVanarChallenge1	The Locked Library	Advanced Vanar challenge	contest2	Advanced	Vanar	varies	default	varies	varies	0	varies	5	speech_portrait_vanar_side	Complex control puzzle.
+AdvancedVanarChallenge2	Ice Box	Advanced Vanar challenge	beginner	Advanced	Vanar	varies	default	varies	varies	0	varies	5	speech_portrait_vanar_side	Freeze lock strategies.
+BeginnerFlyingChallenge1	Earn Your Wings	Beginner tutorial challenge	keywords	Beginner	Neutral	varies	default	varies	varies	0	varies	5	speech_portrait_neutral	Flying keyword tutorial.
+BeginnerRangedChallenge1	Dead Center	Beginner tutorial challenge	advanced	Beginner	Neutral	varies	default	varies	varies	0	varies	5	speech_portrait_neutral	Ranged keyword tutorial.
+Sandbox	Sandbox Mode	Free practice mode	sandbox	N/A	Neutral	varies	varies	varies	varies	0	N/A	0	speech_portrait_neutral	Open sandbox for testing and practice.
+SandboxDeveloper	Developer Sandbox	Developer testing mode	sandbox	N/A	Neutral	varies	varies	varies	varies	0	N/A	0	speech_portrait_neutral	Developer testing environment.

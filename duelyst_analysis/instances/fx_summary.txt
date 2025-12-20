@@ -1,0 +1,63 @@
+FX (Visual Effects) Extraction Summary
+=======================================
+
+Total FX Definitions: 240
+Total Sound Effects Found: 641
+FX with Usage Data: 113/240 (47%)
+
+Breakdown by Category:
+---------------------
+- faction1_lyonar: 16
+- faction2_songhai: 23
+- faction3_vetruvian: 20
+- faction4_abyssian: 19
+- faction5_magmar: 17
+- faction6_vanar: 11
+- buff_effect: 4
+- damage_effect: 6
+- impact_effect: 31
+- spawn_effect: 17
+- generic: 76
+
+FX Types:
+---------
+- sprite_animation: 240 (most FX are sprite animations)
+
+All FX resources are from: resources/fx/
+
+Key Metadata Extracted:
+----------------------
+- rsx_name: The RSX identifier (e.g., fx_f1_holyimmolation)
+- fx_type: Type of effect (sprite_animation, particle, etc.)
+- category: Usage category (faction-specific, buff, damage, etc.)
+- file_path: Path to the sprite sheet image
+- frame_prefix: Prefix for animation frames in plist
+- frame_delay: Delay between frames (duration per frame)
+- is_16bit: Whether the texture uses 16-bit color
+- has_plist: Whether there's a plist file with sprite data
+- related_sounds: Related sound effect resources
+- usage_context: Which cards use this FX
+- used_by_cards: Count of cards using this FX
+
+Examples of FX with Sound Effects:
+----------------------------------
+- fx_f1_divinebond -> sfx_spell_divinebond
+- fx_f1_martyrdom -> sfx_spell_martyrdom
+- fx_f2_phoenixfire -> sfx_spell_phoenixfire
+- fx_f3_blindscorch -> sfx_spell_blindscorch
+- fxSummonLegendary -> sfx_summonlegendary
+
+Common FX Patterns:
+------------------
+1. Bloodborn Spell FX (BBS): fx_f{faction}_bbs_{ability}
+2. Faction Spell FX: fx_f{faction}_{spellname}
+3. Generic Effects: fxImpact*, fxExplosion*, fxTeleport*
+4. Tile/Ground Effects: fxBloodGround, fxShadowCreepSpawn
+5. Buff Effects: ForceField, FloatingShield, fxBuffSimpleGold
+
+Notes:
+------
+- Frame delays are typically 0.08 seconds (80ms), some are faster (0.04) or slower (0.1-1.0)
+- Most FX are 16-bit textures for better quality
+- All FX use plist files for sprite sheet definitions
+- Generic FX like impacts and explosions are reused across multiple cards

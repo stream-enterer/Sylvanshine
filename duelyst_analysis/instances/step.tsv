@@ -1,0 +1,28 @@
+step_type	parent_action	timing	source_file
+Step	Any Action	Explicit action execution wrapper	app/sdk/step.coffee:5-157
+action	null	Property: The action that started this step	app/sdk/step.coffee:7
+playerId	null	Property: Player ID who initiated this step	app/sdk/step.coffee:8
+timestamp	null	Property: Execution timestamp (set via addSignature)	app/sdk/step.coffee:9
+index	null	Property: Order index when executed	app/sdk/step.coffee:10
+parentStepIndex	null	Property: Index of parent step if nested	app/sdk/step.coffee:11
+childStepIndex	null	Property: Index of child step if spawned	app/sdk/step.coffee:12
+transmitted	false	Property: Whether transmitted across network	app/sdk/step.coffee:13
+includedRandomness	false	Private: Whether step included randomness during execution	app/sdk/step.coffee:25
+getPlayerId	Step.playerId	Method: Returns player ID for step initiator	app/sdk/step.coffee:33-34
+isFirstTime	!timestamp	Method: Returns true if step hasn't been executed yet	app/sdk/step.coffee:40-41
+addSignature	Sets timestamp	Method: Signs step with execution timestamp	app/sdk/step.coffee:46-48
+setIndex	Sets index	Method: Sets order executed index	app/sdk/step.coffee:54-55
+getIndex	Returns index	Method: Returns order executed index	app/sdk/step.coffee:61-62
+setParentStep	Sets parentStepIndex	Method: Sets parent step via step object	app/sdk/step.coffee:68-69
+getParentStepIndex	Returns parentStepIndex	Method: Returns parent step index	app/sdk/step.coffee:75-76
+getParentStep	Step object or null	Method: Returns parent step from GameSession	app/sdk/step.coffee:82-84
+setChildStep	Sets childStepIndex	Method: Records a child step	app/sdk/step.coffee:90-91
+getChildStepIndex	Returns childStepIndex	Method: Returns child step index	app/sdk/step.coffee:97-98
+getChildStep	Step object or null	Method: Returns child step from GameSession	app/sdk/step.coffee:104-106
+setAction	Sets action	Method: Sets explicit action that started step	app/sdk/step.coffee:112-113
+getAction	Returns action	Method: Returns explicit action that started step	app/sdk/step.coffee:119-120
+setIncludedRandomness	Sets private flag	Method: Marks step as including randomness	app/sdk/step.coffee:127-128
+getIncludedRandomness	Returns boolean	Method: Returns whether step included randomness	app/sdk/step.coffee:135-136
+setTransmitted	Sets transmitted	Method: Sets network transmission status	app/sdk/step.coffee:142-143
+getTransmitted	Returns transmitted	Method: Returns network transmission status	app/sdk/step.coffee:149-150
+deserialize	Extends object	Method: Deserializes step from JSON data	app/sdk/step.coffee:154-155

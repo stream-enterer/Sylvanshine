@@ -1,0 +1,65 @@
+class_name	file_name	parent_class	type	has_target	has_source	key_methods	triggers_events	description
+Action	action.coffee	SDKObject	Action	Yes	Yes	_modifyForExecution, _execute, setSource, setTarget, getSource, getTarget	Tracks triggered/activated/deactivated modifiers	Base class for all game actions with source/target tracking
+AttackAction	attackAction.coffee	DamageAction	AttackAction	Yes	Yes	getDamageAmount, setDamageAmount, _execute, getIsStrikebackAllowed	DieAction (on target death)	Attack action using source ATK as damage, increments attacks made
+DamageAction	damageAction.coffee	Action	DamageAction	Yes	Yes	_execute, getTotalDamageAmount, setDamageAmount, changeDamageBy	DieAction (on target HP <= 0)	Applies damage to target, tracks damage modifiers and multipliers
+HealAction	healAction.coffee	Action	HealAction	Yes	No	_execute, getTotalHealAmount, setHealAmount	None	Heals target unit, respects max HP limits
+DieAction	dieAction.coffee	RemoveAction	DieAction	Yes	Yes	(inherits from RemoveAction)	RemoveAction	Unit death action, removes entity from board
+MoveAction	moveAction.coffee	Action	MoveAction	Yes (same as source)	Yes	_execute, getPath	None	Moves entity along path to target position
+PlayCardAction	playCardAction.coffee	ApplyCardToBoardAction	PlayCardAction	Yes	No	(inherits parent methods)	Full play card flow with followups	Plays card to board with full effects
+TeleportAction	teleportAction.coffee	Action	TeleportAction	Yes	Yes	_execute, getIsValidTeleport	None	Instantly moves unit to target position without path
+ApplyModifierAction	applyModifierAction.coffee	Action	ApplyModifierAction	Yes	No	_execute, getModifier, setModifierContextObject	Modifier application	Applies a modifier to a target card
+RemoveModifierAction	removeModifierAction.coffee	Action	RemoveModifierAction	Yes	No	_execute, getModifier, setModifier	Modifier removal	Removes a modifier from target card
+KillAction	killAction.coffee	Action	KillAction	Yes	Yes	_execute	DieAction	Immediately kills target unit
+RemoveAction	removeAction.coffee	Action	RemoveAction	Yes	No	_execute	None	Removes card from board at target position
+FightAction	fightAction.coffee	Action	FightAction	Yes	Yes	_execute	Two DamageAsAttackAction	Both source and target damage each other
+DrawCardAction	drawCardAction.coffee	PutCardInHandAction	DrawCardAction	No	No	_execute, getIsDrawFromEmptyDeck	HurtingDamageAction (if deck empty), PutCardInHandAction	Draws card from deck to hand, hurting damage if empty
+EndTurnAction	endTurnAction.coffee	Action	EndTurnAction	No	No	_execute	Game session turn end	Ends current player's turn
+StartTurnAction	startTurnAction.coffee	Action	StartTurnAction	No	No	_execute	Game session turn start	Starts current player's turn
+ApplyCardToBoardAction	applyCardToBoardAction.coffee	Action	ApplyCardToBoardAction	Yes	No	_execute, getCard, setCard	None	Abstract action to apply card to board
+PlayCardFromHandAction	playCardFromHandAction.coffee	PlayCardAction	PlayCardFromHandAction	Yes	No	_execute, getManaCost, overrideCard	Removes card from hand, applies to board	Plays card from hand to board with mana cost
+PutCardInHandAction	putCardInHandAction.coffee	Action	PutCardInHandAction	Yes	No	_execute, getCard, getIsBurnedCard	None	Puts card into hand or burns if hand full
+DamageAsAttackAction	damageAsAttackAction.coffee	DamageAction	DamageAsAttackAction	Yes	Yes	getDamageAmount	DieAction (on target death)	Damage that looks like attack but doesn't count as one
+HurtingDamageAction	hurtingDamageAction.coffee	TrueDamageAction	HurtingDamageAction	Yes	No	(inherits from TrueDamageAction)	DieAction (on target death)	Fixed 2 damage when drawing from empty deck
+TrueDamageAction	trueDamageAction.coffee	DamageAction	TrueDamageAction	Yes	Yes	getTotalDamageAmount	DieAction (on target death)	Damage that cannot be modified by any effects
+ForcedAttackAction	forcedAttackAction.coffee	AttackAction	ForcedAttackAction	Yes	Yes	(inherits from AttackAction)	DieAction (on target death)	Attack triggered by spell/effect, doesn't count against turn limit
+RandomDamageAction	randomDamageAction.coffee	DamageAction	RandomDamageAction	Yes	Yes	_modifyForExecution	DieAction (on target death)	Randomly selects enemy entity to damage
+RandomTeleportAction	randomTeleportAction.coffee	TeleportAction	RandomTeleportAction	Yes	Yes	_modifyForExecution, getTeleportPattern	None	Teleports to random valid position in pattern
+SetDamageAction	setDamageAction.coffee	Action	SetDamageAction	Yes	Yes	_execute	None	Sets target's damage value directly
+CloneEntityAction	cloneEntityAction.coffee	PlayCardSilentlyAction	CloneEntityAction	Yes	Yes	getCard	None	Creates exact clone of source entity silently
+PlayCardSilentlyAction	playCardSilentlyAction.coffee	ApplyCardToBoardAction	PlayCardSilentlyAction	Yes	No	getCard	None	Plays card bypassing followups and opening gambits
+BonusManaAction	bonusManaAction.coffee	Action	BonusManaAction	Yes	No	_execute, getBonusMana	ApplyModifierAction (mana modifier)	Grants temporary bonus mana for N turns
+BonusManaCoreAction	bonusManaCoreAction.coffee	Action	BonusManaCoreAction	No	No	_execute	None	Grants permanent mana core (max 9)
+BurnCardAction	burnCardAction.coffee	DrawCardAction	BurnCardAction	No	No	(inherits from DrawCardAction)	HurtingDamageAction (if deck empty)	Draws and immediately burns card
+RemoveCardFromHandAction	removeCardFromHandAction.coffee	Action	RemoveCardFromHandAction	No	No	_execute, getIndexOfCardInHand	None	Removes card from player's hand by index
+RemoveManaCoreAction	removeManaCoreAction.coffee	Action	RemoveManaCoreAction	No	No	_execute, getManaAmount	None	Removes mana cores from player
+ReplaceCardFromHandAction	replaceCardFromHandAction.coffee	PutCardInHandAction	ReplaceCardFromHandAction	No	No	_execute, getIsForcedReplace	PutCardInHandAction	Replaces card in hand with different one from deck
+ApplyExhaustionAction	applyExhaustionAction.coffee	Action	ApplyExhaustionAction	Yes	No	_execute	None	Applies exhaustion (summoning sickness) to target
+RefreshExhaustionAction	refreshExhaustionAction.coffee	Action	RefreshExhaustionAction	Yes	No	_execute	None	Removes exhaustion from target unit
+SetExhaustionAction	setExhaustionAction.coffee	Action	SetExhaustionAction	Yes	No	_execute, setExhausted, setMovesMade, setAttacksMade	None	Sets specific exhaustion state on target
+SwapGeneralAction	swapGeneralAction.coffee	Action	SwapGeneralAction	Yes	Yes	_execute	Modifier moves, general change	Swaps general from source to target unit
+SwapUnitAllegianceAction	swapUnitAllegianceAction.coffee	Action	SwapUnitAllegianceAction	Yes	No	_execute	RefreshExhaustionAction (if rush unit), game over check	Changes unit owner to opponent
+SwapUnitsAction	swapUnitsAction.coffee	Action	SwapUnitsAction	Yes	Yes	_execute	None	Swaps positions of source and target units
+ResignAction	resignAction.coffee	DieAction	ResignAction	Yes	Yes	_execute	DieAction, RemoveAction	Player resignation, general dies
+PutCardInDeckAction	putCardInDeckAction.coffee	Action	PutCardInDeckAction	Yes	No	_execute, getCard	None	Puts card into player's deck
+RemoveCardFromDeckAction	removeCardFromDeckAction.coffee	Action	RemoveCardFromDeckAction	No	No	_execute, getCardIndex	None	Removes card from deck by index
+RestoreManaAction	restoreManaAction.coffee	Action	RestoreManaAction	No	No	_execute, setManaAmount	None	Restores spent mana to player
+RemoveArtifactsAction	removeArtifactsAction.coffee	Action	RemoveArtifactsAction	Yes	No	_execute	RemoveModifierAction (for each artifact)	Removes all artifacts from target general
+RemoveRandomArtifactAction	removeRandomArtifactAction.coffee	Action	RemoveRandomArtifactAction	Yes	No	_execute	RemoveModifierAction (for chosen artifact)	Removes random artifact from target general
+RefreshArtifactChargesAction	refreshArtifactChargesAction.coffee	Action	RefreshArtifactChargesAction	Yes	No	_execute	None	Fully restores all artifact charges to max
+RestoreChargeToAllArtifactsAction	restoreChargeToAllArtifactsAction.coffee	Action	RestoreChargeToAllArtifactsAction	Yes	No	_execute	None	Adds 1 charge to all artifacts
+DrawStartingHandAction	drawStartingHandAction.coffee	Action	DrawStartingHandAction	No	No	_execute, getMulliganIndices	PutCardInHandAction (for each mulliganed card)	Handles mulligan and starting hand draw
+DrawToXCardsAction	drawToXCardsAction.coffee	Action	DrawToXCardsAction	No	No	_execute, setCardCount	DrawCardAction (multiple)	Draws cards until hand has X cards
+EndFollowupAction	endFollowupAction.coffee	StopBufferingEventsAction	EndFollowupAction	No	No	(inherits from StopBufferingEventsAction)	StopBufferingEventsAction	Ends followup action sequence
+ActivateSignatureCardAction	activateSignatureCardAction.coffee	Action	ActivateSignatureCardAction	No	No	_execute, getTargetPlayer	None	Activates player's signature card ability
+GenerateSignatureCardAction	generateSignatureCardAction.coffee	Action	GenerateSignatureCardAction	No	No	_execute, getCard	Removes old signature cards	Generates new signature card for player
+UpdateSignatureCardAction	updateSignatureCardAction.coffee	Action	UpdateSignatureCardAction	No	No	_execute, getTargetPlayer	GenerateSignatureCardAction (if active)	Refreshes signature card data
+PlaySignatureCardAction	playSignatureCardAction.coffee	PlayCardAction	PlaySignatureCardAction	Yes	No	_execute, getManaCost	Deactivates signature, GenerateSignatureCardAction	Plays signature card and generates new one
+StopBufferingEventsAction	stopBufferingEventsAction.coffee	Action	StopBufferingEventsAction	No	No	_execute	Game session event flush	Stops buffering events and flushes them
+RollbackToSnapshotAction	rollbackToSnapshotAction.coffee	Action	RollbackToSnapshotAction	No	No	_execute	Game session rollback request	Requests rollback to previous snapshot
+RevealHiddenCardAction	revealHiddenCardAction.coffee	Action	RevealHiddenCardAction	Yes	No	_execute, getCard, getIsValidReveal	Updates apply actions	Reveals a hidden card to players
+TakeAnotherTurnAction	takeAnotherTurnAction.coffee	Action	TakeAnotherTurnAction	No	No	_execute	None	Allows current player to take another turn
+TeleportBehindUnitAction	teleportBehindUnitAction.coffee	TeleportAction	TeleportBehindUnitAction	Yes	Yes	_execute	None	Teleports target behind specified unit
+TeleportInFrontOfUnitAction	teleportInFrontOfUnitAction.coffee	TeleportAction	TeleportInFrontOfUnitAction	Yes	Yes	_execute	None	Teleports target in front of specified unit
+CloneEntityAsTransformAction	cloneEntityAsTransformAction.coffee	CloneEntityAction	CloneEntityAsTransformAction	Yes	Yes	(inherits from CloneEntityAction)	None	Clones entity as transform (no effects)
+PlayCardAsTransformAction	playCardAsTransformAction.coffee	PlayCardSilentlyAction	PlayCardAsTransformAction	Yes	No	(inherits from PlayCardSilentlyAction)	None	Plays card as transform (silent, no effects)
+RandomPlayCardSilentlyAction	randomPlayCardSilentlyAction.coffee	PlayCardSilentlyAction	RandomPlayCardSilentlyAction	Yes	No	_modifyForExecution, getSpawnPattern	None	Plays card silently at random valid position

@@ -1,0 +1,720 @@
+class_name	file_name	parent_class	type	is_keyword	is_watch	applied_name	applied_description	attribute_buffs	stack_type	triggers	effects
+Modifier	modifier.coffee	SDKObject	Modifier	FALSE	FALSE	undefined	undefined			onValidateAction, onBeforeAction, onAfterAction, onEndTurn, onStartTurn, onActivated, onDeactivated, onApplyToCard, onRemoveFromCard	stat_modify, action_modify, grant_modifier
+ModifierATKThresholdDie	modifierATKThresholdDie.coffee	Modifier	ModifierATKThresholdDie	FALSE	FALSE	Modifier ATK Threshold Die	When this unit's attack is greater than %X it dies				
+ModifierAbsorbDamage	modifierAbsorbDamage.coffee	Modifier	ModifierAbsorbDamage	FALSE	FALSE	modifiers.absorb_damage_name	modifiers.absorb_damage_def			onStartTurn	action_modify
+ModifierAbsorbDamageGolems	modifierAbsorbDamageGolems.coffee	Modifier	ModifierAbsorbDamageGolems	FALSE	FALSE	modifiers.absorb_damage_golems_name	modifiers.absorb_damage_golems_def				action_modify
+ModifierAirdrop	modifierAirdrop.coffee	Modifier	ModifierAirdrop	TRUE	FALSE	modifiers.airdrop_name			maxStacks=1		
+ModifierAlwaysBackstabbed	modifierAlwaysBackstabbed.coffee	Modifier	ModifierAlwaysBackstabbed	FALSE	FALSE						action_modify
+ModifierAlwaysInfiltrated	modifierAlwaysInfiltrated.coffee	Modifier	ModifierAlwaysInfiltrated	FALSE	FALSE						
+ModifierAntiMagicField	modifierAntiMagicField.coffee	Modifier	ModifierAntiMagicField	TRUE	FALSE	modifiers.antimagic_field_name			maxStacks=1	onValidateAction	action_modify
+ModifierAnyDrawCardWatch	modifierAnyDrawCardWatch.coffee	Modifier	ModifierAnyDrawCardWatch	FALSE	TRUE	AnyDrawCardWatch	Whenever any player draws a card ...			onDrawCardWatch	draw
+ModifierAnyDrawCardWatchBuffSelf	modifierAnyDrawCardWatchBuffSelf.coffee	ModifierAnyDrawCardWatch	ModifierAnyDrawCardWatchBuffSelf	FALSE	TRUE	modifiers.any_draw_card_watch_buff_self_name	modifiers.any_draw_card_watch_buff_self_def			onDrawCardWatch	stat_modify, grant_modifier
+ModifierAnyMinionHealWatch	modifierAnyMinionHealWatch.coffee	Modifier	ModifierAnyMinionHealWatch	FALSE	TRUE	Any minion HealWatch				onHealWatch	
+ModifierAnySummonWatch	modifierAnySummonWatch.coffee	Modifier	ModifierAnySummonWatch	FALSE	TRUE	Any Summon Watch	Any Summon Watch			onSummonWatch	
+ModifierAnySummonWatchFromActionBar	modifierAnySummonWatchFromActionBar.coffee	Modifier	ModifierAnySummonWatchFromActionBar	FALSE	TRUE	Any Summon Watch From Action Bar	Any Summon Watch From Action Bar			onSummonWatch	
+ModifierAnySummonWatchFromActionBarApplyModifiersToSelf	modifierAnySummonWatchFromActionBarApplyModifiersToSelf.coffee	ModifierAnySummonWatchFromActionBar	ModifierAnySummonWatchFromActionBarApplyModifiersToSelf	FALSE	TRUE		modifiers.any_summon_watch_from_action_bar_apply_modifiers_def			onSummonWatch	grant_modifier
+ModifierAnySummonWatchGainGeneralKeywords	modifierAnySummonWatchGainGeneralKeywords.coffee	ModifierAnySummonWatch	ModifierAnySummonWatchGainGeneralKeywords	FALSE	TRUE					onSummonWatch	
+ModifierApplyMinionToBoardWatch	modifierApplyMinionToBoardWatch.coffee	Modifier	ModifierApplyMinionToBoardWatch	FALSE	FALSE	Any ApplyToBoard Watch	Any ApplyToBoard Watch				
+ModifierApplyMinionToBoardWatchApplyModifiersToTarget	modifierApplyMinionToBoardWatchApplyModifiersToTarget.coffee	ModifierApplyMinionToBoardWatch	ModifierApplyMinionToBoardWatchApplyModifiersToTarget	FALSE	FALSE	modifiers.apply_minion_to_board_watch_apply_modifiers_to_target_name	modifiers.apply_minion_to_board_watch_apply_modifiers_to_target_def				grant_modifier
+ModifierAttackEqualsHealth	modifierAttackEqualsHealth.coffee	Modifier	ModifierAttackEqualsHealth	FALSE	FALSE				maxStacks=1		stat_modify
+ModifierAttacksDamageAllEnemyMinions	modifierAttacksDamageAllEnemyMinions.coffee	Modifier	ModifierAttacksDamageAllEnemyMinions	FALSE	FALSE	Attacks Damage All Enemy Minions	Attacks damage all enemy minions		maxStacks=1	onBeforeAction	
+ModifierAttacksDealNoDamage	modifierAttacksDealNoDamage.coffee	Modifier	ModifierAttacksDealNoDamage	FALSE	FALSE	modifiers.attacks_deal_no_damage_name	modifiers.attack_equals_health_def		maxStacks=1		action_modify
+ModifierAuraAboveAndBelow	modifierAuraAboveAndBelow.coffee	Modifier	ModifierAuraAboveAndBelow	FALSE	FALSE						
+ModifierBackstab	modifierBackstab.coffee	Modifier	ModifierBackstab	TRUE	FALSE	modifiers.backstab_name					damage, action_modify
+ModifierBackstabWatch	modifierBackstabWatch.coffee	Modifier	ModifierBackstabWatch	FALSE	FALSE	Backstab Watch: Self	Backstab Watch: Self				
+ModifierBackstabWatchAddCardToHand	modifierBackstabWatchAddCardToHand.coffee	ModifierBackstabWatch	ModifierBackstabWatchAddCardToHand	FALSE	FALSE						summon
+ModifierBackstabWatchApplyModifiersToTarget	modifierBackstabWatchApplyModifiersToTarget.coffee	ModifierBackstabWatch	ModifierBackstabWatchApplyModifiersToTarget	FALSE	FALSE						grant_modifier
+ModifierBackstabWatchApplyPlayerModifiers	modifierBackstabWatchApplyPlayerModifiers.coffee	ModifierBackstabWatch	ModifierBackstabWatchApplyPlayerModifiers	FALSE	FALSE						grant_modifier
+ModifierBackstabWatchStealSpellFromDeck	modifierBackstabWatchStealSpellFromDeck.coffee	ModifierBackstabWatch	ModifierBackstabWatchStealSpellFromDeck	FALSE	FALSE	modifiers.backstab_watch_steal_spell_from_deck_name	modifiers.backstab_watch_steal_spell_from_deck_def				summon
+ModifierBackstabWatchSummonBackstabMinion	modifierBackstabWatchSummonBackstabMinion.coffee	ModifierBackstabWatch	ModifierBackstabWatchSummonBackstabMinion	FALSE	FALSE						summon
+ModifierBackstabWatchTransformToBuilding	modifierBackstabWatchTransformToBuilding.coffee	ModifierBackstabWatch	ModifierBackstabWatchTransformToBuilding	FALSE	FALSE						
+ModifierBackupGeneral	modifierBackupGeneral.coffee	Modifier	ModifierBackupGeneral	FALSE	FALSE						
+ModifierBanded	modifierBanded.coffee	Modifier	ModifierBanded	FALSE	FALSE	modifiers.banded_name	modifiers.banded_def				stat_modify
+ModifierBandedDoubleAttack	modifierBandedDoubleAttack.coffee	ModifierBanded	ModifierBandedDoubleAttack	FALSE	FALSE	Zealed: Lion's Growth	Double this minion's Attack at the end of your turn			onEndTurn	
+ModifierBandedFlying	modifierBandedFlying.coffee	ModifierFlying	ModifierBandedFlying	FALSE	FALSE						
+ModifierBandedHeal	modifierBandedHeal.coffee	ModifierBanded	ModifierBandedHeal	FALSE	FALSE	modifiers.banded_heal_name	modifiers.banded_heal_desc			onEndTurn	
+ModifierBandedProvoke	modifierBandedProvoke.coffee	ModifierProvoke	ModifierBandedProvoke	FALSE	FALSE						
+ModifierBandedRanged	modifierBandedRanged.coffee	ModifierRanged	ModifierBandedRanged	FALSE	FALSE	modifiers.banded_ranged_name	modifiers.banded_ranged_def				
+ModifierBanding	modifierBanding.coffee	ModifierSituationalBuffSelf	ModifierBanding	TRUE	FALSE	modifiers.zeal_name					
+ModifierBandingApplyModifiers	modifierBandingApplyModifiers.coffee	ModifierBanding	ModifierBandingApplyModifiers	FALSE	FALSE		Apply buffs		maxStacks=1		grant_modifier
+ModifierBandingAttack	modifierBandingAttack.coffee	ModifierBanding	ModifierBandingAttack	FALSE	FALSE						grant_modifier
+ModifierBandingAttackAndHealth	modifierBandingAttackAndHealth.coffee	ModifierBanding	ModifierBandingAttackAndHealth	FALSE	FALSE		Gains %X / %Y				stat_modify, grant_modifier
+ModifierBandingChangeCardDraw	modifierBandingChangeCardDraw.coffee	ModifierBanding	ModifierBandingChangeCardDraw	FALSE	FALSE		modifiers.banding_change_card_draw_def				grant_modifier
+ModifierBandingDealDamageWatchDrawCard	modifierBandingDealDamageWatchDrawCard.coffee	ModifierBanding	ModifierBandingDealDamageWatchDrawCard	FALSE	TRUE				maxStacks=1		grant_modifier
+ModifierBandingDoubleAttack	modifierBandingDoubleAttack.coffee	ModifierBanding	ModifierBandingDoubleAttack	FALSE	FALSE		Double this minion's Attack at the end of your turn		maxStacks=1		grant_modifier
+ModifierBandingFlying	modifierBandingFlying.coffee	ModifierBanding	ModifierBandingFlying	FALSE	FALSE						grant_modifier
+ModifierBandingHeal	modifierBandingHeal.coffee	ModifierBanding	ModifierBandingHeal	FALSE	FALSE				maxStacks=1		grant_modifier
+ModifierBandingHealSelfAndGeneral	modifierBandingHealSelfAndGeneral.coffee	ModifierBanding	ModifierBandingHealSelfAndGeneral	FALSE	FALSE						grant_modifier
+ModifierBandingProvoke	modifierBandingProvoke.coffee	ModifierBanding	ModifierBandingProvoke	FALSE	FALSE						grant_modifier
+ModifierBandingRanged	modifierBandingRanged.coffee	ModifierBanding	ModifierBandingRanged	FALSE	FALSE	Zeal			maxStacks=1		grant_modifier
+ModifierBattlePet	modifierBattlePet.coffee	Modifier	ModifierBattlePet	TRUE	FALSE	modifiers.battle_pet_name			maxStacks=1	onValidateAction	action_modify
+ModifierBeforeMyAttackWatch	modifierBeforeMyAttackWatch.coffee	Modifier	ModifierBeforeMyAttackWatch	FALSE	TRUE					onBeforeAction	
+ModifierBelongsToAllRaces	modifierBelongsToAllRaces.coffee	Modifier	ModifierBelongsToAllRaces	FALSE	FALSE	modifiers.belongs_to_all_races_name	modifiers.belongs_to_all_races_def				
+ModifierBlastAttack	modifierBlastAttack.coffee	Modifier	ModifierBlastAttack	TRUE	FALSE	modifiers.blast_name			maxStacks=1	onBeforeAction	
+ModifierBlastAttackStrong	modifierBlastAttackStrong.coffee	ModifierBlastAttack	ModifierBlastAttackStrong	FALSE	FALSE						
+ModifierBond	modifierBond.coffee	Modifier	ModifierBond	TRUE	FALSE	modifiers.bond_name	Bond				
+ModifierBondApplyModifiers	modifierBondApplyModifiers.coffee	ModifierBond	ModifierBondApplyModifiers	FALSE	FALSE						grant_modifier
+ModifierBondApplyModifiersByRaceId	modifierBondApplyModifiersByRaceId.coffee	ModifierBondAplyModifiers	ModifierBondApplyModifiersByRaceId	FALSE	FALSE						grant_modifier
+ModifierBondDrawCards	modifierBondDrawCards.coffee	ModifierBond	ModifierBondDrawCards	FALSE	FALSE		Draw some cards from the deck				
+ModifierBondHealMyGeneral	modifierBondHealMyGeneral.coffee	ModifierBond	ModifierBondHealMyGeneral	FALSE	FALSE		Heal your General				
+ModifierBondNightshroud	modifierBondNightshroud.coffee	ModifierBond	ModifierBondNightshroud	FALSE	FALSE		Your General steals 1 Health from the enemy General for each friendly minion				
+ModifierBondPutCardsInHand	modifierBondPutCardsInHand.coffee	ModifierBond	ModifierBondPutCardsInHand	FALSE	FALSE		Draw some cards				summon
+ModifierBondSpawnEntity	modifierBondSpawnEntity.coffee	ModifierBond	ModifierBondSpawnEntity	FALSE	FALSE		Summon %X				
+ModifierBuffSelfOnReplace	modifierBuffSelfOnReplace.coffee	Modifier	ModifierBuffSelfOnReplace	FALSE	FALSE	Buff Self On Replace	modifiers.buff_self_on_replace_def				stat_modify, grant_modifier
+ModifierBuild	modifierBuild.coffee	Modifier	ModifierBuild	TRUE	FALSE	modifiers.build_name			maxStacks=1		action_modify
+ModifierBuildCompleteApplyModifiersToNearbyAllies	modifierBuildCompleteApplyModifiersToNearbyAllies.coffee	ModifierBuilding	ModifierBuildCompleteApplyModifiersToNearbyAllies	FALSE	FALSE						
+ModifierBuildCompleteGainTempMana	modifierBuildCompleteGainTempMana.coffee	ModifierBuilding	ModifierBuildCompleteGainTempMana	FALSE	FALSE						
+ModifierBuildCompleteHealGeneral	modifierBuildCompleteHealGeneral.coffee	ModifierBuilding	ModifierBuildCompleteHealGeneral	FALSE	FALSE						
+ModifierBuildCompleteReplicateAndSummonDervish	modifierBuildCompleteReplicateAndSummonDervish.coffee	ModifierBuilding	ModifierBuildCompleteReplicateAndSummonDervish	FALSE	FALSE						
+ModifierBuildWatch	modifierBuildWatch.coffee	Modifier	ModifierBuildWatch	FALSE	FALSE	Build Watch	Build Watch				
+ModifierBuilding	modifierBuilding.coffee	ModifierStartTurnWatch	ModifierBuilding	FALSE	FALSE	Build			maxStacks=1	onApplyToCard	
+ModifierBuildingSlowEnemies	modifierBuildingSlowEnemies.coffee	ModifierBuilding	ModifierBuildingSlowEnemies	FALSE	FALSE						stat_modify
+ModifierCannot	modifierCannot.coffee	Modifier	ModifierCannot	FALSE	FALSE	Cannot					
+ModifierCannotAttackGeneral	modifierCannotAttackGeneral.coffee	ModifierCannot	ModifierCannotAttackGeneral	FALSE	FALSE	modifiers.cannot_attack_general_name	modifiers.cannot_attack_general_def			onValidateAction	action_modify
+ModifierCannotBeRemovedFromHand	modifierCannotBeRemovedFromHand.coffee	ModifierCannot	ModifierCannotBeRemovedFromHand	FALSE	FALSE					onValidateAction	action_modify
+ModifierCannotBeReplaced	modifierCannotBeReplaced.coffee	ModifierCannot	ModifierCannotBeReplaced	FALSE	FALSE	modifiers.bound_name	modifiers.bound_desc			onValidateAction	action_modify
+ModifierCannotCastBBS	modifierCannotCastBBS.coffee	ModifierCannot	ModifierCannotCastBBS	FALSE	FALSE	Cannot Cast BBS	Player can't cast Bloodbound Spell.			onValidateAction	action_modify
+ModifierCannotCastSpellsByCost	modifierCannotCastSpellsByCost.coffee	ModifierCannot	ModifierCannotCastSpellsByCost	FALSE	FALSE	Cannot Cast Spells	Players can't cast spells.			onValidateAction	action_modify
+ModifierCannotDamageGenerals	modifierCannotDamageGenerals.coffee	ModifierCannot	ModifierCannotDamageGenerals	FALSE	FALSE						action_modify
+ModifierCannotMove	modifierCannotMove.coffee	ModifierCannot	ModifierCantMove	FALSE	FALSE	modifiers.faction_3_spell_sand_trap_1	modifiers.faction_3_spell_sand_trap_1	"speed:0; attributeBuffsAbsolute:[""speed""]; attributeBuffsFixed:[""speed""]"			stat_modify
+ModifierCannotStrikeback	modifierCannotStrikeback.coffee	ModifierCannot	ModifierCannotStrikeback	FALSE	FALSE	modifiers.cannot_strikeback_name	modifiers.cannot_strikeback_def				action_modify
+ModifierCardControlledPlayerModifiers	modifierCardControlledPlayerModifiers.coffee	Modifier	ModifierCardControlledPlayerModifiers	FALSE	FALSE						grant_modifier
+ModifierCollectable	modifierCollectable.coffee	Modifier	ModifierCollectable	FALSE	FALSE	Collectable	When another entity moves onto this location..				
+ModifierCollectableBonusMana	modifierCollectableBonusMana.coffee	ModifierCollectable	ModifierCollectableBonusMana	FALSE	FALSE	modifiers.bonus_mana_name	modifiers.bonus_mana_def				
+ModifierCollectableCard	modifierCollectableCard.coffee	ModifierCollectable	ModifierCollectableCard	FALSE	FALSE	modifiers.bonus_mana_name	modifiers.bonus_mana_def				summon
+ModifierCostChangeIfMyGeneralDamagedLastTurn	modifierCostChangeIfMyGeneralDamagedLastTurn.coffee	ModifierMyGeneralDamagedWatch	ModifierCostChangeIfMyGeneralDamagedLastTurn	FALSE	FALSE	My General Damaged Watch	modifiers.cost_change_if_my_general_damaged_last_turn_name_def			onEndTurn	grant_modifier
+ModifierCostEqualGeneralHealth	modifierCostEqualGeneralHealth.coffee	Modifier	ModifierCostEqualGeneralHealth	FALSE	FALSE	Raging Taura	This minion's cost is equal to your General's Health		maxStacks=1		stat_modify
+ModifierCounter	modifierCounter.coffee	Modifier	ModifierCounter	FALSE	FALSE						
+ModifierCounterBuildProgress	modifierCounterBuildProgress.coffee	ModifierCounter	ModifierCounterBuildProgress	FALSE	FALSE				maxStacks=1	onAfterAction	
+ModifierCounterBuildProgressDescription	modifierCounterBuildProgressDescription.coffee	Modifier	ModifierCounterBuildProgressDescription	FALSE	FALSE				maxStacks=1		
+ModifierCounterIntensify	modifierCounterIntensify.coffee	ModifierCounter	ModifierCounterIntensify	FALSE	FALSE				maxStacks=1	onAfterAction	
+ModifierCounterIntensifyDescription	modifierCounterIntensifyDescription.coffee	Modifier	ModifierCounterIntensifyDescription	FALSE	FALSE				maxStacks=1		
+ModifierCounterMechazorBuildProgress	modifierCounterMechazorBuildProgress.coffee	ModifierCounter	ModifierCounterMechazorBuildProgress	FALSE	FALSE				maxStacks=1		
+ModifierCounterMechazorBuildProgressDescription	modifierCounterMechazorBuildProgressDescription.coffee	Modifier	ModifierCounterMechazorBuildProgressDescription	FALSE	FALSE				maxStacks=1		
+ModifierCounterShadowCreep	modifierCounterShadowCreep.coffee	ModifierCounter	ModifierCounterShadowCreep	FALSE	FALSE				maxStacks=1		
+ModifierCounterShadowCreepDescriptionProgressDescription	modifierCounterShadowCreepDescription.coffee	Modifier	ModifierCounterShadowCreepDescriptionProgressDescription	FALSE	FALSE				maxStacks=1		
+ModifierCustomSpawn	modifierCustomSpawn.coffee	Modifier	ModifierCustomSpawn	FALSE	FALSE	Custom Spawn					
+ModifierCustomSpawnOnOtherUnit	modifierCustomSpawnOnOtherUnit.coffee	ModifierCustomSpawn	ModifierCustomSpawnOnOtherUnit	FALSE	FALSE	Custom Spawn					
+ModifierDamageAreaAttack	modifierDamageAreaAttack.coffee	Modifier	ModifierDamageAreaAttack	FALSE	FALSE					onBeforeAction	
+ModifierDamageBothGeneralsOnReplace	modifierDamageBothGeneralsOnReplace.coffee	Modifier	ModifierDamageBothGeneralsOnReplace	FALSE	FALSE						
+ModifierDamageGeneralOnAttack	modifierDamageGeneralOnAttack.coffee	ModifierDealDamageWatch	ModifierDamageGeneralOnAttack	FALSE	FALSE	Damaging Attacks	Whenever this damages an enemy minion, deal %X damage to the enemy General				
+ModifierDealDamageWatch	modifierDealDamageWatch.coffee	Modifier	ModifierDealDamageWatch	FALSE	TRUE	Deal Damage Watch	Each time this unit damages an enemy unit...				
+ModifierDealDamageWatchApplyModifiersToAllies	modifierDealDamageWatchApplyModifiersToAllies.coffee	ModifierDealDamageWatch	ModifierDealDamageWatchApplyModifiersToAllies	FALSE	TRUE						
+ModifierDealDamageWatchBuffSelf	modifierDealDamageWatchBuffSelf.coffee	ModifierDealDamageWatch	ModifierDealDamageWatchBuffSelf	FALSE	TRUE		Whenever this minion damages an enemy, this minion gains %X				stat_modify, grant_modifier
+ModifierDealDamageWatchControlEnemyMinionUntilEOT	modifierDealDamageWatchControlEnemyMinionUntilEOT.coffee	ModifierDealDamageWatch	ModifierDealDamageWatchControlEnemyMinionUntilEOT	FALSE	TRUE	Deal Damage to a minion and take control of it	Whenever this minion deals damage to a minion, take control of it until end of turn			onEndTurn	
+ModifierDealDamageWatchDamageJoinedEnemies	modifierDealDamageWatchDamageJoinedEnemies.coffee	ModifierDealDamageWatch	ModifierDealDamageWatchDamageJoinedEnemies	FALSE	TRUE	Deal Damage to an enemy and all joined enemies	Whenever this minion deals damage to an enemy, damage all joined enemies				
+ModifierDealDamageWatchDrawCard	modifierDealDamageWatchDrawCard.coffee	ModifierDealDamageWatch	ModifierDealDamageWatchDrawCard	FALSE	TRUE	Deal Damage and draw card	Whenever this minion deals damage, draw a card				draw
+ModifierDealDamageWatchHatchEggs	modifierDealDamageWatchHatchEggs.coffee	ModifierDealDamageWatch	ModifierDealDamageWatchHatchEggs	FALSE	TRUE	Deal Damage and hatch eggs	Whenever this deals damage, hatch all friendly eggs				
+ModifierDealDamageWatchHealMyGeneral	modifierDealDamageWatchHealMyGeneral.coffee	ModifierDealDamageWatch	ModifierDealDamageWatchHealMyGeneral	FALSE	TRUE	Deal Damage Watch	Whenever this minion deals damage, restore %X Health to your General				
+ModifierDealDamageWatchHealorDamageGeneral	modifierDealDamageWatchHealorDamageGeneral.coffee	ModifierDealDamageWatch	ModifierDealDamageWatchHealorDamageGeneral	FALSE	TRUE	Deal Damage Watch	Whenever this minion deals damage, either deal %X damage to the enemy General OR restore %X Health to your General				heal
+ModifierDealDamageWatchIfMinionHealMyGeneral	modifierDealDamageWatchIfMinionHealMyGeneral.coffee	ModifierDealDamageWatchHealMyGeneral	ModifierDealDamageWatchIfMinionHealMyGeneral	FALSE	TRUE	Deal Damage Watch	Whenever this minion deals damage to a minion, restore Health to your General				
+ModifierDealDamageWatchKillNeutralTarget	modifierDealDamageWatchKillNeutralTarget.coffee	ModifierDealDamageWatchKillTarget	ModifierDealDamageWatchKillNeutralTarget	FALSE	TRUE	Neutral Assassin	Whenever this damages a neutral minion, destroy that minion		maxStacks=1		
+ModifierDealDamageWatchKillTarget	modifierDealDamageWatchKillTarget.coffee	ModifierDealDamageWatch	ModifierDealDamageWatchKillTarget	FALSE	TRUE				maxStacks=1		
+ModifierDealDamageWatchKillTargetAndSelf	modifierDealDamageWatchKillTargetAndSelf.coffee	ModifierDealDamageWatch	ModifierDealDamageWatchKillTargetAndSelf	FALSE	TRUE	Clumsy Assassin	Whenever this unit deals damage to an enemy minion, destroy itself and the enemy minion				
+ModifierDealDamageWatchModifyTarget	modifierDealDamageWatchModifyTarget.coffee	ModifierDealDamageWatch	ModifierDealDamageWatchModifyTarget	FALSE	TRUE		Whenever this minion damages an enemy minion, %X				grant_modifier
+ModifierDealDamageWatchRefreshSignatureCard	modifierDealDamageWatchRefreshSignatureCard.coffee	ModifierDealDamageWatch	ModifierDealDamageWatchRefreshSignatureCard	FALSE	TRUE	Deal Damage and refresh BBS	When this minion deals damage, refresh your Bloodbound Spell				
+ModifierDealDamageWatchSpawnEntity	modifierDealDamageWatchSpawnEntity.coffee	ModifierDealDamageWatch	ModifierDealDamageWatchSpawnEntity	FALSE	TRUE	Deal Damage Watch	Whenever this minion damages an enemy, summon %X				
+ModifierDealDamageWatchTeleportEnemyToYourSide	modifierDealDamageWatchTeleportEnemyToYourSide.coffee	ModifierDealDamageWatch	ModifierDealDamageWatchTeleportEnemyToYourSide	FALSE	TRUE	Deal Damage Teleport Enemy	Whenever this minion deals damage to an enemy, teleport it to your starting side of the battlefield				
+ModifierDealDamageWatchTeleportToMe	modifierDealDamageWatchTeleportToMe.coffee	ModifierDealDamageWatch	ModifierDealDamageWatchTeleportToMe	FALSE	TRUE	Deal Damage Watch Teleport To Me	Minions damaged by Syvrel are pulled in front of him		maxStacks=1		
+ModifierDealOrTakeDamageWatch	modifierDealOrTakeDamageWatch.coffee	Modifier	ModifierDealOrTakeDamageWatch	FALSE	TRUE	Deal Or Take Damage Watch	Each time this unit takes damage or damages an enemy unit...				
+ModifierDealOrTakeDamageWatchRandomTeleportOther	modifierDealOrTakeDamageWatchRandomTeleportOther.coffee	ModifierDealOrTakeDamageWatch	ModifierDealOrTakeDamageWatchRandomTeleportOther	FALSE	TRUE		Whenever an enemy damages or takes damage from this, teleport that enemy to a random location				
+ModifierDeathWatch	modifierDeathWatch.coffee	Modifier	ModifierDeathWatch	TRUE	TRUE	modifiers.deathwatch_name	Deathwatch			onDeathWatch	
+ModifierDeathWatchBuffMinionsInHand	modifierDeathWatchBuffMinionsInHand.coffee	ModifierDeathWatch	ModifierDeathWatchBuffMinionsInHand	FALSE	TRUE					onDeathWatch	grant_modifier
+ModifierDeathWatchBuffRandomMinionInHand	modifierDeathWatchBuffRandomMinionInHand.coffee	ModifierDeathWatch	ModifierDeathWatchBuffRandomMinionInHand	FALSE	TRUE		Give a minion in your hand %X			onDeathWatch	grant_modifier
+ModifierDeathWatchBuffSelf	modifierDeathWatchBuffSelf.coffee	ModifierDeathWatch	ModifierDeathWatchBuffSelf	TRUE	TRUE	modifiers.deathwatch_name	Gains %X			onDeathWatch	stat_modify, grant_modifier
+ModifierDeathWatchDamageEnemyGeneralHealMyGeneral	modifierDeathWatchDamageEnemyGeneralHealMyGeneral.coffee	ModifierDeathWatch	ModifierDeathWatchDamageEnemyGeneral	FALSE	TRUE	Deathwatch	Deal %X damage to the enemy General, and restore %Y Health to your General			onDeathWatch	
+ModifierDeathWatchDamageRandomMinionHealMyGeneral	modifierDeathWatchDamageRandomMinionHealMyGeneral.coffee	ModifierDeathWatch	ModifierDeathWatchDamageRandomMinionHealMyGeneral	FALSE	TRUE	Deathwatch	When a friendly minion dies, deal %X damage to a random minion, and restore %Y Health to your General			onDeathWatch	
+ModifierDeathWatchDrawToXCards	modifierDeathWatchDrawToXCards.coffee	ModifierDeathWatch	ModifierDeathWatchDrawToXCards	FALSE	TRUE	Deathwatch	Draw until you have %X cards			onDeathWatch	
+ModifierDeathWatchFriendlyMinionSwapAllegiance	modifierDeathWatchFriendlyMinionSwapAllegiance.coffee	ModifierDeathWatch	ModifierDeathWatchFriendlyMinionSwapAllegiance	FALSE	TRUE	Deathwatch	Whenever a friendly minion is destroyed, your opponent gains control of this minion.			onDeathWatch	
+ModifierDeathWatchGainAttackEqualToEnemyAttack	modifierDeathWatchGainAttackEqualToEnemyAttack.coffee	ModifierDeathWatch	ModifierDeathWatchGainAttackEqualToEnemyAttack	FALSE	TRUE	Deathwatch	When an enemy minion dies, gain attack equal to its attack			onDeathWatch	
+ModifierDeathWatchSpawnEntity	modifierDeathWatchSpawnEntity.coffee	ModifierDeathWatch	ModifierDeathWatchSpawnEntity	FALSE	TRUE	Deathwatch	Summon a %X on a random nearby space			onDeathWatch	
+ModifierDeathWatchSpawnRandomDemon	modifierDeathWatchSpawnRandomDemon.coffee	ModifierDeathWatch	ModifierDeathWatchSpawnRandomDemon	FALSE	TRUE					onDeathWatch	
+ModifierDestroyAtEndOfTurn	modifierDestroyAtEndOfTurn.coffee	Modifier	ModifierDestroyAtEndOfTurn	FALSE	FALSE		modifiers.destroy_at_end_of_turn_def		maxStacks=1	onEndTurn	
+ModifierDestructible	modifierDestructible.coffee	Modifier	ModifierDestructible	TRUE	FALSE	modifiers.destructible_name			maxStacks=1		
+ModifierDieSpawnNewGeneral	modifierDieSpawnNewGeneral.coffee	Modifier	ModifierDieSpawnNewGeneral	FALSE	FALSE	Die Spawn New General	When this reaches low HP, watch out!		maxStacks=1	onValidateAction	action_modify
+ModifierDispelAreaAttack	modifierDispelAreaAttack.coffee	Modifier	ModifierDispelAreaAttack	FALSE	FALSE	Magic Buster Cannon	Whenever this attacks or counterattacks, it damages and dispels the enemy and all enemies nearby that target		maxStacks=1	onBeforeAction	
+ModifierDispelOnAttack	modifierDispelOnAttack.coffee	Modifier	ModifierDispelOnAttack	FALSE	FALSE				maxStacks=1	onBeforeAction	
+ModifierDoomed	modifierDoomed.coffee	ModifierEndTurnWatch	ModifierDoomed	FALSE	FALSE	modifiers.doomed_name	modifiers.doomed_1_def		maxStacks=1		
+ModifierDoomed2	modifierDoomed2.coffee	ModifierEndTurnWatch	ModifierDoomed2	FALSE	FALSE	modifiers.doomed_name	modifiers.doomed_2_def		maxStacks=1		
+ModifierDoomed3	modifierDoomed3.coffee	ModifierEndTurnWatch	ModifierDoomed3	FALSE	FALSE	modifiers.doomed_name	modifiers.doomed_3_def		maxStacks=1		
+ModifierDoubleAttackStat	modifierDoubleAttackStat.coffee	Modifier	ModifierDoubleAttackStat	FALSE	FALSE		Doubled Attack			onApplyToCard	stat_modify
+ModifierDoubleDamageToEnemyMinions	modifierDoubleDamageToEnemyMinions.coffee	Modifier	ModifierDoubleDamageToEnemyMinions	FALSE	FALSE	Double Damage To Enemy Minions	Deals double damage to enemy minions				action_modify
+ModifierDoubleDamageToGenerals	modifierDoubleDamageToGenerals.coffee	Modifier	ModifierDoubleDamageToGenerals	FALSE	FALSE	Double Damage To Generals	Deals double damage to Generals				action_modify
+ModifierDoubleDamageToMinions	modifierDoubleDamageToMinions.coffee	Modifier	ModifierDoubleDamageToMinions	FALSE	FALSE	Double Damage To Minions	Deals double damage to minions				action_modify
+ModifierDoubleDamageToStunnedEnemies	modifierDoubleDamageToStunnedEnemies.coffee	Modifier	ModifierDoubleDamageToStunnedEnemies	FALSE	FALSE						action_modify
+ModifierDoubleHealthStat	modifierDoubleHealthStat.coffee	Modifier	ModifierDoubleHealthStat	FALSE	FALSE		Doubled Health			onApplyToCard	stat_modify
+ModifierDrawCardWatch	modifierDrawCardWatch.coffee	Modifier	ModifierDrawCardWatch	FALSE	TRUE	DrawCardWatch	Whenever you draw a card ...			onDrawCardWatch	draw
+ModifierDrawCardWatchBuffSelf	modifierDrawCardWatchBuffSelf.coffee	ModifierDrawCardWatch	ModifierDrawCardWatchBuffSelf	FALSE	TRUE	Draw Card Watch	modifiers.draw_card_watch_buff_self_def			onDrawCardWatch	stat_modify, grant_modifier
+ModifierDrawCardWatchCopySpell	modifierDrawCardWatchCopySpell.coffee	ModifierDrawCardWatch	ModifierDrawCardWatchCopySpell	FALSE	TRUE	Draw Card Watch	Whenever you draw a spell, put another copy of it in your Action Bar			onDrawCardWatch	summon
+ModifierDyingWish	modifierDyingWish.coffee	Modifier	ModifierDyingWish	TRUE	FALSE	modifiers.dying_wish_name					
+ModifierDyingWishAddCardToDeck	modifierDyingWishAddCardToDeck.coffee	ModifierDyingWish	ModifierDyingWishAddCardToDeck	FALSE	FALSE						
+ModifierDyingWishApplyModifiers	modifierDyingWishApplyModifiers.coffee	ModifierDyingWish	ModifierDyingWishApplyModifiers	FALSE	FALSE						grant_modifier
+ModifierDyingWishApplyModifiersRandomly	modifierDyingWishApplyModifiersRandomly.coffee	ModifierDyingWishApplyModifiers	ModifierDyingWishApplyModifiersRandomly	FALSE	FALSE						grant_modifier
+ModifierDyingWishApplyModifiersToGenerals	modifierDyingWishApplyModifiersToGenerals.coffee	ModifierDyingWish	ModifierDyingWishApplyModifiersToGenerals	FALSE	FALSE						grant_modifier
+ModifierDyingWishBonusMana	modifierDyingWishBonusMana.coffee	ModifierDyingWish	ModifierDyingWishBonusMana	FALSE	FALSE	Bonus Mana	When this entity dies, its owner gains bonus mana				
+ModifierDyingWishBonusManaCrystal	modifierDyingWishBonusManaCrystal.coffee	ModifierDyingWish	ModifierDyingWishBonusManaCrystal	FALSE	FALSE		Permanently gain 1 mana crystal				
+ModifierDyingWishBuffEnemyGeneral	modifierDyingWishBuffEnemyGeneral.coffee	ModifierDyingWish	ModifierDyingWishBuffEnemyGeneral	FALSE	FALSE						
+ModifierDyingWishCorpseCombustion	modifierDyingWishCorpseCombustion.coffee	ModifierDyingWish	ModifierDyingWishCorpseCombustion	FALSE	FALSE	Dying Wish	Resummon this minion and deal 3 damage to all nearby enemies				
+ModifierDyingWishDagona	modifierDyingWishDagona.coffee	ModifierDyingWishSpawnEntity	ModifierDyingWishDagona	FALSE	FALSE						
+ModifierDyingWishDamageEnemyGeneralHealGeneral	modifierDyingWishDamageEnemyGeneralHealGeneral.coffee	ModifierDyingWish	ModifierDyingWishDamageEnemyGeneralHealGeneral	FALSE	FALSE		Deal %X damage to the enemy General. Restore %X Health to your General				
+ModifierDyingWishDamageGeneral	modifierDyingWishDamageGeneral.coffee	ModifierDyingWish	ModifierDyingWishDamageGeneral	FALSE	FALSE						
+ModifierDyingWishDamageNearbyAllies	modifierDyingWishDamageNearbyAllies.coffee	ModifierDyingWish	ModifierDyingWishDamageNearbyAllies	FALSE	FALSE	Curse of Agony	When this minion dies, deal %X damage to all nearby friendly minions and General				
+ModifierDyingWishDamageNearbyEnemies	modifierDyingWishDamageNearbyEnemies.coffee	ModifierDyingWish	ModifierDyingWishDamageNearbyEnemies	FALSE	FALSE		This minion deals %X damage to all enemies around it				
+ModifierDyingWishDestroyManaCrystal	modifierDyingWishDestroyManaCrystal.coffee	ModifierDyingWish	ModifierDyingWishDestroyManaCrystal	FALSE	FALSE						
+ModifierDyingWishDestroyRandomEnemyNearby	modifierDyingWishDestroyRandomEnemyNearby.coffee	ModifierDyingWish	ModifierDyingWishDestroyRandomEnemyNearby	FALSE	FALSE						
+ModifierDyingWishDispelAllEnemyMinions	modifierDyingWishDispelAllEnemyMinions.coffee	ModifierDyingWish	ModifierDyingWishDispelAllEnemies	FALSE	FALSE		Dispel all enemy minions				
+ModifierDyingWishDispelNearestEnemy	modifierDyingWishDispelNearestEnemy.coffee	ModifierDyingWish	ModifierDyingWishDispelNearestEnemy	FALSE	FALSE		Dispel the nearest enemy minion				
+ModifierDyingWishDrawCard	modifierDyingWishDrawCard.coffee	ModifierDyingWish	ModifierDyingWishDrawCard	FALSE	FALSE		Draw %X				
+ModifierDyingWishDrawEnemyLegendaryArtifact	modifierDyingWishDrawEnemyLegendaryArtifact.coffee	ModifierDyingWish	ModifierDyingWishDrawEnemyLegendaryArtifact	FALSE	FALSE						summon
+ModifierDyingWishDrawMechazorCard	modifierDyingWishDrawMechazorCard.coffee	ModifierDyingWish	ModifierDyingWishDrawMechazorCard	FALSE	FALSE		Put a random MECH minion into your action bar				summon
+ModifierDyingWishDrawMinionsWithDyingWish	modifierDyingWishDrawMinionsWithDyingWish.coffee	ModifierDyingWish	ModifierDyingWishDrawMinionsWithDyingWish	FALSE	FALSE		Draw minions with a Dying Wish				draw
+ModifierDyingWishDrawRandomBattlePet	modifierDyingWishDrawRandomBattlePet.coffee	ModifierDyingWish	ModifierDyingWishDrawRandomBattlePet	FALSE	FALSE	Dying Wish	Put a random Battle Pet into your action bar				summon
+ModifierDyingWishDrawWishCard	modifierDyingWishDrawWishCard.coffee	ModifierDyingWish	ModifierDyingWishDrawWishCard	FALSE	FALSE		Put a random Wish card into your action bar				summon
+ModifierDyingWishEquipArtifactFromDeck	modifierDyingWishEquipArtifactFromDeck.coffee	ModifierDyingWish	ModifierDyingWishEquipArtifactFromDeck	FALSE	FALSE		Equip %X from your deck				
+ModifierDyingWishGoldenGuide	modifierDyingWishGoldenGuide.coffee	ModifierDyingWish	ModifierDyingWishGoldenGuide	FALSE	FALSE						
+ModifierDyingWishInfest	modifierDyingWishInfest.coffee	ModifierDyingWish	ModifierDyingWishInfest	FALSE	FALSE						
+ModifierDyingWishLoseGame	modifierDyingWishLoseGame.coffee	ModifierDyingWish	ModifierDyingWishLoseGame	FALSE	FALSE						
+ModifierDyingWishPutCardInHand	modifierDyingWishPutCardInHand.coffee	ModifierDyingWish	ModifierDyingWishPutCardInHand	FALSE	FALSE		Put %X in your Action Bar				summon
+ModifierDyingWishPutCardInHandClean	modifierDyingWishPutCardInHandClean.coffee	ModifierDyingWishPutCardInHand	ModifierDyingWishPutCardInHandClean	FALSE	FALSE	undefined	modifiers.faction_6_infiltrated_replicate_buff_desc				
+ModifierDyingWishPutCardInOpponentHand	modifierDyingWishPutCardInOpponentHand.coffee	ModifierDyingWish	ModifierDyingWishPutCardInOpponentHand	FALSE	FALSE						summon
+ModifierDyingWishReSpawnEntityAnywhere	modifierDyingWishReSpawnEntityAnywhere.coffee	ModifierDyingWish	ModifierDyingWishReSpawnEntityAnywhere	FALSE	FALSE						
+ModifierDyingWishReduceManaCostOfDyingWish	modifierDyingWishReduceManaCostOfDyingWish.coffee	ModifierDyingWish	ModifierDyingWishReduceManaCostOfDyingWish	FALSE	FALSE						
+ModifierDyingWishRespawnEntity	modifierDyingWishRespawnEntity.coffee	ModifierDyingWish	ModifierDyingWishRespawnEntity	FALSE	FALSE	Dying Wish	Dying Wish: Resummon this minion				summon
+ModifierDyingWishSpawnEgg	modifierDyingWishSpawnEgg.coffee	ModifierDyingWishSpawnEntity	ModifierDyingWishSpawnEgg	FALSE	FALSE	Rebirth: Serpenti	Will leave behind a Serpenti egg when killed				
+ModifierDyingWishSpawnEntity	modifierDyingWishSpawnEntity.coffee	ModifierDyingWish	ModifierDyingWishSpawnEntity	FALSE	FALSE	Dying Wish	Summon %X				
+ModifierDyingWishSpawnEntityAnywhere	modifierDyingWishSpawnEntityAnywhere.coffee	ModifierDyingWish	ModifierDyingWishSpawnEntityAnywhere	FALSE	FALSE						
+ModifierDyingWishSpawnEntityInCorner	modifierDyingWishSpawnEntityInCorner.coffee	ModifierDyingWish	ModifierDyingWishSpawnEntityInCorner	FALSE	FALSE		Summon %X				
+ModifierDyingWishSpawnEntityNearbyGeneral	modifierDyingWishSpawnEntityNearbyGeneral.coffee	ModifierDyingWish	ModifierDyingWishSpawnEntityNearbyGeneral	FALSE	FALSE	Dying Wish	Summon %X nearby your General				
+ModifierDyingWishSpawnRandomEntity	modifierDyingWishSpawnRandomEntity.coffee	ModifierDyingWishSpawnEntity	ModifierDyingWishSpawnRandomEntity	FALSE	FALSE						
+ModifierDyingWishSpawnTile	modifierDyingWishSpawnTile.coffee	ModifierDyingWishSpawnEntity	ModifierDyingWishSpawnTile	FALSE	FALSE		Turn %X				
+ModifierDyingWishSpawnTileAnywhere	modifierDyingWishSpawnTileAnywhere.coffee	ModifierDyingWishSpawnEntityAnywhere	ModifierDyingWishSpawnTileAnywhere	FALSE	FALSE		Turn %X				
+ModifierDyingWishSpawnTribal	modifierDyingWishSpawnTribal.coffee	ModifierDyingWish	ModifierDyingWishSpawnTribal	FALSE	FALSE		Summon a random Tribal nearby				
+ModifierDyingWishSpawnUnitFromOpponentsDeck	modifierDyingWishSpawnUnitFromOpponentsDeck.coffee	ModifierDyingWish	ModifierDyingWishSpawnUnitFromOpponentsDeck	FALSE	FALSE		Summon %X				
+ModifierDyingWishTransformRandomMinion	modifierDyingWishTransformRandomMinion.coffee	ModifierDyingWish	ModifierDyingWishTransformRandomMinion	FALSE	FALSE						summon
+ModifierDyingWishXho	modifierDyingWishXho.coffee	ModifierDyingWish	ModifierDyingWishXho	FALSE	FALSE	Dying Wish	Put a random Songhai spell into your action bar. It costs 1 less				summon
+ModifierDynamicCountModifySelf	modifierDynamicCountModifySelf.coffee	Modifier	ModifierDynamicCountModifySelf	FALSE	FALSE		Change stats based on count of something on board				grant_modifier
+ModifierDynamicCountModifySelfByShadowTilesOnBoard	modifierDynamicCountModifySelfByShadowTilesOnBoard.coffee	ModifierDynamicCountModifySelf	ModifierDynamicCountModifySelfByShadowTilesOnBoard	FALSE	FALSE		This minion has %X for each friendly Shadow Creep				grant_modifier
+ModifierDynamicCountModifySelfCostByBattlePetsOnBoard	modifierDynamicCountModifySelfCostByBattlePetsOnBoard.coffee	ModifierDynamicCountModifySelf	ModifierDynamicCountModifySelfCostByBattlePetsOnBoard	FALSE	FALSE		Costs %X for each friendly Battle Pet on the field				grant_modifier
+ModifierEgg	modifierEgg.coffee	ModifierRemoveAndReplaceEntity	ModifierEgg	FALSE	FALSE				maxStacks=1	onEndTurn, onApplyToCard	
+ModifierElkowl	modifierElkowl.coffee	ModifierOpeningGambit	ModifierElkowl	FALSE	FALSE		Gain two random abilities				
+ModifierEndEveryTurnWatch	modifierEndEveryTurnWatch.coffee	Modifier	ModifierEndEveryTurnWatch	FALSE	FALSE	End Every Turn Watch	End Every Turn Watch			onEndTurn	
+ModifierEndEveryTurnWatchDamageOwner	modifierEndEveryTurnWatchDamageOwner.coffee	ModifierEndEveryTurnWatch	ModifierEndEveryTurnWatchDamageOwner	FALSE	FALSE	Turn Watch	At end of EACH turn, deal %X damage to your General				
+ModifierEndTurnWatch	modifierEndTurnWatch.coffee	Modifier	ModifierEndTurnWatch	FALSE	FALSE	End Turn Watch	End Turn Watch			onEndTurn	
+ModifierEndTurnWatchAnyPlayer	modifierEndTurnWatchAnyPlayer.coffee	Modifier	ModifierEndTurnWatch	FALSE	FALSE					onEndTurn	
+ModifierEndTurnWatchAnyPlayerHsuku	modifierEndTurnWatchAnyPlayerHsuku.coffee	ModifierEndTurnWatchAnyPlayer	ModifierEndTurnWatchAnyPlayerHsuku	FALSE	FALSE						
+ModifierEndTurnWatchAnyPlayerPullRandomUnits	modifierEndTurnWatchAnyPlayerPullRandomUnits.coffee	ModifierEndTurnWatchAnyPlayer	ModifierEndTurnWatchAnyPlayerPullRandomUnits	FALSE	FALSE						
+ModifierEndTurnWatchApplyModifiers	modifierEndTurnWatchApplyModifiers.coffee	ModifierEndTurnWatch	ModifierEndTurnWatchApplyModifiers	FALSE	FALSE	End Watch	At the end of your turn, %X				grant_modifier
+ModifierEndTurnWatchApplyModifiersRandomly	modifierEndTurnWatchApplyModifiersRandomly.coffee	ModifierEndTurnWatchApplyModifiers	ModifierEndTurnWatchApplyModifiersRandomly	FALSE	FALSE		At the end of your turn, %X				grant_modifier
+ModifierEndTurnWatchDamageAllMinions	modifierEndTurnWatchDamageAllMinions.coffee	ModifierEndTurnWatch	ModifierEndTurnWatchDamageAllMinions	FALSE	FALSE	Turn Watch	At the end of your turn, deal %X damage to ALL other minions				
+ModifierEndTurnWatchDamageNearbyEnemy	modifierEndTurnWatchDamageNearbyEnemy.coffee	ModifierEndTurnWatch	ModifierEndTurnWatchDamageNearbyEnemy	FALSE	FALSE	End Watch	At the end of your turn, deal %X damage to all %Y				
+ModifierEndTurnWatchDamagePlayerBasedOnRemainingMana	modifierEndTurnWatchDamagePlayerBasedOnRemainingMana.coffee	ModifierEndEveryTurnWatch	ModifierEndTurnWatchDamagePlayerBasedOnRemainingMana	FALSE	FALSE	End Watch	At the end of each turn, deal damage to the player equal to their remaining mana				
+ModifierEndTurnWatchDealDamageToSelfAndNearbyEnemies	modifierEndTurnWatchDealDamageToSelfAndNearbyEnemies.coffee	ModifierEndTurnWatch	ModifierEndTurnWatchDealDamageToSelfAndNearbyEnemies	FALSE	FALSE	End Watch	At the end of your turn, deal %X damage to self and all nearby enemies				
+ModifierEndTurnWatchGainLastSpellPlayedThisTurn	modifierEndTurnWatchGainLastSpellPlayedThisTurn.coffee	ModifierEndTurnWatch	ModifierEndTurnWatchGainLastSpellPlayedThisTurn	FALSE	FALSE						summon
+ModifierEndTurnWatchGainTempBuff	modifierEndTurnWatchGainTempBuff.coffee	ModifierEndTurnWatch	ModifierEndTurnWatchGainTempBuff	FALSE	FALSE	End Turn Watch Temp Buff	Gain a buff on your opponent's turn			onEndTurn	
+ModifierEndTurnWatchHealNearby	modifierEndTurnWatchHealNearby.coffee	ModifierEndTurnWatch	ModifierEndTurnWatchHealNearby	FALSE	FALSE	End Watch	At the end of your turn, restore %X Health to all nearby friendly minions				
+ModifierEndTurnWatchHealSelf	modifierEndTurnWatchHealSelf.coffee	ModifierEndTurnWatch	ModifierEndTurnWatchHealSelf	FALSE	FALSE	End Turn Heal	Restore %X Health to this minion at the end of your turn				
+ModifierEndTurnWatchHealSelfAndGeneral	modifierEndTurnWatchHealSelfAndGeneral.coffee	ModifierEndTurnWatch	ModifierEndTurnWatchHealSelfAndGeneral	FALSE	FALSE	End Turn Heal	Restore %X Health to this minion and your General at the end of your turn				
+ModifierEndTurnWatchHsuku	modifierEndTurnWatchHsuku.coffee	ModifierEndTurnWatch	ModifierEndTurnWatchHsuku	FALSE	FALSE						
+ModifierEndTurnWatchRefreshArtifacts	modifierEndTurnWatchRefreshArtifacts.coffee	ModifierEndTurnWatch	ModifierEndTurnWatchRefreshArtifacts	FALSE	FALSE	End Turn Watch	At the end of your turn, repair all of your artifacts to full durability				
+ModifierEndTurnWatchSpawnEgg	modifierEndTurnWatchSpawnEgg.coffee	ModifierEndTurnWatchSpawnEntity	ModifierEndTurnWatchSpawnEgg	FALSE	FALSE	ModifierEndTurnWatchSpawnEgg	At the end of your turn, summon %X nearby				
+ModifierEndTurnWatchSpawnEntity	modifierEndTurnWatchSpawnEntity.coffee	ModifierEndTurnWatch	ModifierEndTurnWatchSpawnEntity	FALSE	FALSE	Turn Watch	At the end of your turn, summon %X				
+ModifierEndTurnWatchSpawnRandomEntity	modifierEndTurnWatchSpawnRandomEntity.coffee	ModifierEndTurnWatchSpawnEntity	ModifierEndTurnWatchSpawnRandomEntity	FALSE	FALSE						
+ModifierEndTurnWatchSpawnTile	modifierEndTurnWatchSpawnTile.coffee	ModifierEndTurnWatchSpawnEntity	ModifierEndTurnWatchSpawnTile	FALSE	FALSE	Turn Watch	At the end of your turn, turn %X				
+ModifierEndTurnWatchSwapAllegiance	modifierEndTurnWatchSwapAllegiance.coffee	ModifierEndTurnWatch	ModifierEndTurnWatchSwapAllegiance	FALSE	FALSE	Turn Watch	At the end of your turn, swap owner				
+ModifierEndTurnWatchTeleportCorner	modifierEndTurnWatchTeleportCorner.coffee	ModifierEndTurnWatch	ModifierEndTurnWatchTeleportCorner	FALSE	FALSE	Turn Watch	At the end of your turn, teleport to a random corner				
+ModifierEndTurnWatchTransformNearbyEnemies	modifierEndTurnWatchTransformNearbyEnemies.coffee	ModifierEndTurnWatch	ModifierEndTurnWatchTransformNearbyEnemies	FALSE	FALSE	End Turn Watch Transform Enemies	At the end of your turn, transform nearby enemies				summon
+ModifierEnemyAttackWatch	modifierEnemyAttackWatch.coffee	Modifier	ModifierEnemyAttackWatch	FALSE	TRUE	ModifierEnemyAttackWatch	Whenever an enemy attacks...				
+ModifierEnemyAttackWatchGainAttack	modifierEnemyAttackWatchGainAttack.coffee	ModifierEnemyAttackWatch	ModifierEnemyAttackWatchGainAttack	FALSE	TRUE						
+ModifierEnemyCannotCastBBS	modifierEnemyCannotCastBBS.coffee	ModifierCannot	ModifierEnemyCannotCastBBS	FALSE	FALSE					onValidateAction	action_modify
+ModifierEnemyCannotHeal	modifierEnemyCannotHeal.coffee	Modifier	ModifierEnemyCannotHeal	FALSE	FALSE	ModifierEnemyCannotHeal	Enemy minions and Generals cannot heal				action_modify
+ModifierEnemyDealDamageWatch	modifierEnemyDealDamageWatch.coffee	Modifier	ModifierEnemyDealDamageWatch	FALSE	TRUE	Enemy Deal Damage Watch	Whenever an enemy deals damage...				
+ModifierEnemyGeneralAttackWatch	modifierEnemyGeneralAttackWatch.coffee	Modifier	ModifierEnemyGeneralAttackWatch	FALSE	TRUE	ModifierEnemyGeneralAttackWatch	Whenever the enemy General attacks...				
+ModifierEnemyGeneralAttackedWatch	modifierEnemyGeneralAttackedWatch.coffee	Modifier	ModifierEnemyGeneralAttackedWatch	FALSE	FALSE						
+ModifierEnemyGeneralAttackedWatchSummonBehindAndDrawCard	modifierEnemyGeneralAttackedWatchSummonBehindAndDrawCard.coffee	ModifierEnemyGeneralAttackedWatch	ModifierEnemyGeneralAttackedWatchSummonBehindAndDrawCard	FALSE	FALSE						
+ModifierEnemyMinionAttackWatch	modifierEnemyMinionAttackWatch.coffee	Modifier	ModifierEnemyMinionAttackWatch	FALSE	TRUE	ModifierEnemyMinionAttackWatch	Whenever an enemy minion attacks...				
+ModifierEnemyMinionAttackWatchGainKeyword	modifierEnemyMinionAttackWatchGainKeyword.coffee	ModifierEnemyMinionAttackWatch	ModifierEnemyMinionAttackWatchGainKeyword	FALSE	TRUE	ModifierEnemyMinionAttackWatchGainKeyword	Whenever an enemy minion attacks, this minion gains a random keyword				
+ModifierEnemySpellWatch	modifierEnemySpellWatch.coffee	Modifier	ModifierEnemySpellWatch	FALSE	TRUE	Enemy Spell Watch	Enemy Spell Watch			onBeforeAction	
+ModifierEnemySpellWatchBuffSelf	modifierEnemySpellWatchBuffSelf.coffee	ModifierEnemySpellWatch	ModifierEnemySpellWatchBuffSelf	FALSE	TRUE	Enemy Spell Watch Buff Self	Whenever the opponent casts a spell, this minion gains +X/+X				grant_modifier
+ModifierEnemySpellWatchCopySpell	modifierEnemySpellWatchCopySpell.coffee	ModifierEnemySpellWatch	ModifierEnemySpellWatchCopySpell	FALSE	TRUE	Enemy Spell Watch Copy Spell	Whenever the opponent casts a spell, gain of copy of the spell				summon
+ModifierEnemySpellWatchFromHand	modifierEnemySpellWatchFromHand.coffee	Modifier	ModifierEnemySpellWatchFromHand	FALSE	TRUE					onBeforeAction	
+ModifierSpellWatchGainRandomKeyword	modifierEnemySpellWatchGainRandomKeyword.coffee	ModifierEnemySpellWatch	ModifierSpellWatchGainRandomKeyword	FALSE	TRUE		Whenever you cast a spell, this gains a random keyword ability				
+ModifierEnemySpellWatchHealMyGeneral	modifierEnemySpellWatchHealMyGeneral.coffee	ModifierEnemySpellWatch	ModifierEnemySpellWatchHealMyGeneral	FALSE	TRUE						
+ModifierEnemySpellWatchPutCardInHand	modifierEnemySpellWatchPutCardInHand.coffee	ModifierEnemySpellWatch	ModifierEnemySpellWatchPutCardInHand	FALSE	TRUE	Enemy Spell Watch Put Card In Hand	Whenever the opponent casts a spell, put an X in your action bar				summon
+ModifierEnemyStunWatch	modifierEnemyStunWatch.coffee	Modifier	ModifierEnemyStunWatch	FALSE	FALSE					onBeforeAction	
+ModifierEnemyStunWatchDamageNearbyEnemies	modifierEnemyStunWatchDamageNearbyEnemies.coffee	ModifierEnemyStunWatch	ModifierEnemyStunWatchDamageNearbyEnemies	FALSE	FALSE						
+ModifierEnemyStunWatchFullyHeal	modifierEnemyStunWatchFullyHeal.coffee	ModifierEnemyStunWatch	ModifierEnemyStunWatchFullyHeal	FALSE	FALSE						
+ModifierEnemyStunWatchTransformThis	modifierEnemyStunWatchTransformThis.coffee	ModifierEnemyStunWatch	ModifierEnemyStunWatchTransformThis	FALSE	FALSE						summon
+ModifierEnemyTakeDamageWatch	modifierEnemyTakeDamageWatch.coffee	Modifier	ModifierEnemyTakeDamageWatch	FALSE	TRUE	Enemy Take Damage Watch	Whenever this minion takes damage...				
+ModifierEnemyTakeDamageWatchHealMyGeneral	modifierEnemyTakeDamageWatchHealMyGeneral.coffee	ModifierEnemyTakeDamageWatch	ModifierEnemyTakeDamageWatchHealMyGeneral	FALSE	TRUE	Enemy Take Damage Watch Heal My General	Whenever an enemy minion or General takes damage, restore %X Health to your General				
+ModifierEnemyTeamMoveWatch	modifierEnemyTeamMoveWatch.coffee	Modifier	ModifierEnemyTeamMoveWatch	FALSE	TRUE	Any Move Watch: Enemy	Whenever an enemy minion is moved for any reason...				
+ModifierEnemyTeamMoveWatchSummonEntityBehind	modifierEnemyTeamMoveWatchSummonEntityBehind.coffee	ModifierEnemyTeamMoveWatch	ModifierEnemyTeamMoveWatchSummonEntityBehind	FALSE	TRUE	Enemy Team Move Watch Buff Target	Whenever an enemy minion is moved for any reason, summon %X				
+ModifierEntersBattlefieldWatch	modifierEntersBattlefieldWatch.coffee	Modifier	ModifierEntersBattlefieldWatch	FALSE	FALSE						
+ModifierEntersBattlefieldWatchApplyModifiers	modifierEntersBattlefieldWatchApplyModifiers.coffee	ModifierEntersBattlefieldWatch	ModifierEntersBattlefieldWatchApplyModifiers	FALSE	FALSE						grant_modifier
+ModifierEnvyBaer	modifierEnvyBaer.coffee	ModifierDealDamageWatch	ModifierEnvyBaer	FALSE	FALSE	Envybaer	Whenever this minion damages an enemy, teleport that enemy to a random corner		maxStacks=1		
+ModifierEphemeral	modifierEphemeral.coffee	ModifierEndTurnWatch	ModifierEphemeral	TRUE	FALSE	modifiers.ephemeral_name			maxStacks=1	onEndTurn	
+ModifierEquipFriendlyArtifactWatch	modifierEquipFriendlyArtifactWatch.coffee	Modifier	ModifierEquipFriendlyArtifactWatch	FALSE	FALSE						
+ModifierEquipFriendlyArtifactWatchGainAttackEqualToCost	modifierEquipFriendlyArtifactWatchGainAttackEqualToCost.coffee	ModifierEquipFriendlyArtifactWatch	ModifierEquipFriendlyArtifactWatchGainAttackEqualToCost	FALSE	FALSE						
+ModifierEternalHeart	modifierEternalHeart.coffee	Modifier	ModifierEternalHeart	FALSE	FALSE	Eternal Heart	Can't die		maxStacks=1	onValidateAction	action_modify
+ModifierExpireApplyModifiers	modifierExpireApplyModifiers.coffee	Modifier	ModifierExpireApplyModifiers	FALSE	FALSE					onEndTurn, onStartTurn	grant_modifier
+ModifierExtraDamageOnCounterattack	modifierExtraDamageOnCounterattack.coffee	Modifier	ModifierExtraDamageOnCounterattack	FALSE	FALSE	Extra Damage on Counterattack	Deals double damage on counter attacks				action_modify
+ModifierFate	modifierFate.coffee	Modifier	ModifierFate	TRUE	FALSE	Trial				onValidateAction	action_modify
+ModifierFateAbyssianDyingQuest	modifierFateAbyssianDyingQuest.coffee	ModifierFate	ModifierFateAbyssianDyingQuest	FALSE	FALSE						
+ModifierFateLyonarSmallMinionQuest	modifierFateLyonarSmallMinionQuest.coffee	ModifierFate	ModifierFateLyonarSmallMinionQuest	FALSE	FALSE						
+ModifierFateMagmarBuffQuest	modifierFateMagmarBuffQuest.coffee	ModifierFate	ModifierFateMagmarBuffQuest	FALSE	FALSE						stat_modify
+ModifierFateSingleton	modifierFateSingleton.coffee	ModifierFate	ModifierFateSingleton	FALSE	FALSE						summon, draw
+ModifierFateSonghaiMinionQuest	modifierFateSonghaiMinionQuest.coffee	ModifierFate	ModifierFateSonghaiMinionQuest	FALSE	FALSE						
+ModifierFateVanarTokenQuest	modifierFateVanarTokenQuest.coffee	ModifierFate	ModifierFateVanarTokenQuest	FALSE	FALSE						
+ModifierFateVetruvianMovementQuest	modifierFateVetruvianMovementQuest.coffee	ModifierFate	ModifierFateVetruvianMovementQuest	FALSE	FALSE						
+ModifierFeralu	modifierFeralu.coffee	Modifier	ModifierFeralu	FALSE	FALSE	Feralu					
+ModifierFirstBlood	modifierFirstBlood.coffee	Modifier	ModifierFirstBlood	TRUE	FALSE	modifiers.rush_name			maxStacks=1	onRemoveFromCard	
+ModifierFlying	modifierFlying.coffee	Modifier	ModifierFlying	TRUE	FALSE	modifiers.flying_name		speed:CONFIG.SPEED_INFINITE	maxStacks=1		stat_modify
+ModifierForcefield	modifierForcefield.coffee	Modifier	ModifierForcefield	TRUE	FALSE	modifiers.forcefield_name			maxStacks=1	onStartTurn	
+ModifierForcefieldAbsorb	modifierForcefieldAbsorb.coffee	ModifierImmuneToDamage	ModifierForcefieldAbsorb	FALSE	FALSE	Forcefield Active	This minion takes no damage		maxStacks=1		action_modify
+ModifierForgedArtifactDescription	modifierForgedArtifactDescription.coffee	Modifier	ModifierForgedArtifactDescription	FALSE	FALSE				maxStacks=1		
+ModifierFrenzy	modifierFrenzy.coffee	Modifier	ModifierFrenzy	TRUE	FALSE	modifiers.frenzy_name			maxStacks=1	onBeforeAction	
+ModifierFriendlyDeathWatch	modifierFriendlyDeathWatch.coffee	Modifier	ModifierFriendlyDeathWatch	FALSE	TRUE	ModifierFriendlyDeathWatch	Whenever a friendly minion dies...				
+ModifierFriendlyDeathWatchForBattlePetDrawCard	modifierFriendlyDeathWatchForBattlePetDrawCard.coffee	ModifierFriendlyDeathWatch	ModifierFriendlyDeathWatchForBattlePetDrawCard	FALSE	TRUE		Whenever a friendly Battle Pet dies, draw %X				
+ModifierFriendsguard	modifierFriendsguard.coffee	ModifierFriendlyDeathWatch	ModifierFriendsguard	FALSE	FALSE						summon
+ModifierGainAttackWatch	modifierGainAttackWatch.coffee	Modifier	ModifierGainAttackWatch	FALSE	TRUE	GainAttackWatch	GainAttackWatch				stat_modify
+ModifierGainAttackWatchBuffSelfBySameThisTurn	modifierGainAttackWatchBuffSelfBySameThisTurn.coffee	ModifierGainAttackWatch	ModifierGainAttackWatchBuffSelfBySameThisTurn	FALSE	TRUE	Gain Attack Watch	modifiers.gain_attack_watch_buff_self_by_same_this_turn_def			onEndTurn	stat_modify
+ModifierGrow	modifierGrow.coffee	ModifierStartTurnWatchBuffSelf	ModifierGrow	TRUE	FALSE	modifiers.grow_name	+%X/+%X			onStartTurn	grant_modifier
+ModifierGrowOnBothTurns	modifierGrowOnBothTurns.coffee	Modifier	ModifierGrowOnBothTurns	FALSE	FALSE	modifiers.grow_on_both_turns_name	modifiers.grow_on_both_turns_def				
+ModifierGrowPermanent	modifierGrowPermanent.coffee	ModifierGrow	ModifierGrowPermanent	FALSE	FALSE						grant_modifier
+ModifierHPChange	modifierHPChange.coffee	Modifier	ModifierHPChange	FALSE	FALSE	Modifier HP Change	Whenever this card's HP changes				
+ModifierHPChangeSummonEntity	modifierHPChangeSummonEntity.coffee	ModifierHPChange	ModifierHPChangeSummonEntity	FALSE	FALSE	Modifier HP Change Summon Entity	When this falls below %X health, summon %Y on a random space				
+ModifierHPThresholdGainModifiers	modifierHPThresholdGainModifiers.coffee	ModifierHPChange	ModifierHPThresholdGainModifiers	FALSE	FALSE	Modifier HP Threshold Gain Modifiers	modifiers.HP_threshold_gain_modifiers_def				
+ModifierHallowedGround	modifierHallowedGround.coffee	ModifierEndTurnWatch	ModifierHallowedGround	FALSE	FALSE	modifiers.hallowed_ground_name	modifiers.hallowed_ground_def				
+ModifierHallowedGroundBuff	modifierHallowedGroundBuff.coffee	Modifier	ModifierHallowedGroundBuff	FALSE	FALSE	modifiers.hallowed_ground_buff_name	modifiers.hallowed_ground_buff_def				grant_modifier
+ModifierHasBackstab	modifierHasBackstab.coffee	ModifierBackstab	ModifierHasBackstab	TRUE	FALSE		Has Backstab (%X)		maxStacks=1		
+ModifierHealSelfWhenDealingDamage	modifierHealSelfWhenDealingDamage.coffee	Modifier	ModifierHealSelfWhenDealingDamage	FALSE	FALSE		Whenever this deals damage, restore that much Health to it			onBeforeAction	
+ModifierHealWatch	modifierHealWatch.coffee	Modifier	ModifierHealWatch	FALSE	TRUE	HealWatch	HealWatch			onHealWatch	
+ModifierHealWatchBuffGeneral	modifierHealWatchBuffGeneral.coffee	ModifierHealWatch	ModifierHealWatchBuffGeneral	FALSE	TRUE	Heal Watch	Whenever anything is healed, give your General %X			onHealWatch	grant_modifier
+ModifierHealWatchBuffSelf	modifierHealWatchBuffSelf.coffee	ModifierHealWatch	ModifierHealWatchBuffSelf	FALSE	TRUE					onHealWatch	grant_modifier
+ModifierHealWatchDamageNearbyEnemies	modifierHealWatchDamageNearbyEnemies.coffee	ModifierHealWatch	ModifierHealWatchDamageNearbyEnemies	FALSE	TRUE					onHealWatch	
+ModifierHealWatchDamageRandomEnemy	modifierHealWatchDamageRandomEnemy.coffee	ModifierHealWatch	ModifierHealWatchDamageRandomEnemy	FALSE	TRUE	Heal Watch Damage Random Enemy for X	Whenever anything is healed, a random enemy takes damage			onHealWatch	
+ModifierHealWatchPutCardInHand	modifierHealWatchPutCardInHand.coffee	ModifierHealWatch	ModifierHealWatchPutCardInHand	FALSE	TRUE	ModifierHealWatchPutCardInHand	Whenever anything is healed, put %X into your action bar			onHealWatch	summon
+ModifierImmune	modifierImmune.coffee	Modifier	ModifierImmune	FALSE	FALSE	Immune			maxStacks=1		
+ModifierImmuneToAttacks	modifierImmuneToAttacks.coffee	ModifierImmune	ModifierImmuneToAttacks	FALSE	FALSE					onValidateAction	action_modify
+ModifierImmuneToAttacksByGeneral	modifierImmuneToAttacksByGeneral.coffee	ModifierImmuneToAttacks	ModifierImmuneToAttacksByGeneral	FALSE	FALSE	General Immunity	Cannot be attacked by Generals				
+ModifierImmuneToAttacksByMinions	modifierImmuneToAttacksByMinions.coffee	ModifierImmuneToAttacks	ModifierImmuneToAttacksByMinions	FALSE	FALSE	Minion Immunity	Cannot be attacked by Minions				
+ModifierImmuneToAttacksByRanged	modifierImmuneToAttacksByRanged.coffee	ModifierImmuneToAttacks	ModifierImmuneToAttacksByRanged	FALSE	FALSE	Ranged Immunity	Cannot be attacked by ranged minions				
+ModifierImmuneToDamage	modifierImmuneToDamage.coffee	ModifierImmune	ModifierImmuneToDamage	FALSE	FALSE	Damage Immunity	Takes no damage				action_modify
+ModifierImmuneToDamageByGeneral	modifierImmuneToDamageByGeneral.coffee	ModifierImmuneToDamage	ModifierImmuneToDamageByGeneral	FALSE	FALSE	modifiers.immune_to_damage_by_general_name	modifiers.immune_to_damage_by_general_def				
+ModifierImmuneToDamageByRanged	modifierImmuneToDamageByRanged.coffee	ModifierImmuneToDamage	ModifierImmuneToDamageByRanged	FALSE	FALSE	Ranged Immunity	Takes no damage from Ranged minions and Generals				
+ModifierImmuneToDamageBySpells	modifierImmuneToDamageBySpells.coffee	ModifierImmuneToDamage	ModifierImmuneToDamageBySpells	FALSE	FALSE		modifiers.immune_to_damage_by_spells_def				
+ModifierImmuneToDamageByWeakerEnemies	modifierImmuneToDamageByWeakerEnemies.coffee	ModifierImmuneToDamage	ModifierImmuneToDamageByWeakerEnemies	FALSE	FALSE						
+ModifierImmuneToDamageFromEnemyMinions	modifierImmuneToDamageFromEnemyMinions.coffee	ModifierImmuneToDamage	ModifierImmuneToDamageFromEnemyMinions	FALSE	FALSE	Enemy Minion Immunity	Takes no damage from enemy minions				
+ModifierImmuneToDamageFromMinionsAndGenerals	modifierImmuneToDamageFromMinionsAndGenerals.coffee	ModifierImmuneToDamage	ModifierImmuneToDamageFromMinionsAndGenerals	FALSE	FALSE	modifiers.immune_to_damage_from_minions_and_generals_name	modifiers.immune_to_damage_from_minions_and_generals_def				
+ModifierImmuneToDamageOnEnemyTurn	modifierImmuneToDamageOnEnemyTurn.coffee	ModifierImmuneToDamage	ModifierImmuneToDamageOnEnemyTurn	FALSE	FALSE	Enemy Turn Immunity	Takes no damage on enemy's turn				
+ModifierImmuneToSpellDamage	modifierImmuneToSpellDamage.coffee	ModifierImmuneToDamage	ModifierImmuneToSpellDamage	FALSE	FALSE	modifiers.immune_to_spell_damage_name	modifiers.immune_to_spell_damage_def				
+ModifierImmuneToSpells	modifierImmuneToSpells.coffee	ModifierImmune	ModifierImmuneToSpells	FALSE	FALSE	modifiers.immune_to_spells_name	modifiers.immune_to_spells_def			onValidateAction	action_modify
+ModifierImmuneToSpellsByEnemy	modifierImmuneToSpellsByEnemy.coffee	ModifierImmuneToSpells	ModifierImmuneToSpellsByEnemy	FALSE	FALSE		modifiers.immune_to_spells_by_enemy_def			onValidateAction	action_modify
+ModifierInfiltrate	modifierInfiltrate.coffee	ModifierSituationalBuffSelf	ModifierInfiltrate	TRUE	FALSE	modifiers.infiltrate_name	Whenever this minion is on the enemy side of the battlefield..				grant_modifier
+ModifierInkhornGaze	modifierInkhornGaze.coffee	ModifierDyingWish	ModifierInkhornGaze	FALSE	FALSE	modifiers.inkhorn_gaze_name	modifiers.inkhorn_gaze_def				summon
+ModifierInquisitorKron	modifierInquisitorKron.coffee	ModifierReplaceWatchSpawnEntity	ModifierInquisitorKron	FALSE	FALSE						
+ModifierIntensify	modifierIntensify.coffee	Modifier	ModifierIntensify	TRUE	FALSE	Intensify					
+ModifierIntensifyBuffSelf	modifierIntensifyBuffSelf.coffee	ModifierIntensify	ModifierIntensifyBuffSelf	FALSE	FALSE						
+ModifierIntensifyDamageEnemyGeneral	modifierIntensifyDamageEnemyGeneral.coffee	ModifierIntensify	ModifierIntensifyDamageEnemyGeneral	FALSE	FALSE						
+ModifierIntensifyDamageNearby	modifierIntensifyDamageNearby.coffee	ModifierIntensify	ModifierIntensifyDamageNearby	FALSE	FALSE						
+ModifierIntensifyOneManArmy	modifierIntensifyOneManArmy.coffee	ModifierIntensify	ModifierIntensifyOneManArmy	FALSE	FALSE						summon
+ModifierIntensifySpawnEntitiesNearby	modifierIntensifySpawnEntitiesNearby.coffee	ModifierIntensify	ModifierIntensifySpawnEntitiesNearby	FALSE	FALSE						
+ModifierIntensifyTempBuffNearbyMinion	modifierIntensifyTempBuffNearbyMinion.coffee	ModifierIntensify	ModifierIntensifyTempBuffNearbyMinion	FALSE	FALSE					onEndTurn	
+ModifierInvalidateRush	modifierInvalidateRush.coffee	Modifier	ModifierInvalidateRush	FALSE	FALSE	ModifierInvalidateRush	Whenever ANY player summons a minion with Rush, exhaust it			onValidateAction	action_modify
+ModifierInvulnerable	modifierInvulnerable.coffee	ModifierUntargetable	ModifierInvulnerable	TRUE	FALSE	modifiers.invulnerable_name			maxStacks=1	onValidateAction	action_modify
+ModifierKillWatch	modifierKillWatch.coffee	Modifier	ModifierKillWatch	FALSE	FALSE						
+ModifierKillWatchAndSurvive	modifierKillWatchAndSurvive.coffee	Modifier	ModifierKillWatchAndSurvive	FALSE	FALSE						
+ModifierKillWatchAndSurviveScarzig	modifierKillWatchAndSurviveScarzig.coffee	ModifierKillWatchAndSurvive	ModifierKillWatchAndSurviveScarzig	FALSE	FALSE						summon
+ModifierKillWatchBounceEnemyToActionBar	modifierKillWatchBounceEnemyToActionBar.coffee	ModifierKillWatch	ModifierKillWatchBounceEnemyToActionBar	FALSE	FALSE	Kill Watch	When this destroys a minion, bounce the enemy minion to its action bar.				summon
+ModifierKillWatchDeceptibot	modifierKillWatchDeceptibot.coffee	ModifierKillWatch	ModifierKillWatchDeceptibot	FALSE	FALSE						
+ModifierKillWatchHealSelf	modifierKillWatchHealSelf.coffee	ModifierKillWatch	ModifierKillWatchHealSelf	FALSE	FALSE						
+ModifierKillWatchRefreshExhaustion	modifierKillWatchRefreshExhaustion.coffee	ModifierKillWatch	ModifierKillWatchRefreshExhaustion	FALSE	FALSE						
+ModifierKillWatchRefreshExhaustionIfTargetStunned	modifierKillWatchRefreshExhaustionIfTargetStunned.coffee	ModifierKillWatchRefreshExhaustion	ModifierKillWatchRefreshExhaustionIfTargetStunned	FALSE	FALSE						
+ModifierKillWatchRespawnEntity	modifierKillWatchRespawnEntity.coffee	ModifierKillWatch	ModifierKillWatchRespawnEntity	FALSE	FALSE		Whenever Monolith Guardian destroys an enemy, it assimilates them				summon
+ModifierKillWatchSpawnCopyNearby	modifierKillWatchSpawnCopyNearby.coffee	ModifierKillWatch	ModifierKillWatchSpawnCopyNearby	FALSE	FALSE						
+ModifierKillWatchSpawnEgg	modifierKillWatchSpawnEgg.coffee	ModifierKillWatch	ModifierKillWatchSpawnEgg	FALSE	FALSE						
+ModifierKillWatchSpawnEnemyEntity	modifierKillWatchSpawnEnemyEntity.coffee	ModifierKillWatchSpawnEntity	ModifierKillWatchSpawnEnemyEntity	FALSE	FALSE						
+ModifierKillWatchSpawnEntity	modifierKillWatchSpawnEntity.coffee	ModifierKillWatch	ModifierKillWatchSpawnEntity	FALSE	FALSE						
+ModifierManaCostChange	modifierManaCostChange.coffee	Modifier	ModifierManaCostChange	FALSE	FALSE	modifiers.mana_shift_name		manaCost:0		onAfterAction	stat_modify
+ModifierMechazorWatchPutMechazorInHand	modifierMechazorWatchPutMechazorInHand.coffee	Modifier	ModifierMechazorWatchPutMechazorInHand	FALSE	FALSE	Spawn Another Mechazor	Whenever you summon MECHAZ0R, put a MECHAZ0R in your action bar				summon
+ModifierMirage	modifierMirage.coffee	Modifier	ModifierMirage	FALSE	FALSE	modifiers.mirage_name	modifiers.mirage_def			onBeforeAction	
+ModifierMyAttackMinionWatch	modifierMyAttackMinionWatch.coffee	Modifier	ModifierMyAttackMinionWatch	FALSE	FALSE						
+ModifierMyAttackMinionWatchKillTargetSummonThisOnSpace	modifierMyAttackMinionWatchKillTargetSummonThisOnSpace.coffee	ModifierMyAttackMinionWatch	ModifierMyAttackMinionWatchKillTargetSummonThisOnSpace	FALSE	FALSE				maxStacks=1		
+ModifierMyAttackMinionWatchStealGeneralHealth	modifierMyAttackMinionWatchStealGeneralHealth.coffee	ModifierMyAttackMinionWatch	ModifierMyAttackMinionWatchStealGeneralHealth	FALSE	FALSE						
+ModifierMyAttackOrAttackedWatch	modifierMyAttackOrAttackedWatch.coffee	Modifier	ModifierMyAttackOrAttackedWatch	FALSE	FALSE	Attack or Attacked Watch: Self	Attack or Attacked Watch: Self				
+ModifierMyAttackOrAttackedWatchDrawCard	modifierMyAttackOrAttackedWatchDrawCard.coffee	ModifierMyAttackOrAttackedWatch	ModifierMyAttackOrAttackedWatchDrawCard	FALSE	FALSE	Attack or Attacked Watch and Draw Card	Whenever this minion attacks or is attacked, draw a card				draw
+ModifierMyAttackOrAttackedWatchSpawnMinionNearby	modifierMyAttackOrAttackedWatchSpawnMinionNearby.coffee	ModifierMyAttackOrAttackedWatch	ModifierMyAttackOrAttackedWatchSpawnMinionNearby	FALSE	FALSE	Attack or Attacked Watch and Spawn Minion	Whenever this minion attacks or is attacked, summon %X nearby				
+ModifierMyAttackOrCounterattackWatch	modifierMyAttackOrCounterattackWatch.coffee	Modifier	ModifierMyAttackOrCounterattackWatch	FALSE	FALSE						
+ModifierMyAttackOrCounterattackWatchApplyModifiersToFriendlyMinions	modifierMyAttackOrCounterattackWatchApplyModifiersToFriendlyMinions.coffee	ModifierMyAttackOrCounterattackWatch	ModifierMyAttackOrCounterattackWatchApplyModifiersToFriendlyMinions	FALSE	FALSE						
+ModifierMyAttackOrCounterattackWatchDamageRandomEnemy	modifierMyAttackOrCounterattackWatchDamageRandomEnemy.coffee	ModifierMyAttackOrCounterattackWatch	ModifierMyAttackOrCounterattackWatchDamageRandomEnemy	FALSE	FALSE						
+ModifierMyAttackOrCounterattackWatchTransformIntoEgg	modifierMyAttackOrCounterattackWatchTransformIntoEgg.coffee	ModifierMyAttackOrCounterattackWatch	ModifierMyAttackOrCounterattackWatchTransformIntoEgg	FALSE	FALSE						summon
+ModifierMyAttackWatch	modifierMyAttackWatch.coffee	Modifier	ModifierMyAttackWatch	FALSE	TRUE	Attack Watch: Self	Attack Watch: Self				
+ModifierMyAttackWatchApplyModifiers	modifierMyAttackWatchApplyModifiers.coffee	ModifierMyAttackWatch	ModifierMyAttackWatchApplyModifiers	FALSE	TRUE						grant_modifier
+ModifierMyAttackWatchApplyModifiersToAllies	modifierMyAttackWatchApplyModifiersToAllies.coffee	ModifierMyAttackWatch	ModifierMyAttackWatchApplyModifiersToAllies	FALSE	TRUE						
+ModifierMyAttackWatchAreaAttack	modifierMyAttackWatchAreaAttack.coffee	ModifierMyAttackWatch	ModifierMyAttackWatchAreaAttack	FALSE	TRUE						
+ModifierMyAttackWatchBonusManaCrystal	modifierMyAttackWatchBonusManaCrystal.coffee	ModifierMyAttackWatch	ModifierMyAttackWatchBonusManaCrystal	FALSE	TRUE		modifiers.faction_6_shivers_buff_desc				
+ModifierMyAttackWatchBuffSelf	modifierMyAttackWatchBuffSelf.coffee	ModifierMyAttackWatch	ModifierMyAttackWatchBuffSelf	FALSE	TRUE						grant_modifier
+ModifierMyAttackWatchGamble	modifierMyAttackWatchGamble.coffee	ModifierMyAttackWatch	ModifierMyAttackWatchGamble	FALSE	TRUE	Attack Watch: Gamble	Whenever this minion attacks, it has a 50% chance to attack again				
+ModifierMyAttackWatchGetSonghaiSpells	modifierMyAttackWatchGetSonghaiSpells.coffee	ModifierMyAttackWatch	ModifierMyAttackWatchGetSonghaiSpells	FALSE	TRUE						summon
+ModifierMyAttackWatchScarabBlast	modifierMyAttackWatchScarabBlast.coffee	ModifierMyAttackWatch	ModifierMyAttackWatchScarabBlast	FALSE	TRUE						
+ModifierMyAttackWatchSpawnMinionNearby	modifierMyAttackWatchSpawnMinionNearby.coffee	ModifierMyAttackWatch	ModifierMyAttackWatchSpawnMinionNearby	FALSE	TRUE	Attack Watch and Spawn Minion	Whenever this minion attacks, summon %X nearby				
+ModifierMyAttackWatchSummonDeadMinions	modifierMyAttackWatchSummonDeadMinions.coffee	ModifierMyAttackWatch	ModifierMyAttackWatchSummonDeadMinions	FALSE	TRUE						
+ModifierMyBuildWatch	modifierMyBuildWatch.coffee	ModifierBuildWatch	ModifierMyBuildWatch	FALSE	FALSE						
+ModifierMyBuildWatchDrawCards	modifierMyBuildWatchDrawCards.coffee	ModifierMyBuildWatch	ModifierMyBuildWatchDrawCards	FALSE	FALSE						draw
+ModifierMyGeneralAttackWatch	modifierMyGeneralAttackWatch.coffee	Modifier	ModifierMyGeneralAttackWatch	FALSE	TRUE	Attack Watch: My General	Attack Watch: My General				
+ModifierMyGeneralAttackWatchSpawnEntity	modifierMyGeneralAttackWatchSpawnEntity.coffee	ModifierMyGeneralAttackWatch	ModifierMyGeneralAttackWatchSpawnEntity	FALSE	TRUE	ModifierMyGeneralAttackWatchSpawnEntity	Whenever a my General attacks, spawn an entity				
+ModifierMyGeneralAttackWatchSpawnRandomEntityFromDeck	modifierMyGeneralAttackWatchSpawnRandomEntityFromDeck.coffee	ModifierMyGeneralAttackWatch	ModifierMyGeneralAttackWatchSpawnRandomEntityFromDeck	FALSE	TRUE						
+ModifierMyGeneralDamagedWatch	modifierMyGeneralDamagedWatch.coffee	Modifier	ModifierMyGeneralDamagedWatch	FALSE	FALSE	My General Damaged Watch	My General Damaged Watch				
+ModifierMyGeneralDamagedWatchBuffSelf	modifierMyGeneralDamagedWatchBuffSelf.coffee	ModifierMyGeneralDamagedWatch	ModifierMyGeneralDamagedWatchBuffSelf	FALSE	FALSE	My General Damaged Watch	Whenever your General takes damage, this minion gains %X				stat_modify, grant_modifier
+ModifierMyGeneralDamagedWatchBuffSelfAndDrawACard	modifierMyGeneralDamagedWatchBuffSelfAndDrawACard.coffee	ModifierMyGeneralDamagedWatch	ModifierMyGeneralDamagedWatchBuffSelfAndDrawACard	FALSE	FALSE	My General Damaged Watch	Whenever your General takes damage, give this minion %X and draw a card				grant_modifier
+ModifierMyGeneralDamagedWatchBuffSelfAttackForSame	modifierMyGeneralDamagedWatchBuffSelfAttackForSame.coffee	ModifierMyGeneralDamagedWatch	ModifierMyGeneralDamagedWatchBuffSelfAttackForSame	FALSE	FALSE	My General Damaged Watch	Whenever your General takes damage, this minion gains that much Attack				
+ModifierMyGeneralDamagedWatchDamageNearby	modifierMyGeneralDamagedWatchDamageNearby.coffee	ModifierMyGeneralDamagedWatch	ModifierMyGeneralDamagedWatchDamageNearby	FALSE	FALSE	My General Damage Watch Damage Nearby	Whenever your General takes damage, deal %X damage to %Y				
+ModifierMyGeneralDamagedWatchHealSelf	modifierMyGeneralDamagedWatchHealSelf.coffee	ModifierMyGeneralDamagedWatch	ModifierMyGeneralDamagedWatchHealSelf	FALSE	FALSE	My General Damage Watch Heal Self	Whenever your General takes damage, %X				
+ModifierMyGeneralDamagedWatchMiniMinion	modifierMyGeneralDamagedWatchMiniMinion.coffee	ModifierMyGeneralDamagedWatch	ModifierMyGeneralDamagedWatchMiniMinion	FALSE	FALSE						draw
+ModifierMyHealWatchAnywhere	modifierMyHealWatchAnywhere.coffee	Modifier	ModifierMyHealWatchAnywhere	FALSE	TRUE	MyHealWatchAnywhere	MyHealWatchAnywhere			onHealWatch	
+ModifierMyHealWatchAnywhereBuffSelf	modifierMyHealWatchAnywhereBuffSelf.coffee	ModifierMyHealWatchAnywhere	ModifierMyHealWatchAnywhereBuffSelf	FALSE	TRUE	My Heal Watch Anywhere Buff Self	This minion gains %X for each time you healed anything this game			onHealWatch	stat_modify, grant_modifier
+ModifierMyMinionAttackWatch	modifierMyMinionAttackWatch.coffee	Modifier	ModifierMyMinionAttackWatch	FALSE	TRUE	MyMinionAttackWatch	Whenever you attack with a minion...				
+ModifierMyMinionAttackWatchHealGeneral	modifierMyMinionAttackWatchHealGeneral.coffee	ModifierMyMinionAttackWatch	ModifierMyMinionAttackWatchHealGeneral	FALSE	TRUE	MyMinionAttackWatch Heal My General	Whenever a friendly minion attacks, restore %X Health to your General				
+ModifierMyMinionOrGeneralDamagedWatch	modifierMyMinionOrGeneralDamagedWatch.coffee	Modifier	ModifierMyMinionOrGeneralDamagedWatch	FALSE	FALSE	My General Damaged Watch	My General Damaged Watch				
+ModifierMyMinionOrGeneralDamagedWatchBuffSelf	modifierMyMinionOrGeneralDamagedWatchBuffSelf.coffee	ModifierMyMinionOrGeneralDamagedWatch	ModifierMyMinionOrGeneralDamagedWatchBuffSelf	FALSE	FALSE	My Minion or General Damaged Watch	Each time a friendly minion or your General takes damage, gain %X				stat_modify, grant_modifier
+ModifierMyMoveWatch	modifierMyMoveWatch.coffee	Modifier	ModifierMyMoveWatch	FALSE	TRUE	Move Watch: Self	Move Watch: Self				
+ModifierMyMoveWatchAnyReason	modifierMyMoveWatchAnyReason.coffee	Modifier	ModifierMyMoveWatchAnyReason	FALSE	TRUE	Move Watch Any Reason: Self	Move Watch Any Reason: Self				
+ModifierMyMoveWatchAnyReasonDamageNearbyEnemyMinions	modifierMyMoveWatchAnyReasonDamageNearbyEnemyMinions.coffee	ModifierMyMoveWatchAnyReason	ModifierMyMoveWatchAnyReasonDamageNearbyEnemyMinions	FALSE	TRUE	Move Watch Any Reason Self Damage Nearby Enemy Minions	Move Watch Any Reason Self Damage Nearby Enemy Minions				
+ModifierMyMoveWatchAnyReasonDrawCard	modifierMyMoveWatchAnyReasonDrawCard.coffee	ModifierMyMoveWatchAnyReason	ModifierMyMoveWatchAnyReasonDrawCard	FALSE	TRUE						
+ModifierMyMoveWatchApplyModifiers	modifierMyMoveWatchApplyModifiers.coffee	ModifierMyMoveWatch	ModifierMyMoveWatchApplyModifiers	FALSE	TRUE						grant_modifier
+ModifierMyMoveWatchDrawCard	modifierMyMoveWatchDrawCard.coffee	ModifierMyMoveWatch	ModifierMyMoveWatchDrawCard	FALSE	TRUE		After this moves, draw %X				
+ModifierMyMoveWatchSpawnEntity	modifierMyMoveWatchSpawnEntity.coffee	ModifierMyMoveWatch	ModifierMyMoveWatchSpawnEntity	FALSE	TRUE		After this minion moves, summon %X				
+ModifierMyOtherMinionsDamagedWatch	modifierMyOtherMinionsDamagedWatch.coffee	Modifier	ModifierMyOtherMinionsDamagedWatch	FALSE	FALSE						
+ModifierMyOtherMinionsDamagedWatchDamagedMinionGrows	modifierMyOtherMinionsDamagedWatchDamagedMinionGrows.coffee	ModifierMyOtherMinionsDamagedWatch	ModifierMyOtherMinionsDamagedWatchDamagedMinionGrows	FALSE	FALSE						
+ModifierMyTeamMoveWatchAnyReason	modifierMyTeamMoveWatchAnyReason.coffee	Modifier	ModifierMyTeamMoveWatchAnyReason	FALSE	TRUE	Any Move Watch: Self	Whenever a friendly minion is moved for any reason...				
+ModifierMyTeamMoveWatchAnyReasonBuffTarget	modifierMyTeamMoveWatchAnyReasonBuffTarget.coffee	ModifierMyTeamMoveWatchAnyReason	ModifierMyTeamMoveWatchAnyReasonBuffTarget	FALSE	TRUE	My Team Move Watch Any Reason Buff Target	Whenever a friendly minion is moved for any reason, %Y				grant_modifier
+ModifierNocturne	modifierNocturne.coffee	Modifier	ModifierNocturne	FALSE	FALSE	ModifierNocturne	Whenever you make Shadow Creep or a Wraithling, instead make both				
+ModifierNoshRak	modifierNoshRak.coffee	Modifier	ModifierNoshRak	FALSE	FALSE					onApplyToCard, onRemoveFromCard	stat_modify
+ModifierObstructing	modifierObstructing.coffee	Modifier	ModifierObstructing	FALSE	FALSE	Obstructing	This entity is obstructing its location		maxStacks=1		
+ModifierOnDying	modifierOnDying.coffee	Modifier	ModifierOnDying	FALSE	FALSE						
+ModifierOnDyingInfest	modifierOnDyingInfest.coffee	ModifierOnDying	ModifierOnDyingInfest	FALSE	FALSE						
+ModifierOnDyingResummonAnywhere	modifierOnDyingResummonAnywhere.coffee	ModifierOnDying	ModifierOnDyingResummonAnywhere	FALSE	FALSE						
+ModifierOnDyingSpawnEntity	modifierOnDyingSpawnEntity.coffee	ModifierOnDying	ModifierOnDyingSpawnEntity	FALSE	FALSE						
+ModifierOnOpponentDeathWatch	modifierOnOpponentDeathWatch.coffee	ModifierDeathWatch	ModifierOnOpponentDeathWatch	FALSE	TRUE	ModifierOnOpponentDeathWatch	Summon a %X on a random nearby space				
+ModifierOnOpponentDeathWatchSpawnEntityOnSpace	modifierOnOpponentDeathWatchSpawnEntityOnSpace.coffee	ModifierOnOpponentDeathWatch	ModifierOnOpponentDeathWatchSpawnEntityOnSpace	FALSE	TRUE	Deathwatch	Whenever an enemy minion dies, summon a %X			onDeathWatch	
+ModifierOnRemoveSpawnEntities	modifierOnRemoveSpawnEntities.coffee	Modifier	ModifierOnRemoveSpawnEntities	FALSE	FALSE					onRemoveFromCard	
+ModifierOnRemoveSpawnRandomDeadEntity	modifierOnRemoveSpawnRandomDeadEntity.coffee	Modifier	ModifierOnRemoveSpawnRandomDeadEntity	FALSE	FALSE	ModifierOnRemoveSpawnRandomDeadEntity	When this artifact breaks, summon the last friendly minion destroyed this game nearby			onRemoveFromCard	
+ModifierOnSpawnCopyMyGeneral	modifierOnSpawnCopyMyGeneral.coffee	Modifier	ModifierOnSpawnCopyMyGeneral	FALSE	FALSE	ModifierOnSpawnCopyMyGeneral	Become a copy of your General			onApplyToCard	
+ModifierOnSpawnKillMyGeneral	modifierOnSpawnKillMyGeneral.coffee	Modifier	ModifierOnSpawnKillMyGeneral	FALSE	FALSE	ModifierOnSpawnKillMyGeneral	Kill your General				
+ModifierOnSummonFromHand	modifierOnSummonFromHand.coffee	Modifier	ModifierOnSummonFromHand	FALSE	FALSE						
+ModifierOnSummonFromHandApplyEmblems	modifierOnSummonFromHandApplyEmblems.coffee	ModifierOnSummonFromHand	ModifierOnSummonFromHandApplyEmblems	TRUE	FALSE	Destiny					
+ModifierOpeningGambit	modifierOpeningGambit.coffee	Modifier	ModifierOpeningGambit	TRUE	FALSE	modifiers.opening_gambit_name					
+ModifierOpeningGambitActivateSignatureCard	modifierOpeningGambitActivateSignatureCard.coffee	ModifierOpeningGambit	ModifierOpeningGambitActivateSignatureCard	FALSE	FALSE	Opening Gambit	Refresh your General's Bloodbound Spell				
+ModifierOpeningGambitAlabasterTitan	modifierOpeningGambitAlabasterTitan.coffee	ModifierOpeningGambit	ModifierOpeningGambitAlabasterTitan	FALSE	FALSE		If you have no spells in your deck, equip a full set of armor				
+ModifierOpeningGambitApplyMechazorPlayerModifiers	modifierOpeningGambitApplyMechazorPlayerModifiers.coffee	ModifierOpeningGambitApplyPlayerModifiers	ModifierOpeningGambitApplyMechazorPlayerModifiers	FALSE	FALSE						grant_modifier
+ModifierOpeningGambitApplyModifiers	modifierOpeningGambitApplyModifiers.coffee	ModifierOpeningGambit	ModifierOpeningGambitApplyModifiers	FALSE	FALSE						grant_modifier
+ModifierOpeningGambitApplyModifiersByRaceId	modifierOpeningGambitApplyModifiersByRaceId.coffee	ModifierOpeningGambitApplyModifiers	ModifierOpeningGambitApplyModifiersByRaceId	FALSE	FALSE						grant_modifier
+ModifierOpeningGambitApplyModifiersRandomly	modifierOpeningGambitApplyModifiersRandomly.coffee	ModifierOpeningGambitApplyModifiers	ModifierOpeningGambitApplyModifiersRandomly	FALSE	FALSE		Nearby friendly minions gain %X				grant_modifier
+ModifierOpeningGambitApplyModifiersToDeck	modifierOpeningGambitApplyModifiersToDeck.coffee	ModifierOpeningGambit	ModifierOpeningGambitApplyModifiersToDeck	FALSE	FALSE						grant_modifier
+ModifierOpeningGambitApplyModifiersToDeckAndHand	modifierOpeningGambitApplyModifiersToDeckAndHand.coffee	ModifierOpeningGambit	ModifierOpeningGambitApplyModifiersToDeckAndHand	FALSE	FALSE						grant_modifier
+ModifierOpeningGambitApplyModifiersToGeneral	modifierOpeningGambitApplyModifiersToGeneral.coffee	ModifierOpeningGambit	ModifierOpeningGambitApplyModifiersToGeneral	FALSE	FALSE						grant_modifier
+ModifierOpeningGambitApplyModifiersToHand	modifierOpeningGambitApplyModifiersToHand.coffee	ModifierOpeningGambitApplyModifiersToDeckAndHand	ModifierOpeningGambitApplyModifiersToHand	FALSE	FALSE						
+ModifierOpeningGambitApplyModifiersToWraithlings	modifierOpeningGambitApplyModifiersToWraithlings.coffee	ModifierOpeningGambitApplyModifiers	ModifierOpeningGambitApplyModifiersToWraithlings	FALSE	FALSE						grant_modifier
+ModifierOpeningGambitApplyPlayerModifiers	modifierOpeningGambitApplyPlayerModifiers.coffee	ModifierOpeningGambit	ModifierOpeningGambitApplyPlayerModifiers	FALSE	FALSE						grant_modifier
+ModifierOpeningGambitBonusManaCrystal	modifierOpeningGambitBonusManaCrystal.coffee	ModifierOpeningGambit	ModifierOpeningGambitBonusManaCrystal	FALSE	FALSE						
+ModifierOpeningGambitBuffSelfByBattlePetsHandStats	modifierOpeningGambitBuffSelfByBattlePetsHandStats.coffee	ModifierOpeningGambit	ModifierOpeningGambitBuffSelfByBattlePetsHandStats	FALSE	FALSE		Gain the combined Attack and Health of all Battle Pets in your action bar				
+ModifierOpeningGambitBuffSelfByOpponentHandCount	modifierOpeningGambitBuffSelfByOpponentHandCount.coffee	ModifierOpeningGambit	ModifierOpeningGambitBuffSelfByOpponentHandCount	FALSE	FALSE		Gains %X for each card in your opponent\'s action bar				stat_modify, grant_modifier
+ModifierOpeningGambitBuffSelfByShadowTileCount	modifierOpeningGambitBuffSelfByShadowTileCount.coffee	ModifierOpeningGambit	ModifierOpeningGambitBuffSelfByShadowTileCount	FALSE	FALSE	Opening Gambit	Gains %X for each of your Shadow Creep				stat_modify, grant_modifier
+ModifierOpeningGambitChangeSignatureCard	modifierOpeningGambitChangeSignatureCard.coffee	ModifierOpeningGambit	ModifierOpeningGambitChangeSignatureCard	FALSE	FALSE	Opening Gambit	Your Bloodbound Spell is %X				
+ModifierOpeningGambitChangeSignatureCardForThisTurn	modifierOpeningGambitChangeSignatureCardForThisTurn.coffee	ModifierOpeningGambit	ModifierOpeningGambitChangeSignatureCardForThisTurn	FALSE	FALSE					onEndTurn	
+ModifierOpeningGambitDagona	modifierOpeningGambitDagona.coffee	ModifierOpeningGambit	ModifierOpeningGambitDagona	FALSE	FALSE						
+ModifierOpeningGambitDamageBothGenerals	modifierOpeningGambitDamageBothGenerals.coffee	ModifierOpeningGambit	ModifierOpeningGambitDamageBothGenerals	FALSE	FALSE	Opening Gambit	Deal %X damage to BOTH Generals				
+ModifierOpeningGambitDamageEnemiesNearShadowCreep	modifierOpeningGambitDamageEnemiesNearShadowCreep.coffee	ModifierOpeningGambit	ModifierOpeningGambitDamageEnemiesNearShadowCreep	FALSE	FALSE	Opening Gambit	Deal %X damage to each enemy on or near friendly Shadow Creep				
+ModifierOpeningGambitDamageEverything	modifierOpeningGambitDamageEverything.coffee	ModifierOpeningGambit	ModifierOpeningGambitDamageEverything	FALSE	FALSE						
+ModifierOpeningGambitDamageInFront	modifierOpeningGambitDamageInFront.coffee	ModifierOpeningGambit	ModifierOpeningGambitDamageInFront	FALSE	FALSE	Opening Gambit	Deal %X damage to ANY minion in front of this				
+ModifierOpeningGambitDamageInFrontRow	modifierOpeningGambitDamageInFrontRow.coffee	ModifierOpeningGambit	ModifierOpeningGambitDamageInFrontRow	FALSE	FALSE	Opening Gambit	Deal %X damage to all enemies in front of this				
+ModifierOpeningGambitDamageMyGeneral	modifierOpeningGambitDamageMyGeneral.coffee	ModifierOpeningGambit	ModifierOpeningGambitDamageMyGeneral	FALSE	FALSE	Opening Gambit	Deal %X damage to your General				
+ModifierOpeningGambitDamageNearby	modifierOpeningGambitDamageNearby.coffee	ModifierOpeningGambit	ModifierOpeningGambitDamageNearby	FALSE	FALSE	Opening Gambit	Deal %X damage to everything around it				
+ModifierOpeningGambitDamageNearbyForAttack	modifierOpeningGambitDamageNearbyForAttack.coffee	ModifierOpeningGambit	ModifierOpeningGambitDamageNearbyForAttack	FALSE	FALSE	Opening Gambit	ALL nearby minions deal damage to themselves equal to their Attack				
+ModifierOpeningGambitDamageNearbyMinions	modifierOpeningGambitDamageNearbyMinions.coffee	ModifierOpeningGambit	ModifierOpeningGambitDamageNearbyMinions	FALSE	FALSE	Opening Gambit	Deal %X damage to				
+ModifierOpeningGambitDeathKnell	modifierOpeningGambitDeathKnell.coffee	ModifierOpeningGambit	ModifierOpeningGambitDeathKnell	FALSE	FALSE		Resummon all friendly Arcanysts destroyed this game nearby				
+ModifierOpeningGambitDestroyEnemyMinions	modifierOpeningGambitDestroyEnemyMinions.coffee	ModifierOpeningGambit	ModifierOpeningGambitDestroyEnemyMinions	FALSE	FALSE						
+ModifierOpeningGambitDestroyManaCrystal	modifierOpeningGambitDestroyManaCrystal.coffee	ModifierOpeningGambit	ModifierOpeningGambitDestroyManaCrystal	FALSE	FALSE						
+ModifierOpeningGambitDestroyNearbyMinions	modifierOpeningGambitDestroyNearbyMinions.coffee	ModifierOpeningGambit	ModifierOpeningGambitDestroyNearbyMinions	FALSE	FALSE	Opening Gambit	Destroy %X				
+ModifierOpeningGambitDispel	modifierOpeningGambitDispel.coffee	ModifierOpeningGambit	ModifierOpeningGambitDispel	FALSE	FALSE	Opening Gambit	Dispel ALL spaces around it				
+ModifierOpeningGambitDrawArtifactFromDeck	modifierOpeningGambitDrawArtifactFromDeck.coffee	ModifierOpeningGambit	ModifierOpeningGambitDrawArtifactFromDeck	FALSE	FALSE		Draw %X from your deck				draw
+ModifierOpeningGambitDrawCard	modifierOpeningGambitDrawCard.coffee	ModifierOpeningGambit	ModifierOpeningGambitDrawCard	FALSE	FALSE						draw
+ModifierOpeningGambitDrawCardBothPlayers	modifierOpeningGambitDrawCardBothPlayers.coffee	ModifierOpeningGambit	ModifierOpeningGambitDrawCardBothPlayers	FALSE	FALSE	Opening Gambit	Both players draw a card				draw
+ModifierOpeningGambitDrawCopyFromDeck	modifierOpeningGambitDrawCopyFromDeck.coffee	ModifierOpeningGambit	ModifierOpeningGambitDrawCopyFromDeck	FALSE	FALSE						draw
+ModifierOpeningGambitDrawFactionCards	modifierOpeningGambitDrawFactionCards.coffee	ModifierOpeningGambit	ModifierOpeningGambitDrawFactionCards	FALSE	FALSE	Opening Gambit	Add 2 random cards from your Faction to your action bar				summon
+ModifierOpeningGambitDrawRandomBattlePet	modifierOpeningGambitDrawRandomBattlePet.coffee	ModifierOpeningGambit	ModifierOpeningGambitDrawRandomBattlePet	FALSE	FALSE	Opening Gambit	Put a random Battle Pet into your action bar				summon
+ModifierOpeningGambitEquipArtifact	modifierOpeningGambitEquipArtifact.coffee	ModifierOpeningGambit	ModifierOpeningGambitEquipArtifact	FALSE	FALSE		Equip an artifact to you General				
+ModifierOpeningGambitGoleminate	modifierOpeningGambitGoleminate.coffee	ModifierOpeningGambit	ModifierOpeningGambitGoleminate	FALSE	FALSE	Opening Gambit	Dispel EVERYTHING and destroy ALL artifacts.				
+ModifierOpeningGambitGrandmasterVariax	modifierOpeningGambitGrandmasterVariax.coffee	ModifierOpeningGambitChangeSignatureCard	ModifierOpeningGambitGrandmasterVariax	FALSE	FALSE	Opening Gambit	Your Bloodbound Spell costs 3 and is now AWESOME				
+ModifierOpeningGambitGrincher	modifierOpeningGambitGrincher.coffee	ModifierOpeningGambit	ModifierOpeningGambitGrincher	FALSE	FALSE		Put a random artifact into your action bar. It costs 2 less				summon
+ModifierOpeningGambitHatchFriendlyEggs	modifierOpeningGambitHatchFriendlyEggs.coffee	ModifierOpeningGambit	ModifierOpeningGambitHatchFriendlyEggs	FALSE	FALSE		Hatch all friendly eggs				
+ModifierOpeningGambitHealBothGenerals	modifierOpeningGambitHealBothGenerals.coffee	ModifierOpeningGambit	ModifierOpeningGambitHealBothGenerals	FALSE	FALSE	Opening Gambit	Restore %X Health to BOTH Generals				
+ModifierOpeningGambitHealMyGeneral	modifierOpeningGambitHealMyGeneral.coffee	ModifierOpeningGambit	ModifierOpeningGambitHealMyGeneral	FALSE	FALSE	Opening Gambit	Restore %X Health to your General				
+ModifierOpeningGambitLifeGive	modifierOpeningGambitLifeGive.coffee	ModifierOpeningGambit	ModifierOpeningGambitLifeGive	FALSE	FALSE	Opening Gambit	Summon all friendly non-token minions destroyed on your opponent\'s last turn on random spaces				
+ModifierOpeningGambitMindwarp	modifierOpeningGambitMindwarp.coffee	ModifierOpeningGambit	ModifierOpeningGambitMindwarp	FALSE	FALSE		Gain a copy of a random spell from your opponent\'s action bar				summon
+ModifierOpeningGambitMoveEnemyGeneralForward	modifierOpeningGambitMoveEnemyGeneralForward.coffee	ModifierOpeningGambit	ModifierOpeningGambitMoveEnemyGeneralForward	FALSE	FALSE						
+ModifierOpeningGambitProgenitor	modifierOpeningGambitProgenitor.coffee	ModifierOpeningGambit	ModifierOpeningGambitProgenitor	FALSE	FALSE						
+ModifierOpeningGambitProgressBuild	modifierOpeningGambitProgressBuild.coffee	ModifierOpeningGambit	ModifierOpeningGambitProgressBuild	FALSE	FALSE	Opening Gambit	Progress your buildings by 1				
+ModifierOpeningGambitPutCardInHand	modifierOpeningGambitPutCardInHand.coffee	ModifierOpeningGambit	ModifierOpeningGambitPutCardInHand	FALSE	FALSE						summon
+ModifierOpeningGambitPutCardInOpponentHand	modifierOpeningGambitPutCardInOpponentHand.coffee	ModifierOpeningGambit	ModifierOpeningGambitPutCardInOpponentHand	FALSE	FALSE		Put %X in your opponent's action bar				summon
+ModifierOpeningGambitRazorback	modifierOpeningGambitRazorback.coffee	ModifierOpeningGambitApplyModifiers	ModifierOpeningGambitRazorback	FALSE	FALSE						grant_modifier
+ModifierOpeningGambitRefreshArtifacts	modifierOpeningGambitRefreshArtifacts.coffee	ModifierOpeningGambit	ModifierOpeningGambitRefreshArtifacts	FALSE	FALSE	Opening Gambit	Repair all of your artifacts to full durability				
+ModifierOpeningGambitRefreshSignatureCard	modifierOpeningGambitRefreshSignatureCard.coffee	ModifierOpeningGambit	ModifierOpeningGambitRefreshSignatureCard	FALSE	FALSE	Opening Gambit	Refresh your Bloodbound Spell				
+ModifierOpeningGambitRemoveArtifactToDrawArtifactFromFaction	modifierOpeningGambitRemoveArtifactToDrawArtifactFromFaction.coffee	ModifierOpeningGambit	ModifierOpeningGambitRemoveArtifactToDrawArtifactFromFaction	FALSE	FALSE	Opening Gambit	Destroy a random enemy artifact to draw a random in-faction artifact				summon
+ModifierOpeningGambitRemoveCardsFromDecksByCost	modifierOpeningGambitRemoveCardsFromDecksByCost.coffee	ModifierOpeningGambit	ModifierOpeningGambitRemoveCardsFromDecksByCost	FALSE	FALSE						
+ModifierOpeningGambitRemoveRandomArtifact	modifierOpeningGambitRemoveRandomArtifact.coffee	ModifierOpeningGambit	ModifierOpeningGambitRemoveRandomArtifact	FALSE	FALSE	Opening Gambit	Destroy a random enemy artifact				
+ModifierOpeningGambitReplaceHand	modifierOpeningGambitReplaceHand.coffee	ModifierOpeningGambit	ModifierOpeningGambitReplaceHand	FALSE	FALSE						
+ModifierOpeningGambitRetrieveMostRecentSpell	modifierOpeningGambitRetrieveMostRecentSpell.coffee	ModifierOpeningGambit	ModifierOpeningGambitRetrieveMostRecentSpell	FALSE	FALSE	Opening Gambit	Put a copy of the most recently cast spell into your action bar				summon
+ModifierOpeningGambitRetrieveRandomSpell	modifierOpeningGambitRetrieveRandomSpell.coffee	ModifierOpeningGambit	ModifierOpeningGambitRetrieveRandomSpell	FALSE	FALSE	Opening Gambit	Put a copy of a random spell you cast this game into your action bar				summon
+ModifierOpeningGambitSacrificeNearbyBuffSelf	modifierOpeningGambitSacrificeNearbyBuffSelf.coffee	ModifierOpeningGambit	ModifierOpeningGambitSacrificeNearbyBuffSelf	FALSE	FALSE	Opening Gambit	Destroy friendly minions around it and gain %X for each minion				stat_modify, grant_modifier
+ModifierOpeningGambitSirocco	modifierOpeningGambitSirocco.coffee	ModifierOpeningGambit	ModifierOpeningGambitSirocco	FALSE	FALSE	Opening Gambit	Summon a 3/2 Skyrock Golem on random spaces for each Golem you've summoned this game				
+ModifierOpeningGambitSniperZen	modifierOpeningGambitSniperZen.coffee	ModifierOpeningGambit	ModifierOpeningGambitSniperZen	FALSE	FALSE						
+ModifierOpeningGambitSpawnCopiesOfEntityAnywhere	modifierOpeningGambitSpawnCopiesOfEntityAnywhere.coffee	ModifierOpeningGambit	ModifierOpeningGambitSpawnCopiesOfEntityAnywhere	FALSE	FALSE	Opening Gambit	Summon %X				
+ModifierOpeningGambitSpawnCopiesOfEntityNearby	modifierOpeningGambitSpawnCopiesOfEntityNearby.coffee	ModifierOpeningGambit	ModifierOpeningGambitSpawnCopiesOfEntityNearby	FALSE	FALSE	Opening Gambit	Summon %X				
+ModifierOpeningGambitSpawnEnemyMinionNearOpponent	modifierOpeningGambitSpawnEnemyMinionNearOpponent.coffee	ModifierOpeningGambit	ModifierOpeningGambitSpawnEnemyMinionNearOpponent	FALSE	FALSE						
+ModifierOpeningGambitSpawnEntity	modifierOpeningGambitSpawnEntity.coffee	ModifierOpeningGambit	ModifierOpeningGambitSpawnEntity	FALSE	FALSE		Summon %X				
+ModifierOpeningGambitSpawnEntityInEachCorner	modifierOpeningGambitSpawnEntityInEachCorner.coffee	ModifierOpeningGambit	ModifierOpeningGambitSpawnEntityInEachCorner	FALSE	FALSE		Summon %X				
+ModifierOpeningGambitSpawnPartyAnimals	modifierOpeningGambitSpawnPartyAnimals.coffee	ModifierOpeningGambit	ModifierOpeningGambitSpawnPartyAnimals	FALSE	FALSE						
+ModifierOpeningGambitSpawnTribal	modifierOpeningGambitSpawnTribal.coffee	ModifierOpeningGambit	ModifierOpeningGambitSpawnTribal	FALSE	FALSE		Summon a random Tribal nearby				
+ModifierOpeningGambitSpawnVanarTokensAroundGeneral	modifierOpeningGambitSpawnVanarTokensAroundGeneral.coffee	ModifierOpeningGambit	ModifierOpeningGambitSpawnVanarTokensAroundGeneral	FALSE	FALSE		Surround the enemy General with random Walls				
+ModifierOpeningGambitStealEnemyGeneralHealth	modifierOpeningGambitStealEnemyGeneralHealth.coffee	ModifierOpeningGambit	ModifierOpeningGambitStealEnemyGeneralHealth	FALSE	FALSE		Your General steals X Health from the enemy General				
+OpeningGambitTeleportAllNearby	modifierOpeningGambitTeleportAllNearby.coffee	ModifierOpeningGambit	OpeningGambitTeleportAllNearby	FALSE	FALSE	Opening Gambit	 Push ALL nearby minions and Generals to random spaces				
+ModifierOpeningGambitTeleportMinionsToThis	modifierOpeningGambitTeleportMinionsToThis.coffee	ModifierOpeningGambit	ModifierOpeningGambitTeleportMinionsToThis	FALSE	FALSE						
+ModifierOpeningGambitTransformHandIntoLegendaries	modifierOpeningGambitTransformHandIntoLegendaries.coffee	ModifierOpeningGambit	ModifierOpeningGambitTransformHandIntoLegendaries	FALSE	FALSE						summon
+ModifierOpponentDrawCardWatch	modifierOpponentDrawCardWatch.coffee	Modifier	ModifierOpponentDrawCardWatch	FALSE	TRUE	ModifierOpponentDrawCardWatch	Whenever your opponent draws a card ...			onDrawCardWatch	draw
+ModifierOpponentDrawCardWatchBuffSelf	modifierOpponentDrawCardWatchBuffSelf.coffee	ModifierOpponentDrawCardWatch	ModifierOpponentDrawCardWatchBuffSelf	FALSE	TRUE	ModifierOpponentDrawCardWatchBuffSelf	Whenever your opponent draws a card, this minion gains %X			onDrawCardWatch	stat_modify, grant_modifier
+ModifierOpponentDrawCardWatchDamageEnemyGeneral	modifierOpponentDrawCardWatchDamageEnemyGeneral.coffee	ModifierOpponentDrawCardWatch	ModifierOpponentDrawCardWatchDamageEnemyGeneral	FALSE	TRUE	ModifierOpponentDrawCardWatchDamageEnemyGeneral	Whenever your opponent draws a card, deal %X damage to the enemy General			onDrawCardWatch	
+ModifierOpponentDrawCardWatchGainKeyword	modifierOpponentDrawCardWatchGainKeyword.coffee	ModifierOpponentDrawCardWatch	ModifierOpponentDrawCardWatchGainKeyword	FALSE	TRUE	ModifierOpponentDrawCardWatchGainKeyword	Whenever your opponent draws a card, this minion gains a random ability.			onDrawCardWatch	
+ModifierOpponentDrawCardWatchOverdrawSummonEntity	modifierOpponentDrawCardWatchOverdrawSummonEntity.coffee	ModifierOpponentDrawCardWatch	ModifierOpponentDrawCardWatchOverdrawSummonEntity	FALSE	TRUE	ModifierOpponentDrawCardWatchOverdrawSummonEntity	Whenever your opponent overdraws, summon %X			onDrawCardWatch	
+ModifierOpponentSummonWatch	modifierOpponentSummonWatch.coffee	Modifier	ModifierOpponentSummonWatch	FALSE	TRUE	Opponent Summon Watch	Opponent Summon Watch			onSummonWatch	
+ModifierOpponentSummonWatchDamageBuffMinionInHand	modifierOpponentSummonWatchBuffMinionInHand.coffee	ModifierOpponentSummonWatch	ModifierOpponentSummonWatchDamageBuffMinionInHand	FALSE	TRUE	Opponent Summon Watch Buff Minion in Hand	Whenever your opponent summons a minion, buff a minion in hand			onSummonWatch	
+ModifierOpponentSummonWatchBuffSelf	modifierOpponentSummonWatchBuffSelf.coffee	ModifierOpponentSummonWatch	ModifierOpponentSummonWatchBuffSelf	FALSE	TRUE	Opponent Summon Watch	Whenever opponent summons a minion, this minion gains %X			onSummonWatch	stat_modify, grant_modifier
+ModifierOpponentSummonWatchDamageEnemyGeneral	modifierOpponentSummonWatchDamageEnemyGeneral.coffee	ModifierOpponentSummonWatch	ModifierOpponentSummonWatchDamageEnemyGeneral	FALSE	TRUE	Opponent Summon Watch	Whenever your opponent summons a minion, deal %X damage to the enemy General			onSummonWatch	
+ModifierOpponentSummonWatchOpponentDrawCard	modifierOpponentSummonWatchOpponentDrawCard.coffee	ModifierOpponentSummonWatch	ModifierOpponentSummonWatchOpponentDrawCard	FALSE	TRUE	Opponent Summon Watch	Whenever your opponent summons a minion, they draw a card			onSummonWatch	draw
+ModifierOpponentSummonWatchRandomTransform	modifierOpponentSummonWatchRandomTransform.coffee	ModifierOpponentSummonWatch	ModifierOpponentSummonWatchRandomTransform	FALSE	TRUE	Opponent Summon Watch	Whenever an enemy summons a minion, transform it into a random minion of the same cost			onSummonWatch	summon
+ModifierOpponentSummonWatchSpawn1HealthClone	modifierOpponentSummonWatchSpawn1HealthClone.coffee	ModifierOpponentSummonWatch	ModifierOpponentSummonWatchSpawn1HealthClone	FALSE	TRUE	Opponent Summon Watch	Whenever an enemy summons a minion, summon a 1 health clone nearby your general			onSummonWatch	summon
+ModifierOpponentSummonWatchSummonEgg	modifierOpponentSummonWatchSummonEgg.coffee	ModifierOpponentSummonWatch	ModifierOpponentSummonWatchSummonEgg	FALSE	TRUE	Opponent Summon Watch Summon Egg	Whenever your opponent summons a minion, summon an egg.			onSummonWatch	
+ModifierOpponentSummonWatchSummonMinionInFront	modifierOpponentSummonWatchSummonMinionInFront.coffee	ModifierOpponentSummonWatch	ModifierOpponentSummonWatchSummonMinionInFront	FALSE	TRUE					onSummonWatch	
+ModifierOpponentSummonWatchSwapGeneral	modifierOpponentSummonWatchSwapGeneral.coffee	ModifierOpponentSummonWatch	ModifierOpponentSummonWatchSwapGeneral	FALSE	TRUE	Opponent Summon Watch	Whenever an enemy summons a minion, it becomes their new General			onSummonWatch	
+ModifierOverwatch	modifierOverwatch.coffee	Modifier	ModifierOverwatch	TRUE	FALSE	Guardian			maxStacks=1		
+ModifierOverwatchAttacked	modifierOverwatchAttacked.coffee	ModifierOverwatch	ModifierOverwatchAttacked	FALSE	FALSE		When this minion is attacked, %X				
+ModifierOverwatchAttackedBuffSelf	modifierOverwatchAttackedBuffSelf.coffee	ModifierOverwatchAttacked	ModifierOverwatchAttackedBuffSelf	FALSE	FALSE		When this minion is attacked, it gains %X				stat_modify, grant_modifier
+ModifierOverwatchAttackedDamageEnemyGeneralForSame	modifierOverwatchAttackedDamageEnemyGeneralForSame.coffee	ModifierOverwatchAttacked	ModifierOverwatchAttackedDamageEnemyGeneralForSame	FALSE	FALSE		When this minion is attacked, deal the same damage to enemy general.				
+ModifierOverwatchDestroyed	modifierOverwatchDestroyed.coffee	ModifierOverwatch	ModifierOverwatchDestroyed	FALSE	FALSE		When this minion is destroyed, %X				
+ModifierOverwatchDestroyedPutCardInHand	modifierOverwatchDestroyedPutCardInHand.coffee	ModifierOverwatchDestroyed	ModifierOverwatchDestroyedPutCardInHand	FALSE	FALSE						summon
+ModifierOverwatchDestroyedPutMagmarCardsInHand	modifierOverwatchDestroyedPutMagmarCardsInHand.coffee	ModifierOverwatchDestroyed	ModifierOverwatchDestroyedPutMagmarCardsInHand	FALSE	FALSE		When this minion is destroyed add two random Magmar spells with its mana cost to your action bar				summon
+ModifierOverwatchDestroyedResummonAndDestroyOther	modifierOverwatchDestroyedResummonAndDestroyOther.coffee	ModifierOverwatchDestroyed	ModifierOverwatchDestroyedResummonAndDestroyOther	FALSE	FALSE						
+ModifierOverwatchEndTurn	modifierOverwatchEndTurn.coffee	ModifierOverwatch	ModifierOverwatchEndTurn	FALSE	FALSE		When opponent ends turn, %X				
+ModifierOverwatchEndTurnPutCardInHand	modifierOverwatchEndTurnPutCardInHand.coffee	ModifierOverwatchEndTurn	ModifierOverwatchEndTurnPutCardInHand	FALSE	FALSE						summon
+ModifierOverwatchHidden	modifierOverwatchHidden.coffee	Modifier	ModifierOverwatchHidden	TRUE	FALSE	Overwatch	%X				
+ModifierOverwatchMovedNearby	modifierOverwatchMovedNearby.coffee	ModifierOverwatch	ModifierOverwatchMovedNearby	FALSE	FALSE		When an enemy minion moves next to this minion, %X				
+ModifierOverwatchMovedNearbyAttack	modifierOverwatchMovedNearbyAttack.coffee	ModifierOverwatchMovedNearby	ModifierOverwatchMovedNearbyAttack	FALSE	FALSE						
+ModifierOverwatchMovedNearbyDispelAndProvoke	modifierOverwatchMovedNearbyDispelAndProvoke.coffee	ModifierOverwatchMovedNearby	ModifierOverwatchMovedNearbyDispelAndProvoke	FALSE	FALSE						
+ModifierOverwatchMovedNearbyMiniImmolation	modifierOverwatchMovedNearbyMiniImmolation.coffee	ModifierOverwatchMovedNearby	ModifierOverwatchMovedNearbyMiniImmolation	FALSE	FALSE						
+ModifierOverwatchMovedNearbyMoveBothToCorners	modifierOverwatchMovedNearbyMoveBothToCorners.coffee	ModifierOverwatchMovedNearby	ModifierOverwatchMovedNearbyMoveBothToCorners	FALSE	FALSE						
+ModifierOverwatchSpellTarget	modifierOverwatchSpellTarget.coffee	ModifierOverwatch	ModifierOverwatchSpellTarget	FALSE	FALSE		When this is the target of an enemy spell, %X				
+ModifierOverwatchSpellTargetDamageEnemies	modifierOverwatchSpellTargetDamageEnemies.coffee	ModifierOverwatchSpellTarget	ModifierOverwatchSpellTargetDamageEnemies	FALSE	FALSE						
+ModifierPantheran	modifierPantheran.coffee	Modifier	ModifierPantheran	FALSE	FALSE	Scion's Watch	Costs 0 if you've cast all three Scion's Wish spells this game				stat_modify
+ModifierPortal	modifierPortal.coffee	Modifier	ModifierPortal	TRUE	FALSE	modifiers.structure_name			maxStacks=1		stat_modify
+ModifierPrimalProtection	modifierPrimalProtection.coffee	Modifier	ModifierPrimalProtection	FALSE	FALSE	modifiers.primal_protection_name	modifiers.primal_protection_def				grant_modifier
+ModifierPrimalTile	modifierPrimalTile.coffee	Modifier	ModifierPrimalTile	FALSE	FALSE	modifiers.primal_flourish_name	modifiers.primal_flourish_def				grant_modifier
+ModifierProvidesAlwaysInfiltrated	modifierProvidesAlwaysInfiltrated.coffee	Modifier	ModifierProvidesAlwaysInfiltrated	FALSE	FALSE						
+ModifierProvoke	modifierProvoke.coffee	Modifier	ModifierProvoke	TRUE	FALSE	modifiers.provoke_name			maxStacks=1		aura, grant_modifier
+ModifierProvoked	modifierProvoked.coffee	Modifier	ModifierProvoked	FALSE	FALSE	modifiers.provoked_name	modifiers.provoked_desc			onValidateAction	stat_modify, action_modify
+ModifierPseudoRush	modifierPseudoRush.coffee	Modifier	ModifierPseudoRush	FALSE	FALSE				maxStacks=1		
+ModifierQuestBuffAbyssian	modifierQuestBuffAbyssian.coffee	ModifierOnDyingResummonAnywhere	ModifierQuestBuffAbyssian	FALSE	FALSE				maxStacks=1		
+ModifierQuestBuffNeutral	modifierQuestBuffNeutral.coffee	Modifier	ModifierQuestBuffNeutral	FALSE	FALSE				maxStacks=1		
+ModifierQuestBuffVanar	modifierQuestBuffVanar.coffee	Modifier	ModifierQuestBuffVanar	FALSE	FALSE				maxStacks=1		
+ModifierQuestStatus	modifierQuestStatus.coffee	Modifier	ModifierQuestStatus	FALSE	FALSE				maxStacks=1		
+ModifierQuestStatusAbyssian	modifierQuestStatusAbyssian.coffee	ModifierQuestStatus	ModifierQuestStatusAbyssian	FALSE	FALSE						
+ModifierQuestStatusLyonar	modifierQuestStatusLyonar.coffee	ModifierQuestStatus	ModifierQuestStatusLyonar	FALSE	FALSE						
+ModifierQuestStatusMagmar	modifierQuestStatusMagmar.coffee	ModifierQuestStatus	ModifierQuestStatusMagmar	FALSE	FALSE						
+ModifierQuestStatusNeutral	modifierQuestStatusNeutral.coffee	ModifierQuestStatus	ModifierQuestStatusNeutral	FALSE	FALSE						
+ModifierQuestStatusSonghai	modifierQuestStatusSonghai.coffee	ModifierQuestStatus	ModifierQuestStatusSonghai	FALSE	FALSE						
+ModifierQuestStatusVanar	modifierQuestStatusVanar.coffee	ModifierQuestStatus	ModifierQuestStatusVanar	FALSE	FALSE						
+ModifierQuestStatusVetruvian	modifierQuestStatusVetruvian.coffee	ModifierQuestStatus	ModifierQuestStatusVetruvian	FALSE	FALSE						
+ModifierRanged	modifierRanged.coffee	Modifier	ModifierRanged	TRUE	FALSE	modifiers.ranged_name		reach:CONFIG.REACH_RANGED - CONFIG.REACH_MELEE	maxStacks=1		stat_modify
+ModifierRangedProvoke	modifierRangedProvoke.coffee	Modifier	ModifierRangedProvoke	FALSE	FALSE	modifiers.ranged_provoke_name	modifiers.ranged_provoke_def		maxStacks=1	onValidateAction	aura, action_modify, grant_modifier
+ModifierRangedProvoked	modifierRangedProvoked.coffee	Modifier	ModifierRangedProvoked	FALSE	FALSE	modifiers.ranged_provoked_name	modifiers.ranged_provoked_def				
+ModifierRebirth	modifierRebirth.coffee	ModifierOnDyingSpawnEntity	ModifierRebirth	TRUE	FALSE	modifiers.rebirth_name					
+ModifierReduceCostOfMinionsAndDamageThem	modifierReduceCostOfMinionsAndDamageThem.coffee	ModifierSummonWatch	ModifierReduceCostOfMinionsAndDamageThem	FALSE	FALSE	Summon Watch (reduce cost of minions and damage them)	Your minions cost %X less to summon and take %Y damage when summoned from your action bar			onSummonWatch	
+ModifierRemoveAndReplaceEntity	modifierRemoveAndReplaceEntity.coffee	Modifier	ModifierRemoveAndReplaceEntity	FALSE	FALSE				maxStacks=1		summon
+ModifierReplaceWatch	modifierReplaceWatch.coffee	Modifier	ModifierReplaceWatch	FALSE	FALSE	Replace Watch	Replace Watch				
+ModifierReplaceWatchApplyModifiersToReplaced	modifierReplaceWatchApplyModifiersToReplaced.coffee	ModifierReplaceWatch	ModifierReplaceWatchApplyModifiersToReplaced	FALSE	FALSE						
+ModifierReplaceWatchBuffSelf	modifierReplaceWatchBuffSelf.coffee	ModifierReplaceWatch	ModifierReplaceWatchBuffSelf	FALSE	FALSE	Replace Watch	Whenever you replace a card, this minion gains %X				stat_modify, grant_modifier
+ModifierReplaceWatchDamageEnemy	modifierReplaceWatchDamageEnemy.coffee	ModifierReplaceWatch	ModifierReplaceWatchDamageEnemy	FALSE	FALSE	Replace Watch (damage random enemy)	Whenever you replace a card, deal %X damage to a random enemy				
+ModifierReplaceWatchShuffleCardIntoDeck	modifierReplaceWatchShuffleCardIntoDeck.coffee	ModifierReplaceWatch	ModifierReplaceWatchShuffleCardIntoDeck	FALSE	FALSE						
+ModifierReplaceWatchSpawnEntity	modifierReplaceWatchSpawnEntity.coffee	ModifierReplaceWatch	ModifierReplaceWatchSpawnEntity	FALSE	FALSE		Whenever you replace a card, summon %X				
+ModifierRook	modifierRook.coffee	ModifierEndTurnWatch	ModifierRook	FALSE	FALSE		At the end of your turn, this minion gains a random Faction ability				
+ModifierSandPortal	modifierSandPortal.coffee	ModifierSummonWatchFromActionBar	ModifierSandPortal	FALSE	FALSE	modifiers.exhuming_sand_name	modifiers.exhuming_sand_def			onSummonWatch	
+ModifierSecondWind	modifierSecondWind.coffee	Modifier	ModifierSecondWind	FALSE	FALSE	modifiers.second_wind_name	modifiers.second_wind_def		maxStacks=1	onValidateAction	action_modify, grant_modifier
+ModifierSelfDamageAreaAttack	modifierSelfDamageAreaAttack.coffee	Modifier	ModifierSelfDamageAreaAttack	FALSE	FALSE	modifiers.self_damage_area_attack_name	modifiers.self_damage_area_attack_def		maxStacks=1	onBeforeAction	
+ModifierSentinel	modifierSentinel.coffee	ModifierOverwatch	ModifierSentinel	TRUE	FALSE	modifiers.sentinel_name			maxStacks=1		
+ModifierSentinelHidden	modifierSentinelHidden.coffee	ModifierOverwatchHidden	ModifierSentinelHidden	TRUE	FALSE	Sentinel	%X				
+ModifierSentinelOpponentGeneralAttack	modifierSentinelOpponentGeneralAttack.coffee	ModifierSentinel	ModifierSentinelOpponentGeneralAttack	FALSE	FALSE		modifiers.sentinel_general_attack				
+ModifierSentinelOpponentGeneralAttackHealEnemyGeneralDrawCard	modifierSentinelOpponentGeneralAttackHealEnemyGeneralDrawCard.coffee	ModifierSentinel	ModifierSentinelOpponentGeneralAttackHealEnemyGeneralDrawCard	FALSE	FALSE		modifiers.sentinel_general_attack				draw
+ModifierSentinelOpponentSpellCast	modifierSentinelOpponentSpellCast.coffee	ModifierSentinel	ModifierSentinelOpponentSpellCast	FALSE	FALSE		modifiers.sentinel_spell_cast				
+ModifierSentinelOpponentSpellCastRefundManaDrawCard	modifierSentinelOpponentSpellCastRefundManaDrawCard.coffee	ModifierSentinel	ModifierSentinelOpponentSpellCastRefundManaDrawCard	FALSE	FALSE		modifiers.sentinel_spell_cast				draw
+ModifierSentinelOpponentSummon	modifierSentinelOpponentSummon.coffee	ModifierSentinel	ModifierSentinelOpponentSummon	FALSE	FALSE		modifiers.sentinel_summon				
+ModifierSentinelOpponentSummonBuffItDrawCard	modifierSentinelOpponentSummonBuffItDrawCard.coffee	ModifierSentinelOpponentSummon	ModifierSentinelOpponentSummonBuffItDrawCard	FALSE	FALSE						draw
+ModifierSentinelOpponentSummonCopyIt	modifierSentinelOpponentSummonCopyIt.coffee	ModifierSentinelOpponentSummon	ModifierSentinelOpponentSummonCopyIt	FALSE	FALSE						summon
+ModifierSentinelOpponentSummonDamageIt	modifierSentinelOpponentSummonDamageIt.coffee	ModifierSentinelOpponentSummon	ModifierSentinelOpponentSummonDamageIt	FALSE	FALSE						
+ModifierSentinelOpponentSummonSwapPlaces	modifierSentinelOpponentSummonSwapPlaces.coffee	ModifierSentinelOpponentSummon	ModifierSentinelOpponentSummonSwapPlaces	FALSE	FALSE						
+ModifierSentinelSetup	modifierSentinelSetup.coffee	Modifier	ModifierSentinelSetup	FALSE	FALSE				maxStacks=1		action_modify
+ModifierShadowScar	modifierShadowScar.coffee	ModifierDyingWish	ModifierShadowScar	FALSE	FALSE	modifiers.shadow_scar_name	modifiers.shadow_scar_def				
+ModifierShatteringHeart	modifierShatteringHeart.coffee	Modifier	ModifierShatteringHeart	FALSE	FALSE	modifiers.shattering_heart_name	modifiers.shattering_heart_def		maxStacks=1		action_modify
+ModifierSilence	modifierSilence.coffee	Modifier	ModifierSilence	FALSE	FALSE	modifiers.silence_name	modifiers.silence_def			onApplyToCard	
+ModifierSituationalBuffSelf	modifierSituationalBuffSelf.coffee	Modifier	ModifierSituationalBuffSelf	FALSE	FALSE		Whenever %X			onApplyToCard	grant_modifier
+ModifierSituationalBuffSelfIfFullHealth	modifierSituationalBuffSelfIfFullHealth.coffee	ModifierSituationalBuffSelf	ModifierSituationalBuffSelfIfFullHealth	FALSE	FALSE	ModifierSituationalBuffSelfIfFullHealth					grant_modifier
+ModifierSituationalBuffSelfIfHaveMech	modifierSituationalBuffSelfIfHaveMech.coffee	ModifierSituationalBuffSelf	ModifierSituationalBuffSelfIfHaveMech	FALSE	FALSE						grant_modifier
+ModifierSituationalBuffSelfIfSpriggin	modifierSituationalBuffSelfIfSpriggin.coffee	ModifierSituationalBuffSelf	ModifierSituationalBuffSelfIfSpriggin	FALSE	FALSE	ModifierSituationalBuffSelfIfSpriggin	If there is a Spriggin gain +3 Attack				grant_modifier
+ModifierSnowRippler	modifierSnowRippler.coffee	ModifierDealDamageWatch	ModifierSnowRippler	FALSE	FALSE	modifiers.snow_rippler_name	modifiers.snow_rippler_def				summon
+ModifierSpawnedFromEgg	modifierSpawnedFromEgg.coffee	Modifier	ModifierSpawnedFromEgg	FALSE	FALSE	Spawned From Egg	Spawned From An Egg		maxStacks=1	onApplyToCard	
+ModifierSpellDamageWatch	modifierSpellDamageWatch.coffee	Modifier	ModifierSpellDamageWatch	FALSE	TRUE	Spell Damage Watch	Spell Damage Watch				
+ModifierSpellDamageWatchPutCardInHand	modifierSpellDamageWatchPutCardInHand.coffee	ModifierSpellDamageWatch	ModifierSpellDamageWatchPutCardInHand	FALSE	TRUE						summon
+ModifierSpellWatch	modifierSpellWatch.coffee	Modifier	ModifierSpellWatch	FALSE	TRUE	Spell Watch	Spell Watch			onSpellWatch, onBeforeAction	
+ModifierSpellWatchAnywhereApplyModifiers	modifierSpellWatchAnywhereApplyModifiers.coffee	Modifier	ModifierSpellWatchAnywhereApplyModifiers	FALSE	TRUE					onSpellWatch, onAfterAction	grant_modifier
+ModifierSpellWatchApplyModifiers	modifierSpellWatchApplyModifiers.coffee	ModifierSpellWatch	ModifierSpellWatchApplyModifiers	FALSE	TRUE	Spell Watch	Whenever you cast a spell, apply a modifier to this minion			onSpellWatch	grant_modifier
+ModifierSpellWatchBloodLeech	modifierSpellWatchBloodLeech.coffee	ModifierSpellWatch	ModifierSpellWatchBloodLeech	FALSE	TRUE					onSpellWatch	
+ModifierSpellWatchBuffAllies	modifierSpellWatchBuffAllies.coffee	ModifierSpellWatch	ModifierSpellWatchBuffAllies	FALSE	TRUE	Spell Watch (Buff allies )	Whenever you cast a spell, friendly minions gain %X.			onSpellWatch	
+ModifierSpellWatchBuffAlliesByRace	modifierSpellWatchBuffAlliesByRace.coffee	ModifierSpellWatch	ModifierSpellWatchBuffAlliesByRace	FALSE	TRUE	Spell Watch (Buff allies by race)	Whenever you cast a spell, your			onSpellWatch	
+ModifierSpellWatchDamageAllMinions	modifierSpellWatchDamageAllMinions.coffee	ModifierSpellWatch	ModifierSpellWatchDamageAllMinions	FALSE	TRUE	Spell Watch (Damage All Minions)	Whenever you cast a spell, deal %X damage to ALL minions			onSpellWatch	
+ModifierSpellWatchDamageGeneral	modifierSpellWatchDamageGeneral.coffee	ModifierSpellWatch	ModifierSpellWatchDamageGeneral	FALSE	TRUE	Spell Watch (Damage General)	Whenever you cast a spell, deal %X damage to the enemy General			onSpellWatch	
+ModifierSpellWatchDrawCard	modifierSpellWatchDrawCard.coffee	ModifierSpellWatch	ModifierSpellWatchDrawCard	FALSE	TRUE					onSpellWatch	draw
+ModifierSpellWatchDrawRandomArcanyst	modifierSpellWatchDrawRandomArcanyst.coffee	ModifierSpellWatch	ModifierSpellWatchDrawRandomArcanyst	FALSE	TRUE	Spell Watch	Whenever you cast a spell, draw a random Arcanyst			onSpellWatch	summon
+ModifierSpellWatchPutCardInHand	modifierSpellWatchPutCardInHand.coffee	ModifierSpellWatch	ModifierSpellWatchPutCardInHand	FALSE	TRUE	Spell Watch (Put Card In Hand)	Whenever you play a spell, put a a card in your Action Bar			onSpellWatch	summon
+ModifierSpellWatchScientist	modifierSpellWatchScientist.coffee	Modifier	ModifierSpellWatchScientist	FALSE	TRUE	Spell Watch (Scientist)	Whenever you cast a spell that targets a friendly minion, draw a card				
+ModifierSpellWatchSpawnEntity	modifierSpellWatchSpawnEntity.coffee	ModifierSpellWatch	ModifierSpellWatchSpawnEntity	FALSE	TRUE	Spell Watch (Spawn Entity)	Whenever you cast a spell, summon %X			onSpellWatch	
+ModifierSpiritScribe	modifierSpiritScribe.coffee	ModifierSummonWatch	ModifierSpiritScribe	FALSE	FALSE		Whenever you summon a minion, this minion gains a random keyword ability			onSummonWatch	
+ModifierSprigginDiesBuffSelf	modifierSprigginDiesBuffSelf.coffee	Modifier	ModifierSprigginDiesBuffSelf	FALSE	FALSE		Whenever a Spriggin dies, give this +3/+3				grant_modifier
+ModifierStackingShadows	modifierStackingShadows.coffee	ModifierEndTurnWatch	ModifierStackingShadows	FALSE	FALSE	modifiers.shadow_creep_name	modifiers.shadow_creep_def			onApplyToCard	
+ModifierStackingShadowsBonusDamage	modifierStackingShadowsBonusDamage.coffee	Modifier	ModifierStackingShadowsBonusDamage	FALSE	FALSE	Shadow Creep Bonus Damage					
+ModifierStackingShadowsBonusDamageEqualNumberTiles	modifierStackingShadowsBonusDamageEqualNumberTiles.coffee	ModifierStackingShadowsBonusDamage	ModifierStackingShadowsBonusDamageEqualNumberTiles	FALSE	FALSE				maxStacks=1		grant_modifier
+ModifierStackingShadowsBonusDamageUnique	modifierStackingShadowsBonusDamageUnique.coffee	ModifierStackingShadowsBonusDamage	ModifierStackingShadowsBonusDamageUnique	FALSE	FALSE				maxStacks=1		
+ModifierStackingShadowsDebuff	modifierStackingShadowsDebuff.coffee	Modifier	ModifierStackingShadowsDebuff	FALSE	FALSE	modifiers.stacking_shadows_debuff_name	modifiers.stacking_shadows_debuff_def				grant_modifier
+ModifierStartOpponentsTurnWatch	modifierStartOpponentsTurnWatch.coffee	Modifier	ModifierStartOpponentsTurnWatch	FALSE	FALSE					onStartTurn	
+ModifierStartOpponentsTurnWatchRemoveEntity	modifierStartOpponentsTurnWatchRemoveEntity.coffee	ModifierStartOpponentsTurnWatch	ModifierStartOpponentsTurnWatchRemoveEntity	FALSE	FALSE						
+ModifierStartTurnWatch	modifierStartTurnWatch.coffee	Modifier	ModifierStartTurnWatch	FALSE	FALSE	Start Turn Watch	Start Turn Watch			onStartTurn	
+ModifierStartTurnWatchApplyTempArtifactModifier	modifierStartTurnWatchApplyTempArtifactModifier.coffee	ModifierStartTurnWatch	ModifierStartTurnWatchApplyTempArtifactModifier	FALSE	FALSE					onEndTurn	
+ModifierStartTurnWatchBounceToActionBar	modifierStartTurnWatchBounceToActionBar.coffee	ModifierStartTurnWatch	ModifierStartTurnWatchBounceToActionBar	FALSE	FALSE				maxStacks=1		summon
+ModifierStartTurnWatchBuffSelf	modifierStartTurnWatchBuffSelf.coffee	ModifierStartTurnWatch	ModifierStartTurnWatchBuffSelf	FALSE	FALSE	Start Turn Watch	At the start of your turn, this minion gets %X				stat_modify, grant_modifier
+ModifierStartTurnWatchDamageAndBuffSelf	modifierStartTurnWatchDamageAndBuffSelf.coffee	ModifierStartTurnWatchBuffSelf	ModifierStartTurnWatchDamageAndBuffSelf	FALSE	FALSE	Turn Watch	At the start of your turn, take %X damage but gain %Y				stat_modify, grant_modifier
+ModifierStartTurnWatchDamageEnemiesInRow	modifierStartTurnWatchDamageEnemiesInRow.coffee	ModifierStartTurnWatch	ModifierStartTurnWatchDamageEnemiesInRow	FALSE	FALSE	Start Watch	At the start of your turn, deal %X damage to enemies in row				
+ModifierStartTurnWatchDamageEnemyGeneralBuffSelf	modifierStartTurnWatchDamageEnemyGeneralBuffSelf.coffee	ModifierStartTurnWatchBuffSelf	ModifierStartTurnWatchDamageEnemyGeneralBuffSelf	FALSE	FALSE	Turn Watch	At the start of your turn, deal %X damage to the enemy General and this minion gains %Y				stat_modify, grant_modifier
+ModifierStartTurnWatchDamageGeneralEqualToMinionsOwned	modifierStartTurnWatchDamageGeneralEqualToMinionsOwned.coffee	ModifierStartTurnWatch	ModifierStartTurnWatchDamageGeneralEqualToMinionsOwned	FALSE	FALSE	Turn Watch	modifiers.start_turn_watch_damage_general_equal_to_minions_owned_def				
+ModifierStartTurnWatchDamageMyGeneral	modifierStartTurnWatchDamageMyGeneral.coffee	ModifierStartTurnWatch	ModifierStartTurnWatchDamageMyGeneral	FALSE	FALSE						
+ModifierStartTurnWatchDamageRandom	modifierStartTurnWatchDamageRandom.coffee	ModifierStartTurnWatch	ModifierStartTurnWatchDamageRandom	FALSE	FALSE	Turn Watch	At the start of your turn, deal %X damage to a random minion or General				
+ModifierStartTurnWatchDestroySelfAndEnemies	modifierStartTurnWatchDestroySelfAndEnemies.coffee	ModifierStartTurnWatch	ModifierStartTurnWatchDestroySelfAndEnemies	FALSE	FALSE		At the start of your turn, destroy this minion and all enemy minions				
+ModifierStartTurnWatchDispelAllEnemyMinionsDrawCard	modifierStartTurnWatchDispelAllEnemyMinionsDrawCard.coffee	ModifierStartTurnWatch	ModifierStartTurnWatchDispelAllEnemyMinionsDrawCard	FALSE	FALSE		At the start of your turn, dispel all enemy minions and draw a card				draw
+ModifierStartTurnWatchEquipArtifact	modifierStartTurnWatchEquipArtifact.coffee	ModifierStartTurnWatch	ModifierStartTurnWatchEquipArtifact	FALSE	FALSE		modifiers.start_turn_watch_equip_artifact_def				
+ModifierStartTurnWatchImmolateDamagedMinions	modifierStartTurnWatchImmolateDamagedMinions.coffee	ModifierStartTurnWatch	ModifierStartTurnWatchImmolateDamagedMinions	FALSE	FALSE						
+ModifierStartTurnWatchPlaySpell	modifierStartTurnWatchPlaySpell.coffee	ModifierStartTurnWatch	ModifierStartTurnWatchPlaySpell	FALSE	FALSE		At the start of your turn, cast %X				
+ModifierStartTurnWatchPutCardInHand	modifierStartTurnWatchPutCardInHand.coffee	ModifierStartTurnWatch	ModifierStartTurnWatchPutCardInHand	FALSE	FALSE		Add a card to your hand at start of turn				summon
+ModifierStartTurnWatchPutCardInOpponentsHand	modifierStartTurnWatchPutCardInOpponentsHand.coffee	ModifierStartTurnWatch	ModifierStartTurnWatchPutCardInOpponentsHand	FALSE	FALSE		Add a card to your opponent's hand at start of turn				summon
+ModifierStartTurnWatchRemoveEntity	modifierStartTurnWatchRemoveEntity.coffee	ModifierStartTurnWatch	ModifierStartTurnWatchRemoveEntity	FALSE	FALSE						
+ModifierStartTurnWatchRespawnClones	modifierStartTurnWatchRespawnClones.coffee	ModifierStartTurnWatch	ModifierStartTurnWatchRespawnClones	FALSE	FALSE	Turn Watch	At the start of your turn, resummon fallen Legion in random corners.				
+ModifierStartTurnWatchRestoreChargeToArtifacts	modifierStartTurnWatchRestoreChargeToArtifacts.coffee	ModifierStartTurnWatch	ModifierStartTurnWatchRestoreChargeToArtifacts	FALSE	FALSE						
+ModifierStartTurnWatchSpawnEntity	modifierStartTurnWatchSpawnEntity.coffee	ModifierStartTurnWatch	ModifierStartTurnWatchSpawnEntity	FALSE	FALSE	Turn Watch	At the start of your turn, summon %X				
+ModifierStartTurnWatchSpawnTile	modifierStartTurnWatchSpawnTile.coffee	ModifierStartTurnWatchSpawnEntity	ModifierStartTurnWatchSpawnTile	FALSE	FALSE	Turn Watch	At the start of your turn, turn %X				
+ModifierStartTurnWatchSummonDervish	modifierStartTurnWatchSummonDervish.coffee	ModifierStartTurnWatchSpawnEntity	ModifierStartTurnWatchSummonDervish	TRUE	FALSE	modifiers.summon_dervish_name					
+ModifierStartTurnWatchSwapStats	modifierStartTurnWatchSwapStats.coffee	ModifierStartTurnWatch	ModifierStartTurnWatchSwapStats	FALSE	FALSE		At the start of your turn, fully heal this minion and switch its Attack and Health				stat_modify
+ModifierStartTurnWatchTeleportRandomSpace	modifierStartTurnWatchTeleportRandomSpace.coffee	ModifierStartTurnWatch	ModifierStartTurnWatchTeleportRandomSpace	FALSE	FALSE		At the start of your turn, teleport to a random location				
+ModifierStartsInHand	modifierStartsInHand.coffee	Modifier	ModifierStartsInHand	FALSE	FALSE						
+ModifierStrikeback	modifierStrikeback.coffee	Modifier	ModifierStrikeback	TRUE	FALSE	Strikeback			maxStacks=1	onBeforeAction	
+ModifierStun	modifierStun.coffee	ModifierStunned	ModifierStun	FALSE	FALSE	Stun					
+ModifierStunWhenAttacked	modifierStunWhenAttacked.coffee	Modifier	ModifierStunWhenAttacked	FALSE	FALSE	Stunner	Minions next to this minion that attack it are Stunned		maxStacks=1		
+ModifierStunned	modifierStunned.coffee	Modifier	ModifierStunned	TRUE	FALSE	modifiers.stunned_name			maxStacks=1	onValidateAction, onEndTurn, onApplyToCard	action_modify
+ModifierStunnedVanar	modifierStunnedVanar.coffee	ModifierStunned	ModifierStunnedVanar	FALSE	FALSE						
+ModifierSummonSelfOnReplace	modifierSummonSelfOnReplace.coffee	Modifier	ModifierSummonSelfOnReplace	FALSE	FALSE	Summon Self On Replace	When you replace this card, summon it nearby.  Your General takes 2 damage				
+ModifierSummonWatch	modifierSummonWatch.coffee	Modifier	ModifierSummonWatch	FALSE	TRUE	Summon Watch	Summon Watch			onSummonWatch	
+ModifierSummonWatchAnyPlayer	modifierSummonWatchAnyPlayer.coffee	Modifier	ModifierSummonWatchAnyPlayer	FALSE	TRUE	Summon Watch Any Player	Summon Watch Any Player			onSummonWatch	
+ModifierSummonWatchAnyPlayerApplyModifiers	modifierSummonWatchAnyPlayerApplyModifiers.coffee	ModifierSummonWatchAnyPlayer	ModifierSummonWatchAnyPlayerApplyModifiers	FALSE	TRUE		Other minions you summon %X			onSummonWatch	grant_modifier
+ModifierSummonWatchAnyPlayerHsuku	modifierSummonWatchAnyPlayerHsuku.coffee	ModifierSummonWatchAnyPlayer	ModifierSummonWatchAnyPlayerHsuku	FALSE	TRUE					onSummonWatch	
+ModifierSummonWatchAnywhereByRaceBuffSelf	modifierSummonWatchAnywhereByRaceBuffSelf.coffee	ModifierSummonWatchByRaceBuffSelf	ModifierSummonWatchAnywhereByRaceBuffSelf	FALSE	TRUE					onSummonWatch	
+ModifierSummonWatchApplyModifiers	modifierSummonWatchApplyModifiers.coffee	ModifierSummonWatch	ModifierSummonWatchApplyModifiers	FALSE	TRUE		Other minions you summon %X			onSummonWatch	grant_modifier
+ModifierSummonWatchApplyModifiersToBoth	modifierSummonWatchApplyModifiersToBoth.coffee	ModifierSummonWatch	ModifierSummonWatchApplyModifiersToBoth	FALSE	TRUE					onSummonWatch	grant_modifier
+ModifierSummonWatchApplyModifiersToRanged	modifierSummonWatchApplyModifiersToRanged.coffee	ModifierSummonWatchApplyModifiers	ModifierSummonWatchApplyModifiersToRanged	FALSE	TRUE						
+ModifierSummonWatchBuffSelf	modifierSummonWatchBuffSelf.coffee	ModifierSummonWatch	ModifierSummonWatchBuffSelf	FALSE	TRUE	Summon Watch	Whenever you summon a minion, this minion gains %X			onSummonWatch	stat_modify, grant_modifier
+ModifierSummonWatchBurnOpponentCards	modifierSummonWatchBurnOpponentCards.coffee	ModifierSummonWatch	ModifierSummonWatchBurnOpponentCards	FALSE	TRUE					onSummonWatch	
+ModifierSummonWatchByCardBuffTarget	modifierSummonWatchByCardBuffTarget.coffee	ModifierSummonWatch	ModifierSummonWatchByCardBuffTarget	FALSE	TRUE	Summon Watch (buff by card Id)	Whenever you summon %X, %Y			onSummonWatch	grant_modifier
+ModifierSummonWatchByEntityBuffSelf	modifierSummonWatchByEntityBuffSelf.coffee	ModifierSummonWatch	ModifierSummonWatchByEntityBuffSelf	FALSE	TRUE	Summon Watch (buff by entity)	Whenever you summon a %X, this gains %Y			onSummonWatch	stat_modify, grant_modifier
+ModifierSummonWatchByRaceBuffSelf	modifierSummonWatchByRaceBuffSelf.coffee	ModifierSummonWatch	ModifierSummonWatchByRaceBuffSelf	FALSE	TRUE					onSummonWatch	grant_modifier
+ModifierSummonWatchByRaceDamageEnemyMinion	modifierSummonWatchByRaceDamageEnemyMinion.coffee	ModifierSummonWatch	ModifierSummonWatchByRaceDamageEnemyMinion	FALSE	TRUE	Summon Watch (buff by race)	Whenever you summon %X, deal %Y damage to a random enemy minion			onSummonWatch	
+ModifierSummonWatchByRaceHealToFull	modifierSummonWatchByRaceHealToFull.coffee	ModifierSummonWatch	ModifierSummonWatchByRaceHealToFull	FALSE	TRUE	Summon Watch (by race heal to full)	Whenever you summon %X, restore this minion to full health			onSummonWatch	
+ModifierSummonWatchByRaceSummonCopy	modifierSummonWatchByRaceSummonCopy.coffee	ModifierSummonWatch	ModifierSummonWatchByRaceSummonCopy	FALSE	TRUE					onSummonWatch	summon
+ModifierSummonWatchDreadnaught	modifierSummonWatchDreadnaught.coffee	ModifierSummonWatchByCardBuffTarget	ModifierSummonWatchDreadnaught	FALSE	TRUE		%X you summon %Y				
+ModifierSummonWatchFromActionBar	modifierSummonWatchFromActionBar.coffee	ModifierSummonWatch	ModifierSummonWatchFromActionBar	FALSE	TRUE		Whenever you summon a minion from your action bar, do something				
+ModifierSummonWatchFromActionBarAnyPlayer	modifierSummonWatchFromActionBarAnyPlayer.coffee	Modifier	ModifierSummonWatchFromActionBarAnyPlayer	FALSE	TRUE	Summon Watch Any Player	Summon Watch Any Player			onSummonWatch	
+ModifierSummonWatchFromActionBarAnyPlayerApplyModifiers	modifierSummonWatchFromActionBarAnyPlayerApplyModifiers.coffee	ModifierSummonWatchFromActionBarAnyPlayer	ModifierSummonWatchFromActionBarAnyPlayerApplyModifiers	FALSE	TRUE		All minions summoned from the action bar %X			onSummonWatch	grant_modifier
+ModifierSummonWatchFromActionBarApplyModifiers	modifierSummonWatchFromActionBarApplyModifiers.coffee	ModifierSummonWatchApplyModifiers	ModifierSummonWatchFromActionBarApplyModifiers	FALSE	TRUE		Minions summoned from your action bar, gain %X				
+ModifierSummonWatchFromActionBarByOpeningGambitBuffSelf	modifierSummonWatchFromActionBarByOpeningGambitBuffSelf.coffee	ModifierSummonWatch	ModifierSummonWatchFromActionBarByOpeningGambitBuffSelf	FALSE	TRUE	Summon Watch from action bar (buff by Opening Gambit)	Whenever you summon a minion with Opening Gambit from your action bar, gain %Y			onSummonWatch	stat_modify, grant_modifier
+ModifierSummonWatchFromActionBarByRaceBothPlayersDraw	modifierSummonWatchFromActionBarByRaceBothPlayersDraw.coffee	ModifierSummonWatchFromActionBar	ModifierSummonWatchFromActionBarByRaceBothPlayersDraw	FALSE	TRUE					onSummonWatch	draw
+ModifierSummonWatchFromActionBarSpawnEntity	modifierSummonWatchFromActionBarSpawnEntity.coffee	ModifierSummonWatchSpawnEntity	ModifierSummonWatchFromActionBarSpawnEntity	FALSE	TRUE		Whenever you summon a minion from your action bar, summon %X				
+ModifierSummonWatchFromEggApplyModifiers	modifierSummonWatchFromEggApplyModifiers.coffee	Modifier	ModifierSummonWatchFromEggApplyModifiers	FALSE	TRUE	Summon Watch	Friendly minions that hatch from Eggs %X				grant_modifier
+ModifierSummonWatchHealSelf	modifierSummonWatchHealSelf.coffee	ModifierSummonWatch	ModifierSummonWatchHealSelf	FALSE	TRUE					onSummonWatch	
+ModifierSummonWatchHydrax	modifierSummonWatchHydrax.coffee	ModifierSummonWatch	ModifierSummonWatchHydrax	FALSE	TRUE	Modifier Summon Watch Hydrax	Whenever you summon a Battle Pet, it and Hydrax gain %X			onSummonWatch	grant_modifier
+ModifierSummonWatchIfLowAttackSummonedBuffSelf	modifierSummonWatchIfLowAttackSummonedBuffSelf.coffee	ModifierSummonWatch	ModifierSummonWatchIfLowAttackSummonedBuffSelf	FALSE	TRUE	Summon Watch	Whenever you summon a minion with low attack, this minion gains a buff			onSummonWatch	grant_modifier
+ModifierSummonWatchMechsShareKeywords	modifierSummonWatchMechsShareKeywords.coffee	ModifierSummonWatch	ModifierSummonWatchMechsShareKeywords	FALSE	TRUE					onSummonWatch	
+ModifierSummonWatchNearbyAnyPlayerApplyModifiers	modifierSummonWatchNearbyAnyPlayerApplyModifiers.coffee	ModifierSummonWatchAnyPlayerApplyModifiers	ModifierSummonWatchNearbyAnyPlayerApplyModifiers	FALSE	TRUE		ANY minion summoned nearby this minion %X				grant_modifier
+ModifierSummonWatchNearbyApplyModifiers	modifierSummonWatchNearbyApplyModifiers.coffee	ModifierSummonWatchApplyModifiers	ModifierSummonWatchNearbyApplyModifiers	FALSE	TRUE		Friendly minions summoned nearby this minion %X				grant_modifier
+ModifierSummonWatchNearbyApplyModifiersOncePerTurn	modifierSummonWatchNearbyApplyModifiersOncePerTurn.coffee	ModifierSummonWatchNearbyApplyModifiers	ModifierSummonWatchNearbyApplyModifiersOncePerTurn	FALSE	TRUE		The first friendly minion summoned nearby this minion each turn %X			onStartTurn	grant_modifier
+ModifierSummonWatchNearbyApplyModifiersToBoth	modifierSummonWatchNearbyApplyModifiersToBoth.coffee	ModifierSummonWatchApplyModifiersToBoth	ModifierSummonWatchNearbyApplyModifiersToBoth	FALSE	TRUE						grant_modifier
+ModifierSummonWatchNearbyTransform	modifierSummonWatchNearbyTransform.coffee	ModifierSummonWatchTransform	ModifierSummonWatchNearbyTransform	FALSE	TRUE						
+ModifierSummonWatchPutCardInHand	modifierSummonWatchPutCardInHand.coffee	ModifierSummonWatch	ModifierSummonWatchPutCardInHand	FALSE	TRUE	Summon Watch (put card in hand)	Whenever you summon a minion, you gain a %X in your Action bar			onSummonWatch	summon
+ModifierSummonWatchSpawnEntity	modifierSummonWatchSpawnEntity.coffee	ModifierSummonWatch	ModifierSummonWatchSpawnEntity	FALSE	TRUE	Summon Watch	Whenever you summon a minion, summon %X			onSummonWatch	
+ModifierSummonWatchTransform	modifierSummonWatchTransform.coffee	ModifierSummonWatch	ModifierSummonWatchTransform	FALSE	TRUE					onSummonWatch	summon
+ModifierSurviveDamageWatch	modifierSurviveDamageWatch.coffee	Modifier	ModifierSurviveDamageWatch	FALSE	TRUE	Survive Damage Watch	Survive Damage				
+ModifierSurviveDamageWatchBur	modifierSurviveDamageWatchBur.coffee	ModifierSurviveDamageWatch	ModifierSurviveDamageWatchBur	FALSE	TRUE		When this minion survives damage, transform it into a different Battle Pet				
+ModifierSurviveDamageWatchReturnToHand	modifierSurviveDamageWatchReturnToHand.coffee	ModifierSurviveDamageWatch	ModifierSurviveDamageWatchReturnToHand	FALSE	TRUE		When this minion survives damage, it returns to your action bar				summon
+ModifierSwitchAllegiancesGainAttack	modifierSwitchAllegiancesGainAttack.coffee	Modifier	ModifierSwitchAllegiancesGainAttack	FALSE	FALSE	ModifierSwitchAllegiancesGainAttack	ModifierSwitchAllegiancesGainAttack				
+ModifierSynergize	modifierSynergize.coffee	Modifier	ModifierSynergize	TRUE	FALSE	modifiers.blood_surge_name					
+ModifierSynergizeApplyModifiers	modifierSynergizeApplyModifiers.coffee	ModifierSynergize	ModifierSynergizeApplyModifiers	FALSE	FALSE						grant_modifier
+ModifierSynergizeApplyModifiersToGeneral	modifierSynergizeApplyModifiersToGeneral.coffee	ModifierSynergize	ModifierSynergizeApplyModifiersToGeneral	FALSE	FALSE						grant_modifier
+ModifierSynergizeApplyModifiersToWraithlings	modifierSynergizeApplyModifiersToWraithlings.coffee	ModifierSynergizeApplyModifiers	ModifierSynergizeApplyModifiersToWraithlings	FALSE	FALSE						grant_modifier
+ModifierSynergizeBuffSelf	modifierSynergizeBuffSelf.coffee	ModifierSynergize	ModifierSynergizeBuffSelf	FALSE	FALSE						
+ModifierSynergizeDamageClosestEnemy	modifierSynergizeDamageClosestEnemy.coffee	ModifierSynergize	ModifierSynergizeDamageClosestEnemy	FALSE	FALSE						
+ModifierSynergizeDamageEnemy	modifierSynergizeDamageEnemy.coffee	ModifierSynergize	ModifierSynergizeDamageEnemy	FALSE	FALSE		Deal %X damage to a random enemy				
+ModifierSynergizeDamageEnemyGeneral	modifierSynergizeDamageEnemyGeneral.coffee	ModifierSynergize	ModifierSynergizeDamageEnemyGeneral	FALSE	FALSE		Deal %X damage to the enemy General				
+ModifierSynergizeDrawBloodboundSpell	modifierSynergizeDrawBloodboundSpell.coffee	ModifierSynergize	ModifierSynergizeDrawBloodboundSpell	FALSE	FALSE						summon
+ModifierSynergizeHealMyGeneral	modifierSynergizeHealMyGeneral.coffee	ModifierSynergize	ModifierSynergizeHealMyGeneral	FALSE	FALSE		Restore %X Health to your General				
+ModifierSynergizePutCardInHand	modifierSynergizePutCardInHand.coffee	ModifierSynergize	ModifierSynergizePutCardInHand	FALSE	FALSE						summon
+ModifierSynergizeRazorArchitect	modifierSynergizeRazorArchitect.coffee	ModifierSynergize	ModifierSynergizeRazorArchitect	FALSE	FALSE						
+ModifierSynergizeRefreshSpell	modifierSynergizeRefreshSpell.coffee	ModifierSynergize	ModifierSynergizeRefreshSpell	FALSE	FALSE		Refresh your Bloodbound spell				
+ModifierSynergizeSpawnEntityFromDeck	modifierSynergizeSpawnEntityFromDeck.coffee	Modifier	ModifierSynergizeSpawnEntityFromDeck	FALSE	FALSE				maxStacks=1		
+ModifierSynergizeSpawnVanarToken	modifierSynergizeSpawnVanarToken.coffee	ModifierSynergize	ModifierSynergizeSpawnVanarToken	FALSE	FALSE		Summon a random Wall nearby				
+ModifierSynergizeSummonMinionNearGeneral	modifierSynergizeSummonMinionNearGeneral.coffee	ModifierSynergize	ModifierSynergizeSummonMinionNearGeneral	FALSE	FALSE		Blood Surge: Summon an entity nearby your General				
+ModifierSynergizeSummonMinionNearby	modifierSynergizeSummonMinionNearby.coffee	ModifierSynergize	ModifierSynergizeSummonMinionNearby	FALSE	FALSE						
+ModifierSynergizeTeleportRandomEnemy	modifierSynergizeTeleportRandomEnemy.coffee	ModifierSynergize	ModifierSynergizeTeleportRandomEnemy	FALSE	FALSE		Teleport a random enemy to the space behind your General				
+ModifierTakeDamageWatch	modifierTakeDamageWatch.coffee	Modifier	ModifierTakeDamageWatch	FALSE	TRUE	Take Damage Watch	Whenever this minion takes damage...				
+ModifierTakeDamageWatchDamageAllEnemies	modifierTakeDamageWatchDamageAllEnemies.coffee	ModifierTakeDamageWatch	ModifierTakeDamageWatchDamageAllEnemies	FALSE	TRUE	Take Damage Watch	Whenever this minion takes damage, deal %X damage to all enemies				
+ModifierTakeDamageWatchDamageAttacker	modifierTakeDamageWatchDamageAttacker.coffee	ModifierTakeDamageWatch	ModifierTakeDamageWatchDamageAttacker	FALSE	TRUE	Take Damage Watch	Whenever this takes damage, deal %X damage to the attacker				
+ModifierTakeDamageWatchDamageEnemy	modifierTakeDamageWatchDamageEnemy.coffee	ModifierTakeDamageWatch	ModifierTakeDamageWatchDamageEnemy	FALSE	TRUE						
+ModifierTakeDamageWatchDamageEnemyGeneralForSame	modifierTakeDamageWatchDamageEnemyGeneralForSame.coffee	ModifierTakeDamageWatch	ModifierTakeDamageWatchDamageEnemyGeneralForSame	FALSE	TRUE		Whenever this minion takes damage, it deals that much damage to the enemy General				
+ModifierTakeDamageWatchDamageNearbyEnemiesForSame	modifierTakeDamageWatchDamageNearbyEnemiesForSame.coffee	ModifierTakeDamageWatch	ModifierTakeDamageWatchDamageNearbyEnemiesForSame	FALSE	TRUE	Take Damage Watch Damage Enemy For Same	Whenever this minion takes damage, deal that much damage to all nearby enemies				
+ModifierTakeDamageWatchDestroy	modifierTakeDamageWatchDestroy.coffee	ModifierTakeDamageWatch	ModifierTakeDamageWatchDestroy	FALSE	TRUE	Take Damage Watch	Destroy any minion that deals damage to this one				
+ModifierTakeDamageWatchDispel	modifierTakeDamageWatchDispel.coffee	ModifierTakeDamageWatch	ModifierTakeDamageWatchDispel	FALSE	TRUE	Take Damage Watch	Dispel any minion that deals damage to this one				
+ModifierTakeDamageWatchHealMyGeneral	modifierTakeDamageWatchHealMyGeneral.coffee	ModifierTakeDamageWatch	ModifierTakeDamageWatchHealMyGeneral	FALSE	TRUE	Take Damage Watch	Whenever this minion takes damage, restore %X Health to your General				
+ModifierTakeDamageWatchJuggernaut	modifierTakeDamageWatchJuggernaut.coffee	ModifierTakeDamageWatch	ModifierTakeDamageWatchJuggernaut	FALSE	TRUE	Take Damage Watch	When this takes damage, summon that many random Golem eggs				
+ModifierTakeDamageWatchOpponentDrawCard	modifierTakeDamageWatchOpponentDrawCard.coffee	ModifierTakeDamageWatch	ModifierTakeDamageWatchOpponentDrawCard	FALSE	TRUE						draw
+ModifierTakeDamageWatchPutCardInHand	modifierTakeDamageWatchPutCardInHand.coffee	ModifierTakeDamageWatch	ModifierTakeDamageWatchPutCardInHand	FALSE	TRUE						summon
+ModifierTakeDamageWatchRandomTeleport	modifierTakeDamageWatchRandomTeleport.coffee	ModifierTakeDamageWatch	ModifierTakeDamageWatchRandomTeleport	FALSE	TRUE		Whenever this minion takes damage, it randomly teleports				
+ModifierTakeDamageWatchSpawnEntity	modifierTakeDamageWatchSpawnEntity.coffee	ModifierTakeDamageWatch	ModifierTakeDamageWatchSpawnEntity	FALSE	TRUE	Take Damage Watch	Whenever this minion takes damage, summon %X nearby				
+ModifierTakeDamageWatchSpawnRandomBattlePet	modifierTakeDamageWatchSpawnRandomBattlePet.coffee	ModifierTakeDamageWatchSpawnEntity	ModifierTakeDamageWatchSpawnRandomBattlePet	FALSE	TRUE		Whenever this minion takes damage, summon a random Battle Pet nearby				
+ModifierTakeDamageWatchSpawnRandomHaunt	modifierTakeDamageWatchSpawnRandomHaunt.coffee	ModifierTakeDamageWatchSpawnEntity	ModifierTakeDamageWatchSpawnRandomHaunt	FALSE	TRUE		Whenever this minion takes damage, summon a random haunt nearby				
+ModifierTakeDamageWatchSpawnRandomToken	modifierTakeDamageWatchSpawnRandomToken.coffee	ModifierTakeDamageWatchSpawnEntity	ModifierTakeDamageWatchSpawnRandomToken	FALSE	TRUE		Whenever this minion takes damage, summon a random token minion nearby				
+ModifierTakeDamageWatchSpawnShadowCreep	modifierTakeDamageWatchSpawnShadowCreep.coffee	ModifierTakeDamageWatch	ModifierTakeDamageWatchSpawnShadowCreep	FALSE	TRUE	Take Damage Watch	Whenever this minion takes damage, turn a space occupied by an enemy into Shadow Creep				
+ModifierTakeDamageWatchSpawnWraithlings	modifierTakeDamageWatchSpawnWraithlings.coffee	ModifierTakeDamageWatch	ModifierTakeDamageWatchSpawnWraithlings	FALSE	TRUE	Take Damage Watch	When this takes damage, summon that many wraithlings				
+ModifierTakesDoubleDamage	modifierTakesDoubleDamage.coffee	Modifier	ModifierTakesDoubleDamage	FALSE	FALSE	Takes double damage	Whenever this takes damage, it takes double				action_modify
+ModifierTamedBattlePet	modifierTamedBattlePet.coffee	Modifier	ModifierTamedBattlePet	FALSE	FALSE	Tamed Battle Pet	Listens to owner's commands				
+ModifierToggleStructure	modifierToggleStructure.coffee	Modifier	ModifierToggleStructure	FALSE	FALSE		modifiers.toggle_structure_def				
+ModifierToken	modifierToken.coffee	Modifier	ModifierToken	TRUE	FALSE	Token					
+ModifierTokenCreator	modifierTokenCreator.coffee	Modifier	ModifierTokenCreator	FALSE	FALSE	"Token"" #TO DO: move this text to translation files"					
+ModifierTranscendance	modifierTranscendance.coffee	Modifier	ModifierTranscendance	TRUE	FALSE	modifiers.celerity_name		attacks:1; moves:1	maxStacks=1		stat_modify
+ModifierTransformed	modifierTransformed.coffee	Modifier	ModifierTransformed	FALSE	FALSE	Transformed	Transformed		maxStacks=1	onApplyToCard	
+ModifierUnseven	modifierUnseven.coffee	ModifierDyingWish	ModifierUnseven	FALSE	FALSE		Summon a minion with Dying Wish from your action bar				
+ModifierUntargetable	modifierUntargetable.coffee	Modifier	ModifierUntargetable	FALSE	FALSE	modifiers.untargetable_name	modifiers.untargetable_def		maxStacks=1		
+ModifierWall	modifierWall.coffee	Modifier	ModifierWall	TRUE	FALSE	modifiers.wall_name			maxStacks=1	onRemoveFromCard	stat_modify
+ModifierWhenAttackedDestroyThis	modifierWhenAttackedDestroyThis.coffee	Modifier	ModifierWhenAttackedDestroyThis	FALSE	FALSE					onAfterAction	
+ModifierWildTahr	modifierWildTahr.coffee	ModifierEnemyAttackWatch	ModifierWildTahr	FALSE	FALSE	ModifierWildTahr	modifiers.wild_tahr_def			onEndTurn	
+ModifierWraithlingFury	modifierWraithlingFury.coffee	Modifier	ModifierWraithlingFury	FALSE	FALSE						stat_modify
+ModifierOpeningGambitTeleportAllNearby	modifierOpeningGambitTeleportAllNearby.coffee	ModifierOpeningGambit	OpeningGambitTeleportAllNearby	FALSE	FALSE	Opening Gambit	Push ALL nearby minions and Generals to random spaces			onOpeningGambit	teleport
+ModifierOpponentSummonWatchBuffMinionInHand	modifierOpponentSummonWatchBuffMinionInHand.coffee	ModifierOpponentSummonWatch	ModifierOpponentSummonWatchDamageBuffMinionInHand	FALSE	TRUE	Opponent Summon Watch	Whenever your opponent summons a minion, buff a minion in hand			onSummonWatch	stat_modify

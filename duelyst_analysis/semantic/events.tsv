@@ -1,0 +1,278 @@
+event_name	emitter_file	listener_files
+error	app/ui/managers/package_manager.js;app/ui/views/item/form_prompt_modal.js;app/ui/views2/shop/confirm_purchase_dialog.js;app/ui/views2/shop/premium_purchase_dialog.js;app/vendor/aws/aws-sdk.min.js;app/view/layers/crate/CrateOpeningLayer.js;app/view/layers/game/GameLayer.js;app/view/layers/reward/RewardLayer.js;app/view/nodes/cards/CardNode.js;app/view/nodes/reward/CardBackRewardNode.js;app/view/nodes/reward/CardSkinRewardNode.js;app/view/nodes/reward/CosmeticRewardNode.js;app/view/nodes/reward/CurrencyRewardNode.js;app/view/nodes/reward/EmoteRewardNode.js;app/view/nodes/reward/KeyRewardNode.js;app/view/nodes/reward/LootCrateNode.js;app/view/nodes/reward/MysteryCrateNode.js;app/view/nodes/reward/RewardNode.js;app/view/nodes/reward/RibbonRewardNode.js;app/view/nodes/reward/SpiritOrbRewardNode.js	app/application.coffee;app/register.coffee
+resize	app/application.coffee;app/register.coffee;app/view/Scene.js	app/application.coffee;app/register.coffee;app/ui/extensions/list_with_pooled_rows.js;app/ui/views/composite/booster_packs.js;app/ui/views/composite/game_bottom_bar.js;app/ui/views/composite/sliding_panel_select.js;app/ui/views/item/main_menu.js;app/ui/views/item/settings_menu.js;app/ui/views/item/tutorial/tutorial_support.js;app/ui/views/item/utility_menu.js;app/ui/views/layouts/game.js;app/ui/views/layouts/game_player.js;app/ui/views2/codex/codex_chapter.js;app/ui/views2/collection/cards_collection.js;app/ui/views2/collection/deck_cards.js;app/ui/views2/collection/selected_card.js;app/ui/views2/shop/shop_layout.js;app/ui/views2/watch/watch_layout.js;app/view/layers/BaseLayer.js;app/view/layers/game/BattleMap.js
+request_resize	app/ui/views/item/settings_menu.js	app/application.coffee;app/register.coffee
+before_resize	app/application.coffee;app/register.coffee	app/ui/managers/navigation_manager.js
+after_resize	app/application.coffee;app/register.coffee	
+request_reload	app/tools/editor.coffee;app/ui/managers/server_status_manager.js;app/ui/views/item/settings_menu.js	app/application.coffee;app/register.coffee
+cancel_reload_request		app/application.coffee;app/register.coffee
+status	app/ui/managers/chat_manager.js	app/ui/managers/notifications_manager.js;app/ui/managers/server_status_manager.js;app/ui/views/layouts/game.js
+terminate	app/view/layers/BaseLayer.js	app/application.coffee
+pointer_up		app/ui/managers/chat_manager.js;app/view/layers/arena/ChooseCardLayer.js;app/view/layers/arena/ChooseFactionLayer.js;app/view/layers/arena/DeckStatsLayer.js;app/view/layers/arena/RewardsLayer.js;app/view/layers/arena/RunLayer.js;app/view/layers/arena/StartLayer.js;app/view/layers/booster/BoosterPackOpeningLayer.js;app/view/layers/codex/WorldMapLayer.js;app/view/layers/game/BattleLog.js;app/view/layers/game/GameLayer.js;app/view/layers/reward/RewardLayer.js;app/view/layers/rift/ChooseCardLayer.js;app/view/layers/rift/DeckLayer.js;app/view/layers/rift/RunLayer.js;app/view/layers/rift/SelectCardFromDeckLayer.js;app/view/layers/rift/UpgradeCardLayer.js;app/view/nodes/cards/InstructionNode.js;app/view/nodes/cards/SpeechNode.js
+pointer_down		app/ui/managers/chat_manager.js;app/view/layers/codex/WorldMapLayer.js;app/view/layers/game/GameLayer.js
+pointer_move		app/ui/managers/chat_manager.js;app/view/layers/ParallaxLayer.js;app/view/layers/arena/ChooseCardLayer.js;app/view/layers/arena/ChooseFactionLayer.js;app/view/layers/arena/DeckLayer.js;app/view/layers/arena/DeckStatsLayer.js;app/view/layers/arena/RewardsLayer.js;app/view/layers/arena/RunLayer.js;app/view/layers/arena/StartLayer.js;app/view/layers/booster/BoosterPackOpeningLayer.js;app/view/layers/codex/WorldMapLayer.js;app/view/layers/game/BattleLog.js;app/view/layers/game/GameLayer.js;app/view/layers/reward/RewardLayer.js;app/view/layers/rift/ChooseCardLayer.js;app/view/layers/rift/DeckLayer.js;app/view/layers/rift/RunLayer.js;app/view/layers/rift/SelectCardFromDeckLayer.js;app/view/layers/rift/UpgradeCardLayer.js;app/view/nodes/reward/LootCrateNode.js
+pointer_wheel		app/ui/views/composite/sliding_panel_select.js;app/view/layers/arena/DeckLayer.js;app/view/layers/codex/WorldMapLayer.js;app/view/layers/rift/DeckLayer.js
+canvas_mouse_state	app/view/layers/game/GameLayer.js	app/application.coffee
+user_request_confirm		
+user_request_cancel		
+user_request_skip		
+user_request_exit		
+user_attempt_confirm	app/ui/managers/navigation_manager.js	app/ui/views/item/confirm_dialog.js;app/ui/views/item/error_dialog.js;app/ui/views/item/form_prompt_dialog.js;app/ui/views/item/game_invite.js;app/ui/views/item/prompt_dialog.js;app/ui/views2/profile/profile_match_history_copy_replay_to_clipboard_dialog.js;app/ui/views2/shop/confirm_purchase_dialog.js;app/ui/views2/shop/premium_purchase_dialog.js;app/ui/views2/shop/shop_special_product_available_dialog.js
+user_attempt_cancel	app/ui/managers/navigation_manager.js	app/ui/views/item/confirm_dialog.js;app/ui/views/item/error_dialog.js;app/ui/views/item/form_prompt_dialog.js;app/ui/views/item/game_invite.js;app/ui/views/item/prompt_dialog.js;app/ui/views2/profile/profile_match_history_copy_replay_to_clipboard_dialog.js;app/ui/views2/shop/confirm_purchase_dialog.js;app/ui/views2/shop/premium_purchase_dialog.js
+user_attempt_skip	app/ui/managers/navigation_manager.js	app/ui/views/item/confirm_dialog.js;app/ui/views/item/error_dialog.js;app/ui/views/item/prompt_dialog.js;app/ui/views2/profile/profile_match_history_copy_replay_to_clipboard_dialog.js;app/ui/views2/shop/shop_special_product_available_dialog.js
+user_attempt_exit	app/ui/managers/navigation_manager.js	
+user_triggered_confirm	app/ui/managers/navigation_manager.js	app/application.coffee;app/register.coffee;app/ui/views/item/form_prompt_modal.js;app/ui/views/item/game_invite.js;app/ui/views/item/login_menu.js
+user_triggered_cancel	app/ui/managers/navigation_manager.js	app/application.coffee;app/register.coffee;app/ui/views/item/game_invite.js;app/ui/views/layouts/arena.js;app/ui/views/layouts/play.js;app/ui/views2/rift/rift_run_layout.js
+user_triggered_skip	app/ui/managers/navigation_manager.js	app/application.coffee;app/register.coffee
+user_triggered_exit	app/ui/managers/navigation_manager.js	app/application.coffee;app/register.coffee;app/replay/replayEngine.coffee
+session_logged_in	app/application.coffee	app/ui/views/item/utility_menu.js
+session_logged_out	app/application.coffee	app/ui/managers/manager.js;app/ui/views/item/utility_menu.js
+booster_pack_collection_change	app/ui/managers/inventory_manager.js	
+cards_collection_change	app/ui/managers/inventory_manager.js	app/ui/views2/collection/collection.js
+card_lore_collection_change	app/ui/managers/inventory_manager.js	app/ui/views2/collection/collection.js
+cosmetic_chest_collection_change	app/ui/managers/crate_manager.js	app/ui/views/item/main_menu.js;app/view/layers/crate/CrateOpeningLayer.js;app/view/nodes/reward/LootCrateNode.js
+cosmetic_chest_key_collection_change	app/ui/managers/crate_manager.js	app/view/layers/crate/CrateOpeningLayer.js
+decks_collection_change	app/ui/managers/inventory_manager.js	
+cosmetics_collection_change	app/ui/managers/inventory_manager.js	app/ui/views2/collection/cards_collection.js;app/ui/views2/collection/collection.js
+orb_count_collection_change	app/ui/managers/inventory_manager.js	
+gift_crate_collection_change	app/ui/managers/crate_manager.js	app/ui/views/item/main_menu.js;app/view/layers/crate/CrateOpeningLayer.js;app/view/nodes/reward/LootCrateNode.js
+wallet_change	app/ui/managers/inventory_manager.js	app/ui/managers/new_player_manager.js
+start_challenge	app/tools/editor.coffee;app/ui/views/composite/challenge_select.js;app/ui/views/composite/deck_select_sandbox.js;app/ui/views/item/tutorial/challenge_start.js;app/ui/views2/quests/daily_challenge_item.js;app/ui/views2/tutorial/tutorial_lessons_layout.js	app/application.coffee;app/register.coffee
+start_single_player		app/application.coffee;app/register.coffee
+start_boss_battle		app/application.coffee;app/register.coffee
+start_replay	app/application.coffee;app/register.coffee;app/ui/views/item/message.js;app/ui/views2/profile/profile_match_history_collection.js;app/ui/views2/watch/watch_game_item.js	app/application.coffee;app/register.coffee
+show_login		app/application.coffee;app/register.coffee
+show_terms		app/application.coffee
+show_play	app/ui/views/composite/challenge_select.js;app/ui/views/item/main_menu.js;app/ui/views/layouts/arena.js;app/ui/views/layouts/play.js	app/application.coffee;app/register.coffee
+show_watch	app/ui/views/item/main_menu.js	app/application.coffee;app/register.coffee
+show_shop	app/ui/views/item/utility_main_menu.js	app/application.coffee;app/register.coffee
+show_collection	app/ui/views/item/main_menu.js	app/application.coffee;app/register.coffee
+show_codex	app/ui/views/item/main_menu.js	app/application.coffee;app/register.coffee
+show_booster_pack_unlock	app/ui/views/item/utility_main_menu.js	app/application.coffee;app/register.coffee
+show_crate_inventory	app/ui/views/item/main_menu.js	app/application.coffee;app/register.coffee
+show_emote	app/application.coffee;app/replay/replayEngine.coffee	app/ui/views/layouts/game_opponent_player_popover.js
+show_free_card_of_the_day	app/ui/views2/quests/free_card_of_the_day_item.js	app/application.coffee;app/register.coffee
+showing_quest_log		
+change_scene	app/ui/models/profile.coffee	app/ui/views/item/main_menu.js;app/view/Scene.js
+replay_started	app/replay/replayEngine.coffee	app/ui/views/composite/game_bottom_bar.js
+replay_stopped	app/replay/replayEngine.coffee	
+replay_paused	app/replay/replayEngine.coffee	app/ui/views/composite/game_bottom_bar.js
+replay_resumed	app/replay/replayEngine.coffee	app/ui/views/composite/game_bottom_bar.js
+matchmaking_velocity	app/ui/managers/games_manager.js	app/ui/views/item/finding_game.js
+matchmaking_start	app/ui/managers/games_manager.js	app/application.coffee;app/register.coffee
+matchmaking_cancel	app/ui/managers/games_manager.js	app/application.coffee;app/register.coffee
+matchmaking_error	app/ui/managers/games_manager.js	app/application.coffee;app/register.coffee
+finding_game	app/ui/managers/games_manager.js	app/application.coffee;app/register.coffee
+invite_accepted	app/ui/managers/games_manager.js	app/application.coffee;app/register.coffee
+invite_rejected	app/ui/managers/games_manager.js	app/application.coffee;app/register.coffee
+invite_cancelled	app/ui/managers/games_manager.js	app/application.coffee;app/register.coffee
+game_server_shutdown	app/sdk/networkManager.coffee	app/application.coffee
+join_game	app/sdk/networkManager.coffee	
+start_spectate	app/ui/managers/games_manager.js	app/application.coffee;app/register.coffee
+spectate_game	app/sdk/networkManager.coffee	
+spectator_joined	app/sdk/networkManager.coffee	
+spectator_left	app/sdk/networkManager.coffee	
+leave_game		
+reconnect_to_game	app/sdk/networkManager.coffee	app/application.coffee
+reconnect_failed	app/sdk/networkManager.coffee	
+ajax_error	app/application.coffee;app/ui/managers/crate_manager.js;app/ui/managers/games_manager.js;app/ui/managers/inventory_manager.js;app/ui/managers/progression_manager.js;app/ui/managers/quests_manager.js;app/ui/views/layouts/arena.js;app/ui/views/layouts/booster_pack_collection.js;app/ui/views2/rift/rift_layout.js;app/ui/views2/rift/rift_run_layout.js	
+network_game_event	app/sdk/networkManager.coffee	app/application.coffee;app/tools/performance.js
+network_game_hover		
+network_game_select		
+network_game_mouse_clear		
+network_game_error	app/sdk/networkManager.coffee	app/application.coffee
+opponent_connection_status_changed	app/sdk/networkManager.coffee	app/application.coffee;app/ui/views/item/game_choose_hand.js;app/ui/views/item/game_starting_hand.js;app/ui/views/layouts/game_player.js
+turn_time		app/ui/views/layouts/game.js
+step		app/view/layers/game/GameLayer.js
+start_step		app/ui/views/layouts/tutorial.js
+after_step		
+modify_action_for_validation		
+validate_action		
+invalid_action		app/ui/views/layouts/tutorial.js;app/view/layers/game/GameLayer.js
+before_added_action_to_queue		
+added_action_to_queue		
+modify_action_for_execution		
+overwatch		
+before_action		
+action		app/ui/views/layouts/game.js
+after_action		
+cleanup_action		
+after_cleanup_action		
+modifier_active_change		
+modifier_remove_aura		
+modifier_add_aura		
+modifier_end_turn_duration_change		
+modifier_start_turn_duration_change		
+rollback_to_snapshot		app/view/layers/game/GameLayer.js
+rollback_to_snapshot_requested		
+rollback_to_snapshot_recorded		
+before_rollback_to_snapshot		
+deserialize		app/common/actionStateRecord.coffee
+before_deserialize		
+end_turn		app/application.coffee;app/ui/views/composite/game_bottom_bar.js
+start_turn		app/ui/views/layouts/tutorial.js
+game_over		app/application.coffee;app/ui/views/item/esc_game_menu.js
+validate_game_over		
+update_cache_action		
+update_cache_step		
+instruction_triggered	app/sdk/challenges/challenge.coffee	app/ui/views/layouts/tutorial.js
+challenge_attempted	app/ui/managers/progression_manager.js	app/ui/managers/new_player_manager.js
+challenge_completed	app/ui/managers/progression_manager.js	app/ui/managers/new_player_manager.js
+challenge_lost	app/sdk/challenges/challenge.coffee	
+challenge_reset	app/sdk/challenges/challenge.coffee	app/ui/views/layouts/tutorial.js
+challenge_start	app/sdk/challenges/challenge.coffee	app/ui/views/layouts/tutorial.js
+entities_involved_in_attack		
+modify_action_for_entities_involved_in_attack		
+blur_screen_start	app/view/fx/FX.js	app/view/Scene.js;app/view/layers/FXCompositeLayer.js
+blur_screen_stop	app/view/fx/FX.js	app/view/Scene.js;app/view/layers/FXCompositeLayer.js
+blur_surface_start	app/view/fx/FX.js	app/view/Scene.js;app/view/layers/FXCompositeLayer.js
+blur_surface_stop	app/view/fx/FX.js	app/view/Scene.js;app/view/layers/FXCompositeLayer.js
+caching_screen_setup	app/view/fx/FX.js	app/view/Scene.js;app/view/layers/FXCompositeLayer.js
+caching_screen_start	app/view/fx/FX.js	app/view/Scene.js;app/view/layers/FXCompositeLayer.js
+caching_screen_stop	app/view/fx/FX.js	app/view/Scene.js;app/view/layers/FXCompositeLayer.js
+caching_screen_dirty	app/view/fx/FX.js	app/view/Scene.js;app/view/layers/FXCompositeLayer.js
+caching_surface_setup	app/view/fx/FX.js	app/view/Scene.js;app/view/layers/FXCompositeLayer.js
+caching_surface_start	app/view/fx/FX.js	app/view/layers/FXCompositeLayer.js
+caching_surface_stop	app/view/fx/FX.js	app/view/layers/FXCompositeLayer.js
+caching_surface_dirty	app/view/fx/FX.js	app/view/layers/FXCompositeLayer.js
+game_selection_changed	app/view/Player.js	app/ui/views/layouts/game_player.js;app/ui/views/layouts/tutorial.js;app/view/layers/game/GameLayer.js
+game_hover_changed	app/view/Player.js;app/view/layers/game/BattleLog.js	app/ui/views/layouts/tutorial.js;app/view/layers/game/GameLayer.js
+general_speech_pressed	app/view/nodes/cards/GeneralSpeechNode.js	
+general_speech_done_showing	app/view/nodes/cards/GeneralSpeechNode.js	app/ui/views/layouts/tutorial.js
+instruction_node_pressed	app/view/nodes/cards/InstructionNode.js	app/ui/views/layouts/tutorial.js
+instruction_node_done_showing	app/view/nodes/cards/InstructionNode.js	app/ui/views/layouts/tutorial.js
+speech_node_pressed	app/view/nodes/cards/SpeechNode.js	
+speech_node_done_showing	app/view/nodes/cards/SpeechNode.js	
+inspect_card_start	app/view/layers/game/GameLayer.js	app/ui/views/layouts/game.js;app/ui/views/layouts/game_player.js
+inspect_card_stop	app/view/layers/game/GameLayer.js	app/ui/views/layouts/game.js;app/ui/views/layouts/game_player.js
+play_card_start	app/view/layers/game/GameLayer.js	
+play_card_stop	app/view/layers/game/GameLayer.js	
+mulligan_card_selected	app/view/layers/game/GameLayer.js	app/ui/views/layouts/tutorial.js
+mulligan_card_deselected	app/view/layers/game/GameLayer.js	app/ui/views/layouts/tutorial.js
+followup_card_start	app/view/Player.js	app/ui/views/layouts/game.js;app/view/layers/game/BottomDeckLayer.js;app/view/layers/game/GameLayer.js
+followup_card_stop	app/view/Player.js	app/ui/views/layouts/game.js;app/view/layers/game/BottomDeckLayer.js;app/view/layers/game/GameLayer.js
+show_active_game	app/view/layers/game/GameLayer.js	app/application.coffee;app/ui/views/layouts/game.js
+show_rollback	app/tools/editor.coffee;app/view/layers/game/GameLayer.js	app/ui/views/composite/game_bottom_bar.js;app/ui/views/layouts/game_player.js
+before_show_game_over	app/view/layers/game/GameLayer.js	app/ui/views/layouts/game.js
+show_game_over	app/view/layers/game/GameLayer.js	app/application.coffee;app/ui/views/layouts/game.js
+show_end_turn	app/view/layers/game/GameLayer.js	app/ui/views/composite/game_bottom_bar.js;app/ui/views/layouts/game.js
+after_show_end_turn	app/view/layers/game/GameLayer.js	app/application.coffee
+show_start_turn	app/view/layers/game/GameLayer.js	app/ui/views/composite/game_bottom_bar.js;app/ui/views/layouts/game_player.js;app/view/ui_modules/TimeMaelstromUIModule.js
+after_show_start_turn	app/view/layers/game/GameLayer.js	app/ui/views/layouts/game.js
+before_show_step	app/view/layers/game/GameLayer.js	app/ui/views/composite/game_bottom_bar.js;app/view/ui_modules/TimeMaelstromUIModule.js
+after_show_step	app/view/layers/game/GameLayer.js	app/application.coffee;app/ui/views/layouts/game.js
+before_show_action	app/view/layers/game/GameLayer.js	app/ui/views/layouts/game_player.js;app/view/nodes/cards/SdkNode.js
+after_show_action	app/view/layers/game/GameLayer.js	app/ui/views/layouts/game_player.js;app/ui/views/layouts/tutorial.js;app/view/nodes/cards/TileNode.js
+show_action_for_game	app/view/layers/game/GameLayer.js	
+show_action_for_source	app/view/layers/game/GameLayer.js	
+show_action_for_target	app/view/layers/game/GameLayer.js	
+before_show_move	app/view/nodes/cards/EntityNode.js	app/view/nodes/cards/TileNode.js
+after_show_move	app/view/nodes/cards/EntityNode.js	app/view/nodes/cards/TileNode.js
+discord_spectate	app/common/discord.js	app/application.coffee;app/register.coffee
+click	app/tools/editor.coffee;app/ui/views2/collection/cards_collection.js;app/ui/views2/collection/crafting.js;app/ui/views2/collection/deck.js;app/ui/views2/collection/deck_card_back_select.js	app/tools/editor.coffee;app/ui/managers/navigation_manager.js;app/ui/views/composite/deck_select_single_player.js;app/ui/views/composite/sliding_panel_select.js;app/ui/views/item/esc_main_menu.js;app/ui/views/item/form_prompt_modal.js;app/ui/views/item/sliding_panel.js;app/ui/views/item/utility_menu.js;app/ui/views/layouts/game_player_popover.js;app/ui/views2/referrals/referral_dialog.js
+presence_change	app/ui/collections/buddies.js	app/ui/views/item/utility_menu.js
+ready	app/ui/extensions/duelyst_backbone.js;app/ui/extensions/duelyst_firebase.js;app/ui/managers/manager.js	
+ready_error	app/ui/extensions/duelyst_backbone.js	
+sync	app/ui/extensions/duelyst_firebase.js	app/ui/models/deck.js;app/ui/views/item/deck_sliding_panel.js;app/ui/views2/collection/deck.js;app/ui/views2/collection/deck_card_back_select.js;app/ui/views2/collection/deck_preview.js;app/ui/views2/referrals/referral_dialog.js
+invite_sent	app/ui/managers/games_manager.js	
+found_game	app/ui/managers/games_manager.js	
+before_connect	app/ui/managers/manager.js	
+connect	app/ui/managers/manager.js;app/vendor/cocos2d-html5/external/socketio/socket.io.js;app/vendor/cocos2d-html5/external/socketio/socket.io.min.js	app/vendor/cocos2d-html5/external/socketio/socket.io.js
+before_disconnect	app/ui/managers/manager.js	
+disconnect	app/ui/managers/manager.js	
+dismiss	app/ui/managers/notifications_manager.js;app/ui/views/item/game_invite.js	app/ui/managers/chat_manager.js;app/ui/managers/games_manager.js;app/ui/managers/progression_manager.js
+cta_accept	app/ui/managers/notifications_manager.js;app/ui/views/item/game_invite.js	app/ui/managers/chat_manager.js;app/ui/managers/games_manager.js;app/ui/managers/progression_manager.js
+daily_quests_change	app/ui/managers/quests_manager.js	
+message	app/ui/models/conversation.js	app/ui/managers/chat_manager.js
+message_received	app/ui/models/conversation.js	
+animated	app/ui/views/animations.js	
+animatedIn	app/ui/views/animations.js	
+animatedOut	app/ui/views/animations.js	
+select	app/ui/views/composite/card.js;app/ui/views/composite/challenge_select.js;app/ui/views/composite/sliding_panel_select.js;app/ui/views/item/challenge_preview.js;app/ui/views/item/deck_sliding_panel.js;app/ui/views/item/emote.js;app/ui/views/item/play_mode.js;app/ui/views/item/sliding_panel.js;app/ui/views2/codex/codex_chapter_preview.js;app/ui/views2/collection/deck_card_back_select.js	app/ui/views/layouts/game_player_popover.js;app/ui/views2/codex/codex_layout.js;app/ui/views2/collection/collection.js;app/ui/views2/collection/crafting.js
+start_dragging	app/ui/views/composite/card.js	
+stop_dragging	app/ui/views/composite/card.js	
+select_deck	app/ui/views/composite/deck_select.js;app/ui/views/composite/deck_select_sandbox.js	
+select_opponent	app/ui/views/composite/deck_select_single_player.js	
+deselect	app/ui/views/composite/sliding_panel_select.js	
+cancel	app/ui/views/item/activity_dialog.js;app/ui/views/item/confirm_dialog.js;app/ui/views/item/error_dialog.js;app/ui/views/item/prompt_dialog.js;app/ui/views2/collection/crafting_rewards_dialog.js;app/ui/views2/collection/deck_card_back_select.js;app/ui/views2/profile/profile_match_history_copy_replay_to_clipboard_dialog.js;app/ui/views2/shop/confirm_purchase_dialog.js;app/ui/views2/shop/credit_card_form.js;app/ui/views2/shop/premium_purchase_dialog.js	app/application.coffee;app/register.coffee;app/ui/views2/collection/collection.js
+buddy_selected	app/ui/views/item/buddy_list.js	app/ui/views/layouts/buddies.js
+confirm	app/ui/views/item/confirm_dialog.js;app/ui/views2/shop/shop_special_product_available_dialog.js	app/ui/views/layouts/game.js
+success	app/ui/views/item/form_prompt_modal.js;app/ui/views2/shop/confirm_purchase_dialog.js;app/ui/views2/shop/premium_purchase_dialog.js	app/ui/views2/profile/profile_layout.js
+APP:cancelConnection	app/ui/views/item/reconnect_to_game.js	
+continue	app/ui/views/item/resume_game.js	
+retry_challenge	app/ui/views/item/tutorial/challenge_lost.js	
+start_tutorial	app/ui/views/item/tutorial/tutorial_intro.js	
+change_page	app/ui/views2/collection/cards_collection.js	app/ui/views2/collection/collection.js
+deck_card_back_selecting	app/ui/views2/collection/deck.js;app/ui/views2/collection/deck_metadata.js	app/ui/views2/collection/collection.js;app/ui/views2/collection/deck.js
+close	app/ui/views2/collection/selected_card.js	
+processing	app/ui/views2/shop/confirm_purchase_dialog.js;app/ui/views2/shop/premium_purchase_dialog.js	
+complete	app/ui/views2/shop/confirm_purchase_dialog.js;app/ui/views2/shop/credit_card_form.js;app/ui/views2/shop/premium_purchase_dialog.js	app/vendor/aws/aws-sdk.min.js
+submit	app/ui/views2/shop/credit_card_form.js	
+filter	app/ui/views2/shop/shop_product_collection_view.js	app/ui/views2/shop/shop_layout.js
+select_product	app/ui/views2/shop/shop_product_view.js	
+httpHeaders	app/vendor/aws/aws-sdk.min.js	
+beforePresign	app/vendor/aws/aws-sdk.min.js	
+newListener	app/vendor/aws/aws-sdk.min.js	
+change		app/application.coffee;app/ui/collections/buddies.js;app/ui/extensions/list_with_pooled_rows.js;app/ui/managers/achievements_manager.js;app/ui/managers/games_manager.js;app/ui/managers/inventory_manager.js;app/ui/managers/quests_manager.js;app/ui/managers/server_status_manager.js;app/ui/managers/shop_manager.js;app/ui/managers/twitch_manager.js;app/ui/views/composite/card.js;app/ui/views/composite/deck_select_single_player.js;app/ui/views/composite/game_player_profile_preview.js;app/ui/views/item/maintenance_announcement.js;app/ui/views/layouts/buddy_selection.js;app/ui/views2/collection/collection_card.js;app/ui/views2/collection/crafting.js;app/ui/views2/collection/decks_collection.js;app/ui/views2/quests/daily_challenge_item.js;app/ui/views2/quests/free_card_of_the_day_item.js;app/ui/views2/quests/quest_item.js;app/ui/views2/shop/confirm_purchase_dialog.js;app/ui/views2/shop/premium_purchase_dialog.js;app/ui/views2/shop/shop_layout.js;app/ui/views2/shop/shop_premium_packs_collection_view.js;app/ui/views2/shop/shop_spirit_orbs_collection_view.js;app/ui/views2/shop/shop_spirit_orbs_modal.js
+destroy		app/application.coffee;app/ui/managers/games_manager.js;app/ui/views/item/main_menu.js;app/ui/views/regions/transition.js;app/ui/views2/shop/shop_spirit_orbs_collection_view.js
+unload		app/application.coffee
+mousemove		app/application.coffee;app/register.coffee
+mousedown		app/application.coffee;app/register.coffee
+mouseup		app/application.coffee;app/register.coffee;app/ui/managers/navigation_manager.js
+wheel		app/application.coffee;app/common/utils/utils_ui.js;app/register.coffee
+visibilitychange		app/application.coffee;app/register.coffee
+webglcontextlost		app/application.coffee;app/register.coffee
+login		app/application.coffee;app/register.coffee
+logout		app/application.coffee
+beforeunload		app/application.coffee;app/register.coffee
+discord		app/common/discord.js
+scroll		app/common/utils/utils_ui.js;app/ui/extensions/list_with_pooled_rows.js
+premium_currency_dirty_change		app/register.coffee
+keyup		app/tools/editor.coffee;app/ui/managers/navigation_manager.js
+add		app/ui/collections/buddies.js;app/ui/collections/cards.js;app/ui/collections/conversations.js;app/ui/managers/chat_manager.js;app/ui/managers/games_manager.js;app/ui/managers/inventory_manager.js;app/ui/managers/notifications_manager.js;app/ui/managers/progression_manager.js;app/ui/managers/quests_manager.js;app/ui/managers/shop_manager.js;app/ui/models/conversation.js;app/ui/views/layouts/game.js;app/ui/views/layouts/notifications.js;app/ui/views2/shop/shop_product_view.js
+remove		app/ui/collections/buddies.js;app/ui/managers/chat_manager.js;app/ui/managers/inventory_manager.js;app/ui/managers/quests_manager.js;app/ui/views/layouts/buddies.js;app/ui/views/layouts/game.js;app/ui/views/layouts/notifications.js
+add remove		app/ui/extensions/list_with_pooled_rows.js;app/ui/managers/inventory_manager.js;app/ui/views/composite/booster_packs.js;app/ui/views/item/change_battle_map_dialog.js;app/ui/views/item/change_portrait.js;app/ui/views/item/emote.js;app/ui/views/item/utility_main_menu.js;app/ui/views/layouts/booster_pack_collection.js;app/ui/views2/collection/deck_card_back_select.js;app/ui/views2/shop/shop_layout.js;app/ui/views2/shop/shop_specials_view.js;app/ui/views2/shop/shop_spirit_orbs_modal.js
+child_added		app/ui/managers/achievements_manager.js;app/ui/managers/chat_manager.js;app/ui/managers/shop_manager.js
+value		app/ui/managers/chat_manager.js;app/ui/models/notification.js
+child_changed		app/ui/managers/chat_manager.js
+change add remove		app/ui/managers/crate_manager.js;app/ui/managers/inventory_manager.js
+change:status		app/ui/managers/games_manager.js
+mouseenter		app/ui/managers/navigation_manager.js;app/ui/views/item/sliding_panel.js
+change:progress		app/ui/managers/quests_manager.js
+change:card		app/ui/models/card.js
+change:ltv		app/ui/models/profile.coffee
+childview:select		app/ui/views/composite/challenge_select.js;app/ui/views/composite/message_notifications.js;app/ui/views/composite/sliding_panel_select.js;app/ui/views/layouts/game_my_player_popover.js;app/ui/views/layouts/game_opponent_player_popover.js;app/ui/views2/collection/collection.js;app/ui/views2/collection/deck.js
+change:unread		app/ui/views/item/buddy_list.js
+change:status change:_lastUnreadMessageAt		app/ui/views/item/buddy_list.js
+change:showLoreNotifications		app/ui/views/item/main_menu.js;app/ui/views2/collection/collection.js
+mouseover		app/ui/views/item/main_menu.js;app/ui/views2/shop/shop_spirit_orbs_collection_view.js
+mouseout		app/ui/views/item/main_menu.js;app/ui/views2/shop/shop_spirit_orbs_collection_view.js
+change:lightingQuality		app/ui/views/item/settings_menu.js
+change:shadowQuality		app/ui/views/item/settings_menu.js
+change:boardQuality		app/ui/views/item/settings_menu.js
+change:gold_amount		app/ui/views/item/utility_main_menu.js
+change:premium_amount		app/ui/views/item/utility_main_menu.js
+change:unread remove		app/ui/views/item/utility_menu.js
+change:showPlayerDetails		app/ui/views/layouts/game_player.js
+change:showPrismaticsInCollection		app/ui/views2/collection/cards_collection.js;app/ui/views2/collection/collection.js
+change:showPrismaticsWhileCrafting		app/ui/views2/collection/cards_collection.js;app/ui/views2/collection/collection.js
+change:showSkinsInCollection		app/ui/views2/collection/cards_collection.js;app/ui/views2/collection/collection.js
+change:filterCollectionCardSet		app/ui/views2/collection/cards_collection.js;app/ui/views2/collection/collection.js
+childview:start_dragging		app/ui/views2/collection/cards_collection.js
+childview:stop_dragging		app/ui/views2/collection/cards_collection.js
+change:faction_id		app/ui/views2/collection/cards_collection.js
+childview:delete		app/ui/views2/collection/collection.js
+change:presence		app/ui/views2/profile/profile_layout.js
+next_page		app/ui/views2/profile/profile_layout.js
+change sync		app/ui/views2/profile/profile_rift_summary_item.js;app/ui/views2/profile/profile_summary_item.js
+start_new_run_with_gold		app/ui/views2/rift/rift_layout.js
+start_new_run_with_currency		app/ui/views2/rift/rift_layout.js
+start_new_run_with_existing		app/ui/views2/rift/rift_layout.js
+paypal-cancel		app/ui/views2/shop/confirm_purchase_dialog.js;app/ui/views2/shop/shop_spirit_orbs_modal.js
+childview:select_product		app/ui/views2/shop/shop_product_collection_view.js
+headers		app/vendor/aws/aws-sdk.min.js
+build		app/vendor/aws/aws-sdk.min.js
+data		app/vendor/aws/aws-sdk.min.js;app/vendor/cocos2d-html5/tools/core4cc.js
+connect_failed		app/vendor/cocos2d-html5/external/socketio/socket.io.js;app/vendor/cocos2d-html5/external/socketio/socket.io.min.js
+end		app/vendor/cocos2d-html5/tools/core4cc.js
+exit		app/vendor/cocos2d-html5/tools/core4cc.js

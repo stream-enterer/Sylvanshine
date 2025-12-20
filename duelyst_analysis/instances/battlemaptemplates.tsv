@@ -1,0 +1,12 @@
+template_id	name	tile_data	source_file
+0	BATTLEMAP0 (Lyonar)	map:0|weatherChance:0.25|rainChance:0.85|snowChance:0.0|blueDustChance:1.0|sunRaysChance:1.0|clouds:4	app/common/config.js:114-127
+1	BATTLEMAP1 (Songhai Blue Mothballs)	map:1|weatherChance:0.0|rainChance:0.0|snowChance:0.0|blueDustChance:1.0|sunRaysChance:1.0|clouds:4	app/common/config.js:128-141
+2	BATTLEMAP2 (Desert)	map:2|weatherChance:0.0|rainChance:0.0|snowChance:0.0|blueDustChance:0.0|sunRaysChance:1.0|clouds:4	app/common/config.js:142-155
+3	BATTLEMAP4 (Ice Cavern)	map:4|weatherChance:0.0|rainChance:0.0|snowChance:0.0|blueDustChance:1.0|sunRaysChance:1.0|clouds:2	app/common/config.js:156-167
+4	BATTLEMAP5 (Songhai Sky Arena)	map:5|weatherChance:0.25|rainChance:0.85|snowChance:0.0|blueDustChance:1.0|sunRaysChance:1.0|clouds:4	app/common/config.js:168-181
+5	BATTLEMAP6 (Blue Monolith)	map:6|weatherChance:0.0|rainChance:0.0|snowChance:0.0|blueDustChance:1.0|sunRaysChance:1.0|clouds:2	app/common/config.js:182-193
+6	BATTLEMAP7 (Vetruv Palace)	map:7|weatherChance:0.0|rainChance:0.0|snowChance:0.0|blueDustChance:1.0|sunRaysChance:0.0|clouds:2	app/common/config.js:194-205
+7	BATTLEMAP_SHIMZAR	map:8|weatherChance:0.25|rainChance:0.50|snowChance:0.0|blueDustChance:1.0|blueDustColor:rgb(255,184,71)|sunRaysChance:1.0|clouds:5	app/common/config.js:206-231
+8	BATTLEMAP_ABYSSIAN	map:9|weatherChance:0.0|rainChance:0.0|snowChance:0.0|blueDustChance:1.0|blueDustColor:rgb(255,0,0)|sunRaysChance:0.0|clouds:3	app/common/config.js:232-251
+9	BATTLEMAP_REDROCK	map:10|weatherChance:0.0|rainChance:0.0|snowChance:0.0|blueDustChance:1.0|blueDustColor:rgb(255,150,30)|sunRaysChance:1.0|clouds:4	app/common/config.js:252-270
+10	BATTLEMAP_VANAR	map:11|weatherChance:1.0|rainChance:0.0|snowChance:1.0|blueDustChance:0.0|sunRaysChance:0.0|clouds:4	app/common/config.js:271-285

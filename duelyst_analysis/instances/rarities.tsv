@@ -1,0 +1,8 @@
+id	name	dev_name	color	spirit_cost	spirit_reward
+0	Fixed	basic	#CCCCCC	0	0
+1	Common	common	#CCCCCC	20	10
+2	Rare	rare	#6dcff6	50	25
+3	Epic	epic	#f49ac1	175	90
+4	Legendary	legendary	#ffac49	450	225
+5	TokenUnit	token	#BDBDBD	0	0
+6	Mythron	mythron	#BDBDBD	600	300

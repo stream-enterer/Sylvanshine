@@ -1,0 +1,97 @@
+name	file	type	uniforms	attributes	defines	lines
+BloomFragment	BloomFragment.glsl	fragment	u_previousBloom:sampler2D;u_transition:float		MIN_TRANSITION_RATE=0.05;DECAY_TRANSITION_RATIO=0.1;BOOST=0.5	24
+CardAngledGradientShine	CardAngledGradientShine.glsl	fragment	u_phase:float;u_time:float;u_intensity:float;u_texResolution:vec2			32
+CausticFragment	CausticFragment.glsl	fragment	u_time:float;u_color:vec3;u_texResolution:vec2		SHOW_TILING=#define TAU 6.28318530718;MAX_ITER=6	66
+CausticPrismaticGlowFragment	CausticPrismaticGlowFragment.glsl	fragment	u_time:float		PI=3.1415926535897932384626433832795;RADIUS=0.25;SIZE=0.75;WHITE=vec3(1.0)	66
+ChromaticFlareFragment	ChromaticFlareFragment.glsl	fragment	u_phase:float;u_time:float;u_size:vec2;u_frequency:float;u_amplitude:float;u_smoothstepMin:float;u_smoothstepMax:float		PI=3.1415926535897932384626433832795	76
+ChromaticFragment	ChromaticFragment.glsl	fragment	u_noiseMap:sampler2D;u_time:float;u_resolution:vec2;u_frequency:float;u_amplitude:float;u_smoothstepMin:float;u_smoothstepMax:float			41
+ChromaticVertex	ChromaticVertex.glsl	vertex	u_time:float;u_resolution:vec2;u_aberrationScale:vec2	a_position:vec4;a_texCoord:vec2		28
+ColorizeFragment	ColorizeFragment.glsl	fragment				19
+CoreGemEdgesAndColorizeFragment	CoreGemEdgesAndColorizeFragment.glsl	fragment	u_texResolution:vec2;u_colorBlackPoint:vec3;u_colorMidPoint:vec3			74
+CoreGemFragment	CoreGemFragment.glsl	fragment	u_time:float;u_texResolution:vec2;u_cubeMap:samplerCube;u_gemSeed:float			235
+DepthDebugFragment	DepthDebugFragment.glsl	fragment				12
+DepthFragment	DepthFragment.glsl	fragment	u_resolution:vec2			17
+DepthTestFragment	DepthTestFragment.glsl	fragment	u_depthMap:sampler2D;u_resolution:vec2			25
+DepthTestVertex	DepthTestVertex.glsl	vertex	u_resolution:vec2;u_depthOffset:float;u_depthModifier:float	a_position:vec4;a_texCoord:vec2;a_color:vec4		23
+DepthVertex	DepthVertex.glsl	vertex	u_depthOffset:float;u_depthModifier:float	a_position:vec4;a_texCoord:vec2		18
+DissolveFragment	DissolveFragment.glsl	fragment	u_seed:float;u_frequency:float;u_amplitude:float;u_vignetteStrength:float;u_edgeFalloff:float;u_time:float			36
+DissolveFromCenterWithDiscFragment	DissolveFromCenterWithDiscFragment.glsl	fragment	u_phase:float;u_time:float;u_texResolution:vec2		COMPLEXITY=2.0	57
+DistortionFragment	DistortionFragment.glsl	fragment	u_depthMap:sampler2D;u_refractMap:sampler2D;u_resolution:vec2;u_refraction:float;u_reflection:float;u_fresnelBias:float			34
+DistortionVertex	DistortionVertex.glsl	vertex	u_resolution:vec2;u_depthOffset:float;u_depthModifier:float	a_position:vec4;a_texCoord:vec2;a_color:vec4		22
+EnergyBallFragment	EnergyBallFragment.glsl	fragment	u_time:float;u_timeScale:float;u_noiseLevel:float;u_texResolution:vec2		INNER_RADIUS=0.75;OUTER_RADIUS=0.9;SHEET_THICKNESS=0.012;INNER_COLOR=vec4(0.0, 30.0, 30.0, 1.0);OUTER_COLOR=vec4(20.0, 20.0, 30.0, 1.0);NUM_STEPS=20	175
+ExtrusionBlurFragment	ExtrusionBlurFragment.glsl	fragment	u_direction:vec2;u_ramp:float;u_rampMin:float;u_rampMax:float;u_decay:float;u_spread:float;u_speed:float;u_frequency:float;u_time:float			58
+FXAAFragment	FXAAFragment.glsl	fragment	u_resolution:vec2			13
+FbmNoiseGradientMask	FbmNoiseGradientMask.glsl	helper	u_time:float;u_texResolution:vec2			50
+FbmNoiseRays	FbmNoiseRays.glsl	helper	u_time:float;u_texResolution:vec2			52
+FbmPolarFlareFragment	FbmPolarFlareFragment.glsl	fragment	u_phase:float;u_time:float;u_size:vec2;u_flareColor:vec3		PI=3.1415926535897932384626433832795	87
+FbmPolarFlareWipeFragment	FbmPolarFlareWipeFragment.glsl	fragment	u_phase:float;u_time:float;u_size:vec2			95
+FindEdgesFragment	FindEdgesFragment.glsl	fragment	u_texResolution:vec2			59
+FireLinearWaveFragment	FireLinearWaveFragment.glsl	fragment	u_phase:float;u_time:float;u_resolution:vec2		COMPLEXITY=3.0	54
+FireRingFlareWarpedFragment	FireRingFlareWarpedFragment.glsl	fragment	u_phase:float;u_time:float;u_color:vec3;u_texResolution:vec2		COMPLEXITY=2.0	72
+FireRingFragment	FireRingFragment.glsl	fragment	u_phase:float;u_time:float;u_color:vec3;u_texResolution:vec2		COMPLEXITY=2.0	61
+GlowFragment	GlowFragment.glsl	fragment	u_color:vec4			33
+GlowImageMapControlFragment	GlowImageMapControlFragment.glsl	fragment	u_time:float;u_texResolution:vec2;u_color:vec3;u_intensity:float;u_gamma:float;u_levelsInWhite:float;u_levelsInBlack:float			66
+GlowImageMapRippleFragment	GlowImageMapRippleFragment.glsl	fragment	u_time:float;u_texResolution:vec2;u_intensity:float			37
+GlowNoiseFragment	GlowNoiseFragment.glsl	fragment	u_resolution:vec2;u_color:vec4;u_rampFrom:vec4;u_rampTransition:vec4;u_frequency:float;u_amplitude:float;u_range:vec2;u_time:float;u_expandModifier:float;u_verticalFadeFromTop:float;u_verticalFadeSpeed:float			38
+GlowVertex	GlowVertex.glsl	vertex	u_resolution:vec2;u_size:vec2;u_thickness:float;u_time:float;u_pulseMax:float;u_pulseMin:float	a_position:vec4;a_texCoord:vec2		25
+GradientColorMapFragment	GradientColorMapFragment.glsl	fragment	u_fromColorBlack:vec4;u_fromColorMid:vec4;u_fromColorWhite:vec4;u_toColorBlack:vec4;u_toColorMid:vec4;u_toColorWhite:vec4;u_phase:float			36
+HighlightFragment	HighlightFragment.glsl	fragment	u_color:vec4;u_threshold:float;u_intensity:float;u_brightness:float;u_inBlack:float;u_inWhite:float;u_inGamma:float;u_outBlack:float;u_outWhite:float;u_verticalFadeFromTop:float;u_verticalFadeSpeed:float;based:color;baseColor:alpha			54
+HighlightVertex	HighlightVertex.glsl	vertex	u_time:float;u_frequency:float;u_pulseMax:float;u_pulseMin:float	a_position:vec4;a_texCoord:vec2;a_color:vec4		21
+HighpassFragment	HighpassFragment.glsl	fragment	u_threshold:float;u_intensity:float			12
+HorizontalGlowFlareFragment	HorizontalGlowFlareFragment.glsl	fragment	u_phase:float;u_time:float;u_texResolution:vec2		COMPLEXITY=4.0	86
+LensFlareFragment	LensFlareFragment.glsl	fragment	u_time:float;u_texResolution:vec2;u_origin:vec2;u_rampThreshold:float			54
+LensNoiseFragment	LensNoiseFragment.glsl	fragment	u_time:float;u_texResolution:vec2;u_flareAmount:float		M_PI=3.14159;COMPLEXITY=4.0;FBM_STEPS=1;COLOR=vec3(46.0, 206.0, 240.0) / vec3(255.0)	89
+LevelsFragment	LevelsFragment.glsl	fragment	u_inBlack:float;u_inWhite:float;u_inGamma:float;u_outBlack:float;u_outWhite:float			25
+LightingFragment	LightingFragment.glsl	fragment	u_falloffModifier:float;u_intensityModifier:float			25
+LightingVertex	LightingVertex.glsl	vertex	u_depthRange:float;u_depthOffset:float;u_lightMapScale:float;u_depthRotationMatrix:mat4;u_normal:vec3	a_position:vec4;a_color:vec4;a_originRadius:vec4		53
+MaskFragment	MaskFragment.glsl	fragment	u_maskMap:sampler2D;u_maskRect:vec4			31
+MaskVertex	MaskVertex.glsl	vertex		a_position:vec4;a_texCoord:vec2;a_color:vec4		16
+MonochromeFragment	MonochromeFragment.glsl	fragment				10
+MultipliedLightingFragment	MultipliedLightingFragment.glsl	fragment	u_lightMap:sampler2D;u_ambientColor:vec3			13
+RadialBlurFragment	RadialBlurFragment.glsl	fragment	u_origin:vec2;u_strength:float;u_deadZone:float;u_ramp:float;u_decay:float;u_spread:float			38
+RarityFlareFragment	RarityFlareFragment.glsl	fragment	u_phase:float;u_time:float;u_texResolution:vec2		COMPLEXITY=4.0	82
+RiftFireFragment	RiftFireFragment.glsl	fragment	u_time:float;u_texResolution:vec2;density:scale		pi=3.14159265	231
+RiftLineFragment	RiftLineFragment.glsl	fragment	u_time:float;u_texResolution:vec2;u_progress:float			70
+ScatterOcclusionFragment	ScatterOcclusionFragment.glsl	fragment	u_depthRange:float			32
+ScatterOcclusionVertex	ScatterOcclusionVertex.glsl	vertex	u_depthRange:float	a_position:vec4;a_texCoord:vec2;a_color:vec4;a_originRadius:vec4		26
+ScatterRaysFragment	ScatterRaysFragment.glsl	fragment	u_density:float;u_weight:float;u_decay:float;u_exposure:float;u_clamp:float			34
+ScatterRaysVertex	ScatterRaysVertex.glsl	vertex		a_position:vec4;a_texCoord:vec2;a_originRadius:vec4		20
+ShadowBlobFragment	ShadowBlobFragment.glsl	fragment	u_time:float;u_color:vec3;u_texResolution:vec2			46
+ShadowHighQualityFragment	ShadowHighQualityFragment.glsl	fragment	u_size:vec2;u_anchor:vec2;u_intensity:float;u_blurShiftModifier:float;u_blurIntensityModifier:float;intensityFadeX:float			123
+ShadowLowQualityFragment	ShadowLowQualityFragment.glsl	fragment	u_size:vec2;u_anchor:vec2;u_intensity:float;u_blurShiftModifier:float;u_blurIntensityModifier:float;intensityFadeX:float			71
+ShadowVertex	ShadowVertex.glsl	vertex	u_size:vec2;u_anchor:vec2	a_position:vec4;a_texCoord:vec2;a_color:vec4;a_originRadius:vec4		71
+ShockwaveFragment	ShockwaveFragment.glsl	fragment	u_refractMap:sampler2D;u_resolution:vec2;u_refraction:float;u_reflection:float;u_fresnelBias:float;u_amplitude:float;u_time:float		SHOCKWAVE_OPACITY=0.65	65
+SurfaceFragment	SurfaceFragment.glsl	fragment	u_bloom:sampler2D			12
+TimerFragment	TimerFragment.glsl	fragment	u_progress:float;u_startingAngle:float;u_edgeGradientFactor:float;u_texResolution:vec2;u_bgColor:vec4			47
+TintingFragment	TintingFragment.glsl	fragment	u_tint:vec4			12
+ToneCurveFragment	ToneCurveFragment.glsl	fragment	u_toneCurveTexture:sampler2D;u_amount:float			26
+VoronoiPrismaticFragment	VoronoiPrismaticFragment.glsl	fragment	u_phase:float		PI=3.1415926535897932384626433832795	93
+VortexFragment	VortexFragment.glsl	fragment	u_refractMap:sampler2D;u_radius:float;u_resolution:vec2;u_refraction:float;u_reflection:float;u_fresnelBias:float;u_amplitude:float;u_time:float;u_frequency:float			78
+WaterFragment	WaterFragment.glsl	fragment	u_depthMap:sampler2D;u_refractMap:sampler2D;u_resolution:vec2;u_refraction:float;u_reflection:float;u_fresnelBias:float;u_frequency:float;u_amplitude:float;u_time:float			43
+WhiteCloudVignetteFragment	WhiteCloudVignetteFragment.glsl	fragment	u_time:float;u_texResolution:vec2;u_vignetteAmount:float;u_noiseAmount:float		M_PI=3.14159;COMPLEXITY=2.0;FBM_STEPS=2;COLOR=vec3(46.0, 206.0, 240.0) / vec3(255.0)	97
+WispLensFlareFragment	WispLensFlareFragment.glsl	fragment	u_time:float;u_pulseRate:float;u_armLength:float;u_wispSize:float;u_flareSize:float;u_texResolution:vec2		RAY_COUNT=30;HARDNESS=1.0	61
+AdjustLevels	helpers/AdjustLevels.glsl	fragment				6
+DepthPack	helpers/DepthPack.glsl	fragment				13
+DepthTest	helpers/DepthTest.glsl	fragment				10
+DepthUnpack	helpers/DepthUnpack.glsl	fragment				8
+Distortion	helpers/Distortion.glsl	fragment			EYE=normalize(vec3(0.5))	39
+DistortionFromNormalMap	helpers/DistortionFromNormalMap.glsl	fragment				19
+Fresnel	helpers/Fresnel.glsl	fragment				6
+Noise2D	helpers/Noise2D.glsl	helper				69
+Noise3D	helpers/Noise3D.glsl	helper				94
+NoiseAbsFBM	helpers/NoiseAbsFBM.glsl	helper				38
+NoiseAbsFBMOctaves1	helpers/NoiseAbsFBMOctaves1.glsl	helper				8
+NoiseAbsFBMOctaves2	helpers/NoiseAbsFBMOctaves2.glsl	helper				15
+NoiseAbsFBMOctaves3	helpers/NoiseAbsFBMOctaves3.glsl	helper				15
+NoiseAbsFBMOctaves4	helpers/NoiseAbsFBMOctaves4.glsl	helper				15
+NoiseAbsFBMOctaves5	helpers/NoiseAbsFBMOctaves5.glsl	helper				15
+NoiseAbsFBMOctaves6	helpers/NoiseAbsFBMOctaves6.glsl	helper				15
+NoiseFBM	helpers/NoiseFBM.glsl	helper				38
+NoiseRotatedFBM	helpers/NoiseRotatedFBM.glsl	helper				26
+NoiseRotatedFBMFromTexture	helpers/NoiseRotatedFBMFromTexture.glsl	helper				38
+PosTexColorVertex	helpers/PosTexColorVertex.glsl	vertex		a_position:vec4;a_texCoord:vec2;a_color:vec4		14
+PosTexVertex	helpers/PosTexVertex.glsl	vertex		a_position:vec4;a_texCoord:vec2		11
+PosVertex	helpers/PosVertex.glsl	vertex		a_position:vec4		6
+Reflection	helpers/Reflection.glsl	fragment				7
+Refraction	helpers/Refraction.glsl	fragment				18
+SeededRandom	helpers/SeededRandom.glsl	fragment				6

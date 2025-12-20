@@ -1,0 +1,8 @@
+gap_type	item	severity	notes
+instance_no_schema	serialization_fields	low	Data-only TSV, no entity schema needed
+external_base_class	EventEmitter	info	Node.js built-in, not part of Duelyst
+schema_no_instance	Entity	info	Abstract or reference schema
+schema_no_instance	Range	info	Abstract or reference schema
+schema_no_instance	Replay	info	Abstract or reference schema
+schema_no_instance	SDKObject	info	Abstract or reference schema
+schema_no_instance	Validator	info	Abstract or reference schema

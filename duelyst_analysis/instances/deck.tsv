@@ -1,0 +1,20 @@
+property	value	source_file	description
+MAX_DECK_SIZE	40	app/common/config.js:393	Maximum number of cards in a constructed deck
+MIN_BASICS_DECK_SIZE	27	app/common/config.js:395	Minimum deck size when using all basic cards
+MAX_DECK_SIZE_GAUNTLET	31	app/common/config.js:397	Maximum deck size for Gauntlet (Arena) mode
+MAX_DECK_DUPLICATES	3	app/common/config.js:404	Maximum copies of any single card in deck
+DECK_SIZE_INCLUDES_GENERAL	true	app/common/config.js:406	Whether the General counts toward deck size
+MAX_HAND_SIZE	6	app/common/config.js:299	Maximum cards a player can hold in hand
+STARTING_HAND_SIZE	5	app/common/config.js:301	Number of cards players start with
+STARTING_HAND_REPLACE_COUNT	2	app/common/config.js:303	Number of cards players may mulligan
+CARD_DRAW_PER_TURN	1	app/common/config.js:370	Cards drawn at end of each turn
+MAX_REPLACE_PER_TURN	1	app/common/config.js:372	Maximum card replacements per turn
+numCardsReplacedThisTurn	0	app/sdk/cards/deck.coffee:15	Counter reset each turn for replace tracking
+drawPile	[]	app/sdk/cards/deck.coffee:16	Array of card indices still available to draw
+hand	[]	app/sdk/cards/deck.coffee:17	Array of card indices in hand (length MAX_HAND_SIZE)
+ownerId	null	app/sdk/cards/deck.coffee:18	Player ID who owns this deck
+cachedCards	null	app/sdk/cards/deck.coffee:33	Cached cards in draw pile (private)
+cachedCardsExcludingMissing	null	app/sdk/cards/deck.coffee:34	Cached cards excluding null entries (private)
+cachedCardsInHand	null	app/sdk/cards/deck.coffee:35	Cached hand cards (private)
+cachedCardsInHandExcludingMissing	null	app/sdk/cards/deck.coffee:36	Cached hand cards excluding nulls (private)
+DAYS_BEFORE_GAUNTLET_DECK_EXPIRES	14	app/common/config.js:399	Days Gauntlet deck available for friendly matches

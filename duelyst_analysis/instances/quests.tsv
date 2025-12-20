@@ -1,0 +1,50 @@
+id	class_name	name	description	types	gold_reward	spirit_orbs_reward	is_replaceable	requires_streak	faction_required	games_required	category
+101	QuestParticipationWithFaction	i18next.t("quests.quest_faction_games_title", { faction_name: "Lyonar" })	i18next.t("quests.quest_faction_games_desc",{count:4,faction:"Lyonar"})	ShortQuest	150		true	false	1	4	daily
+102	QuestParticipationWithFaction	i18next.t("quests.quest_faction_games_title", { faction_name: "Songhai" })	i18next.t("quests.quest_faction_games_desc",{count:4,faction:"Songhai"})	ShortQuest	150		true	false	2	4	daily
+103	QuestParticipationWithFaction	i18next.t("quests.quest_faction_games_title", { faction_name: "Vetruvian" })	i18next.t("quests.quest_faction_games_desc",{count:4,faction:"Vetruvian"})	ShortQuest	150		true	false	3	4	daily
+104	QuestParticipationWithFaction	i18next.t("quests.quest_faction_games_title", { faction_name: "Abyssian" })	i18next.t("quests.quest_faction_abyss_games_desc",{count:4,faction:"Abyssian"})	ShortQuest	150		true	false	4	4	daily
+105	QuestParticipationWithFaction	i18next.t("quests.quest_faction_games_title", { faction_name: "Magmar" })	i18next.t("quests.quest_faction_games_desc",{count:4,faction:"Magmar"})	ShortQuest	150		true	false	5	4	daily
+106	QuestParticipationWithFaction	i18next.t("quests.quest_faction_games_title", { faction_name: "Vanar" })	i18next.t("quests.quest_faction_games_desc",{count:4,faction:"Vanar"})	ShortQuest	150		true	false	6	4	daily
+201	QuestWinWithFaction	Lyonar Dominance	Win 2 games with a Lyonar Deck.	ExcludeFromSystem	150		true	false	1	2	excluded
+202	QuestWinWithFaction	Songhai Dominance	Win 2 games with a Songhai Deck.	ExcludeFromSystem	150		true	false	2	2	excluded
+203	QuestWinWithFaction	Vetruvian Dominance	Win 2 games with a Vetruvian Deck.	ExcludeFromSystem	150		true	false	3	2	excluded
+204	QuestWinWithFaction	Abyssian Dominance	Win 2 games with a Abyssian Deck.	ExcludeFromSystem	150		true	false	4	2	excluded
+205	QuestWinWithFaction	Magmar Dominance	Win 2 games with a Magmar Deck.	ExcludeFromSystem	150		true	false	5	2	excluded
+206	QuestWinWithFaction	Vanar Dominance	Win 2 games with a Vanar Deck.	ExcludeFromSystem	150		true	false	6	2	excluded
+300	QuestGameGoal	Kumite Initiate	Win 4 games with any Faction.	ExcludeFromSystem	30		true	false		4	excluded
+400	QuestGameGoal	Assassin Master	Destroy at least 5 minions in one game. Twice.	ExcludeFromSystem	20		true	false		2	excluded
+401	QuestGameGoal	Assassin	Destroy at least 5 minions in one game.	ExcludeFromSystem	20		true	false		1	excluded
+500	QuestGameGoal	Ultimate Aggressor	Deal 40 damage in a single game.	ExcludeFromSystem	30		true	false		1	excluded
+600	QuestGameGoal	Small World	Win two games using only cards costing 3 or less.	ExcludeFromSystem	20		true	false		2	excluded
+700	QuestGameGoal	Dominator	Win 2 games of any type in a row.	ExcludeFromSystem	30		true	true		2	excluded
+800	QuestGameGoal	Arcanyst Bane	Win 2 games with a deck containing less than 5 spells.	ExcludeFromSystem	30		true	false		2	excluded
+900	QuestGameGoal	Conserver's Challenge	Win a game with a deck containing only Basic cards.	ExcludeFromSystem	25		true	false		1	excluded
+1000	QuestGameGoal	Patron's Duty	Play 4 games against a friend.	ExcludeFromSystem	30		true	false		4	excluded
+1100	QuestGameGoal	Mentor's Teaching	Win two games against a friend.	ExcludeFromSystem	20		true	false		2	excluded
+1300	QuestGameGoal	Conquerer	Play 5 games.	ExcludeFromSystem	150		true	false		5	excluded
+1400	QuestGameGoal	Gauntlet Initiate	Play 3 Gauntlet games.	ExcludeFromSystem	150		true	false		3	excluded
+1500	QuestGameGoal	i18next.t("quests.quest_adventurer_title")	i18next.t("quests.quest_adventurer_desc",{count:8})	LongQuest	300		true	false		8	daily
+1600	QuestGameGoal	i18next.t("quests.quest_ultimate_aggressor_title")	i18next.t("quests.quest_ultimate_aggressor_desc",{count:150})	LongQuest	300		true	false		150	daily
+1700	QuestGameGoal	Minion Master	Play 50 Minion cards.	ExcludeFromSystem	300		true	false		50	excluded
+1800	QuestGameGoal	i18next.t("quests.quest_assassin_title")	i18next.t("quests.quest_assassin_desc",{count:50})	LongQuest	300		true	false		50	daily
+9901	QuestBeginnerWinPracticeGames	i18next.t("quests.quest_beginner_win_practice_games_title",{count:1})	i18next.t("quests.quest_beginner_win_practice_games_description",{count:1})	Beginner		1	false	false		1	beginner
+9902	QuestBeginnerPlayPracticeGames	Play 3 Practice Games	Play 3 games in practice mode.	Beginner	150		false	false		3	beginner
+9903	QuestBeginnerPlayOneQuickMatch	Into the Fray	Play 1 Quick Match.	Beginner	150		false	false		1	beginner
+9904	QuestBeginnerCompleteSoloChallenges	i18next.t("quests.quest_beginner_complete_solo_challenges_title")	i18next.t("quests.quest_beginner_complete_solo_challenges_desc",{count:3})	Beginner	150		false	false		3	beginner
+9905	QuestBeginnerWinFourPracticeGames	Win 4 Practice Games	Win 4 game in practice mode.	Beginner	150		false	false		4	beginner
+9906	QuestBeginnerFactionLevel	i18next.t("quests.quest_beginner_faction_up_title")	i18next.t("quests.quest_beginner_faction_up_desc")	Beginner	150		false	false		1	beginner
+9907	QuestBeginnerWinThreeRankedMatches	Rank up	Win 3 Ranked Games.	Beginner	150		false	false		3	beginner
+9908	QuestBeginnerWinThreeQuickMatches	Lore master	Win 3 games in Quick Match.	Beginner	150		false	false		3	beginner
+9909	QuestBeginnerWinTwoPracticeGames	i18next.t("quests.quest_beginner_win_practice_games_title_plural",{count:2})	i18next.t("quests.quest_beginner_win_practice_games_description_plural",{count:2})	Beginner	150		false	false		2	beginner
+9910	QuestBeginnerWinOneSeasonGame	i18next.t("quests.quest_beginner_win_ladder_game_title")	i18next.t("quests.quest_beginner_win_ladder_game_desc",{count:1})	Beginner	150		false	false		1	beginner
+20000	QuestCatchUp	i18next.t("quests.quest_welcome_back_title")	i18next.t("quests.quest_welcome_back_desc",{count:3})	CatchUp			false	false		3	catchup
+30001	QuestFrostfire2016	Frostfire	Complete 15 quests.	Seasonal			false	false		15	seasonal
+30002	QuestSeasonal2017February	Monthly Quest	Complete 15 quests.	Seasonal			false	false		15	seasonal
+30003	QuestSeasonal2017March	Monthly Quest	Complete 15 quests.	Seasonal			false	false		15	seasonal
+30004	QuestSeasonal2017April	Monthly Quest	Complete 15 quests.	Seasonal			false	false		15	seasonal
+30005	QuestSeasonal2017May	Monthly Quest	Complete 15 quests.	Seasonal			false	false		15	seasonal
+30006	QuestSeasonal2017October	Monthly Quest	Complete 15 quests.	Seasonal			false	false		15	seasonal
+30007	QuestSeasonal2018February	i18next.t("quests.monthly_quest_title")	i18next.t("quests.monthly_quest_desc",{count:15})	Seasonal			false	false		15	seasonal
+40001	QuestAnniversary2017	Anniversary	Win 1 Rift Match.<br>Expires May 12th UTC	Promotional			false	false		1	promotional
+40002	QuestFrostfire2017	Frostfire Loot Crate	Play 15 Frostfire Mode matches before Jan 4th UTC	Promotional			false	false		15	promotional
+40003	QuestLegacyLaunch	Unlimited Celebration	Play 7 Unlimited Mode matches before April 30th UTC	Promotional			false	false		7	promotional

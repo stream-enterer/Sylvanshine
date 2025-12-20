@@ -1,0 +1,8 @@
+id	name	tile_type	effects	fx_resource	sprite_resource	duration	owner_faction	dispellable	uses	die_on_depleted	obstructs_other_tiles
+Cards.Tile.BonusMana (40001)	Mana Spring	BonusMana	Grants +1 mana for 1 turn when stepped on	FX.Cards.Tile.BonusMana	tileManaIdle (idle), tileManaDepleted (depleted)	Permanent (1 use)	Neutral	true	1	false	false
+Cards.Tile.Shadow (40004)	Shadow Creep	Shadow	Deals 1 damage to enemy minions at end of turn; damage scales with number of Shadow Creep tiles on battlefield	FX.Cards.Tile.Shadow	fxShadowCreepSpawn (apply), fxShadowCreepIdle (idle)	Permanent	Neutral	true	unlimited	true	false
+Cards.Tile.Hallowed (40005)	Hallowed Ground	Hallowed	Heals 1 HP to friendly minions at end of turn	FX.Cards.Tile.Hallowed	fxHolyTileSpawn (apply), fxHolyTileIdle (idle)	Permanent	Neutral	true	unlimited	true	false
+Cards.Tile.SandPortal (40006)	Exhuming Sand	SandPortal	Spawns an Iron Dervish on this tile when you summon another minion (does not trigger on own creation)	FX.Cards.Tile.SandPortal	fxSandTileSpawn (apply), fxSandTileIdle (idle)	Permanent	Neutral	true	unlimited	true	false
+Cards.Tile.PrimalMojo (40007)	Primal Flourish	PrimalMojo	Grants +2/+2 permanently to friendly minions standing on it (Grow aura)	FX.Cards.Tile.PrimalMojo	fxPrimalTileSpawn (apply), fxPrimalTileIdle (idle)	Permanent	Neutral	true	unlimited	true	false
+Cards.Tile.FrostfireChest (40008)	Frostfire Chest	FrostfireChest	Grants a Holiday Gift card when stepped on (special event tile)	FX.Cards.Tile.FrostfireChest	tileTreasureFestiveIdle (idle), tileTreasureFestiveOpen (depleted)	1 use	Neutral	false	1	true	true
+Cards.Tile.Wall (40003)	Wall	Wall	Obstructing tile (not implemented in factory)	N/A	N/A	N/A	Neutral	N/A	N/A	N/A	N/A

@@ -1,0 +1,60 @@
+property	default_value	source_file	description
+gameId	N/A	app/sdk/gameSession.coffee:353	Unique identifier for the game session
+gameType	null	app/sdk/gameSession.coffee:354	Type of game (see GameType lookup)
+gameFormat	null	app/sdk/gameSession.coffee:355	Format of game (see GameFormat lookup)
+status	GameStatus.new	app/sdk/gameSession.coffee:361|372	Current game status (new, active, or over)
+index	0	app/sdk/gameSession.coffee:356	Index counter for cards/modifiers
+players	[]	app/sdk/gameSession.coffee:359|382-388	Array of Player objects (player1 and player2)
+board	null	app/sdk/gameSession.coffee:348|393	Board object (9x5 grid)
+battleMapTemplate	null	app/sdk/gameSession.coffee:352|391	BattleMapTemplate for map/weather configuration
+cardsByIndex	{}	app/sdk/gameSession.coffee:349|373	Master map of all cards in this game by index
+modifiersByIndex	{}	app/sdk/gameSession.coffee:358|374	Master map of all modifiers by index
+turns	[]	app/sdk/gameSession.coffee:363|379	Master list of all turns in the game
+currentTurn	new GameTurn	app/sdk/gameSession.coffee:351|380	Currently active GameTurn object
+gameSetupData	{players: []}	app/sdk/gameSession.coffee:360|371	Sparse snapshot of player state after setup (for replays)
+createdAt	Date.now()	app/sdk/gameSession.coffee:376	Timestamp when game was created
+updatedAt	Date.now()	app/sdk/gameSession.coffee:377	Timestamp when game was last updated
+lastActionTimestamp	null	app/sdk/gameSession.coffee:357	Timestamp of last action executed
+aiDifficulty	null	app/sdk/gameSession.coffee:346	AI difficulty level (if AI game)
+aiPlayerId	null	app/sdk/gameSession.coffee:347	Player ID of AI player (if AI game)
+swapPlayersOnNewTurn	true	app/sdk/gameSession.coffee:362	Whether to swap current player on new turn
+cachedGeneralsByPlayerId	{}	app/sdk/gameSession.coffee:399	Cache of generals by player ID (private)
+cachedEventReceivingCards	null	app/sdk/gameSession.coffee:400	Cache of event receiving cards (private)
+eventBus	EventBus.create()	app/sdk/gameSession.coffee:403	Event bus for game events (private)
+eventBuffer	[]	app/sdk/gameSession.coffee:404	Buffer for events during action execution (private)
+eventReceivingCardsOnBoard	[]	app/sdk/gameSession.coffee:405	Cards on board receiving events (private)
+action	null	app/sdk/gameSession.coffee:408	Currently executing action (private)
+actionsToResolve	[]	app/sdk/gameSession.coffee:411	Actions needing resolution during step resolve phase (private)
+actionsByIndex	{}	app/sdk/gameSession.coffee:412	Map of actions by index (private)
+actionQueue	null	app/sdk/gameSession.coffee:413	Queue of actions to execute (private)
+blockActionExecution	false	app/sdk/gameSession.coffee:414	Whether action execution is blocked (private)
+cardStack	[]	app/sdk/gameSession.coffee:415	Stack of cards actively applying to board (private)
+depthFirstActions	[]	app/sdk/gameSession.coffee:416	Depth first actions for current action (private)
+gameOverRequested	false	app/sdk/gameSession.coffee:417	Whether game over was requested (private)
+hasDrawnCardsForTurn	false	app/sdk/gameSession.coffee:418	Whether cards drawn for current turn (private)
+hasActivatedSignatureCardForTurn	false	app/sdk/gameSession.coffee:419	Whether signature card activated this turn (private)
+lastStep	null	app/sdk/gameSession.coffee:420	Last executed step (private)
+modifierStack	[]	app/sdk/gameSession.coffee:421	Stack of triggering modifiers (private)
+nonDepthFirstAction	null	app/sdk/gameSession.coffee:422	Currently executing non-depth-first action (private)
+parentAction	null	app/sdk/gameSession.coffee:423	Current parent action (private)
+resolveAction	null	app/sdk/gameSession.coffee:424	Current resolve action (private)
+updatedElapsedEndTurn	false	app/sdk/gameSession.coffee:425	Whether end turn duration elapsed updated (private)
+updatedElapsedStartTurn	false	app/sdk/gameSession.coffee:426	Whether start turn duration elapsed updated (private)
+startTurnAction	null	app/sdk/gameSession.coffee:427	Current start turn action if turns changing (private)
+step	null	app/sdk/gameSession.coffee:428	Currently executing step (private)
+stepsByIndex	{}	app/sdk/gameSession.coffee:429	Map of steps by index (private)
+stepQueue	[]	app/sdk/gameSession.coffee:430	Queue of steps to execute (private)
+submittedExplicitAction	null	app/sdk/gameSession.coffee:431	Action submitted by authoritative source (private)
+followupActive	false	app/sdk/gameSession.coffee:434	Whether followups are being played (private)
+isBufferingEvents	false	app/sdk/gameSession.coffee:435	Whether events should be buffered (private)
+rollbackSnapshotData	null	app/sdk/gameSession.coffee:436	Rollback snapshot during followups (private)
+rollbackSnapshotDataDiscardRequested	false	app/sdk/gameSession.coffee:437	Whether rollback discard requested (private)
+rollbackToSnapshotRequested	false	app/sdk/gameSession.coffee:438	Whether rollback requested (private)
+challenge	null	app/sdk/gameSession.coffee:441	Challenge object if in challenge mode (private)
+isDeveloperMode	false	app/sdk/gameSession.coffee:442	Whether game is in developer mode (private)
+isRunningAsAuthoritative	false	app/sdk/gameSession.coffee:443	Whether game is running authoritatively (private)
+isSpectateMode	false	app/sdk/gameSession.coffee:444	Whether game is spectate mode (private)
+isReplay	false	app/sdk/gameSession.coffee:445	Whether game is a replay (private)
+isSignatureCardAlwaysReady	false	app/sdk/gameSession.coffee:446	Override signature card to always be ready (private)
+turnTimeRemaining	92.0	app/sdk/gameSession.coffee:447	Remaining turn time (TURN_DURATION + buffer) (private)
+userId	""	app/sdk/gameSession.coffee:448	User ID for client game session (private)
