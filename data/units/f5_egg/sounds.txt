@@ -1,6 +1,0 @@
-apply	sfx/sfx_screenshake.wav
-attack	sfx/sfx_neutral_coiledcrawler_attack_swing.wav
-attackDamage	sfx/sfx_neutral_coiledcrawler_attack_impact.wav
-death	sfx/sfx_neutral_coiledcrawler_death.wav
-receiveDamage	sfx/sfx_neutral_coiledcrawler_hit.wav
-walk	sfx/sfx_neutral_ladylocke_attack_impact.wav

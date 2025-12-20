@@ -1,6 +1,0 @@
-apply	sfx/sfx_summonlegendary.wav
-attack	sfx/sfx_f3_anubis_attack_swing.wav
-attackDamage	sfx/sfx_spell_icepillar.wav
-death	sfx/sfx_f3_anubis_death.wav
-receiveDamage	sfx/sfx_f6_ghostwolf_hit.wav
-walk	sfx/sfx_neutral_primordialgazer_attack_impact.wav

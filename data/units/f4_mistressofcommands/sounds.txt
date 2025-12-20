@@ -1,6 +1,0 @@
-apply	sfx/sfx_spell_deathstrikeseal.wav
-attack	sfx/sfx_f2_jadeogre_attack_swing.wav
-attackDamage	sfx/sfx_f2_jadeogre_attack_impact.wav
-death	sfx/sfx_f2_jadeogre_death.wav
-receiveDamage	sfx/sfx_f2_jadeogre_hit.wav
-walk	sfx/sfx_unit_physical_4.wav

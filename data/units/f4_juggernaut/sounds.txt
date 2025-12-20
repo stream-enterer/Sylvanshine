@@ -1,6 +1,0 @@
-apply	sfx/sfx_spell_fractalreplication.wav
-attack	sfx/sfx_f4_juggernaut_attack_swing.wav
-attackDamage	sfx/sfx_f4_juggernaut_attack_impact.wav
-death	sfx/sfx_f4_juggernaut_death.wav
-receiveDamage	sfx/sfx_f4_juggernaut_hit.wav
-walk	sfx/sfx_neutral_arakiheadhunter_hit.wav

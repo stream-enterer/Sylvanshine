@@ -1,6 +1,0 @@
-apply	sfx/sfx_summonlegendary.wav
-attack	sfx/sfx_neutral_spelljammer_attack_swing.wav
-attackDamage	sfx/sfx_neutral_spelljammer_attack_impact.wav
-death	sfx/sfx_neutral_spelljammer_death.wav
-receiveDamage	sfx/sfx_neutral_spelljammer_hit.wav
-walk	sfx/sfx_neutral_ladylocke_attack_impact.wav

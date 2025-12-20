@@ -1,6 +1,0 @@
-apply	sfx/sfx_spell_fractalreplication.wav
-attack	sfx/sfx_spell_entropicdecay.wav
-attackDamage	sfx/sfx_f1_elyxstormblade_attack_impact.wav
-death	sfx/sfx_f1_elyxstormblade_death.wav
-receiveDamage	sfx/sfx_f1_elyxstormblade_hit.wav
-walk	sfx/sfx_unit_run_charge_4.wav

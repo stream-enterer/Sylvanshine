@@ -129,10 +129,10 @@ SDL_GPUShader* GPURenderer::load_shader(const char* filename, SDL_GPUShaderStage
 
     if (formats & SDL_GPU_SHADERFORMAT_SPIRV) {
         format = SDL_GPU_SHADERFORMAT_SPIRV;
-        SDL_snprintf(path, sizeof(path), "data/shaders/compiled/spirv/%s.spv", filename);
+        SDL_snprintf(path, sizeof(path), "dist/shaders/%s.spv", filename);
     } else if (formats & SDL_GPU_SHADERFORMAT_MSL) {
         format = SDL_GPU_SHADERFORMAT_MSL;
-        SDL_snprintf(path, sizeof(path), "data/shaders/compiled/msl/%s.msl", filename);
+        SDL_snprintf(path, sizeof(path), "dist/shaders/%s.msl", filename);
         entrypoint = "main0";
     } else {
         SDL_Log("No supported shader format (need SPIRV or MSL)");

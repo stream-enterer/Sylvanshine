@@ -1,10 +1,9 @@
 #!/usr/bin/env fish
 set BUILD_DIR "build"
 set PROJECT_NAME "tactics"
-set DUELYST_REPO "$HOME/.local/git/duelyst"
-set SHADER_DIR "data/shaders"
-set GLSL_DIR "$SHADER_DIR/glsl"
-set SPIRV_OUT_DIR "$SHADER_DIR/compiled/spirv"
+set SHADER_SRC_DIR "shaders"
+set SHADER_OUT_DIR "dist/shaders"
+set DIST_DIR "dist"
 
 function check_glslangValidator
     if not command -v glslangValidator &>/dev/null
@@ -16,43 +15,67 @@ end
 
 function do_compile_shaders
     echo "→ Compiling shaders..."
-    check_glslangValidator or return 1
-    
-    if not test -d "$GLSL_DIR"
-        echo "✗ GLSL directory not found: $GLSL_DIR"
+    check_glslangValidator; or return 1
+
+    if not test -d "$SHADER_SRC_DIR"
+        echo "✗ Shader source directory not found: $SHADER_SRC_DIR"
         return 1
     end
-    
-    mkdir -p "$SPIRV_OUT_DIR"
-    
-    set -l count 0
-    for shader in "$GLSL_DIR"/*.vert "$GLSL_DIR"/*.frag
-        test -f "$shader" or continue
+
+    mkdir -p "$SHADER_OUT_DIR"
+
+    set -l compiled 0
+    set -l skipped 0
+    for shader in "$SHADER_SRC_DIR"/*.vert "$SHADER_SRC_DIR"/*.frag
+        test -f "$shader"; or continue
         set -l name (basename "$shader")
-        set -l out "$SPIRV_OUT_DIR/$name.spv"
-        echo "  Compiling $name → $out"
-        glslangValidator -V "$shader" -o "$out" or return 1
-        set count (math $count + 1)
+        set -l out "$SHADER_OUT_DIR/$name.spv"
+
+        # Skip if output exists and is newer than source
+        if test -f "$out" -a "$out" -nt "$shader"
+            set skipped (math $skipped + 1)
+            continue
+        end
+
+        if not glslangValidator -V "$shader" -o "$out" >/dev/null 2>&1
+            echo "  ✗ Failed to compile $name"
+            glslangValidator -V "$shader" -o "$out"
+            return 1
+        end
+        echo "  Compiled $name"
+        set compiled (math $compiled + 1)
     end
-    
-    echo "✓ Compiled $count shaders to $SPIRV_OUT_DIR/"
+
+    if test $compiled -gt 0
+        echo "  Compiled $compiled shaders"
+    end
+    if test $skipped -gt 0
+        echo "  Skipped $skipped unchanged shaders"
+    end
+end
+
+function do_build_assets
+    echo "→ Building assets..."
+    python3 build_assets.py; or return 1
 end
 
 function do_build
+    do_build_assets or return 1
     do_compile_shaders or return 1
-    
+
     echo "→ Configuring release build..."
-    cmake -B $BUILD_DIR -DCMAKE_BUILD_TYPE=Release -DDUELYST_REPO_PATH=$DUELYST_REPO
+    cmake -B $BUILD_DIR -DCMAKE_BUILD_TYPE=Release
     and echo "→ Building with "(nproc)" cores..."
     and cmake --build $BUILD_DIR -j(nproc)
     and echo "✓ Build complete: ./$BUILD_DIR/$PROJECT_NAME"
 end
 
 function do_debug
+    do_build_assets or return 1
     do_compile_shaders or return 1
-    
+
     echo "→ Configuring debug build..."
-    cmake -B $BUILD_DIR -DCMAKE_BUILD_TYPE=Debug -DDUELYST_REPO_PATH=$DUELYST_REPO
+    cmake -B $BUILD_DIR -DCMAKE_BUILD_TYPE=Debug
     and echo "→ Building with "(nproc)" cores..."
     and cmake --build $BUILD_DIR -j(nproc)
     and echo "✓ Debug build complete: ./$BUILD_DIR/$PROJECT_NAME"
@@ -88,17 +111,24 @@ function do_shaders_only
     do_compile_shaders
 end
 
+function do_assets_only
+    echo "→ Building assets (forced)..."
+    python3 build_assets.py --clean or return 1
+    echo "✓ Assets built to $DIST_DIR/"
+end
+
 function show_help
     echo "Usage: ./build.fish [command]"
     echo ""
     echo "Commands:"
-    echo "  build      - Compile shaders + build release"
-    echo "  debug      - Compile shaders + build debug"
+    echo "  build      - Build assets + shaders + release"
+    echo "  debug      - Build assets + shaders + debug"
     echo "  clean      - Remove build directory"
     echo "  rebuild    - Clean + build"
     echo "  run        - Run executable"
     echo "  br         - Build + run"
     echo "  shaders    - Compile shaders only"
+    echo "  assets     - Build assets only (force rebuild)"
     echo "  help       - Show this help"
 end
 
@@ -117,6 +147,8 @@ switch $argv[1]
         do_build_run $argv[2..]
     case shaders
         do_shaders_only
+    case assets
+        do_assets_only
     case help
         show_help
     case '*'

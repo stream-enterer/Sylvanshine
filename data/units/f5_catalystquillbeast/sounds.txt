@@ -1,6 +1,0 @@
-apply	sfx/sfx_summonlegendary.wav
-attack	sfx/sfx_neutral_dragonlark_attack_impact.wav
-attackDamage	sfx/sfx_neutral_serpenti_attack_impact.wav
-death	sfx/sfx_neutral_serpenti_death.wav
-receiveDamage	sfx/sfx_neutral_serpenti_hit.wav
-walk	sfx/sfx_neutral_dragonlark_death.wav

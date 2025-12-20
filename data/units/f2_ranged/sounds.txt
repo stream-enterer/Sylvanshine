@@ -1,6 +1,0 @@
-apply	sfx/sfx_spell_deathstrikeseal.wav
-attack	sfx/sfx_f1_grandmasterzir_attack_impact.wav
-attackDamage	sfx/sfx_f1_silverguardsquire_attack_impact.wav
-death	sfx/sfx_f1_grandmasterzir_death.wav
-receiveDamage	sfx/sfx_neutral_luxignis_hit.wav
-walk	sfx/sfx_neutral_ladylocke_attack_impact.wav

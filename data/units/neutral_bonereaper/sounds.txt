@@ -1,6 +1,0 @@
-apply	sfx/sfx_spell_shadownova.wav
-attack	sfx/sfx_f4_blacksolus_attack_swing.wav
-attackDamage	sfx/sfx_f4_blacksolus_attack_impact.wav
-death	sfx/sfx_neutral_yun_death.wav
-receiveDamage	sfx/sfx_f4_blacksolus_hit.wav
-walk	sfx/sfx_neutral_sai_attack_impact.wav

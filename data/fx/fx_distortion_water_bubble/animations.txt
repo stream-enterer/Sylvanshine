@@ -1,1 +1,0 @@
-fxDistortionWaterBubble	12	1,2,2,272,272

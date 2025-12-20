@@ -1,6 +1,0 @@
-apply	sfx/sfx_spell_nethersummoning.wav
-attack	sfx/sfx_neutral_ubo_attack_swing.wav
-attackDamage	sfx/sfx_neutral_ubo_attack_impact.wav
-death	sfx/sfx_neutral_amu_attack_death.wav
-receiveDamage	sfx/sfx_neutral_gro_hit.wav
-walk	sfx/sfx_neutral_ubo_attack_swing.wav

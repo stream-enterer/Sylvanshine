@@ -1,6 +1,0 @@
-apply	sfx/sfx_neutral_jaxtruesight_attack_impact.wav
-attack	sfx/sfx_neutral_makantorwarbeast_attack_swing.wav
-attackDamage	sfx/sfx_neutral_makantorwarbeast_attack_impact.wav
-death	sfx/sfx_neutral_makantorwarbeast_death.wav
-receiveDamage	sfx/sfx_neutral_makantorwarbeast_hit.wav
-walk	sfx/sfx_neutral_arakiheadhunter_hit.wav

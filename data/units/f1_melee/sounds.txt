@@ -1,6 +1,0 @@
-apply	sfx/sfx_spell_immolation_b.wav
-attack	sfx/sfx_f2melee_attack_swing_2.wav
-attackDamage	sfx/sfx_f2melee_attack_impact_1.wav
-death	sfx/sfx_f2melee_death.wav
-receiveDamage	sfx/sfx_f2melee_hit_2.wav
-walk	sfx/sfx_neutral_ladylocke_attack_impact.wav

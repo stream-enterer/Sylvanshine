@@ -1,6 +1,0 @@
-apply	sfx/sfx_neutral_prophetofthewhite_hit.wav
-attack	sfx/sfx_neutral_firestarter_attack_swing.wav
-attackDamage	sfx/sfx_neutral_firestarter_impact.wav
-death	sfx/sfx_neutral_alcuinloremaster_death.wav
-receiveDamage	sfx/sfx_neutral_firestarter_hit.wav
-walk	sfx/sfx_neutral_firestarter_impact.wav

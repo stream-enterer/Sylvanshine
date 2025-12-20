@@ -1,5 +1,5 @@
 #include "entity.hpp"
-#include "asset_paths.hpp"
+#include "asset_manager.hpp"
 #include <SDL3_image/SDL_image.h>
 #include <string>
 #include <cmath>
@@ -49,7 +49,7 @@ Entity::Entity()
 bool Entity::load_shadow() {
     if (shadow_loaded) return true;
 
-    std::string shadow_path = AssetPaths::get_shadow_texture_path();
+    std::string shadow_path = AssetManager::instance().get_shadow_texture_path();
     shadow_texture = g_gpu.load_texture(shadow_path.c_str());
     if (!shadow_texture) {
         SDL_Log("Failed to load shadow texture: %s", shadow_path.c_str());
@@ -62,8 +62,15 @@ bool Entity::load_shadow() {
 }
 
 bool Entity::load(const char* unit_name) {
-    // Load spritesheet from Duelyst repository
-    std::string spritesheet_path = AssetPaths::get_unit_spritesheet_path(unit_name);
+    // Get unit asset from AssetManager (pre-parsed from assets.json)
+    const auto* asset = AssetManager::instance().get_unit(unit_name);
+    if (!asset) {
+        SDL_Log("Unit not found in assets: %s", unit_name);
+        return false;
+    }
+
+    // Load spritesheet from dist directory
+    std::string spritesheet_path = AssetManager::instance().get_unit_spritesheet_path(unit_name);
     spritesheet = g_gpu.load_texture(spritesheet_path.c_str());
 
     if (!spritesheet) {
@@ -71,14 +78,17 @@ bool Entity::load(const char* unit_name) {
         return false;
     }
 
-    // Load animations from Duelyst plist format
-    std::string plist_path = AssetPaths::get_unit_plist_path(unit_name);
-    animations = load_animations_from_plist(unit_name, plist_path.c_str());
+    // Copy pre-parsed animations from AssetManager
+    animations = asset->animations;
 
     if (animations.animations.empty()) {
-        SDL_Log("Failed to load animations from plist: %s", plist_path.c_str());
+        SDL_Log("No animations found for unit: %s", unit_name);
         return false;
     }
+
+    // Load timing data
+    UnitTiming timing = AssetManager::instance().get_timing(unit_name);
+    attack_damage_delay = timing.attack_damage_delay;
 
     play_animation("idle");
 
@@ -86,7 +96,7 @@ bool Entity::load(const char* unit_name) {
     spawn_elapsed = 0.0f;
     opacity = 0.0f;
 
-    SDL_Log("Loaded unit '%s' from Duelyst repo", unit_name);
+    SDL_Log("Loaded unit '%s' from dist/", unit_name);
     return true;
 }
 
@@ -218,7 +228,18 @@ void Entity::render_shadow(const RenderConfig& config) const {
 }
 
 void Entity::render(const RenderConfig& config) const {
-    if (!spritesheet.ptr || !current_anim || current_anim->frames.empty()) return;
+    if (!spritesheet.ptr) {
+        SDL_Log("Entity::render: no spritesheet");
+        return;
+    }
+    if (!current_anim) {
+        SDL_Log("Entity::render: no current_anim");
+        return;
+    }
+    if (current_anim->frames.empty()) {
+        SDL_Log("Entity::render: no frames in anim '%s'", current_anim->name);
+        return;
+    }
     if (is_dead()) return;
 
     int frame_idx = static_cast<int>(anim_time * current_anim->fps);

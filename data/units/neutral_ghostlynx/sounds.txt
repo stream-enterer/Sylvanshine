@@ -1,6 +1,0 @@
-apply	sfx/sfx_spell_diretidefrenzy.wav
-attack	sfx/sfx_neutral_xho_attack_swing.wav
-attackDamage	sfx/sfx_neutral_xho_attack_impact.wav
-death	sfx/sfx_neutral_xho_death.wav
-receiveDamage	sfx/sfx_neutral_xho_hit.wav
-walk	sfx/sfx_neutral_grimrock_hit.wav

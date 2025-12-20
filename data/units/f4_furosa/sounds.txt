@@ -1,6 +1,0 @@
-apply	sfx/sfx_f4_blacksolus_attack_swing.wav
-attack	sfx/sfx_f3_aymarahealer_attack_swing.wav
-attackDamage	sfx/sfx_f3_aymarahealer_impact.wav
-death	sfx/sfx_f3_aymarahealer_death.wav
-receiveDamage	sfx/sfx_f3_aymarahealer_hit.wav
-walk	sfx/sfx_neutral_ladylocke_attack_impact.wav

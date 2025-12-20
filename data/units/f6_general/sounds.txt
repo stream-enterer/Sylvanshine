@@ -1,6 +1,0 @@
-apply	sfx/sfx_unit_deploy.wav
-attack	sfx/sfx_neutral_valehunter_attack_swing.wav
-attackDamage	sfx/sfx_neutral_gambitgirl_attack_impact.wav
-death	sfx/sfx_neutral_gambitgirl_death.wav
-receiveDamage	sfx/sfx_neutral_gambitgirl_hit.wav
-walk	sfx/sfx_neutral_ladylocke_attack_impact.wav

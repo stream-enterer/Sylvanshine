@@ -1,6 +1,0 @@
-apply	sfx/sfx_spell_ghostlightning.wav
-attack	sfx/sfx_f3_orbweaver_attack_swing.wav
-attackDamage	sfx/sfx_f3_orbweaver_impact.wav
-death	sfx/sfx_f3_orbweaver_death.wav
-receiveDamage	sfx/sfx_f3_orbweaver_hit.wav
-walk	sfx/sfx_unit_run_magical_4.wav

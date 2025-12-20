@@ -1,6 +1,0 @@
-apply	sfx/sfx_f4_blacksolus_attack_swing.wav
-attack	sfx/sfx_f6_waterelemental_death.wav
-attackDamage	sfx/sfx_f2_celestialphantom_attack_impact.wav
-death	sfx/sfx_f1_elyxstormblade_death.wav
-receiveDamage	sfx/sfx_f1_windbladecommander_hit.wav
-walk	sfx/sfx_spell_icepillar_melt.wav

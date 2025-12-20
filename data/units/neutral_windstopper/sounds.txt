@@ -1,6 +1,0 @@
-apply	sfx/sfx_ui_booster_packexplode.wav
-attack	sfx/sfx_neutral_windstopper_attack_swing.wav
-attackDamage	sfx/sfx_neutral_windstopper_attack_impact.wav
-death	sfx/sfx_neutral_windstopper_death.wav
-receiveDamage	sfx/sfx_neutral_windstopper_hit.wav
-walk	sfx/sfx_neutral_ladylocke_attack_impact.wav

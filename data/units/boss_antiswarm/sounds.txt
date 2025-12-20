@@ -1,6 +1,0 @@
-apply	sfx/sfx_screenshake.wav
-attack	sfx/sfx_neutral_primordialgazer_attack_swing.wav
-attackDamage	sfx/sfx_neutral_primordialgazer_attack_impact.wav
-death	sfx/sfx_neutral_primordialgazer_death.wav
-receiveDamage	sfx/sfx_neutral_primordialgazer_hit.wav
-walk	sfx/sfx_neutral_ladylocke_attack_impact.wav

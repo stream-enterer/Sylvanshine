@@ -5,7 +5,7 @@
 #include "grid_renderer.hpp"
 #include "fx.hpp"
 #include "timing_loader.hpp"
-#include "asset_paths.hpp"
+#include "asset_manager.hpp"
 #include "sdl_handles.hpp"
 #include <vector>
 #include <cstring>
@@ -973,10 +973,11 @@ Entity create_unit(GameState& state, const RenderConfig& config,
 int main(int argc, char* argv[]) {
     RenderConfig config = parse_args(argc, argv);
 
-    // Initialize asset paths (must be done before any asset loading)
-    if (!AssetPaths::init()) {
-        SDL_Log("Warning: Duelyst repo path not configured. Some assets may fail to load.");
-        SDL_Log("Set DUELYST_REPO_PATH in CMake: cmake -DDUELYST_REPO_PATH=/path/to/duelyst ..");
+    // Initialize asset manager (loads assets.json from dist/)
+    if (!AssetManager::instance().init("dist")) {
+        SDL_Log("Failed to initialize AssetManager from dist/");
+        SDL_Log("Run 'python3 build_assets.py' to build the asset manifest");
+        return 1;
     }
 
     WindowHandle window;
@@ -997,18 +998,8 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    // Load FX mappings (still from local data directory)
-    std::string rsx_mapping_path = AssetPaths::get_local_data_path() + "/fx/rsx_mapping.tsv";
-    std::string manifest_path = AssetPaths::get_local_data_path() + "/fx/manifest.tsv";
-    if (!state.fx_cache.load_mappings(rsx_mapping_path.c_str(), manifest_path.c_str())) {
-        SDL_Log("Warning: Failed to load FX mappings, FX will not display");
-    }
-
-    // Load timing data (still from local data directory)
-    std::string timing_path = AssetPaths::get_timing_path("unit_timing.tsv");
-    if (!state.timing_data.load(timing_path.c_str())) {
-        SDL_Log("Warning: Failed to load timing data, using defaults");
-    }
+    // FX mappings and timing data are now loaded via AssetManager from assets.json
+    // The old TSV-based loading is no longer needed
 
     if (!Entity::load_shadow()) {
         SDL_Log("Warning: Failed to load shadow texture");

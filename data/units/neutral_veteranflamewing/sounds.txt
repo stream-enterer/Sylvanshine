@@ -1,6 +1,0 @@
-apply	sfx/sfx_spell_fractalreplication.wav
-attack	sfx/sfx_spell_blindscorch.wav
-attackDamage	sfx/sfx_f2_lanternfox_attack_impact.wav
-death	sfx/sfx_f6_draugarlord_death.wav
-receiveDamage	sfx/sfx_f1_oserix_hit.wav
-walk	sfx/sfx_neutral_ubo_attack_swing.wav

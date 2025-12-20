@@ -1,6 +1,0 @@
-apply	sfx/sfx_unit_deploy.wav
-attack	sfx/sfx_f6_seismicelemental_attack_impact.wav
-attackDamage	sfx/sfx_f2_lanternfox_death.wav
-death	sfx/sfx_f2_lanternfox_death.wav
-receiveDamage	sfx/sfx_neutral_golembloodshard_hit.wav
-walk	sfx/sfx_neutral_arakiheadhunter_hit.wav

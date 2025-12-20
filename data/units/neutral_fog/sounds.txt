@@ -1,6 +1,0 @@
-apply	sfx/sfx_spell_diretidefrenzy.wav
-attack	sfx/sfx_neutral_fog_attack_swing.wav
-attackDamage	sfx/sfx_neutral_fog_attack_impact.wav
-death	sfx/sfx_neutral_fog_death.wav
-receiveDamage	sfx/sfx_neutral_fog_hit.wav
-walk	sfx/sfx_neutral_valehunter_attack_impact.wav

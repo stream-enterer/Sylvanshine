@@ -1,6 +1,0 @@
-apply	sfx/sfx_neutral_ubo_attack_swing.wav
-attack	sfx/sfx_neutral_wingsofparadise_attack_swing.wav
-attackDamage	sfx/sfx_neutral_wingsofparadise_attack_impact.wav
-death	sfx/sfx_neutral_wingsofparadise_death.wav
-receiveDamage	sfx/sfx_neutral_wingsofparadise_hit.wav
-walk	sfx/sfx_neutral_ubo_attack_swing.wav

@@ -1,6 +1,0 @@
-apply	sfx/sfx_unit_deploy_3.wav
-attack	sfx/sfx_neutral_ashmephyt_attack_swing.wav
-attackDamage	sfx/sfx_neutral_ashmephyt_attack_impact.wav
-death	sfx/sfx_neutral_ashmephyt_death.wav
-receiveDamage	sfx/sfx_neutral_ashmephyt_hit.wav
-walk	sfx/sfx_f5_unstableleviathan_hit.wav

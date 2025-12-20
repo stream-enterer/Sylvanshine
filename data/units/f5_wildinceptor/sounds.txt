@@ -1,6 +1,0 @@
-apply	sfx/sfx_spell_diretidefrenzy.wav
-attack	sfx/sfx_neutral_firestarter_attack_swing.wav
-attackDamage	sfx/sfx_neutral_firestarter_impact.wav
-death	sfx/sfx_neutral_firestarter_death.wav
-receiveDamage	sfx/sfx_neutral_firestarter_hit.wav
-walk	sfx/sfx_spell_icepillar_melt.wav

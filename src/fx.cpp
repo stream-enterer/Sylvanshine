@@ -1,6 +1,5 @@
 #include "fx.hpp"
-#include "asset_paths.hpp"
-#include "plist_parser.hpp"
+#include "asset_manager.hpp"
 #include <SDL3_image/SDL_image.h>
 #include <fstream>
 #include <sstream>
@@ -17,88 +16,29 @@ std::vector<std::string> split_string(const std::string& str, char delimiter) {
     return result;
 }
 
+// Legacy TSV parsing - kept for reference but no longer used
+// RSX mappings are now loaded from assets.json via AssetManager
 bool parse_rsx_mapping(const char* filepath, std::unordered_map<std::string, RSXMapping>& mappings) {
-    std::ifstream file(filepath);
-    if (!file) {
-        SDL_Log("Failed to open RSX mapping file: %s", filepath);
-        return false;
-    }
-    
-    std::string line;
-    bool first_line = true;
-    
-    while (std::getline(file, line)) {
-        if (line.empty()) continue;
-        if (first_line) {
-            first_line = false;
-            continue;
-        }
-        
-        size_t tab1 = line.find('\t');
-        if (tab1 == std::string::npos) continue;
-        
-        size_t tab2 = line.find('\t', tab1 + 1);
-        if (tab2 == std::string::npos) continue;
-        
-        RSXMapping mapping;
-        mapping.rsx_name = line.substr(0, tab1);
-        mapping.folder = line.substr(tab1 + 1, tab2 - tab1 - 1);
-        mapping.prefix = line.substr(tab2 + 1);
-        
-        mappings[mapping.rsx_name] = mapping;
-    }
-    
-    SDL_Log("Loaded %zu RSX mappings", mappings.size());
+    (void)filepath;
+    (void)mappings;
+    // This function is now a no-op - RSX mappings come from assets.json
     return true;
 }
 
+// Legacy TSV parsing - kept for reference but no longer used
+// FX data is now loaded from assets.json via AssetManager
 bool parse_fx_manifest(const char* filepath, std::unordered_map<std::string, FXManifestEntry>& manifest) {
-    std::ifstream file(filepath);
-    if (!file) {
-        SDL_Log("Failed to open FX manifest file: %s", filepath);
-        return false;
-    }
-
-    std::string line;
-    bool first_line = true;
-
-    while (std::getline(file, line)) {
-        if (line.empty()) continue;
-        if (first_line) {
-            first_line = false;
-            continue;
-        }
-
-        size_t tab1 = line.find('\t');
-        if (tab1 == std::string::npos) continue;
-
-        size_t tab2 = line.find('\t', tab1 + 1);
-        if (tab2 == std::string::npos) continue;
-
-        FXManifestEntry entry;
-        entry.folder = line.substr(0, tab1);
-
-        // Build path to Duelyst FX spritesheet
-        // The folder name (e.g., "fx_clawslash") maps to fx_clawslash.png in Duelyst repo
-        entry.spritesheet_path = AssetPaths::get_fx_spritesheet_path(entry.folder);
-
-        std::string anims_str = line.substr(tab2 + 1);
-        entry.animations = split_string(anims_str, ',');
-
-        manifest[entry.folder] = entry;
-    }
-
-    SDL_Log("Loaded %zu FX manifest entries", manifest.size());
+    (void)filepath;
+    (void)manifest;
+    // This function is now a no-op - FX manifest comes from assets.json
     return true;
 }
 
 bool FXCache::load_mappings(const char* rsx_mapping_path, const char* manifest_path) {
-    if (!parse_rsx_mapping(rsx_mapping_path, rsx_mappings)) {
-        return false;
-    }
-    if (!parse_fx_manifest(manifest_path, manifest)) {
-        return false;
-    }
+    // Legacy TSV loading - now handled by AssetManager
+    // This function is kept for API compatibility but mappings come from assets.json
+    (void)rsx_mapping_path;
+    (void)manifest_path;
     return true;
 }
 
@@ -108,58 +48,58 @@ FXAsset* FXCache::get_asset(const std::string& folder) {
         return &it->second;
     }
 
-    auto manifest_it = manifest.find(folder);
-    if (manifest_it == manifest.end()) {
-        SDL_Log("FX folder not in manifest: %s", folder.c_str());
+    // Get FX data from AssetManager (pre-parsed from assets.json)
+    const auto* am_asset = AssetManager::instance().get_fx(folder);
+    if (!am_asset) {
+        SDL_Log("FX folder not found in assets: %s", folder.c_str());
         return nullptr;
     }
-
-    const FXManifestEntry& entry = manifest_it->second;
 
     FXAsset asset;
-    asset.texture = g_gpu.load_texture(entry.spritesheet_path.c_str());
+    std::string spritesheet_path = AssetManager::instance().get_fx_spritesheet_path(folder);
+    asset.texture = g_gpu.load_texture(spritesheet_path.c_str());
     if (!asset.texture.ptr) {
-        SDL_Log("Failed to load FX spritesheet: %s", entry.spritesheet_path.c_str());
+        SDL_Log("Failed to load FX spritesheet: %s", spritesheet_path.c_str());
         return nullptr;
     }
 
-    // Load animations from Duelyst plist format
-    std::string plist_path = AssetPaths::get_fx_plist_path(folder);
-    asset.animations = load_animations_from_plist(folder, plist_path.c_str());
+    // Copy pre-parsed animations from AssetManager
+    asset.animations = am_asset->animations;
 
     if (asset.animations.animations.empty()) {
-        SDL_Log("Warning: No animations loaded from FX plist: %s", plist_path.c_str());
+        SDL_Log("Warning: No animations for FX: %s", folder.c_str());
     }
 
     loaded_assets[folder] = std::move(asset);
-    SDL_Log("Loaded FX asset: %s from Duelyst repo", folder.c_str());
+    SDL_Log("Loaded FX asset: %s from dist/", folder.c_str());
 
     return &loaded_assets[folder];
 }
 
 const Animation* FXCache::get_animation(const std::string& rsx_name) {
-    auto mapping_it = rsx_mappings.find(rsx_name);
-    if (mapping_it == rsx_mappings.end()) {
+    // Resolve RSX name to FX folder and animation name
+    auto mapping = AssetManager::instance().resolve_rsx(rsx_name);
+    if (mapping.folder.empty()) {
         SDL_Log("RSX name not found: %s", rsx_name.c_str());
         return nullptr;
     }
 
-    const RSXMapping& mapping = mapping_it->second;
     FXAsset* asset = get_asset(mapping.folder);
     if (!asset) {
         return nullptr;
     }
 
-    return asset->animations.find(rsx_name.c_str());
+    // Use the animation name from the mapping
+    const char* anim_name = mapping.anim.empty() ? rsx_name.c_str() : mapping.anim.c_str();
+    return asset->animations.find(anim_name);
 }
 
 const GPUTextureHandle* FXCache::get_texture(const std::string& rsx_name) {
-    auto mapping_it = rsx_mappings.find(rsx_name);
-    if (mapping_it == rsx_mappings.end()) {
+    auto mapping = AssetManager::instance().resolve_rsx(rsx_name);
+    if (mapping.folder.empty()) {
         return nullptr;
     }
 
-    const RSXMapping& mapping = mapping_it->second;
     FXAsset* asset = get_asset(mapping.folder);
     if (!asset) {
         return nullptr;

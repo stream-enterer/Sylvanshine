@@ -1,6 +1,0 @@
-apply	sfx/sfx_unit_deploy_1.wav
-attack	sfx/sfx_neutral_arcanelimiter_attack_impact.wav
-attackDamage	sfx/sfx_f4_engulfingshadow_hit.wav
-death	sfx/sfx_f4_engulfingshadow_death.wav
-receiveDamage	sfx/sfx_f4_engulfingshadow_attack_impact.wav
-walk	sfx/sfx_neutral_ladylocke_attack_impact.wav

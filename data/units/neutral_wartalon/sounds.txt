@@ -1,6 +1,0 @@
-apply	sfx/sfx_spell_ghostlightning.wav
-attack	sfx/sfx_neutral_redsynja_attack_swing.wav
-attackDamage	sfx/sfx_neutral_redsynja_attack_impact.wav
-death	sfx/sfx_neutral_cannonmechaz0r_death.wav
-receiveDamage	sfx/sfx_neutral_redsynja_hit.wav
-walk	sfx/sfx_neutral_sai_attack_impact.wav
