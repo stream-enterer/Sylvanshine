@@ -209,22 +209,27 @@ void Entity::update(float dt, const RenderConfig& config) {
 }
 
 void Entity::render_shadow(const RenderConfig& config) const {
-    if (!shadow_loaded || !shadow_texture.ptr) return;
     if (is_dead()) return;
+    if (!spritesheet.ptr || !current_anim || current_anim->frames.empty()) return;
 
-    float scaled_w = SHADOW_W * config.scale;
-    float scaled_h = SHADOW_H * config.scale;
+    // Silhouette shadow: unit sprite projected onto ground plane with blur
+    // Duelyst's UnitSprite has castsShadows: true, shadowOffset: CONFIG.DEPTH_OFFSET
+    // Uses ShadowHighQuality/LowQuality shaders with 7x7/3x3 blur
+    int frame_idx = static_cast<int>(anim_time * current_anim->fps);
+    if (frame_idx >= static_cast<int>(current_anim->frames.size())) {
+        frame_idx = current_anim->frames.size() - 1;
+    }
+    const SDL_Rect& src_rect = current_anim->frames[frame_idx].rect;
 
-    SDL_FRect src = {0, 0, static_cast<float>(shadow_texture.width), static_cast<float>(shadow_texture.height)};
-    SDL_FRect dst = {
-        screen_pos.x - scaled_w * 0.5f,
-        screen_pos.y - scaled_h * 0.5f,
-        scaled_w,
-        scaled_h
+    SDL_FRect src = {
+        static_cast<float>(src_rect.x),
+        static_cast<float>(src_rect.y),
+        static_cast<float>(src_rect.w),
+        static_cast<float>(src_rect.h)
     };
 
     float shadow_alpha = SHADOW_OPACITY * opacity;
-    g_gpu.draw_sprite(shadow_texture, src, dst, false, shadow_alpha);
+    g_gpu.draw_sprite_shadow(spritesheet, src, screen_pos, config.scale, flip_x, shadow_alpha);
 }
 
 void Entity::render(const RenderConfig& config) const {

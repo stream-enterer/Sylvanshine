@@ -1028,7 +1028,7 @@ int main(int argc, char* argv[]) {
 
     while (running) {
         Uint64 current_time = SDL_GetTicks();
-        float dt = (current_time - last_time) / 1000.0f;
+        float dt = std::min((current_time - last_time) / 1000.0f, 0.1f);
         last_time = current_time;
 
         handle_events(running, state, config);

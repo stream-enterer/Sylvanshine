@@ -23,10 +23,8 @@
 
 ## RENDERING PIPELINE
 
-### Shadow System
-- [x] Static blob shadow (unit_shadow.png, 200/255 opacity, ground position)
-- [ ] Shadow shader research (Duelyst FXShadowBlobSprite) ⚡ `get_shader_info.py ShadowBlob`
-- [ ] Implement shadow shader (blur, perspective stretch)
+### Shadow System (Polish)
+- [ ] Increase shadow resolution / sharpness
 
 ### Grid Visuals
 - [ ] Document Duelyst selection sprites (all variants in original repo) ⚡ `find_references.py SelectionSprite`
@@ -280,7 +278,7 @@
 - [x] Board/sprite ratio (TILE_SIZE 95→48 for 2.1:1 ratio matching Duelyst)
 - [x] Sprite foot positioning (SHADOW_OFFSET = 19.5)
 - [x] Z-order sorting (screen Y, painter's algorithm)
-- [x] Shadow system (unit_shadow.png, 200/255 opacity, ground position)
+- [x] Shadow system (blob shadow, perspective transform, shader pipeline)
 
 ---
 
@@ -302,9 +300,9 @@
 
 | Symbol | Meaning | Count |
 |--------|---------|-------|
-| ⚡ | Now trivial (single query) | 14 |
+| ⚡ | Now trivial (single query) | 13 |
 | 🔓 | Unblocked (info available) | 14 |
 | 📊 | Bulk queryable | 16 |
-| | Unchanged | ~45 |
+| | Unchanged | ~44 |
 
-**~44 tasks** are now significantly easier or already answered by the knowledge base.
+**~43 tasks** are now significantly easier or already answered by the knowledge base.

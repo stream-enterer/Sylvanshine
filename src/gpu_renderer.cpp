@@ -101,7 +101,8 @@ bool GPURenderer::init(SDL_Window* win) {
 void GPURenderer::shutdown() {
     if (device) {
         if (sprite_pipeline) SDL_ReleaseGPUGraphicsPipeline(device, sprite_pipeline);
-        if (dissolve_pipeline) SDL_ReleaseGPUGraphicsPipeline(device, dissolve_pipeline);
+        if (dissolve_pipeline && dissolve_pipeline != sprite_pipeline) SDL_ReleaseGPUGraphicsPipeline(device, dissolve_pipeline);
+        if (shadow_pipeline) SDL_ReleaseGPUGraphicsPipeline(device, shadow_pipeline);
         if (color_pipeline) SDL_ReleaseGPUGraphicsPipeline(device, color_pipeline);
         if (line_pipeline) SDL_ReleaseGPUGraphicsPipeline(device, line_pipeline);
         if (quad_vertex_buffer) SDL_ReleaseGPUBuffer(device, quad_vertex_buffer);
@@ -113,6 +114,7 @@ void GPURenderer::shutdown() {
     device = nullptr;
     sprite_pipeline = nullptr;
     dissolve_pipeline = nullptr;
+    shadow_pipeline = nullptr;
     color_pipeline = nullptr;
     line_pipeline = nullptr;
     quad_vertex_buffer = nullptr;
@@ -240,6 +242,30 @@ bool GPURenderer::create_pipelines() {
     if (!dissolve_pipeline) {
         SDL_Log("Failed to create dissolve pipeline: %s", SDL_GetError());
         dissolve_pipeline = sprite_pipeline;
+    }
+
+    // Shadow pipeline - uses sprite.vert with shadow.frag (7x7 blur)
+    SDL_GPUShader* shadow_vert = load_shader("sprite.vert", SDL_GPU_SHADERSTAGE_VERTEX, 0, 0);
+    SDL_GPUShader* shadow_frag = load_shader("shadow.frag", SDL_GPU_SHADERSTAGE_FRAGMENT, 1, 1);
+
+    if (!shadow_vert || !shadow_frag) {
+        if (shadow_vert) SDL_ReleaseGPUShader(device, shadow_vert);
+        if (shadow_frag) SDL_ReleaseGPUShader(device, shadow_frag);
+        SDL_Log("Shadow shader not found, silhouette shadows disabled");
+        shadow_pipeline = nullptr;
+    } else {
+        pipeline_info.vertex_shader = shadow_vert;
+        pipeline_info.fragment_shader = shadow_frag;
+
+        shadow_pipeline = SDL_CreateGPUGraphicsPipeline(device, &pipeline_info);
+        SDL_ReleaseGPUShader(device, shadow_vert);
+        SDL_ReleaseGPUShader(device, shadow_frag);
+
+        if (!shadow_pipeline) {
+            SDL_Log("Failed to create shadow pipeline: %s", SDL_GetError());
+        } else {
+            SDL_Log("Shadow pipeline created (7x7 blur silhouette)");
+        }
     }
 
     SDL_GPUShader* color_vert = load_shader("color.vert", SDL_GPU_SHADERSTAGE_VERTEX, 0, 0);
@@ -651,6 +677,117 @@ void GPURenderer::draw_sprite_dissolve(const GPUTextureHandle& texture, const SD
     SDL_BindGPUFragmentSamplers(render_pass, 0, &tex_binding, 1);
 
     SpriteUniforms uniforms = {opacity, dissolve_time, seed, 0.0f};
+    SDL_PushGPUFragmentUniformData(cmd_buffer, 0, &uniforms, sizeof(uniforms));
+
+    SDL_DrawGPUIndexedPrimitives(render_pass, 6, 1, 0, 0, 0);
+}
+
+void GPURenderer::draw_sprite_shadow(const GPUTextureHandle& texture, const SDL_FRect& src,
+                                      Vec2 feet_pos, float scale, bool flip_x, float opacity) {
+    if (!render_pass || !texture.ptr || !shadow_pipeline) return;
+
+    // Shadow parameters - silhouette projected onto ground below unit
+    // Duelyst uses 45° cast matrix: cos(45°) ≈ 0.707 foreshortening
+    // Combined with mv_stretch (up to 1.6x), but we use static 1.0x
+    // Effective ratio: 1.0 * 0.707 ≈ 0.7
+    constexpr float SHADOW_SQUASH = 0.7f;     // 45° foreshortening: cos(45°) ≈ 0.707
+    constexpr float SHADOW_STRETCH = 1.0f;    // No horizontal stretch (Duelyst can do up to 1.2x)
+    constexpr float BLUR_AMOUNT = 1.5f;       // Blur spread in texels
+
+    float sprite_w = src.w * scale * SHADOW_STRETCH;
+    float sprite_h = src.h * scale * SHADOW_SQUASH;
+
+    // Texture coordinates - flip V so head silhouette is at bottom of shadow quad
+    // (shadow lies on ground with head part furthest from unit)
+    float u0 = src.x / texture.width;
+    float v0 = (src.y + src.h) / texture.height;  // Bottom of sprite texture
+    float u1 = (src.x + src.w) / texture.width;
+    float v1 = src.y / texture.height;            // Top of sprite texture
+
+    if (flip_x) {
+        float tmp = u0;
+        u0 = u1;
+        u1 = tmp;
+    }
+
+    // Shadow quad extends DOWNWARD from feet (increasing Y in screen coords)
+    // Top edge at feet, bottom edge below feet
+    float tl_x = feet_pos.x - sprite_w * 0.5f;
+    float tl_y = feet_pos.y;                      // Top at feet
+    float tr_x = feet_pos.x + sprite_w * 0.5f;
+    float tr_y = feet_pos.y;
+    float bl_x = feet_pos.x - sprite_w * 0.5f;
+    float bl_y = feet_pos.y + sprite_h;           // Bottom BELOW feet (+Y = down)
+    float br_x = feet_pos.x + sprite_w * 0.5f;
+    float br_y = feet_pos.y + sprite_h;
+
+    // Convert to NDC
+    float x0 = (tl_x / swapchain_w) * 2.0f - 1.0f;
+    float y0 = 1.0f - (tl_y / swapchain_h) * 2.0f;
+    float x1 = (tr_x / swapchain_w) * 2.0f - 1.0f;
+    float y1 = 1.0f - (tr_y / swapchain_h) * 2.0f;
+    float x2 = (br_x / swapchain_w) * 2.0f - 1.0f;
+    float y2 = 1.0f - (br_y / swapchain_h) * 2.0f;
+    float x3 = (bl_x / swapchain_w) * 2.0f - 1.0f;
+    float y3 = 1.0f - (bl_y / swapchain_h) * 2.0f;
+
+    SpriteVertex vertices[4] = {
+        {x0, y0, u0, v0},  // top-left
+        {x1, y1, u1, v0},  // top-right
+        {x2, y2, u1, v1},  // bottom-right
+        {x3, y3, u0, v1}   // bottom-left
+    };
+
+    SDL_GPUTransferBufferCreateInfo transfer_info = {};
+    transfer_info.usage = SDL_GPU_TRANSFERBUFFERUSAGE_UPLOAD;
+    transfer_info.size = sizeof(vertices);
+
+    SDL_GPUTransferBuffer* transfer = SDL_CreateGPUTransferBuffer(device, &transfer_info);
+    void* map = SDL_MapGPUTransferBuffer(device, transfer, false);
+    std::memcpy(map, vertices, sizeof(vertices));
+    SDL_UnmapGPUTransferBuffer(device, transfer);
+
+    SDL_EndGPURenderPass(render_pass);
+
+    SDL_GPUCopyPass* copy = SDL_BeginGPUCopyPass(cmd_buffer);
+    SDL_GPUTransferBufferLocation src_loc = {};
+    src_loc.transfer_buffer = transfer;
+    SDL_GPUBufferRegion dst_region = {};
+    dst_region.buffer = quad_vertex_buffer;
+    dst_region.size = sizeof(vertices);
+    SDL_UploadToGPUBuffer(copy, &src_loc, &dst_region, false);
+    SDL_EndGPUCopyPass(copy);
+
+    SDL_GPUColorTargetInfo color_target = {};
+    color_target.texture = swapchain_texture;
+    color_target.load_op = SDL_GPU_LOADOP_LOAD;
+    color_target.store_op = SDL_GPU_STOREOP_STORE;
+    render_pass = SDL_BeginGPURenderPass(cmd_buffer, &color_target, 1, nullptr);
+
+    SDL_GPUViewport viewport = {0, 0, (float)swapchain_w, (float)swapchain_h, 0.0f, 1.0f};
+    SDL_SetGPUViewport(render_pass, &viewport);
+
+    SDL_Rect scissor = {0, 0, (int)swapchain_w, (int)swapchain_h};
+    SDL_SetGPUScissor(render_pass, &scissor);
+
+    SDL_ReleaseGPUTransferBuffer(device, transfer);
+
+    SDL_BindGPUGraphicsPipeline(render_pass, shadow_pipeline);
+
+    SDL_GPUBufferBinding vb_binding = {};
+    vb_binding.buffer = quad_vertex_buffer;
+    SDL_BindGPUVertexBuffers(render_pass, 0, &vb_binding, 1);
+
+    SDL_GPUBufferBinding ib_binding = {};
+    ib_binding.buffer = quad_index_buffer;
+    SDL_BindGPUIndexBuffer(render_pass, &ib_binding, SDL_GPU_INDEXELEMENTSIZE_16BIT);
+
+    SDL_GPUTextureSamplerBinding tex_binding = {};
+    tex_binding.texture = texture.ptr;
+    tex_binding.sampler = texture.sampler;
+    SDL_BindGPUFragmentSamplers(render_pass, 0, &tex_binding, 1);
+
+    ShadowUniforms uniforms = {opacity, BLUR_AMOUNT, static_cast<float>(texture.width), static_cast<float>(texture.height)};
     SDL_PushGPUFragmentUniformData(cmd_buffer, 0, &uniforms, sizeof(uniforms));
 
     SDL_DrawGPUIndexedPrimitives(render_pass, 6, 1, 0, 0, 0);

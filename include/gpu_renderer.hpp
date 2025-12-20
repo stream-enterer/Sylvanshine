@@ -22,6 +22,13 @@ struct SpriteUniforms {
     float padding;
 };
 
+struct ShadowUniforms {
+    float opacity;
+    float blur_amount;
+    float tex_width;
+    float tex_height;
+};
+
 struct GPUTextureHandle {
     SDL_GPUTexture* ptr = nullptr;
     SDL_GPUSampler* sampler = nullptr;
@@ -43,6 +50,7 @@ struct GPURenderer {
     SDL_Window* window = nullptr;
     SDL_GPUGraphicsPipeline* sprite_pipeline = nullptr;
     SDL_GPUGraphicsPipeline* dissolve_pipeline = nullptr;
+    SDL_GPUGraphicsPipeline* shadow_pipeline = nullptr;
     SDL_GPUGraphicsPipeline* color_pipeline = nullptr;
     SDL_GPUGraphicsPipeline* line_pipeline = nullptr;
     SDL_GPUBuffer* quad_vertex_buffer = nullptr;
@@ -74,6 +82,15 @@ struct GPURenderer {
         float opacity,
         float dissolve_time,
         float seed
+    );
+
+    void draw_sprite_shadow(
+        const GPUTextureHandle& texture,
+        const SDL_FRect& src,
+        Vec2 feet_pos,
+        float scale,
+        bool flip_x,
+        float opacity
     );
 
     void draw_quad_colored(const SDL_FRect& dst, SDL_FColor color);

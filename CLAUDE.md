@@ -2,7 +2,7 @@
 
 C++20 tactics engine with original game design (WEGO-UGO turns, color-coded classes, FFT-style job trees, roguelite structure). Uses Duelyst's sprites, FX, and shaders as asset library.
 
-**Invoke the `duelyst-analyzer` skill before game feature work.** The skill maps Duelyst's 664 units, 240 FX, 96 shaders, and their connections. Use it to:
+**MANDATORY: ALWAYS Invoke the `duelyst-analyzer` skill before game feature work and make use of its outputs from start to finish.** The skill maps Duelyst's 664 units, 240 FX, 96 shaders, and their connections. Use it to:
 - Find assets that fit the user's custom systems (e.g., "which units suit my Grey/Tank class?")
 - Understand how Duelyst implemented rendering, animation, or FX technically
 - See relationships between assets (unit → FX → shader → sound) before implementation
