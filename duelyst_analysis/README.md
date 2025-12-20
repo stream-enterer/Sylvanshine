@@ -14,7 +14,7 @@ Complete LLM-usable documentation of the Duelyst codebase extracted from `app/`.
 | **instances/** | All entity instances extracted from code | 31 TSVs | Complete game data |
 | **summaries/** | System-level documentation | 22 .md files | High-level understanding |
 | **flows/** | End-to-end gameplay sequences | 10 .md files | Understanding mechanics |
-| **scripts/** | Verification and query tools | 23 files | Data exploration |
+| **scripts/** | Verification and query tools | 16 files | Data exploration |
 
 ### Root-Level Files
 | File | Purpose |
@@ -31,37 +31,37 @@ Complete LLM-usable documentation of the Duelyst codebase extracted from `app/`.
 
 ```bash
 # Find unit timing (attack delays, animation durations)
-uv run scripts/get_unit_timing.py neutral_sai
+uv run scripts/get_unit_timing.py Cards.Faction1.Scintilla
 
 # Trace card definition (stats, abilities, FX)
-uv run scripts/get_card_data.py Cards.Faction1.SilverguardKnight
+uv run scripts/get_card_data.py Cards.Faction1.SunstoneTemplar
 
 # Find constant usages across codebase
-uv run scripts/find_references.py CONFIG.FADE_SLOW_DURATION
+uv run scripts/find_references.py AttackAction
 
 # List modifiers by trigger type
-uv run scripts/list_modifier_triggers.py ModifierStartTurnWatch
+uv run scripts/list_modifier_triggers.py onStartTurn
 
 # Calculate movement duration for unit
 uv run scripts/calculate_move_duration.py f1_general 3
 
 # Trace import dependencies
-uv run scripts/trace_imports.py app/sdk/actions/attackAction.coffee
+uv run scripts/trace_imports.py attackAction.coffee
 
 # Get FX composition (sprites, timing, sounds)
-uv run scripts/get_fx_composition.py Faction1.UnitSpawnFX
+uv run scripts/get_fx_composition.py ForceField
 
 # Action execution chain (inheritance, sub-actions)
-uv run scripts/get_action_chain.py ApplyCardToBoardAction
+uv run scripts/get_action_chain.py AttackAction
 
 # Trace modifier inheritance chain and find conflicts
-uv run scripts/get_modifier_chain.py ModifierFlying -c -x
+uv run scripts/get_modifier_chain.py ModifierAbsorbDamage
 
 # Analyze card balance (stat distributions, outliers)
-uv run scripts/validate_card_balance.py --show-all
+uv run scripts/validate_card_balance.py --faction Faction1
 
 # Generate Mermaid diagrams from flow documentation
-uv run scripts/generate_flow_diagram.py unit_attack --format sequence
+uv run scripts/generate_flow_diagram.py spell_cast_flow --format mermaid
 ```
 
 ## Data Coverage Statistics
@@ -426,7 +426,7 @@ node scripts/extract_replay_format.js
 
 To verify data integrity:
 ```bash
-uv run scripts/get_card_data.py Cards.Neutral.SarlacTheEternal  # Spot check
+uv run scripts/get_card_data.py Cards.Faction1.SunstoneTemplar  # Spot check
 ```
 
 ## Validation Results
@@ -445,7 +445,7 @@ A comprehensive validation was performed against the tinyDuelyst codebase. See `
 | Schema Completeness | ✓ PASS | 36 schemas, all entities covered |
 | System Dependencies | ✓ PASS | 21 summaries, 10 flows |
 | Data Consistency | ✓ PASS | 100% cross-references valid |
-| Script Coverage | ✓ PASS | 23 scripts, all query types |
+| Script Coverage | ✓ PASS | 16 scripts, all query types |
 
 ### Validation Files
 
