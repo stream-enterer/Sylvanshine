@@ -42,8 +42,11 @@ Entity::Entity()
     , dissolve_elapsed(0.0f)
     , dissolve_duration(FADE_SLOW)
     , dissolve_seed(0.0f)
-    , opacity(0.0f) {
+    , opacity(0.0f)
+    , sprite_props(SpriteProperties::unit())
+    , composite() {
     dissolve_seed = static_cast<float>(std::rand()) / RAND_MAX * 100.0f;
+    composite.properties = sprite_props;
 }
 
 bool Entity::load_shadow() {
@@ -211,6 +214,7 @@ void Entity::update(float dt, const RenderConfig& config) {
 void Entity::render_shadow(const RenderConfig& config) const {
     if (is_dead()) return;
     if (!spritesheet.ptr || !current_anim || current_anim->frames.empty()) return;
+    if (!sprite_props.casts_shadows) return;
 
     // Silhouette shadow: unit sprite projected onto ground plane with blur
     // Duelyst's UnitSprite has castsShadows: true, shadowOffset: CONFIG.DEPTH_OFFSET
@@ -229,7 +233,26 @@ void Entity::render_shadow(const RenderConfig& config) const {
     };
 
     float shadow_alpha = SHADOW_OPACITY * opacity;
-    g_gpu.draw_sprite_shadow(spritesheet, src, screen_pos, config.scale, flip_x, shadow_alpha);
+
+    // Use per-sprite FBO approach when multipass is enabled
+    // This fixes the atlas blur dilution problem by giving each sprite
+    // its own texture where UV 0-1 covers the entire sprite content
+    if (g_gpu.fx_config.use_multipass && g_gpu.fx_config.enable_shadows) {
+        // Render sprite to its own FBO
+        RenderPass* sprite_pass = g_gpu.draw_sprite_to_pass(
+            spritesheet, src,
+            static_cast<Uint32>(src_rect.w),
+            static_cast<Uint32>(src_rect.h)
+        );
+
+        if (sprite_pass) {
+            // Draw shadow from the per-sprite FBO with proper progressive blur
+            g_gpu.draw_shadow_from_pass(sprite_pass, screen_pos, config.scale, flip_x, shadow_alpha);
+        }
+    } else {
+        // Fallback to single-pass atlas-based shadow (has blur dilution issue)
+        g_gpu.draw_sprite_shadow(spritesheet, src, screen_pos, config.scale, flip_x, shadow_alpha);
+    }
 }
 
 void Entity::render(const RenderConfig& config) const {
@@ -271,6 +294,9 @@ void Entity::render(const RenderConfig& config) const {
     if (state == EntityState::Dissolving) {
         float dissolve_time = get_dissolve_time();
         g_gpu.draw_sprite_dissolve(spritesheet, src, dst, flip_x, opacity, dissolve_time, dissolve_seed);
+    } else if (g_gpu.fx_config.use_multipass && g_gpu.fx_config.enable_lighting && sprite_props.receives_lighting) {
+        // Use lit sprite path for dynamic lighting when multipass is enabled
+        g_gpu.draw_lit_sprite(spritesheet, src, dst, flip_x, opacity);
     } else {
         g_gpu.draw_sprite(spritesheet, src, dst, flip_x, opacity);
     }

@@ -208,6 +208,7 @@
 - [ ] Multiple paths per base class
 - [ ] Branching decision points
 - [ ] Visual cohesion within paths 📊 can query visual similarity
+- [ ] Loreful weighted upgrades (e.g. Squire_t1 → {Knight_t2 = 0.7, Random_Grey_t2 = 0.2, Oathbreaker_t2  0.1})
 
 ---
 

@@ -741,6 +741,23 @@ void handle_events(bool& running, GameState& state, const RenderConfig& config) 
             else if (event.key.key == SDLK_ESCAPE) {
                 running = false;
             }
+            // Rendering pipeline toggles
+            else if (event.key.key == SDLK_M) {
+                g_gpu.fx_config.use_multipass = !g_gpu.fx_config.use_multipass;
+                SDL_Log("Multi-pass rendering: %s", g_gpu.fx_config.use_multipass ? "ON" : "OFF");
+            }
+            else if (event.key.key == SDLK_B) {
+                g_gpu.fx_config.enable_bloom = !g_gpu.fx_config.enable_bloom;
+                SDL_Log("Bloom: %s", g_gpu.fx_config.enable_bloom ? "ON" : "OFF");
+            }
+            else if (event.key.key == SDLK_V) {
+                g_gpu.fx_config.enable_vignette = !g_gpu.fx_config.enable_vignette;
+                SDL_Log("Vignette: %s", g_gpu.fx_config.enable_vignette ? "ON" : "OFF");
+            }
+            else if (event.key.key == SDLK_L) {
+                g_gpu.fx_config.enable_lighting = !g_gpu.fx_config.enable_lighting;
+                SDL_Log("Dynamic lighting: %s", g_gpu.fx_config.enable_lighting ? "ON" : "OFF");
+            }
         }
         else if (event.type == SDL_EVENT_MOUSE_BUTTON_DOWN) {
             if (event.button.button == SDL_BUTTON_LEFT) {
@@ -906,9 +923,8 @@ std::vector<size_t> get_render_order(const GameState& state) {
     return order;
 }
 
-void render(GameState& state, const RenderConfig& config) {
-    g_gpu.begin_frame();
-
+// Single-pass rendering (legacy path)
+void render_single_pass(GameState& state, const RenderConfig& config) {
     state.grid_renderer.render(config);
 
     if (state.selected_unit_idx >= 0 && state.game_phase == GamePhase::Playing) {
@@ -946,6 +962,96 @@ void render(GameState& state, const RenderConfig& config) {
         render_turn_indicator(state, config);
     } else {
         render_game_over_overlay(state, config);
+    }
+}
+
+// Multi-pass rendering (Duelyst pipeline)
+// Order matches Duelyst's CompositePass rendering:
+// 1. Clear surface FBO
+// 2. Render background/grid to surface
+// 3. For each sprite (sorted by depth):
+//    a. Render shadow (using per-sprite FBO for proper blur)
+//    b. Render sprite (with lighting if enabled)
+// 4. Render FX
+// 5. Render UI elements
+// 6. Execute bloom pipeline
+// 7. Execute post-processing (vignette, tone curve, radial blur)
+// 8. Composite to screen
+void render_multi_pass(GameState& state, const RenderConfig& config) {
+    // Reset per-frame sprite pass pools
+    g_gpu.pass_manager.reset_sprite_pass_pools();
+
+    // Begin rendering to surface FBO
+    g_gpu.begin_surface_pass();
+
+    // Render grid/background
+    state.grid_renderer.render(config);
+
+    if (state.selected_unit_idx >= 0 && state.game_phase == GamePhase::Playing) {
+        auto occupied = get_occupied_positions(state, state.selected_unit_idx);
+        state.grid_renderer.render_move_range(config,
+            state.units[state.selected_unit_idx].board_pos, MOVE_RANGE, occupied);
+        state.grid_renderer.render_attack_range(config, state.attackable_tiles);
+    }
+
+    auto render_order = get_render_order(state);
+
+    // Render shadows first (Duelyst renders shadows before sprites)
+    if (g_gpu.fx_config.enable_shadows) {
+        for (size_t idx : render_order) {
+            if (!state.units[idx].is_dead() && state.units[idx].sprite_props.casts_shadows) {
+                state.units[idx].render_shadow(config);
+            }
+        }
+    }
+
+    // Render sprites
+    for (size_t idx : render_order) {
+        if (!state.units[idx].is_dead()) {
+            state.units[idx].render(config);
+        }
+    }
+
+    // Render FX (after sprites, before UI)
+    render_active_fx(state, config);
+
+    // End surface pass before bloom
+    g_gpu.end_surface_pass();
+
+    // Execute bloom pipeline (extracts bright pixels, blurs, accumulates)
+    if (g_gpu.fx_config.enable_bloom) {
+        g_gpu.execute_bloom_pass();
+    }
+
+    // Execute post-processing chain
+    g_gpu.execute_post_processing();
+
+    // Composite surface + bloom to screen
+    g_gpu.composite_to_screen();
+
+    // UI elements render directly to swapchain (no bloom/post-processing)
+    for (size_t idx : render_order) {
+        if (!state.units[idx].is_dead()) {
+            state.units[idx].render_hp_bar(config);
+        }
+    }
+
+    render_floating_texts(state, config);
+
+    if (state.game_phase == GamePhase::Playing) {
+        render_turn_indicator(state, config);
+    } else {
+        render_game_over_overlay(state, config);
+    }
+}
+
+void render(GameState& state, const RenderConfig& config) {
+    g_gpu.begin_frame();
+
+    if (g_gpu.fx_config.use_multipass) {
+        render_multi_pass(state, config);
+    } else {
+        render_single_pass(state, config);
     }
 
     g_gpu.end_frame();
@@ -990,6 +1096,19 @@ int main(int argc, char* argv[]) {
         SDL_Log("Failed to initialize GPU renderer");
         return 1;
     }
+
+    // Set up default scene light for shadows
+    // Position: upper-left of board area, large radius to cover entire scene
+    // Duelyst default radius: CONFIG.TILESIZE * 3.0 = 285px
+    // We use a larger radius to give good coverage
+    PointLight scene_light;
+    scene_light.x = config.window_w * 0.3f;   // Left-ish
+    scene_light.y = config.window_h * 0.2f;  // Upper
+    scene_light.radius = config.window_w * 0.8f;  // Large radius to cover scene
+    scene_light.intensity = 1.0f;
+    scene_light.r = 1.0f; scene_light.g = 1.0f; scene_light.b = 1.0f; scene_light.a = 1.0f;
+    scene_light.casts_shadows = true;
+    g_gpu.set_scene_light(scene_light);
 
     GameState state;
 

@@ -2,6 +2,7 @@
 #include "types.hpp"
 #include "animation_loader.hpp"
 #include "gpu_renderer.hpp"
+#include "sprite_properties.hpp"
 #include <SDL3/SDL.h>
 
 constexpr float FADE_FAST = 0.2f;
@@ -69,6 +70,10 @@ struct Entity {
     float dissolve_seed;
     
     float opacity;
+
+    // Sprite rendering properties for multi-pass pipeline
+    SpriteProperties sprite_props;
+    CompositeSprite composite;
 
     Entity();
 
