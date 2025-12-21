@@ -46,6 +46,11 @@ bool AssetManager::init(const std::string& dist_path) {
                 unit.spritesheet_path = unit_data["spritesheet"].get<std::string>();
             }
 
+            // Get SDF atlas path (optional)
+            if (unit_data.contains("sdf_atlas")) {
+                unit.sdf_atlas_path = unit_data["sdf_atlas"].get<std::string>();
+            }
+
             // Parse animations
             if (unit_data.contains("animations") && unit_data["animations"].is_object()) {
                 for (auto& [anim_name, anim_data] : unit_data["animations"].items()) {
@@ -166,6 +171,14 @@ std::string AssetManager::get_unit_spritesheet_path(const std::string& name) con
     auto* unit = get_unit(name);
     if (unit) {
         return dist_path_ + "/" + unit->spritesheet_path;
+    }
+    return "";
+}
+
+std::string AssetManager::get_unit_sdf_atlas_path(const std::string& name) const {
+    auto* unit = get_unit(name);
+    if (unit && !unit->sdf_atlas_path.empty()) {
+        return dist_path_ + "/" + unit->sdf_atlas_path;
     }
     return "";
 }

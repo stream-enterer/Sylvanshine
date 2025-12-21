@@ -29,6 +29,7 @@ struct Entity {
     Vec2 screen_pos;
 
     GPUTextureHandle spritesheet;
+    GPUTextureHandle sdf_atlas;  // Pre-computed SDF for shadow rendering
     AnimationSet animations;
 
     static GPUTextureHandle shadow_texture;

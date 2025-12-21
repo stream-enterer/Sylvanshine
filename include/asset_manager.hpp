@@ -36,6 +36,7 @@ public:
 
     struct UnitAsset {
         std::string spritesheet_path;  // Relative to dist_path
+        std::string sdf_atlas_path;    // Relative to dist_path (may be empty if no SDF)
         AnimationSet animations;
     };
 
@@ -49,6 +50,11 @@ public:
      * Get the full path to a unit's spritesheet
      */
     std::string get_unit_spritesheet_path(const std::string& name) const;
+
+    /**
+     * Get the full path to a unit's SDF atlas (empty if none exists)
+     */
+    std::string get_unit_sdf_atlas_path(const std::string& name) const;
 
     // ===== FX Assets =====
 

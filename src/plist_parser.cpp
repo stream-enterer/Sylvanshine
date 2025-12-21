@@ -297,6 +297,8 @@ AnimationSet plist_to_animations(const PlistData& plist, const std::string& unit
             frame.rect.y = pf.y;
             frame.rect.w = pf.w;
             frame.rect.h = pf.h;
+            frame.offset_x = pf.offset_x;  // Trimmed sprite offset
+            frame.offset_y = pf.offset_y;
             anim.frames.push_back(frame);
         }
 

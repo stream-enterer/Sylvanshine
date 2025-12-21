@@ -164,6 +164,7 @@ void GPURenderer::shutdown() {
         if (lit_sprite_pipeline) SDL_ReleaseGPUGraphicsPipeline(device, lit_sprite_pipeline);
         if (lighting_pipeline) SDL_ReleaseGPUGraphicsPipeline(device, lighting_pipeline);
         if (shadow_perpass_pipeline) SDL_ReleaseGPUGraphicsPipeline(device, shadow_perpass_pipeline);
+        if (sdf_shadow_pipeline) SDL_ReleaseGPUGraphicsPipeline(device, sdf_shadow_pipeline);
         if (radial_blur_pipeline) SDL_ReleaseGPUGraphicsPipeline(device, radial_blur_pipeline);
         if (tone_curve_pipeline) SDL_ReleaseGPUGraphicsPipeline(device, tone_curve_pipeline);
         if (vignette_pipeline) SDL_ReleaseGPUGraphicsPipeline(device, vignette_pipeline);
@@ -196,6 +197,7 @@ void GPURenderer::shutdown() {
     lit_sprite_pipeline = nullptr;
     lighting_pipeline = nullptr;
     shadow_perpass_pipeline = nullptr;
+    sdf_shadow_pipeline = nullptr;
     radial_blur_pipeline = nullptr;
     tone_curve_pipeline = nullptr;
     vignette_pipeline = nullptr;
@@ -641,6 +643,50 @@ bool GPURenderer::create_multipass_pipelines() {
     }
     if (shadow_vert) SDL_ReleaseGPUShader(device, shadow_vert);
     if (shadow_perpass_frag) SDL_ReleaseGPUShader(device, shadow_perpass_frag);
+
+    // SDF shadow pipeline (raymarched soft shadows from pre-computed SDF)
+    SDL_GPUShader* sdf_shadow_vert = load_shader("sdf_shadow.vert", SDL_GPU_SHADERSTAGE_VERTEX, 0, 0);
+    SDL_GPUShader* sdf_shadow_frag = load_shader("sdf_shadow.frag", SDL_GPU_SHADERSTAGE_FRAGMENT, 1, 1);
+
+    if (sdf_shadow_vert && sdf_shadow_frag) {
+        // Same vertex format as shadow pipeline: position (2f), texcoord (2f), localpos (2f)
+        SDL_GPUVertexBufferDescription sdf_vb_desc = {};
+        sdf_vb_desc.slot = 0;
+        sdf_vb_desc.pitch = sizeof(ShadowVertex);
+        sdf_vb_desc.input_rate = SDL_GPU_VERTEXINPUTRATE_VERTEX;
+
+        SDL_GPUVertexAttribute sdf_attrs[3] = {};
+        sdf_attrs[0].location = 0;  // a_position
+        sdf_attrs[0].buffer_slot = 0;
+        sdf_attrs[0].format = SDL_GPU_VERTEXELEMENTFORMAT_FLOAT2;
+        sdf_attrs[0].offset = 0;
+        sdf_attrs[1].location = 1;  // a_texCoord
+        sdf_attrs[1].buffer_slot = 0;
+        sdf_attrs[1].format = SDL_GPU_VERTEXELEMENTFORMAT_FLOAT2;
+        sdf_attrs[1].offset = sizeof(float) * 2;
+        sdf_attrs[2].location = 2;  // a_localPos
+        sdf_attrs[2].buffer_slot = 0;
+        sdf_attrs[2].format = SDL_GPU_VERTEXELEMENTFORMAT_FLOAT2;
+        sdf_attrs[2].offset = sizeof(float) * 4;
+
+        SDL_GPUGraphicsPipelineCreateInfo sdf_pipeline_info = {};
+        sdf_pipeline_info.vertex_shader = sdf_shadow_vert;
+        sdf_pipeline_info.fragment_shader = sdf_shadow_frag;
+        sdf_pipeline_info.primitive_type = SDL_GPU_PRIMITIVETYPE_TRIANGLELIST;
+        sdf_pipeline_info.target_info.num_color_targets = 1;
+        sdf_pipeline_info.target_info.color_target_descriptions = &color_target;
+        sdf_pipeline_info.vertex_input_state.num_vertex_buffers = 1;
+        sdf_pipeline_info.vertex_input_state.vertex_buffer_descriptions = &sdf_vb_desc;
+        sdf_pipeline_info.vertex_input_state.num_vertex_attributes = 3;
+        sdf_pipeline_info.vertex_input_state.vertex_attributes = sdf_attrs;
+
+        sdf_shadow_pipeline = SDL_CreateGPUGraphicsPipeline(device, &sdf_pipeline_info);
+        if (sdf_shadow_pipeline) {
+            SDL_Log("SDF shadow pipeline created");
+        }
+    }
+    if (sdf_shadow_vert) SDL_ReleaseGPUShader(device, sdf_shadow_vert);
+    if (sdf_shadow_frag) SDL_ReleaseGPUShader(device, sdf_shadow_frag);
 
     // Post-processing pipelines (fullscreen quad based)
     // These render to SurfaceA/B which use swapchain format
@@ -1750,6 +1796,7 @@ RenderPass* GPURenderer::draw_sprite_to_pass(
 
 void GPURenderer::draw_shadow_from_pass(
     RenderPass* sprite_pass,
+    Uint32 sprite_w, Uint32 sprite_h,  // Actual sprite dimensions (pass may be larger)
     Vec2 feet_pos,
     float scale,
     bool flip_x,
@@ -1777,7 +1824,10 @@ void GPURenderer::draw_shadow_from_pass(
     float light_altitude = 101.2f;  // Default for radius 285
     float skew = 0.0f;
     float stretch = 1.0f;
-    float flip = flip_x ? -1.0f : 1.0f;
+    float flip = 1.0f;
+    float dir_x = 0.0f;  // Direction components for position correction
+    float dir_y = -1.0f;
+    float dir_z = 0.0f;
 
     // Calculate light distance attenuation
     float lightDistPctInv = 1.0f;
@@ -1785,20 +1835,43 @@ void GPURenderer::draw_shadow_from_pass(
         // Light altitude from radius (Duelyst formula)
         light_altitude = std::sqrt(active_light->radius) * 6.0f * scale;
 
-        // Horizontal distance from sprite to light
+        // Screen space deltas
         float dx = feet_pos.x - active_light->x;
+        float dy = feet_pos.y - active_light->y;
 
-        // Skew calculation from Duelyst ShadowVertex.glsl
-        // skew = tan(atan(mv_anchorDir.x, mv_anchorDir.z) * flip) * 0.5
-        // In 2D: anchorDir.x = dx (horizontal), anchorDir.z = altitude (height)
-        float skew_angle = std::atan2(dx * flip, light_altitude);
+        // === DEPTH-BASED FLIP (Duelyst ShadowVertex.glsl:27-30) ===
+        // In SDL: lower screen Y = top of screen = background (far from camera)
+        //         higher screen Y = bottom of screen = foreground (close to camera)
+        // Shadow direction: light in front (high Y) → shadow behind (up) → flip=-1
+        // Duelyst coordinate convention (from Light.js:319-322):
+        // - In Cocos2d Y-up: screen Y becomes depth Z after swap
+        // - High screen Y (top) = far from camera, low screen Y (bottom) = close
+        // SDL is inverted: high screen Y = bottom = close to camera
+        // So we invert the depth_diff: use (light.y - sprite.y) instead of (sprite.y - light.y)
+        float sprite_depth = feet_pos.y;
+        float light_depth = active_light->y;
+        float depth_diff = light_depth - sprite_depth;  // INVERTED for SDL coords
+        // When depth_diff < 0, light is in front (close) → shadow goes up → flip=-1
+        // When depth_diff > 0, light is behind (far) → shadow goes down → flip=1
+        flip = (depth_diff - SHADOW_OFFSET) < 0.0f ? -1.0f : 1.0f;
+
+        // === 3D DIRECTION CALCULATION ===
+        // Construct 3D direction vector from light to sprite anchor
+        // X = horizontal, Y = height (altitude), Z = depth
+        float dist_3d = std::sqrt(dx * dx + light_altitude * light_altitude + dy * dy);
+        dir_x = dx / dist_3d;
+        dir_y = -light_altitude / dist_3d;  // Negative: sprite is below light
+        dir_z = dy / dist_3d;               // Depth direction
+
+        // === SKEW (Duelyst ShadowVertex.glsl:37) ===
+        // skew = tan(atan(dir.x, dir.z) * flip) * 0.5
+        // Note: Duelyst's dir.z is the HEIGHT component (our dir_y)
+        float skew_angle = std::atan2(dir_x, -dir_y) * flip;
         skew = std::tan(skew_angle) * 0.5f;
 
-        // Stretch calculation from Duelyst ShadowVertex.glsl
-        // altitudeModifier = pow(1.0 / abs(tan(abs(atan(mv_anchorDir.y, mv_anchorDir.z)))), 0.35) * 1.25
-        // For 2D, we treat Y (depth) as the screen Y offset from light
-        float dy = feet_pos.y - active_light->y;
-        float depth_angle = std::atan2(std::abs(dy), light_altitude);
+        // === STRETCH (Duelyst ShadowVertex.glsl:50-53) ===
+        // altitudeModifier based on depth angle
+        float depth_angle = std::atan2(std::abs(dir_z), -dir_y);
         float tan_depth = std::tan(depth_angle);
 
         float altitudeModifier = 1.0f;
@@ -1807,11 +1880,8 @@ void GPURenderer::draw_shadow_from_pass(
         }
 
         // skewModifier = min(pow(skewAbs, 0.1) / skewAbs, 1.0)
-        float skewAbs = std::abs(skew);
-        float skewModifier = 1.0f;
-        if (skewAbs > 0.001f) {
-            skewModifier = std::min(std::pow(skewAbs, 0.1f) / skewAbs, 1.0f);
-        }
+        float skewAbs = std::max(std::abs(skew), 0.1f);  // Duelyst uses max(..., 0.1)
+        float skewModifier = std::min(std::pow(skewAbs, 0.1f) / skewAbs, 1.0f);
 
         // Final stretch clamped to 1.6
         stretch = std::min(skewModifier * altitudeModifier, 1.6f);
@@ -1823,40 +1893,84 @@ void GPURenderer::draw_shadow_from_pass(
         lightDistPctInv *= active_light->a * active_light->intensity;
     }
 
-    // Sprite size from the pass with dynamic stretch
-    float sprite_w = static_cast<float>(sprite_pass->width) * scale;
-    float sprite_h = static_cast<float>(sprite_pass->height) * scale * COS_45 * stretch;
+    // === POSITION CORRECTIONS (Duelyst ShadowVertex.glsl:61-63) ===
+    // When flip=-1, apply corrections to align shadow feet with sprite feet
+    // flipped = -1 when flip=-1, else 0
+    float flipped = std::min(flip, 0.0f);
+    float x_correction = skew + flipped * -dir_x * 2.0f;
+    float y_correction = flipped * (stretch * 2.0f + dir_x);
 
-    // UV coordinates are 0-1 for the entire sprite texture
-    // Flip V so head silhouette is at bottom of shadow quad
+    // Sprite size with dynamic stretch
+    // Use passed sprite dimensions (not pass dimensions, which may be larger due to pooling)
+    // flip determines shadow direction: +1 = down (light behind), -1 = up (light in front)
+    float shadow_w = static_cast<float>(sprite_w) * scale;
+    float shadow_h = static_cast<float>(sprite_h) * scale * COS_45 * stretch * flip;
+
+    // UV coordinates - V mapping is always: base=feet (V=1), tip=head (V=0)
+    // This is independent of flip direction
     float u0 = flip_x ? 1.0f : 0.0f;
-    float v0 = 1.0f;  // Bottom of sprite
+    float v0 = 1.0f;  // Base of shadow (tl/tr) shows feet
     float u1 = flip_x ? 0.0f : 1.0f;
-    float v1 = 0.0f;  // Top of sprite
+    float v1 = 0.0f;  // Tip of shadow (bl/br) shows head
 
-    // Shadow positioning
+    // Shadow positioning - base anchored at feet
     float feet_offset = SHADOW_OFFSET * scale * COS_45;
-    float shadow_top_y = feet_pos.y - feet_offset;
+    float shadow_top_y;
+    if (flip > 0) {
+        // Shadow extends DOWN: subtract offset to place base above feet visually
+        shadow_top_y = feet_pos.y - feet_offset;
+    } else {
+        // Shadow extends UP: base should be at feet level
+        shadow_top_y = feet_pos.y;
+    }
+    // Shadow base centered on feet, with x_correction applied
+    // x_correction compensates for skew shifting the visual center
+    // Scale by shadow height * 0.25 (empirically tuned - 0.5 overcorrects by 2x)
+    float x_correction_pixels = -x_correction * std::abs(shadow_h) * 0.25f;
+    float shadow_center_x = feet_pos.x + x_correction_pixels;
 
     // Base quad (before skew)
-    float half_w = sprite_w * 0.5f;
+    float half_w = shadow_w * 0.5f;
 
     // Apply skew: top vertices shift horizontally, bottom vertices stay at feet
     // In Duelyst's cast matrix, the Y row has skew in the X column
     // This means vertical distance (from feet) gets added to X position
     float skew_offset_top = 0.0f;  // Feet (bottom of shadow) have no skew
-    float skew_offset_bottom = sprite_h * skew;  // Head (top of sprite = bottom of shadow quad after flip) has max skew
+    float skew_offset_bottom = shadow_h * skew;  // Head (top of sprite = bottom of shadow quad after flip) has max skew
+
+    // DEBUG: Log shadow geometry (remove after debugging)
+    // Reset counter each frame to allow logging after preset changes
+    static int debug_count = 0;
+    static int frame_count = 0;
+    frame_count++;
+    if (frame_count % 60 == 1) {  // Log once per ~60 frames (roughly 1 second)
+        debug_count = 0;  // Reset to allow new logs
+    }
+    if (debug_count < 1) {  // Only log 1 shadow per reset
+        SDL_Log("=== SHADOW DEBUG ===");
+        SDL_Log("  flip=%.1f skew=%.3f stretch=%.3f", flip, skew, stretch);
+        SDL_Log("  dir: (%.3f, %.3f, %.3f)", dir_x, dir_y, dir_z);
+        SDL_Log("  sprite feet_pos: (%.1f, %.1f)", feet_pos.x, feet_pos.y);
+        SDL_Log("  shadow_center_x: %.1f (diff: %.1f)", shadow_center_x, shadow_center_x - feet_pos.x);
+        SDL_Log("  shadow_top_y: %.1f (diff: %.1f)", shadow_top_y, shadow_top_y - feet_pos.y);
+        SDL_Log("  shadow_h: %.1f (raw sprite: %ux%u, pass: %ux%u)", shadow_h, sprite_w, sprite_h, sprite_pass->width, sprite_pass->height);
+        SDL_Log("  shadow feet edges: left=%.1f right=%.1f (center=%.1f, half_w=%.1f)",
+                shadow_center_x - half_w, shadow_center_x + half_w, shadow_center_x, half_w);
+        SDL_Log("  x_correction: %.3f (%.1f px), y_correction: %.3f", x_correction, x_correction_pixels, y_correction);
+        SDL_Log("  light_pos: (%.1f, %.1f)", active_light ? active_light->x : 0, active_light ? active_light->y : 0);
+        debug_count++;
+    }
 
     // Build vertices with skew applied
     // Note: In shadow space, "top" of quad = feet position, "bottom" = extended shadow
-    float tl_x = feet_pos.x - half_w + skew_offset_top;
+    float tl_x = shadow_center_x - half_w + skew_offset_top;
     float tl_y = shadow_top_y;
-    float tr_x = feet_pos.x + half_w + skew_offset_top;
+    float tr_x = shadow_center_x + half_w + skew_offset_top;
     float tr_y = shadow_top_y;
-    float bl_x = feet_pos.x - half_w + skew_offset_bottom;
-    float bl_y = shadow_top_y + sprite_h;
-    float br_x = feet_pos.x + half_w + skew_offset_bottom;
-    float br_y = shadow_top_y + sprite_h;
+    float bl_x = shadow_center_x - half_w + skew_offset_bottom;
+    float bl_y = shadow_top_y + shadow_h;
+    float br_x = shadow_center_x + half_w + skew_offset_bottom;
+    float br_y = shadow_top_y + shadow_h;
 
     // Convert to NDC
     float x0 = (tl_x / swapchain_w) * 2.0f - 1.0f;
@@ -1868,11 +1982,11 @@ void GPURenderer::draw_shadow_from_pass(
     float x3 = (bl_x / swapchain_w) * 2.0f - 1.0f;
     float y3 = 1.0f - (bl_y / swapchain_h) * 2.0f;
 
-    // Local sprite positions for blur calculation
+    // Local sprite positions for blur calculation (use actual sprite dimensions)
     float local_left = 0.0f;
-    float local_right = static_cast<float>(sprite_pass->width);
+    float local_right = static_cast<float>(sprite_w);
     float local_top = SHADOW_OFFSET;
-    float local_bottom = static_cast<float>(sprite_pass->height);
+    float local_bottom = static_cast<float>(sprite_h);
 
     ShadowVertex vertices[4] = {
         {x0, y0, u0, v0, local_left,  local_top},
@@ -1925,18 +2039,237 @@ void GPURenderer::draw_shadow_from_pass(
     SDL_BindGPUFragmentSamplers(render_pass, 0, &tex_binding, 1);
 
     // Uniforms for per-sprite shadow (simpler than atlas version)
+    // Use actual sprite dimensions (not pass dimensions which may be larger)
     ShadowPerPassUniforms uniforms = {
         opacity,
         SHADOW_INTENSITY,
         BLUR_SHIFT_MODIFIER,
         BLUR_INTENSITY_MODIFIER,
-        static_cast<float>(sprite_pass->width),
-        static_cast<float>(sprite_pass->height),
-        static_cast<float>(sprite_pass->width) * 0.5f,  // anchor X
-        SHADOW_OFFSET,                                   // anchor Y
+        static_cast<float>(sprite_w),
+        static_cast<float>(sprite_h),
+        static_cast<float>(sprite_w) * 0.5f,  // anchor X
+        SHADOW_OFFSET,                         // anchor Y
         lightDistPctInv,
-        scale,                                           // render scale for consistent blur
-        0.0f, 0.0f                                       // padding
+        scale,                                 // render scale for consistent blur
+        0.0f, 0.0f                             // padding
+    };
+    SDL_PushGPUFragmentUniformData(cmd_buffer, 0, &uniforms, sizeof(uniforms));
+
+    SDL_DrawGPUIndexedPrimitives(render_pass, 6, 1, 0, 0, 0);
+}
+
+void GPURenderer::draw_sdf_shadow(
+    const GPUTextureHandle& sdf_texture,
+    const SDL_FRect& src,
+    Vec2 feet_pos,
+    float scale,
+    bool flip_x,
+    float opacity,
+    const PointLight* light
+) {
+    if (!sdf_shadow_pipeline || !sdf_texture.ptr) return;
+    if (!cmd_buffer) return;
+
+    // Get light to use
+    const PointLight* active_light = light;
+    if (!active_light && has_scene_light) {
+        active_light = &scene_light;
+    }
+    if (!active_light) {
+        // Default light (no attenuation)
+        static PointLight default_light;
+        default_light.x = feet_pos.x;
+        default_light.y = feet_pos.y - 200.0f;
+        default_light.radius = 1000.0f;
+        default_light.intensity = 1.0f;
+        default_light.a = 1.0f;
+        active_light = &default_light;
+    }
+
+    // Calculate light direction (2D, normalized, in screen space)
+    float dx = active_light->x - feet_pos.x;
+    float dy = active_light->y - feet_pos.y;
+    float light_dist = std::sqrt(dx * dx + dy * dy);
+    if (light_dist < 0.001f) light_dist = 0.001f;
+
+    // Normalize light direction (pointing FROM shadow TOWARD light)
+    float light_dir_x = dx / light_dist;
+    float light_dir_y = dy / light_dist;
+
+    // Light attenuation
+    float lightDistPct = std::pow(light_dist / active_light->radius, 2.0f);
+    float lightDistPctInv = std::max(0.0f, 1.0f - lightDistPct);
+    lightDistPctInv *= active_light->a * active_light->intensity;
+
+    // Sprite dimensions
+    float sprite_w = src.w;
+    float sprite_h = src.h;
+
+    // Shadow geometry - transform quad to cast shadow away from light
+    // Supports both downward shadows (light above) and upward shadows (light below)
+    constexpr float COS_45 = 0.7071067811865475f;
+    constexpr float SHADOW_OFFSET = 19.5f;
+
+    float shadow_w = sprite_w * scale;
+    float shadow_h = sprite_h * scale * COS_45;  // Foreshortened onto ground plane
+
+    // Determine shadow direction using DEPTH-BASED FLIP (Duelyst ShadowVertex.glsl:27-30)
+    // Duelyst coordinate convention (from Light.js:319-322):
+    // - In Cocos2d Y-up: screen Y becomes depth Z after swap
+    // - High screen Y (top) = far from camera, low screen Y (bottom) = close
+    // SDL is inverted: high screen Y = bottom = close to camera
+    // So we invert: use (light.y - sprite.y) to match Duelyst's depth semantics
+    float depth_diff = active_light->y - feet_pos.y;  // INVERTED for SDL coords
+    // depth_diff < SHADOW_OFFSET: light behind sprite (far) → shadow DOWN (flip=1)
+    // depth_diff >= SHADOW_OFFSET: light in front (close) → shadow UP (flip=-1)
+    // This matches draw_shadow_from_pass: flip = (depth_diff - SHADOW_OFFSET) < 0 ? -1 : 1
+    bool shadow_below = (depth_diff - SHADOW_OFFSET) >= 0.0f;
+    float shadow_dir = shadow_below ? 1.0f : -1.0f;  // +1 = down, -1 = up
+
+    // Calculate skew from light direction
+    // Shadow skews opposite to light's horizontal component
+    float skew = 0.0f;
+    if (std::abs(light_dir_y) > 0.001f) {
+        skew = -light_dir_x / std::abs(light_dir_y) * 0.5f;
+    }
+
+    // Stretch shadow based on light "altitude"
+    float altitude = std::abs(light_dir_y);
+    float stretch = 1.0f;
+    if (altitude > 0.2f) {
+        stretch = std::min(1.0f / std::sqrt(altitude), 1.6f);
+    }
+    shadow_h *= stretch;
+
+    // Position shadow quad - anchor at feet, project in shadow direction
+    float half_w = shadow_w * 0.5f;
+    float shadow_center_x = feet_pos.x;
+
+    // Skew offset for the far edge (head projection)
+    float skew_offset = skew * shadow_h;
+
+    // Build shadow quad vertices
+    // y_near = edge closest to sprite, y_far = edge away from sprite
+    // For shadow_below: near at small Y (top of quad), far at large Y (bottom)
+    // For shadow_above: near at large Y (bottom of quad), far at small Y (top)
+    float y_near = feet_pos.y;
+    float y_far = feet_pos.y + shadow_dir * shadow_h;
+
+    // Near edge has no skew (anchored at feet), far edge skewed based on light
+    float x_near_left = shadow_center_x - half_w;
+    float x_near_right = shadow_center_x + half_w;
+    float x_far_left = shadow_center_x - half_w + skew_offset;
+    float x_far_right = shadow_center_x + half_w + skew_offset;
+
+    // Convert to NDC
+    auto to_ndc_x = [this](float x) { return (x / swapchain_w) * 2.0f - 1.0f; };
+    auto to_ndc_y = [this](float y) { return 1.0f - (y / swapchain_h) * 2.0f; };
+
+    // UV coordinates in SDF atlas
+    // Note: In the atlas, sprites are stored with head at TOP (small V), feet at BOTTOM (large V)
+    // But the sprite visual has feet at bottom, so we need to flip V for correct shadow orientation
+    float u0 = flip_x ? (src.x + src.w) / sdf_texture.width : src.x / sdf_texture.width;
+    float u1 = flip_x ? src.x / sdf_texture.width : (src.x + src.w) / sdf_texture.width;
+    float v_top = src.y / sdf_texture.height;             // Top of frame in atlas
+    float v_bottom = (src.y + src.h) / sdf_texture.height; // Bottom of frame in atlas
+
+    // Local positions for shader anchor calculations
+    float local_left = 0.0f;
+    float local_right = sprite_w;
+    float local_bottom = sprite_h;  // Bottom of local space (feet in sprite)
+    float local_top = 0.0f;         // Top of local space (head in sprite)
+
+    // Build vertices
+    // Near edge = v_bottom (feet in texture), Far edge = v_top (head in texture)
+    // Local coords match: near=local_bottom (feet), far=local_top (head)
+    // Quad winding: 0=TL, 1=TR, 2=BR, 3=BL
+    ShadowVertex vertices[4];
+    if (shadow_below) {
+        // Shadow extends downward: y_near < y_far in screen coords
+        vertices[0] = {to_ndc_x(x_near_left),  to_ndc_y(y_near), u0, v_bottom, local_left,  local_bottom};
+        vertices[1] = {to_ndc_x(x_near_right), to_ndc_y(y_near), u1, v_bottom, local_right, local_bottom};
+        vertices[2] = {to_ndc_x(x_far_right),  to_ndc_y(y_far),  u1, v_top,    local_right, local_top};
+        vertices[3] = {to_ndc_x(x_far_left),   to_ndc_y(y_far),  u0, v_top,    local_left,  local_top};
+    } else {
+        // Shadow extends upward: y_far < y_near in screen coords
+        vertices[0] = {to_ndc_x(x_far_left),   to_ndc_y(y_far),  u0, v_top,    local_left,  local_top};
+        vertices[1] = {to_ndc_x(x_far_right),  to_ndc_y(y_far),  u1, v_top,    local_right, local_top};
+        vertices[2] = {to_ndc_x(x_near_right), to_ndc_y(y_near), u1, v_bottom, local_right, local_bottom};
+        vertices[3] = {to_ndc_x(x_near_left),  to_ndc_y(y_near), u0, v_bottom, local_left,  local_bottom};
+    }
+
+    // Upload vertices
+    SDL_GPUTransferBufferCreateInfo transfer_info = {};
+    transfer_info.usage = SDL_GPU_TRANSFERBUFFERUSAGE_UPLOAD;
+    transfer_info.size = sizeof(vertices);
+
+    SDL_GPUTransferBuffer* transfer = SDL_CreateGPUTransferBuffer(device, &transfer_info);
+    void* map = SDL_MapGPUTransferBuffer(device, transfer, false);
+    std::memcpy(map, vertices, sizeof(vertices));
+    SDL_UnmapGPUTransferBuffer(device, transfer);
+
+    interrupt_render_pass();
+
+    SDL_GPUCopyPass* copy = SDL_BeginGPUCopyPass(cmd_buffer);
+    SDL_GPUTransferBufferLocation src_loc = {};
+    src_loc.transfer_buffer = transfer;
+    SDL_GPUBufferRegion dst_region = {};
+    dst_region.buffer = shadow_vertex_buffer;
+    dst_region.size = sizeof(vertices);
+    SDL_UploadToGPUBuffer(copy, &src_loc, &dst_region, false);
+    SDL_EndGPUCopyPass(copy);
+
+    SDL_ReleaseGPUTransferBuffer(device, transfer);
+
+    resume_render_pass();
+    if (!render_pass) return;
+
+    SDL_BindGPUGraphicsPipeline(render_pass, sdf_shadow_pipeline);
+
+    SDL_GPUBufferBinding vb_binding = {};
+    vb_binding.buffer = shadow_vertex_buffer;
+    SDL_BindGPUVertexBuffers(render_pass, 0, &vb_binding, 1);
+
+    SDL_GPUBufferBinding ib_binding = {};
+    ib_binding.buffer = quad_index_buffer;
+    SDL_BindGPUIndexBuffer(render_pass, &ib_binding, SDL_GPU_INDEXELEMENTSIZE_16BIT);
+
+    SDL_GPUTextureSamplerBinding tex_binding = {};
+    tex_binding.texture = sdf_texture.ptr;
+    tex_binding.sampler = linear_sampler;  // Use linear for smooth SDF sampling
+    SDL_BindGPUFragmentSamplers(render_pass, 0, &tex_binding, 1);
+
+    // Convert light direction to UV space
+    // UV space is 0-1, so we need to scale by sprite size ratio
+    float uv_light_dir_x = light_dir_x * (sprite_h / sprite_w);  // Adjust for aspect
+    float uv_light_dir_y = -light_dir_y;  // Flip Y for UV space
+
+    // Normalize UV light direction
+    float uv_dir_len = std::sqrt(uv_light_dir_x * uv_light_dir_x + uv_light_dir_y * uv_light_dir_y);
+    if (uv_dir_len > 0.001f) {
+        uv_light_dir_x /= uv_dir_len;
+        uv_light_dir_y /= uv_dir_len;
+    }
+
+    SDFShadowUniforms uniforms = {
+        opacity,
+        fx_config.shadow_intensity,
+        fx_config.sdf_penumbra_scale,
+        32.0f,  // SDF max distance (matches build_assets.py)
+
+        sprite_w,
+        sprite_h,
+        sprite_w * 0.5f,  // anchor X (center)
+        sprite_h,          // anchor Y (feet at bottom of sprite in texture coords)
+
+        uv_light_dir_x,
+        uv_light_dir_y,
+        light_dist,
+        lightDistPctInv,
+
+        fx_config.sdf_max_raymarch,
+        fx_config.sdf_raymarch_steps,
+        0.0f, 0.0f  // padding
     };
     SDL_PushGPUFragmentUniformData(cmd_buffer, 0, &uniforms, sizeof(uniforms));
 

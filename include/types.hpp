@@ -50,6 +50,8 @@ struct BoardPos {
 struct AnimFrame {
     int idx;
     SDL_Rect rect;
+    int offset_x = 0;  // Horizontal offset for trimmed sprites (from plist)
+    int offset_y = 0;  // Vertical offset for trimmed sprites (from plist)
 };
 
 struct Animation {

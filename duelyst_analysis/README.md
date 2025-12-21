@@ -12,7 +12,7 @@ Complete LLM-usable documentation of the Duelyst codebase extracted from `app/`.
 | **semantic/** | Classes, functions, constants, events, types | 6 TSVs | Understanding code structure |
 | **schemas/** | Entity definitions with fields, lifecycle, dependencies | 32 .md files | Understanding game concepts |
 | **instances/** | All entity instances extracted from code | 31 TSVs | Complete game data |
-| **summaries/** | System-level documentation | 22 .md files | High-level understanding |
+| **summaries/** | System-level documentation | 23 .md files | High-level understanding |
 | **flows/** | End-to-end gameplay sequences | 10 .md files | Understanding mechanics |
 | **scripts/** | Verification and query tools | 16 files | Data exploration |
 
@@ -138,6 +138,7 @@ uv run scripts/generate_flow_diagram.py spell_cast_flow --format mermaid
 - **[summaries/animations.md](summaries/animations.md)** - 318 sprite animations, frame timing
 - **[summaries/shaders.md](summaries/shaders.md)** - 96 GLSL shaders, uniform parameters
 - **[summaries/particles.md](summaries/particles.md)** - 63 particle emitter configurations
+- **[summaries/lighting_shadows.md](summaries/lighting_shadows.md)** - Lighting coordinate system and shadow projection
 - **[summaries/localization.md](summaries/localization.md)** - 4,397 i18n strings
 
 ### Replay & AI (NEW)
@@ -295,6 +296,13 @@ duration = tileCount * baseDuration * ENTITY_MOVE_DURATION_MODIFIER
 4. Review `summaries/animations.md` for timing patterns
 5. Review `summaries/shaders.md` for effect types
 
+### Porting Lighting/Shadows to Another Engine
+1. **READ FIRST:** `summaries/lighting_shadows.md` - Critical coordinate system differences
+2. Understand Cocos2d Y-up vs your engine's coordinate system
+3. Key file: `app/view/nodes/fx/Light.js` lines 319-322 (Y/Z swap)
+4. Key file: `app/shaders/ShadowVertex.glsl` lines 27-43 (flip logic)
+5. If your engine uses Y-down (SDL, most game engines): invert depth_diff calculation
+
 ### Debugging Modifier Behavior
 1. Read `schemas/Modifier.md` for modifier lifecycle
 2. Check `flows/modifier_trigger_flow.md` for event order
@@ -443,7 +451,7 @@ A comprehensive validation was performed against the tinyDuelyst codebase. See `
 | File Coverage | ✓ PASS | 1,669 code files parsed (77%) |
 | Reference Integrity | ✓ PASS | 99.8% of constants documented |
 | Schema Completeness | ✓ PASS | 36 schemas, all entities covered |
-| System Dependencies | ✓ PASS | 21 summaries, 10 flows |
+| System Dependencies | ✓ PASS | 23 summaries, 10 flows |
 | Data Consistency | ✓ PASS | 100% cross-references valid |
 | Script Coverage | ✓ PASS | 16 scripts, all query types |
 

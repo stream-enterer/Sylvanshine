@@ -117,6 +117,31 @@ struct ShadowPerPassUniforms {
     float _pad1, _pad2;
 };
 
+// SDF shadow uniforms (for raymarched soft shadows)
+struct SDFShadowUniforms {
+    float opacity;              // External opacity control
+    float intensity;            // Shadow darkness (default: 0.15)
+    float penumbra_scale;       // Penumbra softness multiplier (default: 1.0)
+    float sdf_max_dist;         // SDF max distance for decoding (default: 32.0)
+
+    float sprite_size_x, sprite_size_y;  // Sprite dimensions in pixels
+    float anchor_x, anchor_y;            // Anchor point in pixels (shadow pivot)
+
+    float light_dir_x, light_dir_y;      // Normalized 2D direction toward light (UV space)
+    float light_distance;                // Distance to light (affects penumbra)
+    float light_intensity;               // Light contribution to shadow
+
+    float max_raymarch;         // Max raymarch distance in UV space (default: 0.3)
+    float raymarch_steps;       // Number of raymarch steps (default: 12.0)
+    float _pad1, _pad2;         // Alignment padding
+};
+
+// Shadow rendering type
+enum class ShadowType {
+    Legacy,  // Original box blur shadow
+    SDF      // SDF raymarched soft shadow
+};
+
 // Radial blur uniforms
 struct RadialBlurUniforms {
     float center_x, center_y;
@@ -191,6 +216,14 @@ struct FXConfig {
     bool enable_tone_curve = false;  // Off by default
     bool enable_radial_blur = false; // Off by default (triggered by events)
     bool use_multipass = true;  // Toggle between old single-pass and new multi-pass
+
+    // Shadow type: Legacy (box blur) or SDF (raymarched)
+    ShadowType shadow_type = ShadowType::SDF;
+
+    // SDF shadow settings
+    float sdf_penumbra_scale = 1.0f;
+    float sdf_max_raymarch = 0.3f;
+    float sdf_raymarch_steps = 12.0f;
 };
 
 struct GPURenderer {
@@ -214,6 +247,7 @@ struct GPURenderer {
     SDL_GPUGraphicsPipeline* lit_sprite_pipeline = nullptr;   // Sprite with lighting
     SDL_GPUGraphicsPipeline* lighting_pipeline = nullptr;     // Light accumulation
     SDL_GPUGraphicsPipeline* shadow_perpass_pipeline = nullptr; // Per-sprite shadow (UV 0-1)
+    SDL_GPUGraphicsPipeline* sdf_shadow_pipeline = nullptr;     // SDF raymarched shadow
     SDL_GPUGraphicsPipeline* radial_blur_pipeline = nullptr;    // Radial/zoom blur
     SDL_GPUGraphicsPipeline* tone_curve_pipeline = nullptr;     // Color grading
     SDL_GPUGraphicsPipeline* vignette_pipeline = nullptr;       // Vignette effect
@@ -297,8 +331,23 @@ struct GPURenderer {
     );
 
     // Draw shadow from per-sprite FBO (proper UV 0-1)
+    // sprite_w/sprite_h are the ACTUAL sprite dimensions (pass may be larger due to pooling)
     void draw_shadow_from_pass(
         RenderPass* sprite_pass,
+        Uint32 sprite_w, Uint32 sprite_h,  // Actual sprite dimensions
+        Vec2 feet_pos,
+        float scale,
+        bool flip_x,
+        float opacity,
+        const PointLight* light = nullptr
+    );
+
+    // Draw SDF-based raymarched shadow
+    // sdf_texture is the pre-computed SDF atlas
+    // src is the frame rect in the atlas (same as spritesheet)
+    void draw_sdf_shadow(
+        const GPUTextureHandle& sdf_texture,
+        const SDL_FRect& src,
         Vec2 feet_pos,
         float scale,
         bool flip_x,

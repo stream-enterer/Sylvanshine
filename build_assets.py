@@ -13,6 +13,7 @@ Usage:
 
 import argparse
 import json
+import math
 import os
 import plistlib
 import re
@@ -22,6 +23,199 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
+import numpy as np
+from PIL import Image
+
+
+# =============================================================================
+# SDF Generation using Jump Flooding Algorithm
+# =============================================================================
+
+def generate_sdf_jfa(alpha: np.ndarray, max_dist: float = 32.0) -> np.ndarray:
+    """
+    Generate a Signed Distance Field from an alpha channel using Jump Flooding Algorithm.
+
+    Args:
+        alpha: 2D numpy array of alpha values (0-255 or 0.0-1.0)
+        max_dist: Maximum distance to compute (pixels)
+
+    Returns:
+        2D numpy array of signed distances (negative = inside, positive = outside)
+    """
+    h, w = alpha.shape
+
+    # Normalize alpha to 0-1 if needed
+    if alpha.max() > 1.0:
+        alpha = alpha.astype(np.float32) / 255.0
+
+    # Threshold for inside/outside (alpha > 0.5 = inside)
+    inside = alpha > 0.5
+
+    # Initialize nearest seed coordinates
+    # Use -1 to indicate "no seed found yet"
+    nearest_x = np.full((h, w), -1, dtype=np.int32)
+    nearest_y = np.full((h, w), -1, dtype=np.int32)
+
+    # Seed: edge pixels (inside pixels adjacent to outside, or vice versa)
+    # For simplicity, seed ALL inside pixels initially
+    inside_y, inside_x = np.where(inside)
+    nearest_x[inside_y, inside_x] = inside_x
+    nearest_y[inside_y, inside_x] = inside_y
+
+    # Jump Flooding passes
+    max_dim = max(w, h)
+    step = max_dim // 2
+    if step < 1:
+        step = 1
+
+    # Offset directions: 8-connected + self
+    offsets = [(-1, -1), (0, -1), (1, -1),
+               (-1, 0),           (1, 0),
+               (-1, 1),  (0, 1),  (1, 1)]
+
+    while step >= 1:
+        # Create coordinate grids
+        yy, xx = np.mgrid[0:h, 0:w]
+
+        for ox, oy in offsets:
+            # Neighbor coordinates
+            nx = xx + ox * step
+            ny = yy + oy * step
+
+            # Clamp to bounds
+            nx = np.clip(nx, 0, w - 1)
+            ny = np.clip(ny, 0, h - 1)
+
+            # Get neighbor's nearest seed
+            neighbor_seed_x = nearest_x[ny, nx]
+            neighbor_seed_y = nearest_y[ny, nx]
+
+            # Check if neighbor has a valid seed
+            valid_neighbor = neighbor_seed_x >= 0
+
+            # Calculate distances
+            # Current pixel's distance to its seed
+            curr_has_seed = nearest_x >= 0
+            curr_dist = np.where(
+                curr_has_seed,
+                np.sqrt((xx - nearest_x)**2 + (yy - nearest_y)**2),
+                np.inf
+            )
+
+            # Current pixel's distance to neighbor's seed
+            neighbor_dist = np.where(
+                valid_neighbor,
+                np.sqrt((xx - neighbor_seed_x)**2 + (yy - neighbor_seed_y)**2),
+                np.inf
+            )
+
+            # Update if neighbor's seed is closer
+            update_mask = neighbor_dist < curr_dist
+            nearest_x = np.where(update_mask, neighbor_seed_x, nearest_x)
+            nearest_y = np.where(update_mask, neighbor_seed_y, nearest_y)
+
+        step //= 2
+
+    # Compute final distances
+    yy, xx = np.mgrid[0:h, 0:w]
+    has_seed = nearest_x >= 0
+    dist = np.where(
+        has_seed,
+        np.sqrt((xx - nearest_x)**2 + (yy - nearest_y)**2),
+        max_dist
+    )
+
+    # Sign: negative inside, positive outside
+    sdf = np.where(inside, -dist, dist)
+
+    # Clamp to max distance
+    sdf = np.clip(sdf, -max_dist, max_dist)
+
+    return sdf.astype(np.float32)
+
+
+def encode_sdf_to_uint8(sdf: np.ndarray, max_dist: float = 32.0) -> np.ndarray:
+    """
+    Encode SDF to 8-bit format: (sdf + max_dist) / (2 * max_dist) * 255
+
+    This maps [-max_dist, +max_dist] to [0, 255]
+    Decode in shader: sdf = encoded / 255.0 * 2.0 * max_dist - max_dist
+    """
+    # Normalize to 0-1 range
+    normalized = (sdf + max_dist) / (2.0 * max_dist)
+    # Clamp and convert to uint8
+    encoded = np.clip(normalized * 255.0, 0, 255).astype(np.uint8)
+    return encoded
+
+
+def generate_sdf_atlas(
+    spritesheet_path: Path,
+    frames: list[dict],
+    output_path: Path,
+    max_dist: float = 32.0,
+    verbose: bool = False
+) -> bool:
+    """
+    Generate an SDF atlas matching the layout of the source spritesheet.
+
+    Args:
+        spritesheet_path: Path to source spritesheet PNG
+        frames: List of frame dicts with 'x', 'y', 'w', 'h' keys
+        output_path: Path to save the SDF atlas PNG
+        max_dist: Maximum SDF distance
+        verbose: Print debug info
+
+    Returns:
+        True if successful, False on error
+    """
+    try:
+        # Load spritesheet
+        img = Image.open(spritesheet_path).convert('RGBA')
+        img_array = np.array(img)
+        atlas_h, atlas_w = img_array.shape[:2]
+
+        # Create output SDF atlas (grayscale)
+        sdf_atlas = np.full((atlas_h, atlas_w), 128, dtype=np.uint8)  # 128 = distance 0
+
+        # Process each frame
+        for frame in frames:
+            x, y, w, h = frame['x'], frame['y'], frame['w'], frame['h']
+
+            # Skip invalid frames
+            if w <= 0 or h <= 0:
+                continue
+            if x < 0 or y < 0 or x + w > atlas_w or y + h > atlas_h:
+                continue
+
+            # Extract alpha channel for this frame
+            alpha = img_array[y:y+h, x:x+w, 3]
+
+            # Generate SDF for this frame
+            sdf = generate_sdf_jfa(alpha, max_dist)
+
+            # Encode to uint8
+            encoded = encode_sdf_to_uint8(sdf, max_dist)
+
+            # Place in atlas at same position
+            sdf_atlas[y:y+h, x:x+w] = encoded
+
+        # Save as grayscale PNG
+        sdf_img = Image.fromarray(sdf_atlas, mode='L')
+        sdf_img.save(output_path, optimize=True)
+
+        if verbose:
+            print(f"    Generated SDF atlas: {output_path.name} ({len(frames)} frames)")
+
+        return True
+
+    except Exception as e:
+        print(f"  Error generating SDF for {spritesheet_path}: {e}")
+        return False
+
+
+# =============================================================================
+# Build Stats and Frame classes
+# =============================================================================
 
 @dataclass
 class BuildStats:
@@ -34,6 +228,9 @@ class BuildStats:
     fx_skipped: int = 0
     files_copied: int = 0
     files_skipped: int = 0
+    sdf_generated: int = 0
+    sdf_skipped: int = 0
+    sdf_failed: int = 0
     manifest_updated: bool = False
     warnings: int = 0
     errors: int = 0
@@ -79,6 +276,19 @@ def needs_copy(src: Path, dest: Path) -> bool:
         return True
 
     return False
+
+
+def needs_regeneration(src: Path, derived: Path) -> bool:
+    """Check if a derived file needs regeneration based on source mtime.
+
+    Unlike needs_copy, this only checks timestamps since derived files
+    (like SDF atlases) will have different sizes than their sources.
+    """
+    if not derived.exists():
+        return True
+
+    # Regenerate if source is newer than derived file
+    return src.stat().st_mtime > derived.stat().st_mtime
 
 
 def copy_if_needed(src: Path, dest: Path, force: bool = False) -> bool:
@@ -366,19 +576,56 @@ def build_assets(
                 stats.errors += 1
                 continue
 
+            # Generate SDF atlas for this unit
+            sdf_path = dist_dir / 'resources' / 'units' / f'{unit_name}_sdf.png'
+            sdf_generated = False
+
+            # Check if SDF needs regeneration based on source PNG timestamp
+            # (not dest_png, and using mtime-only check since SDF has different size)
+            needs_sdf = force or needs_regeneration(png_path, sdf_path)
+
+            if needs_sdf and animations:
+                # Collect all unique frames from all animations
+                all_frames = []
+                seen_rects = set()
+                for anim in animations.values():
+                    for frame in anim.frames:
+                        rect_key = (frame.x, frame.y, frame.w, frame.h)
+                        if rect_key not in seen_rects:
+                            seen_rects.add(rect_key)
+                            all_frames.append({
+                                'x': frame.x, 'y': frame.y,
+                                'w': frame.w, 'h': frame.h
+                            })
+
+                if all_frames:
+                    if generate_sdf_atlas(png_path, all_frames, sdf_path, verbose=verbose):
+                        stats.sdf_generated += 1
+                        sdf_generated = True
+                    else:
+                        stats.sdf_failed += 1
+            elif sdf_path.exists():
+                stats.sdf_skipped += 1
+                sdf_generated = True  # Already exists and up-to-date
+
             # Add to assets manifest
-            assets['units'][unit_name] = {
+            unit_entry = {
                 'spritesheet': f'resources/units/{unit_name}.png',
                 'animations': {
                     name: animation_to_dict(anim)
                     for name, anim in animations.items()
                 }
             }
+            if sdf_generated:
+                unit_entry['sdf_atlas'] = f'resources/units/{unit_name}_sdf.png'
+
+            assets['units'][unit_name] = unit_entry
 
             stats.units_processed += 1
 
         copied = stats.units_processed - stats.units_skipped
         print(f"  {stats.units_found} units: {copied} copied, {stats.units_skipped} up-to-date")
+        print(f"  SDF: {stats.sdf_generated} generated, {stats.sdf_skipped} up-to-date, {stats.sdf_failed} failed")
 
     # ===== Process FX =====
     fx_dir = resources_dir / 'fx'

@@ -56,7 +56,7 @@ end
 
 function do_build_assets
     echo "→ Building assets..."
-    python3 build_assets.py; or return 1
+    uv run build_assets.py; or return 1
 end
 
 function do_build
@@ -113,7 +113,7 @@ end
 
 function do_assets_only
     echo "→ Building assets (forced)..."
-    python3 build_assets.py --clean or return 1
+    uv run build_assets.py --clean or return 1
     echo "✓ Assets built to $DIST_DIR/"
 end
 
