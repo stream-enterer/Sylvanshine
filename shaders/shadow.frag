@@ -47,13 +47,10 @@ void main() {
     float occluderDistPctBlurModifier = pow(occluderDistPctY, u_blurShiftModifier);
 
     // Blur in texture coordinate space
-    // Divide by renderScale to get consistent screen-space blur at any scale:
-    // - At scale 2: blur is half as many texels, but each texel is 2 screen pixels = same blur
-    // - At scale 0.5: blur is twice as many texels, but each texel is 0.5 screen pixels = same blur
+    // Matches Duelyst exactly: blur in texels, scales naturally with sprite size
     vec2 uvSpan = u_uvMax - u_uvMin;  // Sprite's UV range in atlas
-    float scaleCompensation = max(u_renderScale, 0.25);  // Clamp to avoid division issues at tiny scales
-    float blurX = (uvSpan.x / u_size.x * u_blurIntensityModifier / scaleCompensation) * occluderDistPctBlurModifier;
-    float blurY = (uvSpan.y / u_size.y * u_blurIntensityModifier / scaleCompensation) * occluderDistPctBlurModifier;
+    float blurX = (uvSpan.x / u_size.x * u_blurIntensityModifier) * occluderDistPctBlurModifier;
+    float blurY = (uvSpan.y / u_size.y * u_blurIntensityModifier) * occluderDistPctBlurModifier;
 
     // Intensity falloff - exact Duelyst exponents (1.25 for X, 1.5 for Y)
     // Now that we have u_lightDistPctInv, we can use the original values

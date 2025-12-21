@@ -151,9 +151,8 @@ struct FXConfig {
     float falloff_modifier = 1.0f;
     float intensity_modifier = 1.0f;
 
-    // Shadow settings
-    // Note: Duelyst used 0.15 but had lighting boost. Without scene light, 0.5 gives visible shadows.
-    float shadow_intensity = 0.5f;
+    // Shadow settings (Duelyst authentic values)
+    float shadow_intensity = 0.15f;
     float shadow_blur_shift = 1.0f;
     float shadow_blur_intensity = 3.0f;
 

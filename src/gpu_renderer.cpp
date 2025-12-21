@@ -1759,9 +1759,8 @@ void GPURenderer::draw_shadow_from_pass(
     if (!sprite_pass || !shadow_perpass_pipeline) return;
     if (!render_pass) return;
 
-    // Shadow parameters from Duelyst
-    constexpr float SHADOW_SQUASH = 0.7f;     // 45° foreshortening
-    constexpr float SHADOW_STRETCH = 1.0f;
+    // Duelyst constants
+    constexpr float COS_45 = 0.7071067811865475f;  // cos(45°) = sin(45°) = 1/√2
 
     const float SHADOW_INTENSITY = fx_config.shadow_intensity;
     const float BLUR_SHIFT_MODIFIER = fx_config.shadow_blur_shift;
@@ -1773,20 +1772,60 @@ void GPURenderer::draw_shadow_from_pass(
         active_light = &scene_light;
     }
 
+    // Calculate light altitude and shadow geometry
+    // From Duelyst Light.js:319: altitude = sqrt(radius) * 6 * scale
+    float light_altitude = 101.2f;  // Default for radius 285
+    float skew = 0.0f;
+    float stretch = 1.0f;
+    float flip = flip_x ? -1.0f : 1.0f;
+
     // Calculate light distance attenuation
     float lightDistPctInv = 1.0f;
     if (active_light) {
+        // Light altitude from radius (Duelyst formula)
+        light_altitude = std::sqrt(active_light->radius) * 6.0f * scale;
+
+        // Horizontal distance from sprite to light
         float dx = feet_pos.x - active_light->x;
+
+        // Skew calculation from Duelyst ShadowVertex.glsl
+        // skew = tan(atan(mv_anchorDir.x, mv_anchorDir.z) * flip) * 0.5
+        // In 2D: anchorDir.x = dx (horizontal), anchorDir.z = altitude (height)
+        float skew_angle = std::atan2(dx * flip, light_altitude);
+        skew = std::tan(skew_angle) * 0.5f;
+
+        // Stretch calculation from Duelyst ShadowVertex.glsl
+        // altitudeModifier = pow(1.0 / abs(tan(abs(atan(mv_anchorDir.y, mv_anchorDir.z)))), 0.35) * 1.25
+        // For 2D, we treat Y (depth) as the screen Y offset from light
         float dy = feet_pos.y - active_light->y;
+        float depth_angle = std::atan2(std::abs(dy), light_altitude);
+        float tan_depth = std::tan(depth_angle);
+
+        float altitudeModifier = 1.0f;
+        if (std::abs(tan_depth) > 0.001f) {
+            altitudeModifier = std::pow(1.0f / std::abs(tan_depth), 0.35f) * 1.25f;
+        }
+
+        // skewModifier = min(pow(skewAbs, 0.1) / skewAbs, 1.0)
+        float skewAbs = std::abs(skew);
+        float skewModifier = 1.0f;
+        if (skewAbs > 0.001f) {
+            skewModifier = std::min(std::pow(skewAbs, 0.1f) / skewAbs, 1.0f);
+        }
+
+        // Final stretch clamped to 1.6
+        stretch = std::min(skewModifier * altitudeModifier, 1.6f);
+
+        // Light distance attenuation
         float lightDist = std::sqrt(dx * dx + dy * dy);
         float lightDistPct = std::pow(lightDist / active_light->radius, 2.0f);
         lightDistPctInv = std::max(0.0f, 1.0f - lightDistPct);
         lightDistPctInv *= active_light->a * active_light->intensity;
     }
 
-    // Sprite size from the pass
-    float sprite_w = static_cast<float>(sprite_pass->width) * scale * SHADOW_STRETCH;
-    float sprite_h = static_cast<float>(sprite_pass->height) * scale * SHADOW_SQUASH;
+    // Sprite size from the pass with dynamic stretch
+    float sprite_w = static_cast<float>(sprite_pass->width) * scale;
+    float sprite_h = static_cast<float>(sprite_pass->height) * scale * COS_45 * stretch;
 
     // UV coordinates are 0-1 for the entire sprite texture
     // Flip V so head silhouette is at bottom of shadow quad
@@ -1796,16 +1835,27 @@ void GPURenderer::draw_shadow_from_pass(
     float v1 = 0.0f;  // Top of sprite
 
     // Shadow positioning
-    float feet_offset = SHADOW_OFFSET * scale * SHADOW_SQUASH;
+    float feet_offset = SHADOW_OFFSET * scale * COS_45;
     float shadow_top_y = feet_pos.y - feet_offset;
 
-    float tl_x = feet_pos.x - sprite_w * 0.5f;
+    // Base quad (before skew)
+    float half_w = sprite_w * 0.5f;
+
+    // Apply skew: top vertices shift horizontally, bottom vertices stay at feet
+    // In Duelyst's cast matrix, the Y row has skew in the X column
+    // This means vertical distance (from feet) gets added to X position
+    float skew_offset_top = 0.0f;  // Feet (bottom of shadow) have no skew
+    float skew_offset_bottom = sprite_h * skew;  // Head (top of sprite = bottom of shadow quad after flip) has max skew
+
+    // Build vertices with skew applied
+    // Note: In shadow space, "top" of quad = feet position, "bottom" = extended shadow
+    float tl_x = feet_pos.x - half_w + skew_offset_top;
     float tl_y = shadow_top_y;
-    float tr_x = feet_pos.x + sprite_w * 0.5f;
+    float tr_x = feet_pos.x + half_w + skew_offset_top;
     float tr_y = shadow_top_y;
-    float bl_x = feet_pos.x - sprite_w * 0.5f;
+    float bl_x = feet_pos.x - half_w + skew_offset_bottom;
     float bl_y = shadow_top_y + sprite_h;
-    float br_x = feet_pos.x + sprite_w * 0.5f;
+    float br_x = feet_pos.x + half_w + skew_offset_bottom;
     float br_y = shadow_top_y + sprite_h;
 
     // Convert to NDC

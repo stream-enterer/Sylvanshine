@@ -23,8 +23,13 @@
 
 ## RENDERING PIPELINE
 
-### Shadow System (Polish)
-- [ ] Increase shadow resolution / sharpness
+### Shadow System
+- [x] Penumbra blur shader (progressive blur from feet to head)
+- [x] Dynamic shadow geometry (skew/stretch based on light position)
+- [x] Light altitude calculation (sqrt(radius) * 6 * scale)
+- [x] Per-map lighting presets (keyboard 0-9 to test)
+- [x] Shadow intensity matched to Duelyst (0.75-1.1 per-map, not 0.15)
+- [ ] Sync lighting presets with actual battle map backgrounds
 
 ### Grid Visuals
 - [ ] Document Duelyst selection sprites (all variants in original repo) ⚡ `find_references.py SelectionSprite`
@@ -280,6 +285,11 @@
 - [x] Sprite foot positioning (SHADOW_OFFSET = 19.5)
 - [x] Z-order sorting (screen Y, painter's algorithm)
 - [x] Shadow system (blob shadow, perspective transform, shader pipeline)
+- [x] Multi-pass rendering pipeline (FBO-based)
+- [x] Bloom post-processing
+- [x] Duelyst-authentic shadow penumbra (7x7 box blur, distance-based)
+- [x] Dynamic shadow geometry (skew/stretch from light position/altitude)
+- [x] Per-map lighting preset system (10 presets from Duelyst battle maps)
 
 ---
 

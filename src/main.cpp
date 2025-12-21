@@ -66,7 +66,7 @@ struct GameState {
     std::vector<FXEntity> active_fx;
     TimingData timing_data;
     GridRenderer grid_renderer;
-    
+
     GamePhase game_phase = GamePhase::Playing;
     TurnPhase turn_phase = TurnPhase::PlayerTurn;
     float turn_transition_timer = 0.0f;
@@ -74,6 +74,107 @@ struct GameState {
     int ai_current_unit = -1;
     std::vector<bool> has_acted;
 };
+
+// =============================================================================
+// Duelyst Lighting Presets (extracted from BattleMap.js)
+// =============================================================================
+
+struct LightingPreset {
+    const char* name;
+    // Light position as multiplier of window dimensions
+    float light_x_mult;      // Multiplier for window width (or height if use_height_for_x)
+    float light_y_mult;      // Multiplier for window height
+    bool use_height_for_x;   // Some maps use height for X offset
+    float light_opacity;     // 0-1 (from 0-255)
+    float shadow_intensity;  // FX shadow intensity
+    // Ambient light (0-255 in Duelyst, we'll normalize to 0-1)
+    float ambient_r, ambient_g, ambient_b;
+    float bloom_threshold;
+    float bloom_intensity;
+};
+
+// All presets use radius = TILESIZE * 1000 = 95000 pixels (sun-like)
+constexpr float DUELYST_LIGHT_RADIUS = 95.0f * 1000.0f;
+
+static const LightingPreset g_lighting_presets[] = {
+    // 0: Sylvanshine default (close point light)
+    {"Sylvanshine Default", 0.3f, 0.2f, false, 1.0f, 0.15f, 0.35f, 0.35f, 0.35f, 0.6f, 2.5f},
+
+    // 1: BATTLEMAP0 - Light upper-right, shadows down-left
+    {"Lyonar Highlands", 3.25f, -3.15f, false, 1.0f, 1.0f, 0.37f, 0.37f, 0.37f, 0.50f, 2.76f},
+
+    // 2: BATTLEMAP1 - Light right, shadows left
+    {"Songhai Temple", 3.25f, 3.75f, true, 1.0f, 1.0f, 0.35f, 0.35f, 0.35f, 0.50f, 2.76f},
+
+    // 3: BATTLEMAP2 - Same as 1 but higher shadow intensity
+    {"Vetruvian Dunes", 3.25f, 3.75f, true, 1.0f, 1.1f, 0.35f, 0.35f, 0.35f, 0.50f, 2.55f},
+
+    // 4: BATTLEMAP3 - Light LEFT, shadows right
+    {"Abyssian Depths", -3.25f, 3.75f, true, 1.0f, 1.0f, 0.35f, 0.35f, 0.35f, 0.52f, 2.74f},
+
+    // 5: BATTLEMAP5 - Light left, lower shadow intensity
+    {"Magmar Peaks", -3.25f, 3.75f, true, 1.0f, 0.85f, 0.37f, 0.37f, 0.37f, 0.50f, 2.76f},
+
+    // 6: BATTLEMAP7 - Light left, lowest shadow intensity
+    {"Vanar Wastes", -3.25f, 3.75f, true, 1.0f, 0.75f, 0.35f, 0.35f, 0.35f, 0.50f, 2.50f},
+
+    // 7: SHIMZAR - Dimmer light
+    {"Shimzar Jungle", -1.25f, 3.15f, false, 0.78f, 1.0f, 0.37f, 0.37f, 0.37f, 0.50f, 2.76f},
+
+    // 8: ABYSSIAN - Low altitude light
+    {"Shadow Creep", -3.25f, 1.5f, false, 0.78f, 1.0f, 0.37f, 0.37f, 0.37f, 0.50f, 2.76f},
+
+    // 9: REDROCK - Warm ambient, lower shadows
+    {"Redrock Canyon", 2.95f, 3.15f, false, 0.78f, 0.8f, 0.43f, 0.37f, 0.37f, 0.50f, 2.60f},
+};
+
+static int g_current_preset = 0;
+
+void apply_lighting_preset(int preset_idx, const RenderConfig& config) {
+    if (preset_idx < 0 || preset_idx >= static_cast<int>(std::size(g_lighting_presets))) {
+        return;
+    }
+
+    const auto& preset = g_lighting_presets[preset_idx];
+    g_current_preset = preset_idx;
+
+    // Calculate light position
+    PointLight scene_light;
+    if (preset_idx == 0) {
+        // Sylvanshine default: close point light
+        scene_light.x = config.window_w * preset.light_x_mult;
+        scene_light.y = config.window_h * preset.light_y_mult;
+        scene_light.radius = config.window_w * 0.8f;
+    } else {
+        // Duelyst presets: distant sun-like light
+        float base_x = preset.use_height_for_x ? config.window_h : config.window_w;
+        scene_light.x = config.window_w * 0.5f + base_x * preset.light_x_mult;
+        scene_light.y = config.window_h * 0.5f - config.window_h * preset.light_y_mult;
+        scene_light.radius = DUELYST_LIGHT_RADIUS;
+    }
+
+    scene_light.intensity = 1.0f;
+    scene_light.r = 1.0f;
+    scene_light.g = 1.0f;
+    scene_light.b = 1.0f;
+    scene_light.a = preset.light_opacity;
+    scene_light.casts_shadows = true;
+    g_gpu.set_scene_light(scene_light);
+
+    // Apply FX settings
+    g_gpu.fx_config.shadow_intensity = preset.shadow_intensity;
+    g_gpu.fx_config.ambient_r = preset.ambient_r;
+    g_gpu.fx_config.ambient_g = preset.ambient_g;
+    g_gpu.fx_config.ambient_b = preset.ambient_b;
+    g_gpu.fx_config.bloom_threshold = preset.bloom_threshold;
+    g_gpu.fx_config.bloom_intensity = preset.bloom_intensity;
+
+    // Log the change
+    SDL_Log("=== Lighting Preset %d: %s ===", preset_idx, preset.name);
+    SDL_Log("  Light pos: (%.0f, %.0f), radius: %.0f", scene_light.x, scene_light.y, scene_light.radius);
+    SDL_Log("  Shadow intensity: %.2f", preset.shadow_intensity);
+    SDL_Log("  Ambient: (%.0f, %.0f, %.0f)", preset.ambient_r * 255, preset.ambient_g * 255, preset.ambient_b * 255);
+}
 
 void print_help() {
     SDL_Log("Usage: tactics [OPTIONS]");
@@ -758,6 +859,11 @@ void handle_events(bool& running, GameState& state, const RenderConfig& config) 
                 g_gpu.fx_config.enable_lighting = !g_gpu.fx_config.enable_lighting;
                 SDL_Log("Dynamic lighting: %s", g_gpu.fx_config.enable_lighting ? "ON" : "OFF");
             }
+            // Lighting preset selection (0-9)
+            else if (event.key.key >= SDLK_0 && event.key.key <= SDLK_9) {
+                int preset = event.key.key - SDLK_0;
+                apply_lighting_preset(preset, config);
+            }
         }
         else if (event.type == SDL_EVENT_MOUSE_BUTTON_DOWN) {
             if (event.button.button == SDL_BUTTON_LEFT) {
@@ -1097,18 +1203,10 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    // Set up default scene light for shadows
-    // Position: upper-left of board area, large radius to cover entire scene
-    // Duelyst default radius: CONFIG.TILESIZE * 3.0 = 285px
-    // We use a larger radius to give good coverage
-    PointLight scene_light;
-    scene_light.x = config.window_w * 0.3f;   // Left-ish
-    scene_light.y = config.window_h * 0.2f;  // Upper
-    scene_light.radius = config.window_w * 0.8f;  // Large radius to cover scene
-    scene_light.intensity = 1.0f;
-    scene_light.r = 1.0f; scene_light.g = 1.0f; scene_light.b = 1.0f; scene_light.a = 1.0f;
-    scene_light.casts_shadows = true;
-    g_gpu.set_scene_light(scene_light);
+    // Apply default lighting preset (press 0-9 to switch)
+    // 0 = Sylvanshine default, 1-9 = Duelyst battle maps
+    apply_lighting_preset(1, config);  // Start with Lyonar Highlands (Duelyst-style)
+    SDL_Log("Press 0-9 to switch lighting presets");
 
     GameState state;
 
