@@ -251,34 +251,9 @@ void Entity::render_shadow(const RenderConfig& config) const {
 
     float shadow_alpha = SHADOW_OPACITY * opacity;
 
-    // Check if we should use SDF shadows
-    bool use_sdf = (g_gpu.fx_config.shadow_type == ShadowType::SDF) && sdf_atlas.ptr;
-
-    if (use_sdf) {
-        // SDF raymarched shadow - uses pre-computed signed distance field
+    // SDF shadow rendering (requires pre-computed SDF atlas)
+    if (sdf_atlas.ptr && g_gpu.fx_config.enable_shadows) {
         g_gpu.draw_sdf_shadow(sdf_atlas, src, shadow_feet_pos, config.scale, flip_x, shadow_alpha);
-    } else if (g_gpu.fx_config.use_multipass && g_gpu.fx_config.enable_shadows) {
-        // Legacy: Use per-sprite FBO approach when multipass is enabled
-        // This fixes the atlas blur dilution problem by giving each sprite
-        // its own texture where UV 0-1 covers the entire sprite content
-        RenderPass* sprite_pass = g_gpu.draw_sprite_to_pass(
-            spritesheet, src,
-            static_cast<Uint32>(src_rect.w),
-            static_cast<Uint32>(src_rect.h)
-        );
-
-        if (sprite_pass) {
-            // Draw shadow from the per-sprite FBO with proper progressive blur
-            // Pass actual sprite dimensions (not pass dimensions which may be larger due to pooling)
-            g_gpu.draw_shadow_from_pass(
-                sprite_pass,
-                static_cast<Uint32>(src_rect.w), static_cast<Uint32>(src_rect.h),
-                shadow_feet_pos, config.scale, flip_x, shadow_alpha
-            );
-        }
-    } else {
-        // Fallback to single-pass atlas-based shadow (has blur dilution issue)
-        g_gpu.draw_sprite_shadow(spritesheet, src, shadow_feet_pos, config.scale, flip_x, shadow_alpha);
     }
 }
 
@@ -327,9 +302,6 @@ void Entity::render(const RenderConfig& config) const {
     if (state == EntityState::Dissolving) {
         float dissolve_time = get_dissolve_time();
         g_gpu.draw_sprite_dissolve(spritesheet, src, dst, flip_x, opacity, dissolve_time, dissolve_seed);
-    } else if (g_gpu.fx_config.use_multipass && g_gpu.fx_config.enable_lighting && sprite_props.receives_lighting) {
-        // Use lit sprite path for dynamic lighting when multipass is enabled
-        g_gpu.draw_lit_sprite(spritesheet, src, dst, flip_x, opacity);
     } else {
         g_gpu.draw_sprite(spritesheet, src, dst, flip_x, opacity);
     }

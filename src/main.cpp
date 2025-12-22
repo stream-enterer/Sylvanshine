@@ -76,56 +76,62 @@ struct GameState {
 };
 
 // =============================================================================
-// Duelyst Lighting Presets (extracted from BattleMap.js)
+// Sun Position System
 // =============================================================================
 
+// Sun radius - far enough for parallel rays (Duelyst used TILESIZE * 1000)
+constexpr float SUN_RADIUS = 95000.0f;
+
+// Calculate sun screen position from time of day
+// hour: 0-24, where 6=sunrise (east), 12=noon (top), 18=sunset (west)
+// Returns screen-space position in pixels
+Vec2 sun_position_from_time(float hour, int window_w, int window_h) {
+    // Normalize hour to 0-24 range
+    while (hour < 0.0f) hour += 24.0f;
+    while (hour >= 24.0f) hour -= 24.0f;
+
+    // Convert time to angle: 6am = right (0), 12pm = top (PI/2), 6pm = left (PI)
+    // Sun travels 180 degrees in 12 hours (6am to 6pm)
+    float angle = ((hour - 6.0f) / 12.0f) * M_PI;
+
+    // Radius of sun orbit (far from screen center for parallel rays)
+    float orbit_radius = static_cast<float>(window_h) * 3.5f;
+
+    // Sun position relative to screen center
+    float sun_x = static_cast<float>(window_w) * 0.5f + std::cos(angle) * orbit_radius;
+    float sun_y = static_cast<float>(window_h) * 0.5f - std::sin(angle) * orbit_radius;
+
+    return {sun_x, sun_y};
+}
+
+// Lighting preset: simplified to time-of-day
 struct LightingPreset {
     const char* name;
-    // Light position as multiplier of window dimensions
-    float light_x_mult;      // Multiplier for window width (or height if use_height_for_x)
-    float light_y_mult;      // Multiplier for window height
-    bool use_height_for_x;   // Some maps use height for X offset
-    float light_opacity;     // 0-1 (from 0-255)
-    float shadow_intensity;  // FX shadow intensity
-    // Ambient light (0-255 in Duelyst, we'll normalize to 0-1)
-    float ambient_r, ambient_g, ambient_b;
-    float bloom_threshold;
-    float bloom_intensity;
+    float time_of_day;        // 0-24 hours
+    float shadow_intensity;   // Shadow darkness multiplier
 };
 
-// All presets use radius = TILESIZE * 1000 = 95000 pixels (sun-like)
-constexpr float DUELYST_LIGHT_RADIUS = 95.0f * 1000.0f;
-
 static const LightingPreset g_lighting_presets[] = {
-    // 0: Sylvanshine default (close point light)
-    {"Sylvanshine Default", 0.3f, 0.2f, false, 1.0f, 0.60f, 0.35f, 0.35f, 0.35f, 0.6f, 2.5f},
-
-    // 1: BATTLEMAP0 - Light upper-right, shadows down-left
-    {"Lyonar Highlands", 3.25f, -3.15f, false, 1.0f, 1.0f, 0.37f, 0.37f, 0.37f, 0.50f, 2.76f},
-
-    // 2: BATTLEMAP1 - Light right, shadows left
-    {"Songhai Temple", 3.25f, 3.75f, true, 1.0f, 1.0f, 0.35f, 0.35f, 0.35f, 0.50f, 2.76f},
-
-    // 3: BATTLEMAP2 - Same as 1 but higher shadow intensity
-    {"Vetruvian Dunes", 3.25f, 3.75f, true, 1.0f, 1.1f, 0.35f, 0.35f, 0.35f, 0.50f, 2.55f},
-
-    // 4: BATTLEMAP3 - Light LEFT, shadows right
-    {"Abyssian Depths", -3.25f, 3.75f, true, 1.0f, 1.0f, 0.35f, 0.35f, 0.35f, 0.52f, 2.74f},
-
-    // 5: BATTLEMAP5 - Light left, lower shadow intensity
-    {"Magmar Peaks", -3.25f, 3.75f, true, 1.0f, 0.85f, 0.37f, 0.37f, 0.37f, 0.50f, 2.76f},
-
-    // 6: BATTLEMAP7 - Light left, lowest shadow intensity
-    {"Vanar Wastes", -3.25f, 3.75f, true, 1.0f, 0.75f, 0.35f, 0.35f, 0.35f, 0.50f, 2.50f},
-
-    // 7: SHIMZAR - Dimmer light
-    {"Shimzar Jungle", -1.25f, 3.15f, false, 0.78f, 1.0f, 0.37f, 0.37f, 0.37f, 0.50f, 2.76f},
-
-    // 8: ABYSSIAN - Low altitude light
-    {"Shadow Creep", -3.25f, 1.5f, false, 0.78f, 1.0f, 0.37f, 0.37f, 0.37f, 0.50f, 2.76f},
-
-    // 9: REDROCK - Warm ambient, lower shadows
-    {"Redrock Canyon", 2.95f, 3.15f, false, 0.78f, 0.8f, 0.43f, 0.37f, 0.37f, 0.50f, 2.60f},
+    // 0: Early morning - sun low on right, long shadows left
+    {"Dawn",         6.5f,  0.50f},
+    // 1: Mid-morning - sun rising, shadows shrinking
+    {"Morning",      9.0f,  0.75f},
+    // 2: High noon - sun overhead, short shadows
+    {"Noon",        12.0f,  1.00f},
+    // 3: Afternoon - sun descending left
+    {"Afternoon",   15.0f,  0.85f},
+    // 4: Late afternoon - long shadows right
+    {"Golden Hour", 17.0f,  0.70f},
+    // 5: Dusk - sun low on left
+    {"Dusk",        18.5f,  0.55f},
+    // 6: Evening - sun below horizon left (dramatic angle)
+    {"Evening",     20.0f,  0.40f},
+    // 7: Night - moon position (opposite side)
+    {"Night",       23.0f,  0.30f},
+    // 8: Pre-dawn - early light from right
+    {"Pre-Dawn",     5.0f,  0.35f},
+    // 9: Custom test - directly overhead
+    {"Zenith",      12.0f,  1.10f},
 };
 
 static int g_current_preset = 0;
@@ -138,42 +144,29 @@ void apply_lighting_preset(int preset_idx, const RenderConfig& config) {
     const auto& preset = g_lighting_presets[preset_idx];
     g_current_preset = preset_idx;
 
-    // Calculate light position
-    PointLight scene_light;
-    if (preset_idx == 0) {
-        // Sylvanshine default: close point light
-        scene_light.x = config.window_w * preset.light_x_mult;
-        scene_light.y = config.window_h * preset.light_y_mult;
-        scene_light.radius = config.window_w * 0.8f;
-    } else {
-        // Duelyst presets: distant sun-like light
-        float base_x = preset.use_height_for_x ? config.window_h : config.window_w;
-        scene_light.x = config.window_w * 0.5f + base_x * preset.light_x_mult;
-        scene_light.y = config.window_h * 0.5f - config.window_h * preset.light_y_mult;
-        scene_light.radius = DUELYST_LIGHT_RADIUS;
-    }
+    // Calculate sun position from time of day
+    Vec2 sun_pos = sun_position_from_time(preset.time_of_day, config.window_w, config.window_h);
 
+    // Set up scene light
+    PointLight scene_light;
+    scene_light.x = sun_pos.x;
+    scene_light.y = sun_pos.y;
+    scene_light.radius = SUN_RADIUS;
     scene_light.intensity = 1.0f;
     scene_light.r = 1.0f;
     scene_light.g = 1.0f;
     scene_light.b = 1.0f;
-    scene_light.a = preset.light_opacity;
+    scene_light.a = 1.0f;
     scene_light.casts_shadows = true;
     g_gpu.set_scene_light(scene_light);
 
-    // Apply FX settings
+    // Apply shadow intensity
     g_gpu.fx_config.shadow_intensity = preset.shadow_intensity;
-    g_gpu.fx_config.ambient_r = preset.ambient_r;
-    g_gpu.fx_config.ambient_g = preset.ambient_g;
-    g_gpu.fx_config.ambient_b = preset.ambient_b;
-    g_gpu.fx_config.bloom_threshold = preset.bloom_threshold;
-    g_gpu.fx_config.bloom_intensity = preset.bloom_intensity;
 
     // Log the change
-    SDL_Log("=== Lighting Preset %d: %s ===", preset_idx, preset.name);
-    SDL_Log("  Light pos: (%.0f, %.0f), radius: %.0f", scene_light.x, scene_light.y, scene_light.radius);
+    SDL_Log("=== Lighting Preset %d: %s (%.1fh) ===", preset_idx, preset.name, preset.time_of_day);
+    SDL_Log("  Sun pos: (%.0f, %.0f)", sun_pos.x, sun_pos.y);
     SDL_Log("  Shadow intensity: %.2f", preset.shadow_intensity);
-    SDL_Log("  Ambient: (%.0f, %.0f, %.0f)", preset.ambient_r * 255, preset.ambient_g * 255, preset.ambient_b * 255);
 }
 
 void print_help() {
@@ -842,23 +835,6 @@ void handle_events(bool& running, GameState& state, const RenderConfig& config) 
             else if (event.key.key == SDLK_ESCAPE) {
                 running = false;
             }
-            // Rendering pipeline toggles
-            else if (event.key.key == SDLK_M) {
-                g_gpu.fx_config.use_multipass = !g_gpu.fx_config.use_multipass;
-                SDL_Log("Multi-pass rendering: %s", g_gpu.fx_config.use_multipass ? "ON" : "OFF");
-            }
-            else if (event.key.key == SDLK_B) {
-                g_gpu.fx_config.enable_bloom = !g_gpu.fx_config.enable_bloom;
-                SDL_Log("Bloom: %s", g_gpu.fx_config.enable_bloom ? "ON" : "OFF");
-            }
-            else if (event.key.key == SDLK_V) {
-                g_gpu.fx_config.enable_vignette = !g_gpu.fx_config.enable_vignette;
-                SDL_Log("Vignette: %s", g_gpu.fx_config.enable_vignette ? "ON" : "OFF");
-            }
-            else if (event.key.key == SDLK_L) {
-                g_gpu.fx_config.enable_lighting = !g_gpu.fx_config.enable_lighting;
-                SDL_Log("Dynamic lighting: %s", g_gpu.fx_config.enable_lighting ? "ON" : "OFF");
-            }
             // Lighting preset selection (0-9)
             else if (event.key.key >= SDLK_0 && event.key.key <= SDLK_9) {
                 int preset = event.key.key - SDLK_0;
@@ -1071,95 +1047,9 @@ void render_single_pass(GameState& state, const RenderConfig& config) {
     }
 }
 
-// Multi-pass rendering (Duelyst pipeline)
-// Order matches Duelyst's CompositePass rendering:
-// 1. Clear surface FBO
-// 2. Render background/grid to surface
-// 3. For each sprite (sorted by depth):
-//    a. Render shadow (using per-sprite FBO for proper blur)
-//    b. Render sprite (with lighting if enabled)
-// 4. Render FX
-// 5. Render UI elements
-// 6. Execute bloom pipeline
-// 7. Execute post-processing (vignette, tone curve, radial blur)
-// 8. Composite to screen
-void render_multi_pass(GameState& state, const RenderConfig& config) {
-    // Reset per-frame sprite pass pools
-    g_gpu.pass_manager.reset_sprite_pass_pools();
-
-    // Begin rendering to surface FBO
-    g_gpu.begin_surface_pass();
-
-    // Render grid/background
-    state.grid_renderer.render(config);
-
-    if (state.selected_unit_idx >= 0 && state.game_phase == GamePhase::Playing) {
-        auto occupied = get_occupied_positions(state, state.selected_unit_idx);
-        state.grid_renderer.render_move_range(config,
-            state.units[state.selected_unit_idx].board_pos, MOVE_RANGE, occupied);
-        state.grid_renderer.render_attack_range(config, state.attackable_tiles);
-    }
-
-    auto render_order = get_render_order(state);
-
-    // Render shadows to surface FBO
-    if (g_gpu.fx_config.enable_shadows) {
-        for (size_t idx : render_order) {
-            if (!state.units[idx].is_dead() && state.units[idx].sprite_props.casts_shadows) {
-                state.units[idx].render_shadow(config);
-            }
-        }
-    }
-
-    // End surface pass - shadows only
-    g_gpu.end_surface_pass();
-
-    // Execute bloom pipeline on shadows
-    if (g_gpu.fx_config.enable_bloom) {
-        g_gpu.execute_bloom_pass();
-    }
-
-    // Execute post-processing chain
-    g_gpu.execute_post_processing();
-
-    // Composite shadows + bloom to swapchain
-    g_gpu.composite_to_screen();
-
-    // Now render sprites directly to swapchain (on top of composited shadows)
-    for (size_t idx : render_order) {
-        if (!state.units[idx].is_dead()) {
-            state.units[idx].render(config);
-        }
-    }
-
-    // Render FX (after sprites, before UI)
-    render_active_fx(state, config);
-
-    // UI elements render directly to swapchain (no bloom/post-processing)
-    for (size_t idx : render_order) {
-        if (!state.units[idx].is_dead()) {
-            state.units[idx].render_hp_bar(config);
-        }
-    }
-
-    render_floating_texts(state, config);
-
-    if (state.game_phase == GamePhase::Playing) {
-        render_turn_indicator(state, config);
-    } else {
-        render_game_over_overlay(state, config);
-    }
-}
-
 void render(GameState& state, const RenderConfig& config) {
     g_gpu.begin_frame();
-
-    if (g_gpu.fx_config.use_multipass) {
-        render_multi_pass(state, config);
-    } else {
-        render_single_pass(state, config);
-    }
-
+    render_single_pass(state, config);
     g_gpu.end_frame();
 }
 
