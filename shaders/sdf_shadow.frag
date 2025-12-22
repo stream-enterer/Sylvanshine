@@ -37,11 +37,8 @@ void main() {
 
     // SDF < 0 = inside silhouette (shadow), SDF > 0 = outside
     // We want smooth falloff at the edge
-
-    // If far outside silhouette, discard
-    if (sdf > u_sdfMaxDist * 0.3) {
-        discard;
-    }
+    // Note: No early discard - let shadowAlpha smoothstep handle the falloff
+    // Early discard was cutting off the penumbra region at sprite edges
 
     // Convert SDF to alpha:
     // Inside (sdf < 0): full shadow
@@ -68,7 +65,7 @@ void main() {
     float sideFade = 1.0 - smoothstep(0.5, 1.2, sideDistance);
 
     // Combine
-    float finalAlpha = shadowAlpha * u_intensity * u_lightIntensity * distanceFade * sideFade * u_opacity;
+    float finalAlpha = shadowAlpha * u_intensity * distanceFade * u_opacity;
 
     fragColor = vec4(0.0, 0.0, 0.0, clamp(finalAlpha, 0.0, 1.0));
 }

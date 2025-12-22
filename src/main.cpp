@@ -98,7 +98,7 @@ constexpr float DUELYST_LIGHT_RADIUS = 95.0f * 1000.0f;
 
 static const LightingPreset g_lighting_presets[] = {
     // 0: Sylvanshine default (close point light)
-    {"Sylvanshine Default", 0.3f, 0.2f, false, 1.0f, 0.15f, 0.35f, 0.35f, 0.35f, 0.6f, 2.5f},
+    {"Sylvanshine Default", 0.3f, 0.2f, false, 1.0f, 0.60f, 0.35f, 0.35f, 0.35f, 0.6f, 2.5f},
 
     // 1: BATTLEMAP0 - Light upper-right, shadows down-left
     {"Lyonar Highlands", 3.25f, -3.15f, false, 1.0f, 1.0f, 0.37f, 0.37f, 0.37f, 0.50f, 2.76f},

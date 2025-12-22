@@ -176,8 +176,8 @@ struct FXConfig {
     float falloff_modifier = 1.0f;
     float intensity_modifier = 1.0f;
 
-    // Shadow settings (Duelyst authentic values)
-    float shadow_intensity = 0.15f;
+    // Shadow settings
+    float shadow_intensity = 0.35f;  // Was 0.15 (too faint, feet-shadow imperceptible)
     float shadow_blur_shift = 1.0f;
     float shadow_blur_intensity = 3.0f;
 
@@ -221,7 +221,7 @@ struct FXConfig {
     ShadowType shadow_type = ShadowType::SDF;
 
     // SDF shadow settings
-    float sdf_penumbra_scale = 1.0f;
+    float sdf_penumbra_scale = 0.25f;  // Was 1.0→0.5→0.25 (8→4→2 SDF units)
     float sdf_max_raymarch = 0.3f;
     float sdf_raymarch_steps = 12.0f;
 };

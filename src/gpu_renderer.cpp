@@ -2171,7 +2171,8 @@ void GPURenderer::draw_sdf_shadow(
     float u0 = flip_x ? (src.x + src.w) / sdf_texture.width : src.x / sdf_texture.width;
     float u1 = flip_x ? src.x / sdf_texture.width : (src.x + src.w) / sdf_texture.width;
     float v_top = src.y / sdf_texture.height;             // Top of frame in atlas
-    float v_bottom = (src.y + src.h) / sdf_texture.height; // Bottom of frame in atlas
+    // Feet are SHADOW_OFFSET pixels above frame bottom - sample there, not at empty space below
+    float v_bottom = (src.y + src.h - SHADOW_OFFSET) / sdf_texture.height;
 
     // Local positions for shader anchor calculations
     float local_left = 0.0f;
@@ -2260,7 +2261,7 @@ void GPURenderer::draw_sdf_shadow(
         sprite_w,
         sprite_h,
         sprite_w * 0.5f,  // anchor X (center)
-        sprite_h,          // anchor Y (feet at bottom of sprite in texture coords)
+        sprite_h - SHADOW_OFFSET,  // anchor Y (feet are SHADOW_OFFSET pixels up from bottom)
 
         uv_light_dir_x,
         uv_light_dir_y,
