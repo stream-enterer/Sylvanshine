@@ -1102,7 +1102,7 @@ void render_multi_pass(GameState& state, const RenderConfig& config) {
 
     auto render_order = get_render_order(state);
 
-    // Render shadows first (Duelyst renders shadows before sprites)
+    // Render shadows to surface FBO
     if (g_gpu.fx_config.enable_shadows) {
         for (size_t idx : render_order) {
             if (!state.units[idx].is_dead() && state.units[idx].sprite_props.casts_shadows) {
@@ -1111,7 +1111,21 @@ void render_multi_pass(GameState& state, const RenderConfig& config) {
         }
     }
 
-    // Render sprites
+    // End surface pass - shadows only
+    g_gpu.end_surface_pass();
+
+    // Execute bloom pipeline on shadows
+    if (g_gpu.fx_config.enable_bloom) {
+        g_gpu.execute_bloom_pass();
+    }
+
+    // Execute post-processing chain
+    g_gpu.execute_post_processing();
+
+    // Composite shadows + bloom to swapchain
+    g_gpu.composite_to_screen();
+
+    // Now render sprites directly to swapchain (on top of composited shadows)
     for (size_t idx : render_order) {
         if (!state.units[idx].is_dead()) {
             state.units[idx].render(config);
@@ -1120,20 +1134,6 @@ void render_multi_pass(GameState& state, const RenderConfig& config) {
 
     // Render FX (after sprites, before UI)
     render_active_fx(state, config);
-
-    // End surface pass before bloom
-    g_gpu.end_surface_pass();
-
-    // Execute bloom pipeline (extracts bright pixels, blurs, accumulates)
-    if (g_gpu.fx_config.enable_bloom) {
-        g_gpu.execute_bloom_pass();
-    }
-
-    // Execute post-processing chain
-    g_gpu.execute_post_processing();
-
-    // Composite surface + bloom to screen
-    g_gpu.composite_to_screen();
 
     // UI elements render directly to swapchain (no bloom/post-processing)
     for (size_t idx : render_order) {
