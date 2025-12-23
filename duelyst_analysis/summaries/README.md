@@ -17,6 +17,7 @@ This directory contains comprehensive documentation for all major systems in the
 ### Visual Systems
 | System | File | Description |
 |--------|------|-------------|
+| [Grid Rendering](grid_rendering.md) | TileLayer, Player, shaders/ | Complete grid system forensics |
 | [View](view.md) | view/ | Cocos2d rendering |
 | [UI](ui.md) | ui/ | Backbone.js interface |
 | [Data & Resources](data_resources.md) | data/, resources/ | Assets and config |
