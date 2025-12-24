@@ -1202,6 +1202,32 @@ void render_single_pass(GameState& state, const RenderConfig& config) {
     // 1. Floor grid (semi-transparent dark tiles with gaps)
     state.grid_renderer.render_floor_grid(config);
 
+    // 1b. Ownership indicators for idle enemies (Duelyst: red tile under non-interacted enemies)
+    auto is_enemy_idle = [&](size_t idx) -> bool {
+        const Entity& enemy = state.units[idx];
+        if (enemy.is_dead() || enemy.is_spawning() || enemy.is_moving() || enemy.is_attacking()) {
+            return false;
+        }
+        if (state.turn_phase == TurnPhase::EnemyTurn) {
+            return false;
+        }
+        if (state.hover_valid && enemy.board_pos == state.hover_pos) {
+            return false;
+        }
+        for (const auto& target : state.attackable_tiles) {
+            if (target == enemy.board_pos) {
+                return false;
+            }
+        }
+        return true;
+    };
+
+    for (size_t i = 0; i < state.units.size(); i++) {
+        if (state.units[i].type == UnitType::Enemy && is_enemy_idle(i)) {
+            state.grid_renderer.render_enemy_indicator(config, state.units[i].board_pos);
+        }
+    }
+
     // 2. Grid lines (disabled — using tile gaps instead)
     // state.grid_renderer.render(config);
 
@@ -1274,13 +1300,17 @@ void render_single_pass(GameState& state, const RenderConfig& config) {
 
     // 4. Hover highlight
     if (state.hover_valid) {
-        // Enemy indicator (hover-only, Duelyst-faithful) — only when no unit selected
-        if (state.selected_unit_idx < 0) {
-            for (const auto& unit : state.units) {
-                if (unit.type == UnitType::Enemy && unit.board_pos == state.hover_pos) {
-                    state.grid_renderer.render_enemy_indicator(config, unit.board_pos);
-                    break;
-                }
+        // Enemy attack preview: show attack range when hovering enemy (no unit selected)
+        // Shows contiguous blob (enemy position + attack pattern) with hover on top
+        if (state.selected_unit_idx < 0 && state.turn_phase == TurnPhase::PlayerTurn) {
+            int hovered_idx = find_unit_at_pos(state, state.hover_pos);
+            if (hovered_idx >= 0 && state.units[hovered_idx].type == UnitType::Enemy) {
+                const Entity& enemy = state.units[hovered_idx];
+                auto attack_preview = get_attack_pattern(enemy.board_pos, enemy.attack_range);
+                attack_preview.push_back(enemy.board_pos);  // Include enemy position for contiguous blob
+                state.grid_renderer.render_attack_blob(config, attack_preview,
+                                                        TileOpacity::FULL, {},
+                                                        TileColor::ENEMY_ATTACK);
             }
         }
         state.grid_renderer.render_hover(config, state.hover_pos);

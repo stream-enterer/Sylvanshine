@@ -36,6 +36,9 @@ namespace TileColor {
     // Attack: Duelyst's signature yellow #FFD900
     constexpr SDL_FColor ATTACK_CURRENT = {1.0f, 0.851f, 0.0f, 200.0f/255.0f};
 
+    // Enemy attack preview: Duelyst AGGRO_OPPONENT_COLOR #D22846
+    constexpr SDL_FColor ENEMY_ATTACK   = {0.824f, 0.157f, 0.275f, 200.0f/255.0f};
+
     // Path and hover
     constexpr SDL_FColor PATH  = {1.0f, 1.0f, 1.0f, 150.0f/255.0f};
     // Duelyst: CONFIG.TILE_FAINT_OPACITY = 75/255 for passive hover
@@ -160,7 +163,8 @@ struct GridRenderer {
     void render_attack_blob(const RenderConfig& config,
                             const std::vector<BoardPos>& tiles,
                             float opacity = 200.0f/255.0f,
-                            const std::vector<BoardPos>& alt_blob = {});  // Optional for seam detection
+                            const std::vector<BoardPos>& alt_blob = {},
+                            SDL_FColor color = TileColor::ATTACK_CURRENT);
 
 private:
     Vec2 transform_board_point(const RenderConfig& config, float board_x, float board_y);

@@ -18,6 +18,7 @@ Complete documentation of Duelyst's tile rendering system including all sprite t
 | 2025-12-23 | FromStart sprite variants | ✅ Verified distinct atlas positions |
 | 2025-12-23 | Seam sprite usage | ✅ Verified (TileLayer.js:252-265) |
 | 2025-12-23 | Flipped corner logic | ✅ Verified cross-product formula |
+| 2025-12-24 | Enemy hover preview | ✅ Verified (Player.js:987-988, 1393, 1457) |
 
 **Note:** This document focuses on **highlight tile rendering** (movement/attack blobs, paths).
 For SDK.Tile game entities (Mana Springs), see `grid_rendering.md` §26.
@@ -592,6 +593,60 @@ isFlipped = cross < 0;
 **Example:**
 - Right→Up turn: Normal corner sprite
 - Right→Down turn: Flipped corner sprite (mirrored)
+
+### 14.6 Enemy Hover Preview (No Selection) — VERIFIED
+
+**Source:** `Player.js:987-988, 1310-1313, 1373, 1385, 1393, 1457`
+
+When hovering an enemy unit with no friendly unit selected, Duelyst shows the enemy's attack range as a red blob.
+
+**Trigger:**
+```javascript
+// Line 987-988: Called for ANY entity hover during your turn
+if (isForMyPlayer && !this.getIsTakingSelectionAction()) {
+  this.previewEntityTiles();  // NOT gated by entity ownership
+}
+```
+
+**Key Variables:**
+| Variable | Meaning | Value for Enemy Hover |
+|----------|---------|----------------------|
+| `isForMyPlayer` | Local player's view | `true` (your turn) |
+| `isMyEntity` | Entity owned by you | `false` (enemy) |
+
+**Gate Logic:**
+```javascript
+// Line 1373: Passes for your turn
+if (isForMyPlayer) {
+  // Line 1385: Movement tiles — BLOCKED for enemy
+  if (moveLocations && moveLocations.length > 1 && isMyEntity) {
+    hasMoveTiles = true;  // FALSE: isMyEntity fails
+  }
+
+  // Line 1393: Attack pattern — ALLOWED for enemy
+  if (!isMyEntity || CONFIG.SHOW_MERGED_MOVE_ATTACK_TILES) {
+    attackPattern = sdkEntity.getAttackRange().getValidPositions(...);
+    // TRUE: !isMyEntity passes
+  }
+}
+
+// Line 1457: Rendered with opponent color
+this.showMergedTilesForAction(...,
+  sdkEntity.isOwnedByMyPlayer() ? CONFIG.AGGRO_COLOR : CONFIG.AGGRO_OPPONENT_COLOR,
+  ...);
+```
+
+**Result:**
+| Element | Shown | Color |
+|---------|-------|-------|
+| Movement blob | NO | — |
+| Attack blob | YES | `AGGRO_OPPONENT_COLOR` (#D22846) |
+| Ownership indicator | HIDDEN | (hover state hides it) |
+
+**Visual Behavior:**
+1. Red ownership indicator hides (entity enters hover state)
+2. Red attack blob appears showing enemy's attack range
+3. Passive hover tile shown at cursor position
 
 ---
 

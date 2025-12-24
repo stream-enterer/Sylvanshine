@@ -45,7 +45,8 @@
 - [x] Attack highlight sprites — yellow blob with seam detection in `grid_renderer.cpp:639-663`
 - [x] Instant hover transitions (no fade when moving within board) — `main.cpp:997`
 - [x] Attack target reticle (`tile_large.png`) — `grid_renderer.cpp:619-637`
-- [ ] Enemy ownership indicator (`tile_grid.png`) under enemy units
+- [x] Enemy ownership indicator (`tile_grid.png`) under idle enemies — `main.cpp:1205-1229`
+- [x] Enemy attack preview on hover (red blob, no selection) — `main.cpp:1303-1314`
 - [x] Z-order constants for tile layers — `grid_renderer.hpp:51-61` (9-layer system)
 - [ ] Move/attack seam sprites (`corner_0_seam.png`) — `docs/out_of_scope/move_attack_seam.md`
 - [ ] Card play tiles (`tile_card.png`, `tile_spawn.png`) — `docs/out_of_scope/card_play_tiles.md`
@@ -356,8 +357,8 @@ Show enemy "thinking" during enemy turn to help player understand AI decisions a
 ### Reference Systems (Duelyst)
 | System | In Duelyst | For Sylvanshine |
 |--------|------------|-----------------|
-| Ownership indicator (`tile_grid.png`) | Idle red tile under enemies | **Implement** |
-| Enemy attack preview on hover | Red attack blob | **Implement** |
+| Ownership indicator (`tile_grid.png`) | Idle red tile under enemies | ✅ Done (`main.cpp:1205-1229`) |
+| Enemy attack preview on hover | Red attack blob | ✅ Done (`main.cpp:1303-1314`) |
 | Opponent network visualization | Selection box + path | **Adapt** for AI |
 | Bot visual feedback | None | **New feature** |
 
@@ -365,7 +366,7 @@ Show enemy "thinking" during enemy turn to help player understand AI decisions a
 
 ## MISC / INVESTIGATE
 
-- [ ] Enemy attack range uses different color — Duelyst uses red `#D22846` (`CONFIG.AGGRO_OPPONENT_COLOR`) for enemy attack tiles vs yellow `#FFD900` for friendly. Investigate if/when this matters for single-player tactics.
+*(empty)*
 
 ---
 

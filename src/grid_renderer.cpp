@@ -611,8 +611,8 @@ std::vector<BoardPos> get_attack_pattern(BoardPos from, int range) {
 
 void GridRenderer::render_enemy_indicator(const RenderConfig& config, BoardPos pos) {
     if (!pos.is_valid()) return;
-    // Red overlay using existing highlight system (API doesn't support tinted sprites)
-    constexpr SDL_FColor ENEMY_COLOR = {0.824f, 0.157f, 0.275f, 75.0f/255.0f};  // #D22846, 29%
+    // Duelyst OPPONENT_OWNER_COLOR: #FF0000 @ 31% opacity (config.js:812-813)
+    constexpr SDL_FColor ENEMY_COLOR = {1.0f, 0.0f, 0.0f, 80.0f/255.0f};  // #FF0000, 31%
     render_highlight(config, pos, ENEMY_COLOR);
 }
 
@@ -639,10 +639,10 @@ void GridRenderer::render_attack_reticle(const RenderConfig& config, BoardPos po
 void GridRenderer::render_attack_blob(const RenderConfig& config,
                                        const std::vector<BoardPos>& tiles,
                                        float opacity,
-                                       const std::vector<BoardPos>& alt_blob) {
+                                       const std::vector<BoardPos>& alt_blob,
+                                       SDL_FColor color) {
     if (tiles.empty()) return;
 
-    SDL_FColor color = TileColor::ATTACK_CURRENT;  // Yellow #FFD900
     color.a *= opacity;
 
     if (!corner_textures_loaded) {
