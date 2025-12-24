@@ -1,568 +1,1040 @@
-# Grid System Reimplementation Design Spec
+# Grid System Design Specification v2
 
-This document specifies the reimplementation of Duelyst's grid rendering system in Sylvanshine's SDL3 GPU pipeline.
+Complete reimplementation of Duelyst's grid tile highlighting for Sylvanshine, designed to integrate cleanly with existing systems.
 
-**Ground Truth Reference:** `duelyst_analysis/summaries/grid_rendering.md`
+**Forensic Sources:**
+- `duelyst_analysis/summaries/grid_rendering.md`
+- `duelyst_analysis/flows/tile_interaction_flow.md`
 
----
-
-## 1. Scope
-
-### Systems to Implement
-
-| System | Duelyst Source | Priority |
-|--------|----------------|----------|
-| Tile texture rendering | TileLayer, TileMapScaledSprite | P0 |
-| Merged tile algorithm | TileLayer:213-388 | P0 |
-| Hover highlight | Player.js:1557-1841 | P1 |
-| Movement range display | Player.js:1374-1438 | P1 |
-| Attack range display | Player.js:1391-1458 | P1 |
-| Tile-based path rendering | Player.js:1972-2080 | P2 |
-| Direct arc path (AttackPathSprite) | AttackPathSprite.js | P3 |
-| Audio feedback | Player.js:616,973,1079,1166 | P3 |
-
-### Out of Scope (This Phase)
-- Network hover synchronization
-- Depth shader system (already have working depth via compositor)
-- Spell effect tiles
+**Sylvanshine Integration Points:**
+- `src/grid_renderer.cpp` — Existing tile rendering (to be extended)
+- `src/types.cpp` — Coordinate transforms (reuse exactly)
+- `src/entity.cpp` — Shadow/sprite positioning reference
+- `include/entity.hpp` — Existing timing constants
 
 ---
 
-## 2. Existing Sylvanshine Infrastructure
+## 1. Design Principles
 
-### Current GridRenderer (`include/grid_renderer.hpp`)
+### 1.1 Integration Over Replacement
+
+- **Extend `GridRenderer`**, don't create parallel `TileRenderer`
+- **Extend `GameState`**, don't create duplicate `TileHighlightState`
+- **Reuse existing transforms** — `board_to_screen_perspective()`, `transform_board_point()`
+- **Reuse existing constants** — `FADE_FAST`, `FADE_MEDIUM`, `FADE_SLOW` from `entity.hpp`
+
+### 1.2 Bitmap First, SDF Later
+
+Start with Duelyst's actual tile PNG sprites. Only switch to procedural SDF if:
+- Resolution scaling issues arise, OR
+- Asset extraction proves problematic
+
+### 1.3 Conservative Changes
+
+- Keep current render order until proven necessary to change
+- Keep current colors until Duelyst-style is explicitly requested
+- Scale all Duelyst pixel values for Sylvanshine's coordinate system
+
+---
+
+## 2. Coordinate System Alignment
+
+### 2.1 Critical Constants
+
 ```cpp
-struct GridRenderer {
-    int fb_width, fb_height;
-    PerspectiveConfig persp_config;
+// From types.hpp (DO NOT CHANGE)
+constexpr int TILE_SIZE = 48;
+constexpr float SHADOW_OFFSET = 19.5f;  // Sprite feet position from bottom
 
-    bool init(const RenderConfig& config);
-    void render(const RenderConfig& config);                    // Line grid
-    void render_highlight(const RenderConfig& config, BoardPos pos, SDL_FColor color);
-    void render_move_range(const RenderConfig& config, BoardPos center, int range, const std::vector<BoardPos>& occupied);
-    void render_attack_range(const RenderConfig& config, const std::vector<BoardPos>& attackable_tiles);
+// From perspective.hpp (DO NOT CHANGE)
+constexpr float BOARD_X_ROTATION = 16.0f;   // Board/tiles use this
+constexpr float ENTITY_X_ROTATION = 26.0f;  // Entity sprites use this (10° difference!)
+```
+
+### 2.2 The Perspective Mismatch Problem
+
+**Board tiles** transform at 16°, **entity sprites** at 26°. This is intentional in Duelyst — sprites "pop" forward slightly. But it means:
+
+- Tile highlights at `board_to_screen_perspective()` won't perfectly match sprite feet
+- Selection boxes must account for this visual offset
+
+**Solution:** Accept the offset as intentional design. Selection box highlights the *tile*, not the sprite.
+
+### 2.3 Scale Factor Handling
+
+All Duelyst pixel values must be scaled:
+
+```cpp
+// Duelyst used TILESIZE = 95, Sylvanshine uses 48 at 1x or 96 at 2x
+constexpr float DUELYST_TILE = 95.0f;
+
+inline float scale_from_duelyst(float duelyst_px, const RenderConfig& config) {
+    return duelyst_px * (config.tile_size() / DUELYST_TILE);
+}
+```
+
+### 2.4 Tile-to-Sprite Vertical Alignment
+
+Entity `screen_pos` is at **feet position**. Tile highlights center on **tile center**.
+
+```cpp
+// Tile center in screen coords
+Vec2 tile_center = transform_board_point(config,
+    (pos.x + 0.5f) * config.tile_size(),
+    (pos.y + 0.5f) * config.tile_size());
+
+// Entity feet position (for reference)
+Vec2 feet_pos = board_to_screen_perspective(config, pos);
+// These differ due to perspective — tile_center is where highlight goes
+```
+
+---
+
+## 3. State Integration
+
+### 3.1 Extend GameState (main.cpp)
+
+Add hover tracking to existing `GameState`:
+
+```cpp
+struct GameState {
+    // ... existing fields ...
+
+    // NEW: Hover state for tile system
+    BoardPos hover_pos{-1, -1};
+    bool hover_valid = false;
+    bool was_hovering_on_board = false;  // For instant transition detection
+
+    // NEW: Computed path to hover target
+    std::vector<BoardPos> movement_path;
+
+    // NEW: Blob opacity for dimming during hover
+    float move_blob_opacity = 1.0f;
+    float attack_blob_opacity = 1.0f;
+
+    // NEW: Active fade animations
+    std::vector<TileFadeAnim> tile_anims;
 };
 ```
 
-### Current GPURenderer Capabilities
-- `draw_sprite()` - textured quads
-- `draw_quad_colored()` - solid color quads
-- `draw_quad_transformed()` - perspective-transformed quads (4 corners)
-- `draw_line()` - line segments
-- Texture atlas loading via `load_texture()`
+### 3.2 Tile Fade Animation
 
-### Current Constants (`include/types.hpp`)
+Integrate with existing update loop pattern:
+
 ```cpp
-constexpr int BOARD_COLS = 9;
-constexpr int BOARD_ROWS = 5;
-constexpr int TILE_SIZE = 48;  // Base (scaled for resolution)
+// In grid_renderer.hpp
+
+// Target identifiers for fade animations (avoids raw pointers)
+enum class FadeTarget {
+    MoveBlobOpacity,
+    AttackBlobOpacity,
+};
+
+struct TileFadeAnim {
+    FadeTarget target;
+    float from, to;
+    float duration;
+    float elapsed = 0.0f;
+
+    bool update(float dt) {
+        elapsed += dt;
+        float t = std::min(elapsed / duration, 1.0f);
+        return elapsed >= duration;
+    }
+
+    float current_value() const {
+        float t = std::min(elapsed / duration, 1.0f);
+        return from + (to - from) * t;
+    }
+};
 ```
-> **Ground Truth:** Duelyst uses TILESIZE=95, we use 48 with 2x scale = 96 (close match)
+
+Update in main loop:
+
+```cpp
+void update(GameState& state, float dt, const RenderConfig& config) {
+    // ... existing update code ...
+
+    // Update tile animations and apply values
+    for (auto& anim : state.tile_anims) {
+        anim.update(dt);
+        float val = anim.current_value();
+        switch (anim.target) {
+            case FadeTarget::MoveBlobOpacity:
+                state.move_blob_opacity = val;
+                break;
+            case FadeTarget::AttackBlobOpacity:
+                state.attack_blob_opacity = val;
+                break;
+        }
+    }
+
+    // Remove completed animations
+    state.tile_anims.erase(
+        std::remove_if(state.tile_anims.begin(), state.tile_anims.end(),
+            [](const TileFadeAnim& a) { return a.elapsed >= a.duration; }),
+        state.tile_anims.end());
+}
+```
+
+**Note:** Using enum instead of raw pointers ensures GameState can be safely moved/copied.
 
 ---
 
-## 3. New Data Structures
+## 4. Pathfinding
 
-### 3.1 Tile Atlas (`include/tile_atlas.hpp`)
+### 4.1 Required Headers
 
+Add to `grid_renderer.cpp`:
 ```cpp
-#pragma once
-#include "gpu_renderer.hpp"
-#include <string>
+#include <queue>
 #include <unordered_map>
-
-// UV rectangle in normalized coordinates [0,1]
-struct AtlasFrame {
-    float u0, v0, u1, v1;  // UV bounds
-    float offset_x, offset_y;  // Center offset (from ground truth: plist offset field)
-    int source_width, source_height;  // Original size before trim
-    bool rotated;  // 90° CW rotation in atlas
-};
-
-struct TileAtlas {
-    GPUTextureHandle texture;
-    std::unordered_map<std::string, AtlasFrame> frames;
-
-    bool load(const char* texture_path, const char* manifest_path);
-    const AtlasFrame* get_frame(const std::string& name) const;
-};
+#include <algorithm>  // for std::reverse
 ```
 
-> **Ground Truth Reference:** Section 13 "Sprite Atlas Format"
-> - Atlas size: 607×254 (Duelyst), we'll create equivalent
-> - Frame format: `{{x,y},{w,h}}` with offset and rotation
+### 4.2 Add Path Calculation
 
-### 3.2 Tile Highlight State (`include/tile_highlight.hpp`)
+Currently missing — add to `grid_renderer.cpp`:
 
 ```cpp
-#pragma once
-#include "types.hpp"
-#include <vector>
+// BFS pathfinding from start to goal, avoiding blocked tiles
+std::vector<BoardPos> get_path_to(BoardPos start, BoardPos goal,
+                                   const std::vector<BoardPos>& blocked) {
+    if (start == goal) return {start};
 
-enum class TileHighlightType {
-    None,
-    Hover,          // Mouse over empty tile
-    Selected,       // Selected unit's tile
-    Move,           // Reachable movement tile
-    Attack,         // Attackable tile
-    AttackTarget,   // Tile with attackable enemy
-    Card,           // Valid card play location
-};
+    // BFS with parent tracking
+    std::queue<BoardPos> frontier;
+    std::unordered_map<int, BoardPos> came_from;  // key = y * BOARD_COLS + x
 
-struct TileHighlight {
-    BoardPos pos;
-    TileHighlightType type;
-    float opacity;  // 0.0-1.0
-};
+    auto key = [](BoardPos p) { return p.y * BOARD_COLS + p.x; };
+    auto is_blocked = [&](BoardPos p) {
+        for (const auto& b : blocked) if (b == p) return true;
+        return false;
+    };
 
-// Corner connectivity for merged tiles
-// Ground Truth: Section 7 "Merged Tile Corner Values"
-// Encoding: bits for neighbors (left, top-left, top, etc.)
-struct MergedTileCorner {
-    bool edge_left;    // '1' in Duelyst encoding
-    bool corner;       // '2' in Duelyst encoding
-    bool edge_top;     // '3' in Duelyst encoding
-};
+    frontier.push(start);
+    came_from[key(start)] = {-1, -1};
 
-struct TileHighlightState {
-    std::vector<TileHighlight> highlights;
-    BoardPos hover_pos;
-    bool hover_valid;
+    const BoardPos dirs[] = {{0, -1}, {1, 0}, {0, 1}, {-1, 0}};
 
-    void clear();
-    void set_hover(BoardPos pos);
-    void clear_hover();
-    void add_move_range(const std::vector<BoardPos>& tiles);
-    void add_attack_range(const std::vector<BoardPos>& tiles);
-};
-```
+    while (!frontier.empty()) {
+        BoardPos current = frontier.front();
+        frontier.pop();
 
-> **Ground Truth Reference:** Section 8 "Tile Highlight Color Configuration"
-> - TILE_SELECT_OPACITY = 200/255 = 0.784
-> - TILE_HOVER_OPACITY = 200/255 = 0.784
-> - TILE_DIM_OPACITY = 127/255 = 0.498
-> - TILE_FAINT_OPACITY = 75/255 = 0.294
+        if (current == goal) {
+            // Reconstruct path
+            std::vector<BoardPos> path;
+            BoardPos p = goal;
+            while (p.x >= 0) {
+                path.push_back(p);
+                p = came_from[key(p)];
+            }
+            std::reverse(path.begin(), path.end());
+            return path;
+        }
 
-### 3.3 Tile Colors (`include/tile_colors.hpp`)
+        for (const auto& d : dirs) {
+            BoardPos next = {current.x + d.x, current.y + d.y};
+            if (!next.is_valid()) continue;
+            if (is_blocked(next) && next != goal) continue;
+            if (came_from.count(key(next))) continue;
 
-```cpp
-#pragma once
-#include <SDL3/SDL.h>
+            frontier.push(next);
+            came_from[key(next)] = current;
+        }
+    }
 
-// Ground Truth Reference: Section 8 "Tile Highlight Color Configuration"
-namespace TileColors {
-    // Movement
-    constexpr SDL_FColor MOVE = {240.f/255, 240.f/255, 240.f/255, 1.0f};       // #F0F0F0
-    constexpr SDL_FColor MOVE_ALT = {1.0f, 1.0f, 1.0f, 1.0f};                  // #FFFFFF
-
-    // Attack/Aggro
-    constexpr SDL_FColor AGGRO = {255.f/255, 217.f/255, 0.f/255, 1.0f};        // #FFD900
-    constexpr SDL_FColor AGGRO_ALT = {1.0f, 1.0f, 1.0f, 1.0f};                 // #FFFFFF
-    constexpr SDL_FColor AGGRO_OPPONENT = {210.f/255, 40.f/255, 70.f/255, 1.0f}; // #D22846
-
-    // Selection
-    constexpr SDL_FColor SELECT = {1.0f, 1.0f, 1.0f, 1.0f};                    // #FFFFFF
-    constexpr SDL_FColor SELECT_OPPONENT = {210.f/255, 40.f/255, 70.f/255, 1.0f}; // #D22846
-
-    // Hover
-    constexpr SDL_FColor HOVER = {1.0f, 1.0f, 1.0f, 1.0f};                     // #FFFFFF
-    constexpr SDL_FColor HOVER_OPPONENT = {210.f/255, 40.f/255, 70.f/255, 1.0f}; // #D22846
-
-    // Card play
-    constexpr SDL_FColor CARD_PLAYER = {255.f/255, 217.f/255, 0.f/255, 1.0f};  // #FFD900
-    constexpr SDL_FColor CARD_OPPONENT = {210.f/255, 40.f/255, 70.f/255, 1.0f}; // #D22846
-}
-
-namespace TileOpacity {
-    constexpr float SELECT = 200.f/255;   // 0.784
-    constexpr float HOVER = 200.f/255;    // 0.784
-    constexpr float DIM = 127.f/255;      // 0.498
-    constexpr float FAINT = 75.f/255;     // 0.294
+    return {};  // No path found
 }
 ```
 
 ---
 
-## 4. Merged Tile Algorithm
+## 5. Configuration Constants
 
-### 4.1 Overview
-
-Each highlighted tile is rendered as 4 corner pieces. Each corner connects to adjacent tiles.
-
-> **Ground Truth Reference:** Section 7 "Merged Tile Corner Values" and Section 10 "Tile Sprite Classes"
-
-### 4.2 Corner Piece Selection
-
-```
-Corner encoding (per corner of a tile):
-- Check 3 neighbors: edge1, diagonal, edge2
-- Pattern determines sprite variant:
-  - ""      → tile_merged_large_0      (isolated corner)
-  - "1"     → tile_merged_large_01     (edge neighbor only)
-  - "3"     → tile_merged_large_03     (other edge only)
-  - "13"    → tile_merged_large_013    (both edges, no diagonal)
-  - "123"   → tile_merged_large_0123   (fully connected)
-  - "_seam" → tile_merged_large_0_seam (adjacent different type)
-```
-
-### 4.3 Corner Rotation
-
-| Corner | Rotation |
-|--------|----------|
-| Top-Left | 0° |
-| Top-Right | 90° |
-| Bottom-Right | 180° |
-| Bottom-Left | 270° |
-
-### 4.4 Implementation
+### 5.1 Timing (Reuse Existing)
 
 ```cpp
-// In tile_renderer.cpp
+// From entity.hpp — DO NOT REDEFINE
+constexpr float FADE_FAST = 0.2f;
+constexpr float FADE_MEDIUM = 0.35f;
+constexpr float FADE_SLOW = 1.0f;
+```
 
-enum class CornerPosition { TL, TR, BR, BL };
+### 5.2 Colors (Current Sylvanshine Values)
 
+Keep existing colors for now to avoid visual identity change.
+Add to `grid_renderer.hpp`:
+
+```cpp
+namespace TileColor {
+    // Current Sylvanshine colors (keep for compatibility)
+    constexpr SDL_FColor MOVE_CURRENT   = {1.0f, 1.0f, 1.0f, 200.0f/255.0f};
+    constexpr SDL_FColor ATTACK_CURRENT = {1.0f, 100.0f/255.0f, 100.0f/255.0f, 200.0f/255.0f};
+
+    // Duelyst colors (for future use)
+    constexpr SDL_FColor MOVE_DUELYST   = {0.941f, 0.941f, 0.941f, 1.0f};  // #F0F0F0
+    constexpr SDL_FColor AGGRO_DUELYST  = {1.0f, 0.851f, 0.0f, 1.0f};      // #FFD900 yellow!
+
+    // Path and hover
+    constexpr SDL_FColor PATH  = {1.0f, 1.0f, 1.0f, 150.0f/255.0f};
+    constexpr SDL_FColor HOVER = {1.0f, 1.0f, 1.0f, 200.0f/255.0f};
+}
+```
+
+**Note:** Duelyst attack tiles are YELLOW (#FFD900), not red. Sylvanshine currently uses red. This is a deliberate deviation — changing would alter game feel significantly.
+
+### 5.3 Opacity Values
+
+```cpp
+namespace TileOpacity {
+    constexpr float FULL  = 200.0f / 255.0f;  // 0.784 — Selected/hover
+    constexpr float DIM   = 127.0f / 255.0f;  // 0.498 — Blob during hover
+    constexpr float FAINT = 75.0f / 255.0f;   // 0.294 — Passive hover
+}
+```
+
+### 5.4 Scaled Duelyst Values
+
+```cpp
+namespace TileAnim {
+    // These are Duelyst pixel values — must scale at runtime
+    constexpr float PATH_ARC_DISTANCE_DUELYST = 47.5f;
+    constexpr float PATH_FADE_DISTANCE_DUELYST = 40.0f;
+
+    // Usage: scale_from_duelyst(PATH_ARC_DISTANCE_DUELYST, config)
+}
+```
+
+---
+
+## 6. Z-Order and Render Integration
+
+### 6.1 Current Render Order (Preserve)
+
+```cpp
+void render_single_pass(GameState& state, const RenderConfig& config) {
+    // 1. Grid lines
+    state.grid_renderer.render(config);
+
+    // 2. Move highlights (blob)
+    state.grid_renderer.render_move_range(...);
+
+    // 3. Attack highlights (blob)
+    state.grid_renderer.render_attack_range(...);
+
+    // 4. NEW: Path overlay
+    state.grid_renderer.render_path(config, state.movement_path);
+
+    // 5. NEW: Hover tile
+    if (state.hover_valid) {
+        state.grid_renderer.render_hover(config, state.hover_pos);
+    }
+
+    // 6. Shadows (Y-sorted) — KEEP AFTER TILES
+    for (idx : render_order) {
+        state.units[idx].render_shadow(config);
+    }
+
+    // 7. Sprites (Y-sorted)
+    for (idx : render_order) {
+        state.units[idx].render(config);
+    }
+
+    // ... rest unchanged ...
+}
+```
+
+**Why shadows stay after tiles:** Shadows partially occlude tile highlight edges, which looks natural. Reversing would make shadows "cut out" of highlights unnaturally.
+
+### 6.2 Simplified Z-Order
+
+```cpp
+// Within tile system only (all render before shadows/sprites)
+enum class TileLayer {
+    Grid,       // Grid lines
+    MoveBlob,   // Movement range
+    AttackBlob, // Attack range
+    Path,       // Movement path arrow
+    Hover,      // Mouse hover tile
+};
+// Removed: Assist (unused), Select (merged with hover), Card (not implemented)
+```
+
+---
+
+## 7. Merged Tile Algorithm
+
+### 7.1 Overview
+
+Each tile in a contiguous blob renders as 4 corner quarter-tiles. This creates smooth blob boundaries.
+
+```
+Tile with all neighbors:     Edge tile:
+┌─────┬─────┐                ┌─────┬─────┐
+│ TL  │ TR  │                │(TL) │(TR) │  ← rounded corners
+│ full│full │                │     │     │
+├─────┼─────┤                ├─────┼─────┤
+│ BL  │ BR  │                │(BL) │(BR) │
+│full │full │                │     │     │
+└─────┴─────┘                └─────┴─────┘
+```
+
+### 7.2 Neighbor Detection Per Corner
+
+```cpp
 struct CornerNeighbors {
-    bool edge1;      // First edge neighbor
-    bool diagonal;   // Diagonal neighbor
-    bool edge2;      // Second edge neighbor
+    bool edge1;     // Adjacent on first edge
+    bool diagonal;  // Diagonally adjacent
+    bool edge2;     // Adjacent on second edge
 };
 
-// Get neighbors for a corner
-CornerNeighbors get_corner_neighbors(
-    const std::vector<BoardPos>& tiles,
-    BoardPos pos,
-    CornerPosition corner
-) {
-    // TL: check left(-1,0), top-left(-1,+1), top(0,+1)
-    // TR: check top(0,+1), top-right(+1,+1), right(+1,0)
-    // BR: check right(+1,0), bottom-right(+1,-1), bottom(0,-1)
-    // BL: check bottom(0,-1), bottom-left(-1,-1), left(-1,0)
-    // ...
+// Check pattern for each corner:
+//   TL: left(-1,0), top-left(-1,-1), top(0,-1)
+//   TR: top(0,-1), top-right(+1,-1), right(+1,0)
+//   BR: right(+1,0), bottom-right(+1,+1), bottom(0,+1)
+//   BL: bottom(0,+1), bottom-left(-1,+1), left(-1,0)
+
+CornerNeighbors get_corner_neighbors(BoardPos pos, int corner,
+                                      const std::vector<BoardPos>& blob) {
+    constexpr int offsets[4][3][2] = {
+        {{-1, 0}, {-1,-1}, { 0,-1}},  // TL
+        {{ 0,-1}, { 1,-1}, { 1, 0}},  // TR
+        {{ 1, 0}, { 1, 1}, { 0, 1}},  // BR
+        {{ 0, 1}, {-1, 1}, {-1, 0}},  // BL
+    };
+
+    auto in_blob = [&](int dx, int dy) {
+        BoardPos check = {pos.x + dx, pos.y + dy};
+        for (const auto& p : blob) if (p == check) return true;
+        return false;
+    };
+
+    return {
+        in_blob(offsets[corner][0][0], offsets[corner][0][1]),
+        in_blob(offsets[corner][1][0], offsets[corner][1][1]),
+        in_blob(offsets[corner][2][0], offsets[corner][2][1]),
+    };
+}
+```
+
+### 7.3 Sprite Variant Selection
+
+```cpp
+enum class CornerVariant {
+    Solo,       // No neighbors — rounded corner
+    Edge1,      // One edge neighbor
+    Edge2,      // Other edge neighbor
+    BothEdges,  // Both edges, no diagonal — inner corner
+    Full,       // All three — solid fill
+};
+
+CornerVariant select_variant(CornerNeighbors n) {
+    if (n.edge1 && n.edge2) {
+        return n.diagonal ? CornerVariant::Full : CornerVariant::BothEdges;
+    }
+    if (n.edge1) return CornerVariant::Edge1;
+    if (n.edge2) return CornerVariant::Edge2;
+    return CornerVariant::Solo;
+}
+```
+
+### 7.4 Corner Quad Geometry
+
+Transform corner position to screen-space quad:
+
+```cpp
+// In grid_renderer.cpp
+TransformedQuad get_corner_quad(const RenderConfig& config, BoardPos pos, int corner) {
+    int ts = config.tile_size();
+    int half = ts / 2;
+
+    // Corner index: 0=TL, 1=TR, 2=BR, 3=BL
+    // X offset: 0 for left corners (0,3), half for right corners (1,2)
+    // Y offset: 0 for top corners (0,1), half for bottom corners (2,3)
+    float x = static_cast<float>(pos.x * ts + ((corner == 1 || corner == 2) ? half : 0));
+    float y = static_cast<float>(pos.y * ts + ((corner == 2 || corner == 3) ? half : 0));
+
+    return transform_rect_perspective(x, y, static_cast<float>(half),
+                                       static_cast<float>(half), persp_config);
+}
+```
+
+### 7.5 Sprite Assets Required
+
+Extract from Duelyst or create:
+```
+dist/sprites/tiles/
+    tile_corner_solo.png      — Rounded quarter-circle
+    tile_corner_edge1.png     — Half-pill shape
+    tile_corner_edge2.png     — Half-pill shape (90° from edge1)
+    tile_corner_both.png      — Inner corner notch
+    tile_corner_full.png      — Solid quarter-square
+```
+
+Each sprite is quarter-tile size: `(TILE_SIZE/2) x (TILE_SIZE/2)` = 24x24 at 1x scale.
+
+---
+
+## 8. Hover State Machine
+
+### 8.1 Input Handling
+
+Mouse motion already updates `state.mouse_pos` in `handle_events()`.
+Hover state updates happen in `update()` where `config` is available:
+
+```cpp
+// In handle_events() — already exists, no change needed:
+else if (event.type == SDL_EVENT_MOUSE_MOTION) {
+    state.mouse_pos = {static_cast<float>(event.motion.x),
+                       static_cast<float>(event.motion.y)};
+    // ... existing facing code ...
 }
 
-// Select sprite frame based on neighbor pattern
-std::string select_corner_frame(CornerNeighbors n, bool is_hover) {
-    const char* prefix = is_hover ? "tile_merged_hover_" : "tile_merged_large_";
+// NEW: Add to update() function in main.cpp:
+void update(GameState& state, float dt, const RenderConfig& config) {
+    // ... existing update code ...
 
-    if (n.edge1 && n.diagonal && n.edge2) return prefix + "0123";
-    if (n.edge1 && n.edge2)               return prefix + "013";
-    if (n.edge1)                          return prefix + "01";
-    if (n.edge2)                          return prefix + "03";
-    return prefix + "0";
+    // Update hover state (config available here)
+    update_hover_state(state, config);
+
+    // Update tile animations...
 }
 
-float get_corner_rotation(CornerPosition corner) {
-    switch (corner) {
-        case CornerPosition::TL: return 0.0f;
-        case CornerPosition::TR: return 90.0f;
-        case CornerPosition::BR: return 180.0f;
-        case CornerPosition::BL: return 270.0f;
+void update_hover_state(GameState& state, const RenderConfig& config) {
+    state.was_hovering_on_board = state.hover_valid;
+    BoardPos new_hover = screen_to_board_perspective(config, state.mouse_pos);
+    state.hover_valid = new_hover.is_valid();
+    state.hover_pos = new_hover;
+
+    // Update path if unit selected and hovering valid move target
+    if (state.hover_valid && state.selected_unit_idx >= 0) {
+        update_hover_path(state, config);
+    } else if (!state.hover_valid && !state.movement_path.empty()) {
+        // Clear path when leaving board
+        state.movement_path.clear();
+        start_opacity_fade(state, FadeTarget::MoveBlobOpacity,
+                          state.move_blob_opacity, 1.0f, FADE_FAST);
     }
 }
 ```
 
----
-
-## 5. Tile Renderer Interface
-
-### 5.1 New TileRenderer Struct (`include/tile_renderer.hpp`)
+### 8.2 Hover Path Update
 
 ```cpp
-#pragma once
-#include "types.hpp"
-#include "tile_atlas.hpp"
-#include "tile_highlight.hpp"
-#include "perspective.hpp"
+void update_hover_path(GameState& state, const RenderConfig& config) {
+    // Check if hover is in movement range
+    bool in_move_range = false;
+    for (const auto& t : state.reachable_tiles) {
+        if (t == state.hover_pos) { in_move_range = true; break; }
+    }
 
-struct TileRenderer {
-    TileAtlas atlas;
-    PerspectiveConfig persp_config;
+    if (in_move_range) {
+        // Calculate path
+        auto occupied = get_occupied_positions(state, state.selected_unit_idx);
+        BoardPos start = state.units[state.selected_unit_idx].board_pos;
+        state.movement_path = get_path_to(start, state.hover_pos, occupied);
 
-    bool init(const RenderConfig& config);
+        // Dim blob (instant if already on board, else animate)
+        float fade_dur = state.was_hovering_on_board ? 0.0f : FADE_FAST;
+        start_opacity_fade(state, FadeTarget::MoveBlobOpacity,
+                          state.move_blob_opacity, TileOpacity::DIM, fade_dur);
+    } else {
+        // Clear path, restore blob
+        state.movement_path.clear();
+        if (state.move_blob_opacity < 1.0f) {
+            start_opacity_fade(state, FadeTarget::MoveBlobOpacity,
+                              state.move_blob_opacity, 1.0f, FADE_FAST);
+        }
+    }
+}
 
-    // Render all current highlights
-    void render(const RenderConfig& config, const TileHighlightState& state);
+void start_opacity_fade(GameState& state, FadeTarget target,
+                        float from, float to, float duration) {
+    if (duration <= 0.0f) {
+        // Instant — apply directly
+        switch (target) {
+            case FadeTarget::MoveBlobOpacity:
+                state.move_blob_opacity = to;
+                break;
+            case FadeTarget::AttackBlobOpacity:
+                state.attack_blob_opacity = to;
+                break;
+        }
+        return;
+    }
+    // Remove existing animation on this target
+    state.tile_anims.erase(
+        std::remove_if(state.tile_anims.begin(), state.tile_anims.end(),
+            [target](const TileFadeAnim& a) { return a.target == target; }),
+        state.tile_anims.end());
 
-    // Render single tile (for testing/debug)
-    void render_tile(const RenderConfig& config, BoardPos pos,
-                     const std::string& frame_name, SDL_FColor tint, float opacity);
+    state.tile_anims.push_back({target, from, to, duration, 0.0f});
+}
+```
 
-    // Render merged highlight region
-    void render_merged_highlights(const RenderConfig& config,
+### 8.3 Key Behavior: Instant Transitions Within Board
+
+From Duelyst analysis: When mouse moves tile-to-tile while staying on board, transitions are instant (`fade_dur = 0.0`). This creates responsive feel.
+
+Only when entering/exiting board does the 0.2s fade occur.
+
+### 8.4 Clear State on Deselection
+
+Modify existing `clear_selection()` in main.cpp:
+
+```cpp
+void clear_selection(GameState& state) {
+    if (state.selected_unit_idx >= 0 &&
+        state.selected_unit_idx < static_cast<int>(state.units.size())) {
+        state.units[state.selected_unit_idx].restore_facing();
+    }
+    state.selected_unit_idx = -1;
+    state.reachable_tiles.clear();
+    state.attackable_tiles.clear();
+
+    // NEW: Clear tile highlight state
+    state.movement_path.clear();
+    state.move_blob_opacity = 1.0f;
+    state.attack_blob_opacity = 1.0f;
+    // Remove any pending fade animations
+    state.tile_anims.clear();
+}
+```
+
+---
+
+## 9. Path Rendering
+
+### 9.1 Segment Types
+
+```cpp
+enum class PathSegment {
+    Start,              // First tile (unit position)
+    Straight,           // Middle, no turn
+    Corner,             // 90° turn
+    CornerFlipped,      // Opposite rotation turn
+    End,                // Final tile (arrow head)
+};
+```
+
+### 9.2 Segment Selection
+
+```cpp
+PathSegment select_path_segment(const std::vector<BoardPos>& path, int idx) {
+    if (idx == 0) return PathSegment::Start;
+    if (idx == path.size() - 1) return PathSegment::End;
+
+    // Direction vectors
+    BoardPos prev = path[idx - 1];
+    BoardPos curr = path[idx];
+    BoardPos next = path[idx + 1];
+
+    int dx_in = curr.x - prev.x;
+    int dy_in = curr.y - prev.y;
+    int dx_out = next.x - curr.x;
+    int dy_out = next.y - curr.y;
+
+    // Same direction = straight
+    if (dx_in == dx_out && dy_in == dy_out) return PathSegment::Straight;
+
+    // Corner — cross product determines flip
+    int cross = dx_in * dy_out - dy_in * dx_out;
+    return cross > 0 ? PathSegment::Corner : PathSegment::CornerFlipped;
+}
+```
+
+### 9.3 Segment Rotation
+
+```cpp
+float path_segment_rotation(BoardPos from, BoardPos to) {
+    int dx = to.x - from.x;
+    int dy = to.y - from.y;
+
+    // Return degrees for sprite rotation
+    if (dx > 0) return 0.0f;    // Right
+    if (dx < 0) return 180.0f;  // Left
+    if (dy > 0) return 90.0f;   // Down
+    return 270.0f;              // Up
+}
+```
+
+### 9.4 Path Sprite Assets
+
+```
+dist/sprites/tiles/
+    path_start.png      — Short stub at unit
+    path_straight.png   — Full-width line segment
+    path_corner.png     — L-shaped curve
+    path_end.png        — Arrow head
+```
+
+---
+
+## 10. GridRenderer Extensions
+
+### 10.1 New Methods
+
+```cpp
+// In grid_renderer.hpp
+class GridRenderer {
+public:
+    // ... existing methods ...
+
+    // NEW: Render movement path
+    void render_path(const RenderConfig& config,
+                     const std::vector<BoardPos>& path);
+
+    // NEW: Render hover highlight
+    void render_hover(const RenderConfig& config, BoardPos pos);
+
+    // NEW: Render move range with opacity
+    void render_move_range_alpha(const RenderConfig& config,
                                   const std::vector<BoardPos>& tiles,
-                                  SDL_FColor color, float opacity, bool is_hover);
-
-    // Render hover tile
-    void render_hover(const RenderConfig& config, BoardPos pos, SDL_FColor color);
+                                  float opacity);
 
 private:
-    Vec2 transform_tile_corner(const RenderConfig& config,
-                               BoardPos pos, CornerPosition corner);
-    void render_corner_piece(const RenderConfig& config,
-                            BoardPos pos, CornerPosition corner,
-                            const std::string& frame, SDL_FColor tint, float opacity);
+    // NEW: Tile sprite atlas (loaded on init)
+    GPUTextureHandle tile_atlas;
+
+    // Sprite rects within atlas
+    SDL_Rect corner_rects[5];  // CornerVariant: Solo, Edge1, Edge2, BothEdges, Full
+    SDL_Rect path_rects[5];    // PathSegment: Start, Straight, Corner, CornerFlipped, End
 };
 ```
 
-### 5.2 Integration with Existing GridRenderer
+### 10.2 Helper: Add Quad Vertices
 
-Option A: **Replace GridRenderer** with TileRenderer
-Option B: **Compose** - GridRenderer uses TileRenderer internally
-
-**Recommended: Option B**
 ```cpp
-struct GridRenderer {
-    TileRenderer tile_renderer;  // NEW
-    // ... existing fields ...
-
-    void render(const RenderConfig& config);  // Now uses tile_renderer
-};
-```
-
----
-
-## 6. GPU Pipeline Changes
-
-### 6.1 New Shader: Tinted Sprite (`shaders/tinted_sprite.vert/frag`)
-
-Required for color-tinted tile sprites.
-
-```glsl
-// tinted_sprite.frag
-#version 450
-
-layout(location = 0) in vec2 v_uv;
-layout(location = 1) in vec4 v_tint;
-
-layout(set = 1, binding = 0) uniform sampler2D u_texture;
-
-layout(location = 0) out vec4 fragColor;
-
-void main() {
-    vec4 tex = texture(u_texture, v_uv);
-    // Multiply RGB by tint, preserve alpha
-    fragColor = vec4(tex.rgb * v_tint.rgb, tex.a * v_tint.a);
+// In grid_renderer.cpp
+void add_quad_vertices(std::vector<ColorVertex>& vertices,
+                       const TransformedQuad& quad, SDL_FColor color) {
+    // Convert to NDC and add 4 vertices (2 triangles via index buffer)
+    // Quad corners: 0=TL, 1=TR, 2=BR, 3=BL
+    for (int i = 0; i < 4; i++) {
+        vertices.push_back({
+            quad.corners[i].x, quad.corners[i].y,
+            color.r, color.g, color.b, color.a
+        });
+    }
 }
 ```
 
-### 6.2 New Vertex Format
+### 10.3 Batched Rendering
+
+Instead of one draw call per corner (wasteful), batch all corners:
 
 ```cpp
-struct TintedSpriteVertex {
-    float x, y;      // Position
-    float u, v;      // UV
-    float r, g, b, a; // Tint color
-};
-```
+void GridRenderer::render_move_range_alpha(const RenderConfig& config,
+                                            const std::vector<BoardPos>& tiles,
+                                            float opacity) {
+    if (tiles.empty()) return;
 
-### 6.3 Pipeline Creation
+    // Build vertex list for all corners
+    std::vector<ColorVertex> vertices;
+    vertices.reserve(tiles.size() * 4 * 4);  // 4 corners, 4 verts each
 
-Add to `GPURenderer`:
-```cpp
-SDL_GPUGraphicsPipeline* tinted_sprite_pipeline = nullptr;
+    SDL_FColor color = TileColor::MOVE_CURRENT;
+    color.a *= opacity;
 
-// In create_pipelines():
-// Create pipeline with TintedSpriteVertex layout
-```
+    for (const auto& pos : tiles) {
+        for (int corner = 0; corner < 4; corner++) {
+            auto neighbors = get_corner_neighbors(pos, corner, tiles);
+            auto variant = select_variant(neighbors);
 
----
+            // Get corner screen quad
+            auto quad = get_corner_quad(config, pos, corner);
 
-## 7. Asset Requirements
+            // Add 4 vertices for this corner
+            add_quad_vertices(vertices, quad, color);
+        }
+    }
 
-### 7.1 Tile Atlas
-
-Create `dist/tiles/tiles_board.png` with frames:
-
-| Frame | Size | Purpose |
-|-------|------|---------|
-| `tile_hover` | 128×128 | Single tile hover |
-| `tile_large` | 128×128 | Single tile highlight |
-| `tile_merged_large_0` | 64×64 | Corner: isolated |
-| `tile_merged_large_01` | 64×64 | Corner: edge1 |
-| `tile_merged_large_03` | 64×64 | Corner: edge2 |
-| `tile_merged_large_013` | 64×64 | Corner: both edges |
-| `tile_merged_large_0123` | 64×64 | Corner: full |
-| `tile_merged_large_0_seam` | 64×64 | Corner: seam |
-| `tile_merged_hover_*` | 64×64 | Hover variants (same set) |
-
-### 7.2 Atlas Manifest
-
-Create `dist/tiles/tiles_board.json`:
-```json
-{
-  "texture": "tiles_board.png",
-  "size": [512, 256],
-  "frames": {
-    "tile_hover": {"rect": [0, 0, 128, 128], "offset": [0, 0], "rotated": false},
-    "tile_large": {"rect": [128, 0, 128, 128], "offset": [0, 0], "rotated": false},
-    "tile_merged_large_0": {"rect": [256, 0, 64, 64], "offset": [0, 0], "rotated": false},
-    ...
-  }
+    // Single batched draw
+    g_gpu.draw_colored_batch(vertices);
 }
 ```
 
----
+### 10.4 Batched Draw in GPURenderer
 
-## 8. Implementation Slices
-
-### Slice 1: Tile Atlas Loading
-**Files:** `tile_atlas.hpp`, `tile_atlas.cpp`
-**Test:** Load atlas, verify frame lookup
-**Verification:** Print frame UVs, confirm texture loads
-
-### Slice 2: Single Tile Rendering
-**Files:** `tile_renderer.hpp`, `tile_renderer.cpp`
-**Test:** Render single `tile_hover` at board position
-**Verification:** Visual - tile appears at correct position with perspective
-
-### Slice 3: Tinted Sprite Pipeline
-**Files:** `shaders/tinted_sprite.vert`, `shaders/tinted_sprite.frag`, `gpu_renderer.cpp`
-**Test:** Render tile with color tint
-**Verification:** Visual - tile shows correct color multiplication
-
-### Slice 4: Merged Tile Algorithm (Logic Only)
-**Files:** `tile_renderer.cpp`
-**Test:** Unit test corner neighbor detection
-**Verification:** Print selected frames for known tile configurations
-
-### Slice 5: Merged Tile Rendering
-**Files:** `tile_renderer.cpp`
-**Test:** Render 3x3 block of highlighted tiles
-**Verification:** Visual - corners connect correctly
-
-### Slice 6: Hover Integration
-**Files:** `grid_renderer.cpp` (modify), `tile_highlight.hpp`
-**Test:** Mouse hover shows tile highlight
-**Verification:** Interactive - hover tile follows mouse
-
-### Slice 7: Movement Range Display
-**Files:** `grid_renderer.cpp` (modify)
-**Test:** Select unit, show movement range as merged tiles
-**Verification:** Interactive - movement range displays correctly
-
-### Slice 8: Attack Range Display
-**Files:** `grid_renderer.cpp` (modify)
-**Test:** Select unit, show attack range with different color
-**Verification:** Interactive - attack tiles show in aggro color
-
----
-
-## 9. File Manifest
-
-### New Files
-```
-include/
-  tile_atlas.hpp
-  tile_renderer.hpp
-  tile_highlight.hpp
-  tile_colors.hpp
-
-src/
-  tile_atlas.cpp
-  tile_renderer.cpp
-
-shaders/
-  tinted_sprite.vert
-  tinted_sprite.frag
-
-dist/tiles/
-  tiles_board.png
-  tiles_board.json
-```
-
-### Modified Files
-```
-include/
-  grid_renderer.hpp  (add TileRenderer member)
-  gpu_renderer.hpp   (add tinted_sprite_pipeline)
-
-src/
-  grid_renderer.cpp  (use TileRenderer for highlights)
-  gpu_renderer.cpp   (create tinted sprite pipeline)
-```
-
----
-
-## 10. Timing Constants
-
-> **Ground Truth Reference:** Section 14 "Animation Timing Constants"
+Add to `gpu_renderer.hpp`:
 
 ```cpp
-namespace TileAnim {
-    constexpr float FADE_FAST = 0.2f;
-    constexpr float FADE_MEDIUM = 0.35f;
-    constexpr float FADE_SLOW = 1.0f;
-}
+void draw_colored_batch(const std::vector<ColorVertex>& vertices);
 ```
+
+Implementation uploads all vertices in one transfer, draws with single call.
 
 ---
 
-## 11. Z-Order
+## 11. GPU Renderer Efficiency
 
-> **Ground Truth Reference:** Section 9 "Player Tile Z-Order Hierarchy"
+### 11.1 Problem: Current Pattern is Wasteful
 
-Tile highlights render BEFORE entities (lower Z):
+Every `draw_*` call currently:
+1. Creates transfer buffer
+2. Maps memory
+3. Copies vertices
+4. Ends render pass
+5. Begins copy pass
+6. Uploads
+7. Ends copy pass
+8. Begins new render pass
+9. Binds pipeline
+10. Draws
+11. Releases transfer buffer
+
+For 40 tiles × 4 corners = 160 draw calls = 160× overhead.
+
+### 11.2 Solution: Pre-allocated Batch Buffer
+
 ```cpp
-enum class TileZOrder {
-    Board = 1,
-    Move = 2,
-    Assist = 3,
-    Aggro = 4,
-    AttackableTarget = 5,
-    Card = 6,
-    Select = 7,
-    Path = 8,
-    MouseOver = 9,
+// In GPURenderer
+struct BatchState {
+    std::vector<ColorVertex> vertices;
+    size_t vertex_count = 0;
+    bool batch_active = false;
 };
+BatchState tile_batch;
+
+void begin_tile_batch();
+void add_to_tile_batch(const ColorVertex* verts, size_t count);
+void flush_tile_batch();
 ```
 
-In practice for Sylvanshine: render tiles in `render_single_pass()` before sprites.
+Usage:
+```cpp
+g_gpu.begin_tile_batch();
+for (const auto& pos : tiles) {
+    // ... compute vertices ...
+    g_gpu.add_to_tile_batch(corner_verts, 4);
+}
+g_gpu.flush_tile_batch();  // Single upload + draw
+```
+
+### 11.3 Vertex Buffer Sizing
+
+Max tiles: 45 (9×5 board)
+Max corners: 45 × 4 = 180
+Max vertices: 180 × 4 = 720
+Max size: 720 × sizeof(ColorVertex) = 720 × 24 = 17,280 bytes
+
+Pre-allocate 20KB buffer — plenty for all tile rendering.
 
 ---
 
-## 12. Testing Checklist
+## 12. File Changes
 
-### Slice 1: Tile Atlas
-- [ ] Atlas texture loads without error
-- [ ] Frame lookup returns correct UVs for "tile_hover"
-- [ ] Frame lookup returns nullptr for unknown frame
+### 12.1 Modified Files
 
-### Slice 2: Single Tile
-- [ ] Tile renders at (0,0) board position
-- [ ] Tile renders at (8,4) board position (far corner)
-- [ ] Perspective transform matches existing grid lines
+```
+include/grid_renderer.hpp
+    + FadeTarget enum
+    + TileFadeAnim struct
+    + CornerVariant enum
+    + PathSegment enum
+    + render_path(), render_hover(), render_move_range_alpha()
+    + tile_atlas, corner_rects[], path_rects[]
+    + get_corner_quad()
 
-### Slice 3: Tinted Sprite
-- [ ] White tint = original colors
-- [ ] Red tint = red-tinted tile
-- [ ] 50% opacity = translucent tile
+src/grid_renderer.cpp
+    + #include <queue>, <unordered_map>, <algorithm>
+    + get_path_to()
+    + get_corner_neighbors()
+    + select_variant()
+    + get_corner_quad()
+    + select_path_segment()
+    + path_segment_rotation()
+    + render_path()
+    + render_hover()
+    + render_move_range_alpha()
+    + Batched rendering implementation
 
-### Slice 4: Merged Algorithm
-- [ ] Single tile → 4 "0" corners
-- [ ] 2 horizontal tiles → correct "01"/"03" pattern
-- [ ] 2x2 block → all "0123" corners on interior
+include/gpu_renderer.hpp
+    + BatchState struct
+    + begin_tile_batch(), add_to_tile_batch(), flush_tile_batch()
+    + draw_colored_batch()
 
-### Slice 5: Merged Rendering
-- [ ] Corners visually connect
-- [ ] No gaps between corner pieces
-- [ ] Rotation correct for each corner
+src/gpu_renderer.cpp
+    + Batch buffer management
+    + draw_colored_batch() implementation
 
-### Slice 6-8: Integration
-- [ ] Hover tracks mouse correctly
-- [ ] Movement range excludes occupied tiles
-- [ ] Attack range shows correct color
-- [ ] Colors match Duelyst values
+src/main.cpp
+    GameState additions:
+        + hover_pos, hover_valid, was_hovering_on_board
+        + movement_path
+        + move_blob_opacity, attack_blob_opacity
+        + tile_anims
+
+    Function additions/modifications:
+        + update_hover_state()
+        + update_hover_path()
+        + start_opacity_fade()
+        ~ update() — add hover state update, tile animation update
+        ~ clear_selection() — clear path and reset opacities
+```
+
+### 12.2 New Assets
+
+```
+dist/sprites/tiles/
+    tile_corner_solo.png
+    tile_corner_edge1.png
+    tile_corner_edge2.png
+    tile_corner_both.png
+    tile_corner_full.png
+    path_start.png
+    path_straight.png
+    path_corner.png
+    path_end.png
+```
+
+### 12.3 Shader Path
+
+Shaders go to `dist/shaders/` (not `data/shaders/`):
+```
+dist/shaders/
+    tile.vert.spv      — If needed for textured tiles
+    tile.frag.spv
+```
+
+For initial implementation, reuse existing `color.vert`/`color.frag` for solid tiles.
 
 ---
 
-## Appendix A: Ground Truth Cross-Reference
+## 13. Implementation Phases
 
-| This Spec Section | Ground Truth Section |
-|-------------------|---------------------|
-| 3.2 TileHighlight | §8 Color Config, §9 Z-Order |
-| 3.3 TileColors | §8 Color Config |
-| 4 Merged Algorithm | §7 Corner Values, §10 Sprite Classes |
-| 6.1 Tinted Shader | §13 Atlas Format (tint application) |
-| 7 Assets | §13 Atlas Format, Complete Frame Table |
-| 10 Timing | §14 Animation Timing |
-| 11 Z-Order | §9 Z-Order Hierarchy |
+### Phase 1: Foundation (No Visual Change)
+- [ ] Add hover tracking to GameState
+- [ ] Add `get_path_to()` pathfinding function
+- [ ] Add TileFadeAnim and animation update loop
+- [ ] Add batch rendering infrastructure to GPURenderer
+- [ ] Test: hover_pos updates correctly, path calculation works
+
+### Phase 2: Basic Hover
+- [ ] Add `render_hover()` — single tile highlight at mouse
+- [ ] Integrate into render loop after attack range
+- [ ] Test: white square follows mouse on board
+
+### Phase 3: Path Rendering
+- [ ] Add path sprite assets
+- [ ] Implement `render_path()` with segment selection
+- [ ] Connect hover to path display
+- [ ] Test: path shows from selected unit to hover tile
+
+### Phase 4: Blob Dimming
+- [ ] Add opacity parameter to `render_move_range()`
+- [ ] Implement fade animations
+- [ ] Dim blob when hovering valid move target
+- [ ] Test: blob dims smoothly, restores on exit
+
+### Phase 5: Merged Tile Corners (Optional)
+- [ ] Add corner sprite assets
+- [ ] Implement corner neighbor detection
+- [ ] Replace solid quads with corner-based rendering
+- [ ] Test: blob edges have smooth rounded corners
+
+---
+
+## 14. Testing Checklist
+
+### Coordinate Alignment
+- [ ] Hover highlight aligns with grid lines
+- [ ] Path segments connect at tile centers
+- [ ] At 1x scale (1280×720): tiles align correctly
+- [ ] At 2x scale (1920×1080): tiles align correctly
+
+### State Machine
+- [ ] Hovering on board sets hover_valid = true
+- [ ] Moving off board sets hover_valid = false
+- [ ] Transition within board is instant (no flicker)
+- [ ] Transition entering board has 0.2s fade
+
+### Path Calculation
+- [ ] Path avoids occupied tiles
+- [ ] Path finds shortest route (BFS)
+- [ ] Path clears when hovering non-reachable tile
+- [ ] Path updates instantly when moving within board
+
+### Performance
+- [ ] No per-frame allocations during steady state
+- [ ] Batch draw reduces draw calls vs current approach
+- [ ] Frame time stable with full board highlighted
+
+### Visual Consistency
+- [ ] Tile colors match current game (white move, red attack)
+- [ ] Shadows render on top of tile highlights (current behavior)
+- [ ] HP bars position unchanged
+- [ ] Entity sprites position unchanged
+
+---
+
+## 15. Deferred Features
+
+These are documented from Duelyst analysis but NOT implemented in this phase:
+
+### 15.1 Selection Box Pulse
+Duelyst pulses selection box scale 0.85–1.0. Defer until selection UX is designed.
+
+### 15.2 Attack Path Arc Animation
+Animated projectile arc for ranged attacks. Defer until ranged units exist.
+
+### 15.3 Move/Attack Seam Sprites
+Special corner sprites where move and attack blobs meet. Defer until merged corners work.
+
+### 15.4 Duelyst Color Scheme
+Yellow attack tiles (#FFD900) instead of red. Defer until art direction decided.
+
+### 15.5 Card Play Tiles
+Tile highlights for summoning units. Defer until card system exists.
+
+---
+
+## Appendix A: Duelyst Source Cross-Reference
+
+| This Document | Duelyst Source |
+|---------------|----------------|
+| §5.2 Colors | `config.js:824-843` |
+| §5.3 Opacity | `config.js:528-531` |
+| §5.1 Timing | `config.js:550-567` (via entity.hpp) |
+| §7 Merged Tiles | `TileLayer.js:213-269` |
+| §8 Hover State | `Player.js:1557-1841` |
+| §9 Path Segments | `Player.js:2003-2069` |
+
+## Appendix B: Coordinate Transform Reference
+
+```cpp
+// EXISTING — DO NOT MODIFY
+// types.cpp
+Vec2 board_to_screen(config, pos);              // Flat board → screen
+Vec2 board_to_screen_perspective(config, pos);  // With 16° rotation
+BoardPos screen_to_board(config, screen);       // Inverse flat
+BoardPos screen_to_board_perspective(config, screen);  // Inverse with perspective
+
+// grid_renderer.cpp
+Vec2 transform_board_point(config, board_x, board_y);  // Uses 16° rotation
+```
+
+All tile rendering MUST use `transform_board_point()` to match grid lines.
+
+## Appendix C: Render Order Diagram
+
+```
+Frame rendering order (back to front):
+
+1. Clear to background color
+2. Grid lines (GridRenderer::render)
+3. Move blob tiles (render_move_range_alpha)
+4. Attack blob tiles (render_attack_range)
+5. Path segments (render_path)
+6. Hover tile (render_hover)
+─── TILE SYSTEM ENDS ───
+7. Entity shadows (Y-sorted)
+8. Entity sprites (Y-sorted)
+9. Active FX
+10. HP bars
+11. Floating text
+12. Turn indicator / game over overlay
+```
+
+Tiles intentionally render BEFORE shadows so shadows partially occlude highlight edges.
