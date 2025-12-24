@@ -300,10 +300,13 @@ void update_selected_ranges(GameState& state) {
 void update_selected_facing(GameState& state, const RenderConfig& config) {
     if (state.selected_unit_idx < 0) return;
     if (state.selected_unit_idx >= static_cast<int>(state.units.size())) return;
-    
+
+    // Lock facing once movement begins
+    if (state.units[state.selected_unit_idx].is_moving()) return;
+
     BoardPos mouse_board = screen_to_board_perspective(config, state.mouse_pos);
     if (!mouse_board.is_valid()) return;
-    
+
     state.units[state.selected_unit_idx].face_position(mouse_board);
 }
 
