@@ -17,11 +17,16 @@ This directory contains comprehensive documentation for all major systems in the
 ### Visual Systems
 | System | File | Description |
 |--------|------|-------------|
-| [Grid Rendering](grid_rendering.md) | TileLayer, Player, shaders/ | Complete grid system forensics |
+| [Grid Rendering](grid_rendering.md) | TileLayer, Player, shaders/ | Complete grid system (32 sections, fully verified) |
 | [View](view.md) | view/ | Cocos2d rendering |
 | [UI](ui.md) | ui/ | Backbone.js interface |
 | [Data & Resources](data_resources.md) | data/, resources/ | Assets and config |
 | [Audio](audio.md) | audio/, sfx/ | Sound system |
+
+### Interaction Flows (see `flows/`)
+| Flow | Description |
+|------|-------------|
+| [tile_interaction_flow.md](../flows/tile_interaction_flow.md) | Hover/path state machine, sprite classes |
 
 ### Meta-Game Systems
 | System | File | Description |
@@ -74,7 +79,6 @@ This directory contains comprehensive documentation for all major systems in the
 │                      GameSession                             │
 │  (Central authority for all game state)                      │
 ├─────────────────────────────────────────────────────────────┤
-│                                                              │
 │  ┌─────────┐    ┌─────────┐    ┌─────────┐    ┌─────────┐  │
 │  │  Board  │    │ Player  │    │ Player  │    │ Network │  │
 │  │  (9x5)  │    │   1     │    │   2     │    │ Manager │  │
@@ -83,34 +87,34 @@ This directory contains comprehensive documentation for all major systems in the
 │  ┌────┴────┐    ┌────┴────┐    ┌────┴────┐                 │
 │  │ Entities│    │  Deck   │    │  Deck   │                 │
 │  │ (Units, │    │  Hand   │    │  Hand   │                 │
-│  │  Tiles) │    │ Signat. │    │ Signat. │                 │
+│  │SDK.Tile)│    │ Signat. │    │ Signat. │                 │
 │  └────┬────┘    └─────────┘    └─────────┘                 │
 │       │                                                     │
 │  ┌────┴────────────────────────────────────┐               │
-│  │              Modifiers                   │               │
-│  │  (Buffs, abilities, keywords - 717)     │               │
+│  │              Modifiers (717)             │               │
 │  └──────────────────────────────────────────┘               │
-│                                                              │
 │  ┌──────────────────────────────────────────┐               │
-│  │              Actions                      │               │
-│  │  (Commands for state changes - 64)       │               │
+│  │              Actions (64)                │               │
 │  └──────────────────────────────────────────┘               │
 └─────────────────────────────────────────────────────────────┘
                            │
                            ▼
 ┌─────────────────────────────────────────────────────────────┐
 │                    View System                               │
-│  ┌─────────┐    ┌─────────┐    ┌─────────┐    ┌─────────┐  │
-│  │  Scene  │    │ Layers  │    │  Nodes  │    │   FX    │  │
-│  └─────────┘    └─────────┘    └─────────┘    └─────────┘  │
-└─────────────────────────────────────────────────────────────┘
-                           │
-                           ▼
-┌─────────────────────────────────────────────────────────────┐
-│                    UI System                                 │
-│  ┌─────────┐    ┌─────────┐    ┌─────────┐    ┌─────────┐  │
-│  │Managers │    │  Views  │    │ Models  │    │Templates│  │
-│  └─────────┘    └─────────┘    └─────────┘    └─────────┘  │
+│  ┌─────────┐    ┌───────────────────────────────────────┐  │
+│  │GameLayer│───▶│ TileLayer (grid_rendering.md)          │  │
+│  └─────────┘    │  ├─ Merged tile sprites (movement blob)│  │
+│       │         │  ├─ Path sprites (daisy-chain arrows)  │  │
+│       ▼         │  └─ Hover state machine                │  │
+│  ┌─────────┐    └───────────────────────────────────────┘  │
+│  │ Player  │◀──── tile_interaction_flow.md                 │
+│  │ (view)  │    ┌───────────────────────────────────────┐  │
+│  └─────────┘    │ EntityNode                             │  │
+│       │         │  ├─ UnitNode (minions/generals)        │  │
+│       ▼         │  └─ TileNode (SDK.Tile: Mana Springs)  │  │
+│  ┌─────────┐    └───────────────────────────────────────┘  │
+│  │   FX    │                                               │
+│  └─────────┘                                               │
 └─────────────────────────────────────────────────────────────┘
 ```
 

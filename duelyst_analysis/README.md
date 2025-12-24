@@ -96,22 +96,19 @@ uv run scripts/generate_flow_diagram.py spell_cast_flow --format mermaid
 | Rarities | 7 |
 | Races | 8 |
 
-### Visual Systems (NEW)
-| Category | Count |
+### Visual Systems| Category | Count |
 |----------|-------|
 | Animations | 318 |
 | Shaders | 96 |
 | Particle Systems | 63 |
 
-### Localization (NEW)
-| Category | Count |
+### Localization| Category | Count |
 |----------|-------|
 | Localization strings | 4,397 |
 | Languages supported | 3 |
 | Translation namespaces | 34 |
 
-### AI & Replay (NEW)
-| Category | Count |
+### AI & Replay| Category | Count |
 |----------|-------|
 | Agent action types | 13 |
 | Challenge scripts | 13 |
@@ -134,15 +131,15 @@ uv run scripts/generate_flow_diagram.py spell_cast_flow --format mermaid
 - **[summaries/modifiers.md](summaries/modifiers.md)** - Modifier system architecture
 - **[summaries/README.md](summaries/README.md)** - System relationships diagram
 
-### Visual Systems (NEW)
+### Visual Systems
+- **[summaries/grid_rendering.md](summaries/grid_rendering.md)** - Complete grid/tile system (32 sections, fully audited)
 - **[summaries/animations.md](summaries/animations.md)** - 318 sprite animations, frame timing
 - **[summaries/shaders.md](summaries/shaders.md)** - 96 GLSL shaders, uniform parameters
 - **[summaries/particles.md](summaries/particles.md)** - 63 particle emitter configurations
 - **[summaries/lighting_shadows.md](summaries/lighting_shadows.md)** - Lighting coordinate system and shadow projection
 - **[summaries/localization.md](summaries/localization.md)** - 4,397 i18n strings
 
-### Replay & AI (NEW)
-- **[summaries/replay.md](summaries/replay.md)** - Serialization format, replay playback
+### Replay & AI- **[summaries/replay.md](summaries/replay.md)** - Serialization format, replay playback
 - **[schemas/Replay.md](schemas/Replay.md)** - JSON serialization structure
 - **[schemas/AgentAction.md](schemas/AgentAction.md)** - Scripted AI actions
 - **[schemas/ChallengeScript.md](schemas/ChallengeScript.md)** - Tutorial/puzzle scripts
@@ -154,17 +151,13 @@ uv run scripts/generate_flow_diagram.py spell_cast_flow --format mermaid
 - **[flows/unit_spawn_flow.md](flows/unit_spawn_flow.md)** - Summoning and Opening Gambit
 - **[flows/turn_sequence_flow.md](flows/turn_sequence_flow.md)** - Turn structure and phases
 - **[flows/modifier_trigger_flow.md](flows/modifier_trigger_flow.md)** - Event hook execution order
-
+- **[flows/tile_interaction_flow.md](flows/tile_interaction_flow.md)** - Tile highlight system, hover/path state machine
 ### Entity Schemas
 - **[schemas/Action.md](schemas/Action.md)** - Command pattern architecture
 - **[schemas/Modifier.md](schemas/Modifier.md)** - 717 modifier types, watch hooks
 - **[schemas/Unit.md](schemas/Unit.md)** - Unit entity structure
 - **[schemas/GameSession.md](schemas/GameSession.md)** - Central game state
-- **[schemas/Animation.md](schemas/Animation.md)** - Sprite animation definitions (NEW)
-- **[schemas/Shader.md](schemas/Shader.md)** - GLSL shader structure (NEW)
-- **[schemas/Particle.md](schemas/Particle.md)** - Particle emitter configs (NEW)
-- **[schemas/LocalizationString.md](schemas/LocalizationString.md)** - i18n string format (NEW)
-- **[schemas/README.md](schemas/README.md)** - Entity relationships diagram
+- **[schemas/Animation.md](schemas/Animation.md)** - Sprite animation definitions- **[schemas/Shader.md](schemas/Shader.md)** - GLSL shader structure- **[schemas/Particle.md](schemas/Particle.md)** - Particle emitter configs- **[schemas/LocalizationString.md](schemas/LocalizationString.md)** - i18n string format- **[schemas/README.md](schemas/README.md)** - Entity relationships diagram
 
 ## New Instance Data (Phase 8)
 
@@ -195,8 +188,7 @@ uv run scripts/generate_flow_diagram.py spell_cast_flow --format mermaid
 | `CONFIG.ENTITY_ATTACK_DURATION_MODIFIER` | 1.0 | Attack speed multiplier |
 | `CONFIG.ENTITY_MOVE_DURATION_MODIFIER` | 1.0 | Move speed multiplier |
 
-### Animation Frame Delays (NEW)
-| Speed | Frame Delay | Use Cases |
+### Animation Frame Delays| Speed | Frame Delay | Use Cases |
 |-------|-------------|-----------|
 | Very Fast | 0.033s | Fluid effects |
 | Fast | 0.04s | Blood, explosions |
@@ -285,16 +277,21 @@ duration = tileCount * baseDuration * ENTITY_MOVE_DURATION_MODIFIER
 1. Read `system_interactions.md` §7 for FX overview
 2. Check `schemas/FX.md` for FX structure
 3. Review `instances/fx.tsv` for all FX definitions
-4. Check `instances/animations.tsv` for frame timing (NEW)
-5. Check `instances/particles.tsv` for emitter configs (NEW)
-6. Use `scripts/get_fx_composition.py` to trace FX
+4. Check `instances/animations.tsv` for frame timing5. Check `instances/particles.tsv` for emitter configs6. Use `scripts/get_fx_composition.py` to trace FX
 
-### Adding Visual Effects (NEW)
+### Adding Visual Effects
 1. Check `schemas/Animation.md` for animation structure
 2. Check `schemas/Shader.md` for shader uniforms
 3. Check `schemas/Particle.md` for particle parameters
 4. Review `summaries/animations.md` for timing patterns
 5. Review `summaries/shaders.md` for effect types
+
+### Implementing Grid/Tile Rendering
+1. **READ FIRST:** `summaries/grid_rendering.md` - Complete 32-section forensic analysis
+2. Check `flows/tile_interaction_flow.md` for hover/path state machine
+3. Key systems: TileLayer.js, Player.js, TileMapScaledSprite.js
+4. Merged tile algorithm: §7 in grid_rendering.md (corner piece selection)
+5. Path sprite daisy-chaining: §11 in grid_rendering.md
 
 ### Porting Lighting/Shadows to Another Engine
 1. **READ FIRST:** `summaries/lighting_shadows.md` - Critical coordinate system differences
@@ -320,13 +317,11 @@ duration = tileCount * baseDuration * ENTITY_MOVE_DURATION_MODIFIER
 2. Check `summaries/network.md` for protocol details
 3. Review `semantic/events.tsv` for network events
 
-### Understanding Replay System (NEW)
-1. Read `schemas/Replay.md` for serialization format
+### Understanding Replay System1. Read `schemas/Replay.md` for serialization format
 2. Check `instances/serialization_fields.tsv` for all fields
 3. Review `summaries/replay.md` for replay flow
 
-### Localizing Content (NEW)
-1. Check `schemas/LocalizationString.md` for i18n format
+### Localizing Content1. Check `schemas/LocalizationString.md` for i18n format
 2. Review `instances/localization.tsv` for all strings
 3. See `summaries/localization.md` for namespace organization
 
@@ -390,8 +385,7 @@ Each schema file follows this structure:
 ## Description
 ```
 
-## Extraction Scripts (NEW)
-
+## Extraction Scripts
 ### JavaScript Extractors
 | Script | Output | Purpose |
 |--------|--------|---------|

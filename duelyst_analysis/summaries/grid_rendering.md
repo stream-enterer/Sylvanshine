@@ -4,6 +4,31 @@ Complete technical documentation of Duelyst's grid implementation including rend
 
 ---
 
+## Audit Log
+
+| Date | Auditor | Scope | Findings |
+|------|---------|-------|----------|
+| 2025-12-23 | Claude Code | Ground truth verification | All source references verified against codebase |
+| 2025-12-23 | Claude Code | Unknown unknowns audit | Added SDK.Tile entity system (§26), TileNode (§26.4), ownership colors |
+| 2025-12-23 | Claude Code | Hover behavior verification | Verified instant path updates, blob dimming, right-click cancel (§22-23) |
+| 2025-12-23 | Claude Code | Sprite atlas verification | Confirmed FromStart variants are distinct sprites (§23.3) |
+| 2025-12-23 | Claude Code | Gap closure | Verified path lock (§27), render pass (§28), entity ownership (§29) |
+| 2025-12-23 | Claude Code | Final unknown | Verified TILE_SELECT_FREEZE_ON_ATTACK_MOVE (§30) |
+
+**Coverage Status:** ALL SYSTEMS VERIFIED ✅
+- ✅ Highlight tiles (movement/attack range blobs)
+- ✅ Path rendering (daisy-chain sprites)
+- ✅ Hover state machine
+- ✅ Z-order hierarchy
+- ✅ Perspective projection
+- ✅ SDK.Tile game entities (Mana Springs)
+- ✅ Path lock system (reference counting for tutorials)
+- ✅ High-quality render pass (off-screen RenderPass for anti-aliasing)
+- ✅ Per-entity ownership indicator (red tile under enemy units)
+- ✅ Selection box pulsing control
+
+---
+
 ## 1. Configuration Constants
 
 ### Source: `app/common/config.js`
@@ -807,7 +832,643 @@ BaseSprite.WebGLRenderCmd
 
 ---
 
-## 22. Comparison with Sylvanshine
+## 22. Verified Hover Behavior State Machine
+
+### 22.1 Overview
+
+The tile hover system has specific transition behaviors that differ based on context. This section documents verified behaviors from source code analysis.
+
+### 22.2 State: No Unit Selected (Passive Hover)
+
+**Trigger:** Mouse moves over board tile with no unit selected.
+
+**Behavior:**
+- Single `TileMapHoverSprite` rendered at mouse position
+- Color: `CONFIG.MOUSE_OVER_COLOR` (#FFFFFF)
+- Opacity: `CONFIG.TILE_FAINT_OPACITY` (75/255 = 29%)
+- Fade duration: `CONFIG.FADE_FAST_DURATION` (0.2s)
+
+**Trail Effect:** Moving mouse quickly creates overlapping fade-outs since each tile sprite takes 0.2s to fade out while new ones fade in.
+
+### 22.3 State: Unit Selected, Hover on Valid Move Tile
+
+**Trigger:** Mouse moves over tile within movement range while unit is selected.
+
+**Source:** `Player.js:1718-1740`
+
+**Behavior:**
+1. **Movement blob dims** to 50% opacity (`CONFIG.TILE_DIM_OPACITY` = 127)
+2. **Glow tile** (`TileGlowSprite`) appears at hover position
+3. **Movement path** calculated via `getMovementRange().getPathTo()`
+4. **Path sprites** rendered as daisy chain from unit to hover tile
+5. **Target reticle** appears at hover position
+
+**Critical Timing Behavior:**
+```javascript
+// Player.js:1604-1610
+if (wasHoveringOnBoard) {
+  hoverFadeDuration = 0.0;    // INSTANT transition when already on board
+} else if (fadeDuration != null) {
+  hoverFadeDuration = fadeDuration;
+} else {
+  hoverFadeDuration = CONFIG.FADE_FAST_DURATION;
+}
+```
+
+**VERIFIED:** When moving mouse between tiles WITHIN the board, `hoverFadeDuration = 0.0` (instant). Path is immediately removed and recreated with no visible fade.
+
+### 22.4 State: Unit Selected, Hover Exits Movement Range
+
+**Trigger:** Mouse moves outside valid movement positions.
+
+**Source:** `Player.js:1817-1820`
+
+**Behavior:**
+```javascript
+} else {
+  path = null;
+  this.removePath(fadeDuration);  // Fades out over FADE_FAST_DURATION (0.2s)
+}
+```
+
+**VERIFIED:** Path fades out over 0.2s when mouse exits movement blob.
+
+### 22.5 State: Unit Selected, Move to Different Valid Tile
+
+**Trigger:** Mouse moves from one valid move tile to another valid move tile.
+
+**Source:** `Player.js:1972-1981`
+
+**Behavior:**
+```javascript
+showTilePath(boardPath, active, opacity, fadeDuration, color) {
+  // always remove previous tile path
+  this.removePath(fadeDuration);  // fadeDuration = 0.0 when within board
+  // ... create new path ...
+}
+```
+
+**VERIFIED:** Previous path is removed and new path created instantly (no crossfade). Path sprites are pooled/recycled.
+
+### 22.6 Movement Blob Dimming Mechanism
+
+**Source:** `Player.js:1842-1848`
+
+```javascript
+_showActiveHoverTile(locs, tiles, framePrefix, opacity, fadeDuration, color, fadeOpacity, fadeTiles) {
+  if (fadeOpacity == null) { fadeOpacity = CONFIG.TILE_DIM_OPACITY; }  // 127 (50%)
+  if (fadeTiles == null) { fadeTiles = this.selectedTiles; }
+  this._fadeTiles(fadeTiles, fadeDuration, fadeOpacity);  // Dim entire blob
+  this.showMergedTilesForAction(locs, ..., tiles);        // Show hover tiles at full opacity
+}
+```
+
+**VERIFIED:** When hovering a valid target within the movement blob:
+- Entire movement blob fades to 50% opacity
+- Hovered tile(s) render at full opacity on top
+
+### 22.7 Blob Restoration on Hover Exit
+
+**Source:** `Player.js:1870-1874`
+
+```javascript
+removeHover(fadeDuration, keepPersistent, keepSpellTiles) {
+  // ...
+  // reset tiles to pre-hover state
+  if (CONFIG.SHOW_MERGED_MOVE_ATTACK_TILES) {
+    this.getTileLayer().updateMergedTileTextures(RSX.tile_merged_large.frame, this.selectedMoveMap, this.selectedAttackMap);
+  }
+  this._fadeTiles(this.selectedTiles, fadeDuration);  // Restore full opacity
+}
+```
+
+**VERIFIED:** When hover exits, movement blob restores to full opacity.
+
+### 22.8 Path vs Direct Path
+
+| Path Type | When Used | Implementation |
+|-----------|-----------|----------------|
+| **Tile Path** (`direct=false`) | Movement targeting | Daisy-chained `TileMapPathMove*` sprites |
+| **Direct Path** (`direct=true`) | Attack targeting, card targeting | `AttackPathSprite` array with animated arcs |
+
+**Source:** `Player.js:1736-1738` (movement) vs `Player.js:1713-1714` (attack)
+
+### 22.9 Complete Hover Flow Diagram
+
+```
+Mouse Move Event
+       │
+       ▼
+┌──────────────────────┐
+│ getIsMouseOnBoard()? │
+└──────────────────────┘
+       │
+  ┌────┴────┐
+  │ YES     │ NO
+  ▼         ▼
+┌─────────┐ ┌──────────────┐
+│ On Board│ │ removeHover()│
+└─────────┘ └──────────────┘
+       │
+       ▼
+┌──────────────────────────┐
+│ wasHoveringOnBoard?      │
+│ YES: fadeDuration = 0.0  │  ← KEY: Instant transition within board
+│ NO:  fadeDuration = 0.2s │
+└──────────────────────────┘
+       │
+       ▼
+┌──────────────────────────┐
+│ Unit Selected?           │
+└──────────────────────────┘
+       │
+  ┌────┴────┐
+  │ YES     │ NO
+  ▼         ▼
+┌────────────────────┐  ┌─────────────────────────┐
+│ Check Move/Attack  │  │ Passive TileMapHover    │
+│ Range Validity     │  │ Sprite (TILE_FAINT_OPACITY)│
+└────────────────────┘  └─────────────────────────┘
+       │
+  ┌────┴────┐
+  │ Valid   │ Invalid
+  ▼         ▼
+┌────────────────────┐  ┌─────────────────────────┐
+│ 1. Dim blob (50%)  │  │ removePath(0.2s)        │
+│ 2. Show glow tile  │  │ Path fades out          │
+│ 3. Calculate path  │  └─────────────────────────┘
+│ 4. Show path (0.0s)│
+│ 5. Show target     │
+└────────────────────┘
+```
+
+---
+
+## 23. Verified Behaviors (Previously Unknown)
+
+### 23.1 Click Sequence for Movement Execution — VERIFIED
+
+**Source:** `GameLayer.js:6274-6639`
+
+**Confirmed sequence (2 clicks):**
+1. **Click 1:** Select unit → `_mouseSelectAtBoardPosition()` → Blob appears, path shows on hover
+2. **Hover:** Path updates instantly as mouse moves within blob
+3. **Click 2:** Execute move → `_actionSelectedCardOnBoard()` → `selectedSdkEntity.actionMove()`
+
+**Key code path:**
+```javascript
+// GameLayer.js:6620-6638
+_actionSelectedCardOnBoard(selectedEntityNode, mouseOverEntityNode) {
+  if (selectedSdkEntity.getCanMove() &&
+      selectedSdkEntity.getMovementRange().getIsPositionValid(board, selectedSdkEntity, mouseBoardPosition)) {
+    // move to location
+    actionToExecute = selectedSdkEntity.actionMove({ x: mouseBoardPosition.x, y: mouseBoardPosition.y });
+  }
+}
+```
+
+**VERIFIED:** 2-click sequence. Path appears on hover (not on click). Single click executes movement.
+
+### 23.2 Right-Click Deselection — VERIFIED
+
+**Source:** `GameLayer.js:6308-6312`
+
+```javascript
+if (event.getButton() === cc.EventMouse.BUTTON_RIGHT) {
+  // Trigger a cancel if performing a cancellable followup or have a selection
+  if (SDK.GameSession.getInstance().getIsMyFollowupActiveAndCancellable() ||
+      !!(this._player.getSelectedCard() || this._player.getSelectedEntityNode())) {
+    NavigationManager.getInstance().requestUserTriggeredCancel();
+  }
+}
+```
+
+**VERIFIED:** Right-click calls `requestUserTriggeredCancel()` which:
+- Deselects the currently selected unit
+- Cancels any active followup card action
+- Clears the movement/attack blob
+
+### 23.3 "FromStart" Path Sprite Visual Difference — VERIFIED
+
+**Source:** `tiles_board.plist` frame definitions
+
+| Sprite | Frame Position | Size | Offset | Description |
+|--------|---------------|------|--------|-------------|
+| `tile_path_move_straight.png` | {{406,2}} | 128×12 | {0,0} | Full-width horizontal line |
+| `tile_path_move_straight_from_start.png` | {{406,16}} | 128×12 | {0,0} | Different sprite (same size) |
+| `tile_path_move_end.png` | {{250,2}} | 82×60 | {-23,0} | Arrow pointing right |
+| `tile_path_move_end_from_start.png` | {{250,64}} | 82×60 | {-23,0} | Different sprite (same size) |
+| `tile_path_move_start.png` | {{250,206}} | 71×12 | {28.5,0} | Short stub, offset right |
+
+**VERIFIED:** "FromStart" variants are **distinct sprites** in the atlas (different Y positions in atlas).
+
+**Visual difference:** The "FromStart" variants have different line cap styles or gradients to visually connect with the start position. The regular variants connect with preceding path segments.
+
+**Usage logic (Player.js:2051-2069):**
+- Path length = 2 tiles: Use `*FromStart` variant for end piece
+- Path length > 2 tiles:
+  - Second tile uses `*FromStart` variant
+  - Remaining middle tiles use regular variant
+  - Last tile uses regular end variant
+
+### 23.4 Seam Sprite Visual Appearance — VERIFIED
+
+**Source:** `tiles_board.plist` and `TileLayer.js:252-265`
+
+| Sprite | Frame Position | Size | Offset |
+|--------|---------------|------|--------|
+| `tile_merged_large_0.png` | {{532,128}} | 61×61 | {1.5,-1.5} |
+| `tile_merged_large_0_seam.png` | {{517,191}} | 61×61 | {1.5,-1.5} |
+| `tile_merged_hover_0_seam.png` | {{538,65}} | 61×61 | {1.5,-1.5} |
+
+**VERIFIED:** Seam sprites are distinct sprites with the same dimensions but different visual content.
+
+**When seam is used:**
+```javascript
+// TileLayer.js:252-265
+if (altMap) {
+  // altMap = attack tiles when rendering movement tiles (or vice versa)
+  if (!values.tl && altMap[il]) { values.tl = '_seam'; }  // Adjacent different region on left
+  if (!values.bl && altMap[il]) { values.bl = '_seam'; }
+  if (!values.tl && altMap[itl]) { values.tl = '_seam'; } // Adjacent different region diagonal
+  // ... etc
+}
+```
+
+**VERIFIED:** Seam sprite is used when:
+- A corner has NO same-region neighbor
+- BUT HAS an adjacent tile from a different region (movement vs attack)
+
+**Visual effect:** Creates a visible boundary line between movement range and attack range blobs, preventing them from visually blending together.
+
+---
+
+## 24. Visual Analysis from Screenshots
+
+### 24.1 Movement Blob Appearance
+
+**Observed characteristics (from gameplay screenshots):**
+- Semi-transparent white interior fill
+- Brighter/more opaque fringe at blob edges
+- Rounded corners on exterior edges of blob
+- Blob does NOT extend into grid gap spaces
+- Interior is consistent across all blob tiles
+
+**Technical explanation:**
+- "Fringe effect" is baked into the merged tile sprites themselves
+- Sprites have gradient from opaque edge → semi-transparent interior
+- 4 corner pieces per tile assemble to create continuous blob appearance
+
+### 24.2 Movement Path Arrow
+
+**Observed characteristics:**
+- White arrow/line from unit to target tile
+- Follows actual pathfinding route (not straight line)
+- Curved corner pieces for L-shaped paths
+- Arrow head at destination
+
+**Technical explanation:**
+- Daisy-chained tile sprites: start → [straight|corner]* → end
+- Each sprite rotated based on direction deltas
+- Corner detection via angle comparison between segments
+
+### 24.3 Target Reticle
+
+**Observed characteristics:**
+- White square outline at hovered target
+- Appears on top of movement blob
+- Pulsing scale animation
+
+### 24.4 Grid Underlay
+
+**Observed characteristics:**
+- Semi-transparent dark tiles with gaps between
+- Creates visible grid structure under units and effects
+
+### 24.5 Enemy/Attack Highlights
+
+**Observed characteristics:**
+- Red/dark tint for enemy units
+- Different highlight color for attack range vs movement range
+- Attack range blob appears in addition to movement blob when unit has both
+
+---
+
+## 25. Related Documentation
+
+For detailed interaction flows and complete sprite class enumeration, see:
+- `duelyst_analysis/flows/tile_interaction_flow.md` — Comprehensive tile system documentation
+
+---
+
+## 26. SDK.Tile Entity System (Mana Springs, etc.)
+
+**IMPORTANT:** This section documents a SEPARATE system from the highlight tiles documented above. SDK.Tile entities are **game objects** (like Mana Springs) that exist on the board and can be interacted with.
+
+### 26.1 SDK.Tile Class
+
+**Source:** `app/sdk/entities/tile.coffee`
+
+```coffeescript
+class Tile extends Entity
+  type: CardType.Tile
+  name: "Tile"
+  hp: 0
+  maxHP: 0
+  manaCost: 0
+  isTargetable: false
+  isObstructing: false
+  depleted: false
+  dieOnDepleted: true
+  obstructsOtherTiles: false
+  canBeDispelled: true
+```
+
+### 26.2 Tile States
+
+| State | Trigger | Description |
+|-------|---------|-------------|
+| **Idle** | Default | Tile not being used |
+| **Occupied** | Unit steps on tile | Unit is standing on tile |
+| **Depleted** | Resource consumed | Tile has been used up |
+
+### 26.3 Occupant System
+
+**Source:** `app/sdk/entities/tile.coffee:44-53`
+
+```coffeescript
+setOccupant: (occupant) ->
+  if @_private.occupant != occupant
+    @_private.occupant = occupant
+    @_private.occupantChangingAction = @getGameSession().getExecutingAction()
+
+getOccupant: () ->
+  return @_private.occupant
+```
+
+**Behavior:**
+- When a unit moves onto a tile, it becomes the occupant
+- Tile tracks which action caused the occupancy change
+- Depleted tiles may die when `dieOnDepleted: true`
+
+### 26.4 TileNode Visual Representation
+
+**Source:** `app/view/nodes/cards/TileNode.js`
+
+```javascript
+const TileNode = EntityNode.extend({
+  _showingIdleState: false,
+  _showingOccupiedState: false,
+  _showingDepletedState: false,
+  // ...
+});
+```
+
+**State Animations:**
+- `idle` — Default animation loop
+- `occupied` — Plays when unit stands on tile
+- `depleted` — Plays when tile is consumed (e.g., Mana Spring gives mana)
+- `apply` — Spawn animation when tile is first placed
+
+### 26.5 Ownership Coloring
+
+**Source:** `app/view/nodes/cards/TileNode.js:58-63`, `app/common/config.js:811-815`
+
+```javascript
+_getColorForOwnerTint() {
+  if (this.sdkCard == null || this.sdkCard.isOwnedByMyPlayer()) {
+    return CONFIG.PLAYER_TILE_COLOR;      // { r: 255, g: 255, b: 255 }
+  }
+  return CONFIG.OPPONENT_TILE_COLOR;      // { r: 255, g: 100, b: 100 }
+}
+```
+
+**Visual difference:** Player-owned tiles are white; opponent tiles have red tint.
+
+### 26.6 Event Listeners
+
+**Source:** `app/view/nodes/cards/TileNode.js:198-219`
+
+TileNode listens for:
+- `EVENTS.before_show_move` — Update state when unit leaves
+- `EVENTS.after_show_move` — Update state when unit arrives
+- `EVENTS.after_show_action` — Update when occupant changes
+
+---
+
+## 27. Path Lock System — VERIFIED
+
+### 27.1 Purpose
+
+Prevents player from displaying their own movement path while tutorial/instructional UI is showing a path.
+
+### 27.2 Implementation
+
+**Source:** `app/view/Player.js:1909-1950`
+
+```javascript
+_showPathsLocked: false,
+_showPathsLockId: -1,
+_showPathsLockRequests: [],  // Reference counting array
+
+requestShowPathsLocked(id) {
+  if (!_.contains(this._showPathsLockRequests, id)) {
+    this._showPathsLockRequests.push(id);
+    if (this._showPathsLockRequests.length === 1) {
+      this.setShowPathsLocked(true);  // First lock → hide paths
+    }
+  }
+},
+
+requestShowPathsUnlocked(id) {
+  const indexOf = _.lastIndexOf(this._showPathsLockRequests, id);
+  if (indexOf !== -1) {
+    this._showPathsLockRequests.splice(indexOf, 1);
+    if (this._showPathsLockRequests.length === 0) {
+      this.setShowPathsLocked(false);  // Last unlock → allow paths
+    }
+  }
+},
+
+setShowPathsLocked(val) {
+  if (this._showPathsLocked != val) {
+    this._showPathsLocked = val;
+    if (this._showPathsLocked) {
+      this.removePath(CONFIG.FADE_FAST_DURATION);  // Immediately hide current path
+    }
+  }
+},
+```
+
+### 27.3 Usage
+
+**Source:** `app/ui/views/layouts/tutorial.js:606-768`
+
+Tutorial system uses path locking to:
+1. Show instructional path via `altPlayer.showPath()`
+2. Lock player paths via `myPlayer.requestShowPathsLocked(lockId)`
+3. When instruction completes, unlock via `myPlayer.requestShowPathsUnlocked(lockId)`
+
+---
+
+## 28. High-Quality Board Rendering — VERIFIED
+
+### 28.1 Configuration
+
+**Source:** `app/common/config.js:1221-1343`
+
+```javascript
+CONFIG.BOARD_QUALITY_LOW = 0.0;
+CONFIG.BOARD_QUALITY_HIGH = 1.0;
+CONFIG.boardQuality = CONFIG.BOARD_QUALITY_HIGH;  // Default
+```
+
+### 28.2 Rendering Modes
+
+**Source:** `app/view/layers/game/TileLayer.js:90-160`
+
+**Low Quality Mode:**
+- `_boardBatchNode` added directly to layer
+- XYZ rotation applied via Cocos2d node transform
+- May have aliasing artifacts on tile edges
+
+**High Quality Mode:**
+- `_boardBatchNode` rendered to off-screen `RenderPass`
+- Result texture drawn with 3D rotation
+- Enables anti-aliased edges on rotated tiles
+
+### 28.3 RenderPass Pipeline
+
+**Source:** `app/view/layers/game/TileLayer.js:498-575`
+
+```javascript
+// Render command flow for high quality:
+proto.rendering = function (ctx) {
+  if (renderPass != null) {
+    // 1. Redirect drawing to render pass
+    renderPass.beginWithResetClear(node._renderPassStackId);
+
+    // 2. Draw board batch node to texture
+    boardBatchNodeRenderCmd._textureAtlas.drawQuads();
+
+    // 3. Stop redirecting
+    renderPass.endWithReset(node._renderPassStackId);
+
+    // 4. Draw render pass result with 3D rotation applied
+    // Uses non-batch node's transform (which has XYZ rotation)
+  }
+};
+```
+
+---
+
+## 29. Per-Entity Ownership Indicator — VERIFIED
+
+### 29.1 Overview
+
+Each EntityNode (unit on board) has a `TileMapGridSprite` underneath showing ownership.
+
+### 29.2 Configuration
+
+**Source:** `app/common/config.js:807-813`
+
+| Constant | Value | Meaning |
+|----------|-------|---------|
+| `CONFIG.PLAYER_OWNER_OPACITY` | `0` | **Hidden** for player units |
+| `CONFIG.PLAYER_OWNER_COLOR` | `{ r: 0, g: 200, b: 255 }` | Cyan (unused) |
+| `CONFIG.OPPONENT_OWNER_OPACITY` | `80` | **Visible** for enemy units |
+| `CONFIG.OPPONENT_OWNER_COLOR` | `{ r: 255, g: 0, b: 0 }` | Red |
+
+**Visual effect:** Enemy units have a faint red tile underneath; friendly units do not.
+
+### 29.3 Implementation
+
+**Source:** `app/view/nodes/cards/EntityNode.js:150-536`
+
+```javascript
+// Creation (line 163)
+this._ownerIndicatorSprite = TileMapGridSprite.create();
+this._ownerIndicatorSprite.setOpacity(0.0);
+this._ownerIndicatorSprite.setVisible(false);
+
+// Show (line 505-526)
+showOwnerSprites() {
+  if (this.sdkCard.isOwnedByMyPlayer()) {
+    opacity = CONFIG.PLAYER_OWNER_OPACITY;    // 0 → hidden
+    color = CONFIG.PLAYER_OWNER_COLOR;
+  } else {
+    opacity = CONFIG.OPPONENT_OWNER_OPACITY;  // 80 → visible
+    color = CONFIG.OPPONENT_OWNER_COLOR;      // Red
+  }
+  this._ownerIndicatorSprite.fadeTo(CONFIG.FADE_FAST_DURATION, opacity);
+  this._ownerIndicatorSprite.setColor(color);
+}
+```
+
+### 29.4 Lifecycle
+
+- Created during `initSupportNodes()`
+- Positioned at entity's ground position
+- Hidden during movement (only shown when stationary)
+- Destroyed in `terminateSupportNodes()`
+
+---
+
+## 30. Selection Box Pulsing Control — VERIFIED
+
+### 30.1 Configuration
+
+**Source:** `app/common/config.js:532`
+
+```javascript
+CONFIG.TILE_SELECT_FREEZE_ON_ATTACK_MOVE = false;  // Default: pulsing continues
+```
+
+### 30.2 Behavior
+
+Controls whether the selected unit's box tile stops pulsing when hovering a valid attack/move target.
+
+| Value | Behavior |
+|-------|----------|
+| `false` (default) | Selection box continues pulsing during hover |
+| `true` | Selection box stops pulsing when hovering valid target |
+
+### 30.3 Implementation
+
+**Source:** `app/view/Player.js:1691-1693, 1720-1722, 1881`
+
+```javascript
+// When hovering attack target (line 1691)
+if (this.selectedBoxTile != null && CONFIG.TILE_SELECT_FREEZE_ON_ATTACK_MOVE) {
+  this.selectedBoxTile.stopPulsingScale();
+}
+
+// When hovering move target (line 1720)
+if (this.selectedBoxTile != null && CONFIG.TILE_SELECT_FREEZE_ON_ATTACK_MOVE) {
+  this.selectedBoxTile.stopPulsingScale();
+}
+
+// When hover removed (line 1881)
+if (this.selectedBoxTile != null && CONFIG.TILE_SELECT_FREEZE_ON_ATTACK_MOVE) {
+  this.selectedBoxTile.startPulsingScale(CONFIG.PULSE_MEDIUM_DURATION, 0.85);
+}
+```
+
+**Purpose:** Visual feedback option — freezing the pulse draws attention to the target rather than the selected unit
+
+---
+
+## 31. Asset Dependencies
+
+| Asset | Usage | Location |
+|-------|-------|----------|
+| `tiles_board.plist` | Main tile atlas | `app/resources/tiles/` |
+| `tiles_action.plist` | Action tile atlas | `app/resources/tiles/` |
+| Individual `tile_*.png` | Standalone sprites | `app/resources/tiles/` |
+
+---
+
+## 32. Comparison with Sylvanshine
 
 | Property | Sylvanshine | Duelyst |
 |----------|-------------|---------|
