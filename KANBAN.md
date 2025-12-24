@@ -41,15 +41,15 @@
 - [x] Path arrow opacity (59%) and hard-edge sprites (NEAREST interpolation)
 - [x] Glow tile under movement target (20% opacity)
 - [x] Passive hover opacity (29% for non-movement hover)
-- [ ] Movement highlight sprites 🔓 FX instances catalogued
-- [ ] Attack highlight sprites 🔓 FX instances catalogued
-- [ ] Instant hover transitions (no fade when moving within board) — `docs/grid_phase7_plan.md` §2
-- [ ] Attack target reticle (`tile_large.png`) — `docs/grid_phase7_plan.md` §4
+- [x] Movement highlight sprites — corner merging system in `grid_renderer.cpp:237-261`
+- [x] Attack highlight sprites — yellow blob with seam detection in `grid_renderer.cpp:639-663`
+- [x] Instant hover transitions (no fade when moving within board) — `main.cpp:997`
+- [x] Attack target reticle (`tile_large.png`) — `grid_renderer.cpp:619-637`
 - [ ] Enemy ownership indicator (`tile_grid.png`) under enemy units
+- [x] Z-order constants for tile layers — `grid_renderer.hpp:51-61` (9-layer system)
 - [ ] Move/attack seam sprites (`corner_0_seam.png`) — `docs/out_of_scope/move_attack_seam.md`
 - [ ] Card play tiles (`tile_card.png`, `tile_spawn.png`) — `docs/out_of_scope/card_play_tiles.md`
 - [ ] Attack path arc animation (ranged projectile trajectory) — `docs/out_of_scope/attack_path_arc.md`
-- [ ] Z-order constants for tile layers — `docs/grid_phase7_plan.md` §5
 
 ### Backgrounds
 - [ ] Per-level background system
@@ -323,6 +323,46 @@
 
 ---
 
+## ENEMY TURN VISUALIZATION (Sylvanshine Original)
+
+> **Note:** This is a *new feature* not present in Duelyst. Duelyst's bot games have zero visual feedback during AI turns — actions just "happen" without preview. See `docs/enemy_turn_visualization_spec.md` for design.
+
+### Core Concept
+Show enemy "thinking" during enemy turn to help player understand AI decisions and add visual polish.
+
+### Phase 1: Basic Turn Feedback
+- [ ] "Enemy Turn" indicator (Duelyst has this: `notification_enemy_turn` sprite)
+- [ ] Enemy unit highlight when AI is evaluating it
+- [ ] Brief pause before each enemy action (configurable timing)
+
+### Phase 2: Action Preview
+- [ ] Show enemy unit's intended movement (red movement blob)
+- [ ] Show enemy unit's attack target (red attack indicator)
+- [ ] Movement path line to destination
+- [ ] Attack path line to target
+
+### Phase 3: Decision Visualization (Optional)
+- [ ] Show all enemies being considered (dimmed highlight)
+- [ ] Show selected enemy (bright highlight)
+- [ ] Show evaluated targets (pulsing indicators)
+- [ ] "Thinking" animation on active enemy
+
+### Implementation Notes
+- Timing: Insert artificial delays between AI evaluation → selection → move → attack
+- Visualization: Reuse existing tile sprites with opponent colors (`#D22846`, `#82192D`)
+- Toggle: Should be disable-able for speedrun/impatient players
+- Animation speed multiplier should apply here too
+
+### Reference Systems (Duelyst)
+| System | In Duelyst | For Sylvanshine |
+|--------|------------|-----------------|
+| Ownership indicator (`tile_grid.png`) | Idle red tile under enemies | **Implement** |
+| Enemy attack preview on hover | Red attack blob | **Implement** |
+| Opponent network visualization | Selection box + path | **Adapt** for AI |
+| Bot visual feedback | None | **New feature** |
+
+---
+
 ## MISC / INVESTIGATE
 
 - [ ] Enemy attack range uses different color — Duelyst uses red `#D22846` (`CONFIG.AGGRO_OPPONENT_COLOR`) for enemy attack tiles vs yellow `#FFD900` for friendly. Investigate if/when this matters for single-player tactics.
@@ -334,7 +374,7 @@
 | Symbol | Meaning | Count |
 |--------|---------|-------|
 | ⚡ | Now trivial (single query) | 11 |
-| 🔓 | Unblocked (info available) | 14 |
+| 🔓 | Unblocked (info available) | 12 |
 | 📊 | Bulk queryable | 16 |
 | | Unchanged | ~50 |
 
