@@ -226,6 +226,9 @@ class BuildStats:
     fx_found: int = 0
     fx_processed: int = 0
     fx_skipped: int = 0
+    tiles_found: int = 0
+    tiles_copied: int = 0
+    tiles_skipped: int = 0
     files_copied: int = 0
     files_skipped: int = 0
     sdf_generated: int = 0
@@ -520,11 +523,13 @@ def build_assets(
     dist_dir.mkdir(parents=True, exist_ok=True)
     (dist_dir / 'resources' / 'units').mkdir(parents=True, exist_ok=True)
     (dist_dir / 'resources' / 'fx').mkdir(parents=True, exist_ok=True)
+    (dist_dir / 'resources' / 'tiles').mkdir(parents=True, exist_ok=True)
 
     # Initialize assets manifest
     assets: dict[str, Any] = {
         'units': {},
         'fx': {},
+        'tiles': {},
         'timing': {},
         'fx_mapping': {}
     }
@@ -672,6 +677,41 @@ def build_assets(
         copied = stats.fx_processed - stats.fx_skipped
         print(f"  {stats.fx_found} FX: {copied} copied, {stats.fx_skipped} up-to-date")
 
+    # ===== Process Tiles =====
+    tiles_dir = resources_dir / 'tiles'
+    if tiles_dir.exists():
+        print("Processing tiles...")
+        # Get all PNG files, excluding @2x variants (we use 1x for now)
+        png_files = sorted([p for p in tiles_dir.glob('*.png') if '@2x' not in p.name])
+        stats.tiles_found = len(png_files)
+
+        # Tiles we need for the grid system
+        # Corner sprites: tile_merged_large_* (for move blob)
+        # Hover corners: tile_merged_hover_* (for hover state)
+        # Path sprites: tile_path_move_* (for movement path)
+        # Utility: tile_hover, tile_glow, tile_attack, tile_grid
+
+        for png_path in png_files:
+            tile_name = png_path.stem
+            dest_png = dist_dir / 'resources' / 'tiles' / f'{tile_name}.png'
+
+            try:
+                if copy_if_needed(png_path, dest_png, force):
+                    stats.tiles_copied += 1
+                    stats.files_copied += 1
+                else:
+                    stats.tiles_skipped += 1
+                    stats.files_skipped += 1
+            except Exception as e:
+                print(f"  Error copying {png_path}: {e}")
+                stats.errors += 1
+                continue
+
+            # Add to manifest
+            assets['tiles'][tile_name] = f'resources/tiles/{tile_name}.png'
+
+        print(f"  {stats.tiles_found} tiles: {stats.tiles_copied} copied, {stats.tiles_skipped} up-to-date")
+
     # ===== Copy shadow texture =====
     shadow_src = source_dir / 'resources' / 'unit_shadow.png'
     if shadow_src.exists():
@@ -694,6 +734,7 @@ def build_assets(
     print(f"\nBuild complete!")
     print(f"  Units: {stats.units_processed} ({stats.units_skipped} unchanged)")
     print(f"  FX: {stats.fx_processed} ({stats.fx_skipped} unchanged)")
+    print(f"  Tiles: {stats.tiles_found} ({stats.tiles_skipped} unchanged)")
     print(f"  Files: {stats.files_copied} copied, {stats.files_skipped} skipped")
     if stats.warnings > 0:
         print(f"  Warnings: {stats.warnings}")

@@ -460,19 +460,31 @@ TransformedQuad get_corner_quad(const RenderConfig& config, BoardPos pos, int co
 }
 ```
 
-### 7.5 Sprite Assets Required
+### 7.5 Sprite Assets (from Duelyst)
 
-Extract from Duelyst or create:
+Copied by `build_assets.py` from `app/resources/tiles/`:
 ```
-dist/sprites/tiles/
-    tile_corner_solo.png      — Rounded quarter-circle
-    tile_corner_edge1.png     — Half-pill shape
-    tile_corner_edge2.png     — Half-pill shape (90° from edge1)
-    tile_corner_both.png      — Inner corner notch
-    tile_corner_full.png      — Solid quarter-square
+dist/resources/tiles/
+    tile_merged_large_0.png      — Solo (no neighbors)
+    tile_merged_large_01.png     — Edge1 (one edge neighbor)
+    tile_merged_large_03.png     — Edge2 (other edge neighbor)
+    tile_merged_large_013.png    — BothEdges (L-shape, no diagonal)
+    tile_merged_large_0123.png   — Full (all neighbors)
+    tile_merged_large_0_seam.png — Seam (boundary between move/attack)
 ```
 
-Each sprite is quarter-tile size: `(TILE_SIZE/2) x (TILE_SIZE/2)` = 24x24 at 1x scale.
+Mapping from CornerVariant enum:
+```cpp
+const char* CORNER_SPRITE_NAMES[] = {
+    "tile_merged_large_0",      // Solo
+    "tile_merged_large_01",     // Edge1
+    "tile_merged_large_03",     // Edge2
+    "tile_merged_large_013",    // BothEdges
+    "tile_merged_large_0123",   // Full
+};
+```
+
+Each sprite is quarter-tile size. Duelyst originals are 47x47 (half of 95px tile).
 
 ---
 
@@ -659,14 +671,31 @@ float path_segment_rotation(BoardPos from, BoardPos to) {
 }
 ```
 
-### 9.4 Path Sprite Assets
+### 9.4 Path Sprite Assets (from Duelyst)
 
+Copied by `build_assets.py` from `app/resources/tiles/`:
 ```
-dist/sprites/tiles/
-    path_start.png      — Short stub at unit
-    path_straight.png   — Full-width line segment
-    path_corner.png     — L-shaped curve
-    path_end.png        — Arrow head
+dist/resources/tiles/
+    tile_path_move_start.png              — Short stub at unit position
+    tile_path_move_straight.png           — Full-width line segment
+    tile_path_move_corner.png             — L-shaped curve
+    tile_path_move_end.png                — Arrow head at destination
+
+    # "FromStart" variants (segment immediately after start):
+    tile_path_move_straight_from_start.png
+    tile_path_move_corner_from_start.png
+    tile_path_move_end_from_start.png
+```
+
+Mapping from PathSegment enum:
+```cpp
+const char* PATH_SPRITE_NAMES[] = {
+    "tile_path_move_start",           // Start
+    "tile_path_move_straight",        // Straight
+    "tile_path_move_corner",          // Corner
+    "tile_path_move_corner",          // CornerFlipped (same sprite, mirrored)
+    "tile_path_move_end",             // End
+};
 ```
 
 ---
@@ -874,20 +903,24 @@ src/main.cpp
         ~ clear_selection() — clear path and reset opacities
 ```
 
-### 12.2 New Assets
+### 12.2 Tile Assets (Auto-copied)
 
-```
-dist/sprites/tiles/
-    tile_corner_solo.png
-    tile_corner_edge1.png
-    tile_corner_edge2.png
-    tile_corner_both.png
-    tile_corner_full.png
-    path_start.png
-    path_straight.png
-    path_corner.png
-    path_end.png
-```
+Copied by `build_assets.py` from `app/resources/tiles/` → `dist/resources/tiles/`:
+
+**Corner sprites (Phase 5):**
+- `tile_merged_large_0.png` through `tile_merged_large_0123.png`
+- `tile_merged_large_0_seam.png`
+- `tile_merged_hover_*` variants
+
+**Path sprites (Phase 3):**
+- `tile_path_move_start.png`
+- `tile_path_move_straight.png`
+- `tile_path_move_corner.png`
+- `tile_path_move_end.png`
+- `*_from_start.png` variants
+
+**Utility sprites:**
+- `tile_hover.png`, `tile_glow.png`, `tile_attack.png`
 
 ### 12.3 Shader Path
 
@@ -971,22 +1004,15 @@ For initial implementation, reuse existing `color.vert`/`color.frag` for solid t
 
 ## 15. Deferred Features
 
-These are documented from Duelyst analysis but NOT implemented in this phase:
+Documented in `docs/out_of_scope/` with full Duelyst references and open questions:
 
-### 15.1 Selection Box Pulse
-Duelyst pulses selection box scale 0.85–1.0. Defer until selection UX is designed.
-
-### 15.2 Attack Path Arc Animation
-Animated projectile arc for ranged attacks. Defer until ranged units exist.
-
-### 15.3 Move/Attack Seam Sprites
-Special corner sprites where move and attack blobs meet. Defer until merged corners work.
-
-### 15.4 Duelyst Color Scheme
-Yellow attack tiles (#FFD900) instead of red. Defer until art direction decided.
-
-### 15.5 Card Play Tiles
-Tile highlights for summoning units. Defer until card system exists.
+| Feature | Document | Prerequisite |
+|---------|----------|--------------|
+| Selection Box Pulse | [selection_box_pulse.md](out_of_scope/selection_box_pulse.md) | Phase 2 + UX design |
+| Attack Path Arc | [attack_path_arc.md](out_of_scope/attack_path_arc.md) | Ranged units |
+| Move/Attack Seam | [move_attack_seam.md](out_of_scope/move_attack_seam.md) | Phase 5 corners |
+| Duelyst Colors | [duelyst_color_scheme.md](out_of_scope/duelyst_color_scheme.md) | Art direction |
+| Card Play Tiles | [card_play_tiles.md](out_of_scope/card_play_tiles.md) | Card system |
 
 ---
 
