@@ -443,32 +443,46 @@ float path_segment_rotation(BoardPos from, BoardPos to) {
 // =============================================================================
 
 // Check if a corner needs seam texture (boundary between two blobs)
+// Duelyst only shows seams at horizontal boundaries (left/right + diagonals),
+// not vertical boundaries (top/bottom). See TileLayer.js:251-265.
 static bool needs_seam_at_corner(BoardPos pos, int corner,
                                   const std::vector<BoardPos>& current_blob,
                                   const std::vector<BoardPos>& alt_blob) {
     if (alt_blob.empty()) return false;
 
     // Offset patterns for each corner (same as get_corner_neighbors)
+    // Order: [side edge, diagonal, orthogonal edge]
     constexpr int offsets[4][3][2] = {
-        {{-1, 0}, {-1,-1}, { 0,-1}},  // TL
-        {{ 0,-1}, { 1,-1}, { 1, 0}},  // TR
-        {{ 1, 0}, { 1, 1}, { 0, 1}},  // BR
-        {{ 0, 1}, {-1, 1}, {-1, 0}},  // BL
+        {{-1, 0}, {-1,-1}, { 0,-1}},  // TL: left, top-left, top
+        {{ 0,-1}, { 1,-1}, { 1, 0}},  // TR: top, top-right, right
+        {{ 1, 0}, { 1, 1}, { 0, 1}},  // BR: right, bottom-right, bottom
+        {{ 0, 1}, {-1, 1}, {-1, 0}},  // BL: bottom, bottom-left, left
+    };
+
+    // Alt-blob check indices per corner (Duelyst checks side + diagonal only):
+    // TL, BR: indices 0, 1 (side edge + diagonal)
+    // TR, BL: indices 1, 2 (diagonal + side edge)
+    constexpr int alt_check[4][2] = {
+        {0, 1},  // TL: left, top-left (skip top)
+        {1, 2},  // TR: top-right, right (skip top)
+        {0, 1},  // BR: right, bottom-right (skip bottom)
+        {1, 2},  // BL: bottom-left, left (skip bottom)
     };
 
     auto in_blob = [](BoardPos p, const std::vector<BoardPos>& blob) {
         return std::find(blob.begin(), blob.end(), p) != blob.end();
     };
 
-    // Check for same-blob neighbor (if found, no seam needed)
+    // Check for same-blob neighbor (if found, no seam needed) - all 3 neighbors
     for (int i = 0; i < 3; i++) {
         BoardPos neighbor = {pos.x + offsets[corner][i][0], pos.y + offsets[corner][i][1]};
         if (in_blob(neighbor, current_blob)) return false;
     }
 
-    // Check for alt-blob neighbor (if found, seam needed)
-    for (int i = 0; i < 3; i++) {
-        BoardPos neighbor = {pos.x + offsets[corner][i][0], pos.y + offsets[corner][i][1]};
+    // Check for alt-blob neighbor (if found, seam needed) - only 2 neighbors per Duelyst
+    for (int i = 0; i < 2; i++) {
+        int idx = alt_check[corner][i];
+        BoardPos neighbor = {pos.x + offsets[corner][idx][0], pos.y + offsets[corner][idx][1]};
         if (in_blob(neighbor, alt_blob)) return true;
     }
 

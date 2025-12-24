@@ -48,7 +48,7 @@
 - [x] Enemy ownership indicator (`tile_grid.png`) under idle enemies — `main.cpp:1205-1229`
 - [x] Enemy attack preview on hover (red blob, no selection) — `main.cpp:1303-1314`
 - [x] Z-order constants for tile layers — `grid_renderer.hpp:51-61` (9-layer system)
-- [ ] Move/attack seam sprites (`corner_0_seam.png`) — `docs/out_of_scope/move_attack_seam.md`
+- [x] Move/attack seam sprites (`corner_0_seam.png`) — fixed alt-blob neighbor check to match Duelyst (horizontal only, not vertical)
 - [ ] Card play tiles (`tile_card.png`, `tile_spawn.png`) — `docs/out_of_scope/card_play_tiles.md`
 - [ ] Attack path arc animation (ranged projectile trajectory) — `docs/out_of_scope/attack_path_arc.md`
 
