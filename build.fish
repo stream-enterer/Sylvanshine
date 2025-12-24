@@ -139,6 +139,11 @@ function do_build_run
     and do_run $argv
 end
 
+function do_build_run_fullscreen
+    do_build
+    and do_run -f $argv
+end
+
 function do_quick
     # Quick build: skip assets and shaders, just compile C++
     echo "→ Quick build (C++ only)..."
@@ -150,6 +155,11 @@ end
 function do_quick_run
     do_quick
     and do_run $argv
+end
+
+function do_quick_run_fullscreen
+    do_quick
+    and do_run -f $argv
 end
 
 function do_shaders_only
@@ -164,19 +174,24 @@ end
 # end
 
 function show_help
-    echo "Usage: ./build.fish [command]"
+    echo "Usage: ./build.fish [command] [args...]"
     echo ""
     echo "Commands:"
     echo "  build      - Build assets + shaders + release"
     echo "  debug      - Build assets + shaders + debug"
     echo "  quick      - C++ only (skip assets/shaders)"
     echo "  qr         - Quick + run"
+    echo "  qrf        - Quick + run fullscreen"
     echo "  clean      - Remove build directory"
     echo "  rebuild    - Clean + build"
     echo "  run        - Run executable"
+    echo "  runf       - Run fullscreen"
     echo "  br         - Build + run"
+    echo "  brf        - Build + run fullscreen"
     echo "  shaders    - Compile shaders only"
     echo "  help       - Show this help"
+    echo ""
+    echo "Args passed to executable (e.g., './build.fish br -f' for fullscreen)"
 end
 
 switch $argv[1]
@@ -188,14 +203,20 @@ switch $argv[1]
         do_quick
     case qr
         do_quick_run $argv[2..]
+    case qrf
+        do_quick_run_fullscreen $argv[2..]
     case clean
         do_clean
     case rebuild
         do_rebuild
     case run
         do_run $argv[2..]
+    case runf
+        do_run -f $argv[2..]
     case br
         do_build_run $argv[2..]
+    case brf
+        do_build_run_fullscreen $argv[2..]
     case shaders
         do_shaders_only
     # case assets

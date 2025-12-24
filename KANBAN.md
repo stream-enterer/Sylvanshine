@@ -24,7 +24,8 @@
 ## RENDERING PIPELINE
 
 ### Shadow System
-- [x] Penumbra blur shader (progressive blur from feet to head)
+- [ ] Penumbra blur shader (progressive blur from feet to head)
+- [ ] Shadow distance fading (opacity/blur increases with distance from caster)
 - [x] Dynamic shadow geometry (skew/stretch based on light position)
 - [x] Light altitude calculation (sqrt(radius) * 6 * scale)
 - [x] Per-map lighting presets (keyboard 0-9 to test)
@@ -32,11 +33,19 @@
 - [ ] Sync lighting presets with actual battle map backgrounds
 
 ### Grid Visuals
-- [ ] Document Duelyst selection sprites (all variants in original repo) ⚡ `find_references.py SelectionSprite`
-- [ ] Tile sprites with spacing (Duelyst grid has gaps between tiles) ⚡ `find_references.py TILESIZE`
+- [ ] Tile sprites with spacing (Duelyst grid has gaps between tiles) — see `docs/grid_comparison/transition_plan.md`
 - [ ] Movement highlight sprites 🔓 FX instances catalogued
 - [ ] Attack highlight sprites 🔓 FX instances catalogued
-- [ ] Selection cursor sprites 🔓 FX instances catalogued
+- [ ] Attack range yellow color (#FFD900) instead of red — `docs/out_of_scope/duelyst_color_scheme.md`
+- [ ] Selection box rendering (`tile_box.png`) — `docs/grid_phase7_plan.md` §1
+- [ ] Selection box pulsing animation (scale 0.85–1.0) — `docs/grid_phase7_plan.md` §3
+- [ ] Instant hover transitions (no fade when moving within board) — `docs/grid_phase7_plan.md` §2
+- [ ] Attack target reticle (`tile_large.png`) — `docs/grid_phase7_plan.md` §4
+- [ ] Enemy ownership indicator (`tile_grid.png`) under enemy units
+- [ ] Move/attack seam sprites (`corner_0_seam.png`) — `docs/out_of_scope/move_attack_seam.md`
+- [ ] Card play tiles (`tile_card.png`, `tile_spawn.png`) — `docs/out_of_scope/card_play_tiles.md`
+- [ ] Attack path arc animation (ranged projectile trajectory) — `docs/out_of_scope/attack_path_arc.md`
+- [ ] Z-order constants for tile layers — `docs/grid_phase7_plan.md` §5
 
 ### Backgrounds
 - [ ] Per-level background system
@@ -287,7 +296,6 @@
 - [x] Shadow system (blob shadow, perspective transform, shader pipeline)
 - [x] Multi-pass rendering pipeline (FBO-based)
 - [x] Bloom post-processing
-- [x] Duelyst-authentic shadow penumbra (7x7 box blur, distance-based)
 - [x] Dynamic shadow geometry (skew/stretch from light position/altitude)
 - [x] Per-map lighting preset system (10 presets from Duelyst battle maps)
 
@@ -311,9 +319,11 @@
 
 | Symbol | Meaning | Count |
 |--------|---------|-------|
-| ⚡ | Now trivial (single query) | 13 |
+| ⚡ | Now trivial (single query) | 11 |
 | 🔓 | Unblocked (info available) | 14 |
 | 📊 | Bulk queryable | 16 |
-| | Unchanged | ~44 |
+| | Unchanged | ~50 |
 
-**~43 tasks** are now significantly easier or already answered by the knowledge base.
+**~41 tasks** are now significantly easier or already answered by the knowledge base.
+
+Grid visual polish items consolidated from `docs/grid_phase7_plan.md` and `docs/out_of_scope/`.
