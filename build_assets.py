@@ -671,6 +671,26 @@ def generate_scaled_tiles(
                 resize_image(src, dst, tile_size, tile_size)
                 generated += 1
 
+        # Enemy indicator tile
+        src = src_dir / 'tile_opponent.png'
+        dst = dst_dir / 'enemy_indicator.png'
+        if src.exists():
+            if output_files is not None:
+                output_files.add(dst)
+            if force or needs_regeneration(src, dst):
+                resize_image(src, dst, tile_size, tile_size)
+                generated += 1
+
+        # Attack reticle tile
+        src = src_dir / 'tile_large.png'
+        dst = dst_dir / 'attack_reticle.png'
+        if src.exists():
+            if output_files is not None:
+                output_files.add(dst)
+            if force or needs_regeneration(src, dst):
+                resize_image(src, dst, tile_size, tile_size)
+                generated += 1
+
         # === Path sprites (128×128 → tile_size, NEAREST for hard edges) ===
         # Use nearest-neighbor interpolation to preserve hard edges like Duelyst
         path_map = {

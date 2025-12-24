@@ -4,6 +4,11 @@
 #include <queue>
 #include <unordered_map>
 
+// Forward declaration for seam detection
+static bool needs_seam_at_corner(BoardPos pos, int corner,
+                                  const std::vector<BoardPos>& current_blob,
+                                  const std::vector<BoardPos>& alt_blob);
+
 bool GridRenderer::init(const RenderConfig& config) {
     int ts = config.tile_size();
     fb_width = BOARD_COLS * ts;
@@ -18,6 +23,8 @@ bool GridRenderer::init(const RenderConfig& config) {
     select_box = g_gpu.load_texture((prefix + "select_box.png").c_str());
     glow_tile = g_gpu.load_texture((prefix + "glow.png").c_str());
     target_tile = g_gpu.load_texture((prefix + "target.png").c_str());
+    enemy_indicator = g_gpu.load_texture((prefix + "enemy_indicator.png").c_str());
+    attack_reticle = g_gpu.load_texture((prefix + "attack_reticle.png").c_str());
 
     // Corner tiles
     corner_0 = g_gpu.load_texture((prefix + "corner_0.png").c_str());
@@ -25,8 +32,9 @@ bool GridRenderer::init(const RenderConfig& config) {
     corner_03 = g_gpu.load_texture((prefix + "corner_03.png").c_str());
     corner_013 = g_gpu.load_texture((prefix + "corner_013.png").c_str());
     corner_0123 = g_gpu.load_texture((prefix + "corner_0123.png").c_str());
+    corner_0_seam = g_gpu.load_texture((prefix + "corner_0_seam.png").c_str());
     corner_textures_loaded = corner_0 && corner_01 && corner_03 &&
-                              corner_013 && corner_0123;
+                              corner_013 && corner_0123 && corner_0_seam;
 
     // Path tiles
     path_start = g_gpu.load_texture((prefix + "path_start.png").c_str());
@@ -228,7 +236,8 @@ std::vector<BoardPos> get_path_to(BoardPos start, BoardPos goal,
 
 void GridRenderer::render_move_range_alpha(const RenderConfig& config,
                                             const std::vector<BoardPos>& tiles,
-                                            float opacity) {
+                                            float opacity,
+                                            const std::vector<BoardPos>& alt_blob) {
     if (tiles.empty()) return;
 
     SDL_FColor color = TileColor::MOVE_CURRENT;
@@ -244,7 +253,8 @@ void GridRenderer::render_move_range_alpha(const RenderConfig& config,
     for (const auto& pos : tiles) {
         for (int corner = 0; corner < 4; corner++) {
             CornerNeighbors neighbors = get_corner_neighbors(pos, corner, tiles);
-            const GPUTextureHandle& tex = get_corner_texture(neighbors);
+            bool seam = needs_seam_at_corner(pos, corner, tiles, alt_blob);
+            const GPUTextureHandle& tex = get_corner_texture(neighbors, seam);
             render_corner_quad_rotated(config, pos, corner, tex, color);
         }
     }
@@ -432,6 +442,39 @@ float path_segment_rotation(BoardPos from, BoardPos to) {
 // Merged Tile Corner System
 // =============================================================================
 
+// Check if a corner needs seam texture (boundary between two blobs)
+static bool needs_seam_at_corner(BoardPos pos, int corner,
+                                  const std::vector<BoardPos>& current_blob,
+                                  const std::vector<BoardPos>& alt_blob) {
+    if (alt_blob.empty()) return false;
+
+    // Offset patterns for each corner (same as get_corner_neighbors)
+    constexpr int offsets[4][3][2] = {
+        {{-1, 0}, {-1,-1}, { 0,-1}},  // TL
+        {{ 0,-1}, { 1,-1}, { 1, 0}},  // TR
+        {{ 1, 0}, { 1, 1}, { 0, 1}},  // BR
+        {{ 0, 1}, {-1, 1}, {-1, 0}},  // BL
+    };
+
+    auto in_blob = [](BoardPos p, const std::vector<BoardPos>& blob) {
+        return std::find(blob.begin(), blob.end(), p) != blob.end();
+    };
+
+    // Check for same-blob neighbor (if found, no seam needed)
+    for (int i = 0; i < 3; i++) {
+        BoardPos neighbor = {pos.x + offsets[corner][i][0], pos.y + offsets[corner][i][1]};
+        if (in_blob(neighbor, current_blob)) return false;
+    }
+
+    // Check for alt-blob neighbor (if found, seam needed)
+    for (int i = 0; i < 3; i++) {
+        BoardPos neighbor = {pos.x + offsets[corner][i][0], pos.y + offsets[corner][i][1]};
+        if (in_blob(neighbor, alt_blob)) return true;
+    }
+
+    return false;
+}
+
 CornerNeighbors get_corner_neighbors(BoardPos pos, int corner,
                                       const std::vector<BoardPos>& blob) {
     // Offset patterns for each corner:
@@ -459,7 +502,8 @@ CornerNeighbors get_corner_neighbors(BoardPos pos, int corner,
     };
 }
 
-const GPUTextureHandle& GridRenderer::get_corner_texture(CornerNeighbors n) {
+const GPUTextureHandle& GridRenderer::get_corner_texture(CornerNeighbors n, bool use_seam) {
+    if (use_seam && corner_0_seam) return corner_0_seam;
     if (!n.edge1 && !n.edge2) return corner_0;
     if (n.edge1 && !n.edge2) return corner_01;
     if (!n.edge1 && n.edge2) return corner_03;
@@ -547,4 +591,69 @@ void GridRenderer::render_path_segment(const RenderConfig& config, BoardPos pos,
     // Duelyst: CONFIG.PATH_TILE_ACTIVE_OPACITY = 150/255 = 0.588
     SDL_FRect src = {0, 0, static_cast<float>(texture.width), static_cast<float>(texture.height)};
     g_gpu.draw_sprite_transformed(texture, src, tl, tr, br, bl, 150.0f/255.0f);
+}
+
+// =============================================================================
+// Attack System (Phase 7)
+// =============================================================================
+
+std::vector<BoardPos> get_attack_pattern(BoardPos from, int range) {
+    std::vector<BoardPos> result;
+    for (int x = 0; x < BOARD_COLS; x++) {
+        for (int y = 0; y < BOARD_ROWS; y++) {
+            if (x == from.x && y == from.y) continue;
+            int dist = std::max(std::abs(x - from.x), std::abs(y - from.y));  // Chebyshev
+            if (dist <= range) result.push_back({x, y});
+        }
+    }
+    return result;
+}
+
+void GridRenderer::render_enemy_indicator(const RenderConfig& config, BoardPos pos) {
+    if (!pos.is_valid()) return;
+    // Red overlay using existing highlight system (API doesn't support tinted sprites)
+    constexpr SDL_FColor ENEMY_COLOR = {0.824f, 0.157f, 0.275f, 75.0f/255.0f};  // #D22846, 29%
+    render_highlight(config, pos, ENEMY_COLOR);
+}
+
+void GridRenderer::render_attack_reticle(const RenderConfig& config, BoardPos pos, float opacity) {
+    if (!pos.is_valid() || !attack_reticle) return;
+
+    int ts = config.tile_size();
+    float tx = static_cast<float>(pos.x * ts);
+    float ty = static_cast<float>(pos.y * ts);
+
+    Vec2 tl = transform_board_point(config, tx, ty);
+    Vec2 tr = transform_board_point(config, tx + ts, ty);
+    Vec2 br = transform_board_point(config, tx + ts, ty + ts);
+    Vec2 bl = transform_board_point(config, tx, ty + ts);
+
+    SDL_FRect src = {0, 0, (float)attack_reticle.width, (float)attack_reticle.height};
+    g_gpu.draw_sprite_transformed(attack_reticle, src, tl, tr, br, bl, opacity);
+}
+
+void GridRenderer::render_attack_blob(const RenderConfig& config,
+                                       const std::vector<BoardPos>& tiles,
+                                       float opacity,
+                                       const std::vector<BoardPos>& alt_blob) {
+    if (tiles.empty()) return;
+
+    SDL_FColor color = TileColor::ATTACK_CURRENT;  // Yellow #FFD900
+    color.a *= opacity;
+
+    if (!corner_textures_loaded) {
+        for (const auto& pos : tiles) {
+            render_highlight(config, pos, color);
+        }
+        return;
+    }
+
+    for (const auto& pos : tiles) {
+        for (int corner = 0; corner < 4; corner++) {
+            CornerNeighbors neighbors = get_corner_neighbors(pos, corner, tiles);
+            bool seam = needs_seam_at_corner(pos, corner, tiles, alt_blob);
+            const GPUTextureHandle& tex = get_corner_texture(neighbors, seam);
+            render_corner_quad_rotated(config, pos, corner, tex, color);
+        }
+    }
 }

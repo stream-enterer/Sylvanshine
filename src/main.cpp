@@ -1142,6 +1142,15 @@ std::vector<size_t> get_render_order(const GameState& state) {
 
 // Single-pass rendering (legacy path)
 void render_single_pass(GameState& state, const RenderConfig& config) {
+    // Render order (back to front) — matches TileZOrder
+    // 1. BOARD:             render_floor_grid()
+    // 2. MOVE_RANGE:        render_move_range_alpha()
+    // 4. ATTACK_RANGE:      render_attack_blob()
+    // 5. ATTACKABLE_TARGET: render_attack_reticle()
+    // 7. SELECT:            render_select_box()
+    // 8. PATH:              render_path()
+    // 9. HOVER:             render_hover()
+
     // 1. Floor grid (semi-transparent dark tiles with gaps)
     state.grid_renderer.render_floor_grid(config);
 
@@ -1155,9 +1164,32 @@ void render_single_pass(GameState& state, const RenderConfig& config) {
         std::vector<BoardPos> blob_tiles = state.reachable_tiles;
         blob_tiles.push_back(unit_pos);
 
+        // Calculate attack blob FIRST (needed for seam detection in both renderers)
+        const auto& unit = state.units[state.selected_unit_idx];
+        auto attack_blob = get_attack_pattern(unit_pos, unit.attack_range);
+
+        // Remove enemy positions (they get reticles)
+        std::erase_if(attack_blob, [&](const BoardPos& p) {
+            return std::find(state.attackable_tiles.begin(), state.attackable_tiles.end(), p)
+                   != state.attackable_tiles.end();
+        });
+
+        // Remove tiles overlapping with move blob
+        std::erase_if(attack_blob, [&](const BoardPos& p) {
+            return std::find(blob_tiles.begin(), blob_tiles.end(), p) != blob_tiles.end();
+        });
+
+        // Render move blob (z=2) with seam detection
         state.grid_renderer.render_move_range_alpha(config,
-            blob_tiles, state.move_blob_opacity);
-        state.grid_renderer.render_attack_range(config, state.attackable_tiles);
+            blob_tiles, state.move_blob_opacity, attack_blob);
+
+        // Render attack blob (z=4) with seam detection
+        state.grid_renderer.render_attack_blob(config, attack_blob, 200.0f/255.0f, blob_tiles);
+
+        // Render attack reticles (z=5)
+        for (const auto& target : state.attackable_tiles) {
+            state.grid_renderer.render_attack_reticle(config, target);
+        }
 
         // Selection box at selected unit position
         state.grid_renderer.render_select_box(config, unit_pos);
@@ -1181,6 +1213,15 @@ void render_single_pass(GameState& state, const RenderConfig& config) {
 
     // 4. Hover highlight
     if (state.hover_valid) {
+        // Enemy indicator (hover-only, Duelyst-faithful) — only when no unit selected
+        if (state.selected_unit_idx < 0) {
+            for (const auto& unit : state.units) {
+                if (unit.type == UnitType::Enemy && unit.board_pos == state.hover_pos) {
+                    state.grid_renderer.render_enemy_indicator(config, unit.board_pos);
+                    break;
+                }
+            }
+        }
         state.grid_renderer.render_hover(config, state.hover_pos);
     }
 

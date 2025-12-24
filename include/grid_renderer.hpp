@@ -48,6 +48,18 @@ namespace TileOpacity {
     constexpr float FAINT = 75.0f / 255.0f;   // 0.294 — Passive hover
 }
 
+namespace TileZOrder {
+    constexpr int BOARD = 1;
+    constexpr int MOVE_RANGE = 2;
+    constexpr int ASSIST = 3;
+    constexpr int ATTACK_RANGE = 4;
+    constexpr int ATTACKABLE_TARGET = 5;
+    constexpr int CARD = 6;
+    constexpr int SELECT = 7;
+    constexpr int PATH = 8;
+    constexpr int HOVER = 9;
+}
+
 // Path segment types for directional path rendering
 enum class PathSegment {
     Start,              // First tile (unit position)
@@ -85,6 +97,8 @@ struct GridRenderer {
     GPUTextureHandle select_box;  // Selection/targeting reticle (bracket corners)
     GPUTextureHandle glow_tile;   // Subtle glow for movement hover (20% opacity)
     GPUTextureHandle target_tile; // Bracket corners for hover target (78% opacity, pulsing)
+    GPUTextureHandle enemy_indicator;  // Red overlay for enemy hover
+    GPUTextureHandle attack_reticle;   // tile_large.png for attackable enemies
 
     // Corner textures (quarter tile size)
     GPUTextureHandle corner_0;
@@ -92,6 +106,7 @@ struct GridRenderer {
     GPUTextureHandle corner_03;
     GPUTextureHandle corner_013;
     GPUTextureHandle corner_0123;
+    GPUTextureHandle corner_0_seam;  // Seam texture for blob boundaries
     bool corner_textures_loaded = false;
 
     // Path textures (tile size)
@@ -116,7 +131,8 @@ struct GridRenderer {
     // Render move range with opacity
     void render_move_range_alpha(const RenderConfig& config,
                                   const std::vector<BoardPos>& tiles,
-                                  float opacity);
+                                  float opacity,
+                                  const std::vector<BoardPos>& alt_blob = {});  // Optional for seam detection
 
     // Render movement path
     void render_path(const RenderConfig& config,
@@ -136,6 +152,16 @@ struct GridRenderer {
     // pulse_scale: 0.85-1.0 for pulsing animation, 1.0 for no pulse
     void render_target(const RenderConfig& config, BoardPos pos, float pulse_scale = 1.0f);
 
+    void render_enemy_indicator(const RenderConfig& config, BoardPos pos);
+
+    void render_attack_reticle(const RenderConfig& config, BoardPos pos,
+                               float opacity = 200.0f/255.0f);  // Static, no pulsing!
+
+    void render_attack_blob(const RenderConfig& config,
+                            const std::vector<BoardPos>& tiles,
+                            float opacity = 200.0f/255.0f,
+                            const std::vector<BoardPos>& alt_blob = {});  // Optional for seam detection
+
 private:
     Vec2 transform_board_point(const RenderConfig& config, float board_x, float board_y);
 
@@ -148,7 +174,7 @@ private:
                                      const GPUTextureHandle& texture, SDL_FColor tint);
 
     // Get corner texture based on neighbor state
-    const GPUTextureHandle& get_corner_texture(CornerNeighbors n);
+    const GPUTextureHandle& get_corner_texture(CornerNeighbors n, bool use_seam = false);
 
     // Get path texture based on segment type
     const GPUTextureHandle& get_path_texture(PathSegment seg, bool from_start);
@@ -158,6 +184,7 @@ std::vector<BoardPos> get_reachable_tiles(BoardPos from, int range,
                                           const std::vector<BoardPos>& occupied);
 std::vector<BoardPos> get_attackable_tiles(BoardPos from, int range,
                                            const std::vector<BoardPos>& enemy_positions);
+std::vector<BoardPos> get_attack_pattern(BoardPos from, int range);
 
 // BFS pathfinding from start to goal, avoiding blocked tiles
 std::vector<BoardPos> get_path_to(BoardPos start, BoardPos goal,
