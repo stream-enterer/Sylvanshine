@@ -654,7 +654,7 @@ void GPURenderer::draw_sprite(const GPUTextureHandle& texture, const SDL_FRect& 
     tex_binding.sampler = texture.sampler;
     SDL_BindGPUFragmentSamplers(render_pass, 0, &tex_binding, 1);
 
-    SpriteUniforms uniforms = {opacity, 0.0f, 0.0f, 0.0f};
+    SpriteUniforms uniforms = {opacity, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f};
     SDL_PushGPUFragmentUniformData(cmd_buffer, 0, &uniforms, sizeof(uniforms));
 
     SDL_DrawGPUIndexedPrimitives(render_pass, 6, 1, 0, 0, 0);
@@ -741,7 +741,7 @@ void GPURenderer::draw_sprite_dissolve(const GPUTextureHandle& texture, const SD
     tex_binding.sampler = texture.sampler;
     SDL_BindGPUFragmentSamplers(render_pass, 0, &tex_binding, 1);
 
-    SpriteUniforms uniforms = {opacity, dissolve_time, seed, 0.0f};
+    SpriteUniforms uniforms = {opacity, dissolve_time, seed, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f};
     SDL_PushGPUFragmentUniformData(cmd_buffer, 0, &uniforms, sizeof(uniforms));
 
     SDL_DrawGPUIndexedPrimitives(render_pass, 6, 1, 0, 0, 0);
@@ -828,7 +828,95 @@ void GPURenderer::draw_sprite_transformed(const GPUTextureHandle& texture,
     tex_binding.sampler = texture.sampler;
     SDL_BindGPUFragmentSamplers(render_pass, 0, &tex_binding, 1);
 
-    SpriteUniforms uniforms = {opacity, 0.0f, 0.0f, 0.0f};
+    SpriteUniforms uniforms = {opacity, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f};
+    SDL_PushGPUFragmentUniformData(cmd_buffer, 0, &uniforms, sizeof(uniforms));
+
+    SDL_DrawGPUIndexedPrimitives(render_pass, 6, 1, 0, 0, 0);
+}
+
+void GPURenderer::draw_sprite_transformed_tinted(const GPUTextureHandle& texture,
+                                                   const SDL_FRect& src,
+                                                   Vec2 tl, Vec2 tr, Vec2 br, Vec2 bl,
+                                                   SDL_FColor tint) {
+    if (!render_pass || !texture.ptr) return;
+
+    // Calculate UV coordinates from source rect
+    float u0 = src.x / texture.width;
+    float v0 = src.y / texture.height;
+    float u1 = (src.x + src.w) / texture.width;
+    float v1 = (src.y + src.h) / texture.height;
+
+    // Convert screen coords to NDC
+    auto to_ndc = [this](Vec2 p) -> Vec2 {
+        return {
+            (p.x / swapchain_w) * 2.0f - 1.0f,
+            1.0f - (p.y / swapchain_h) * 2.0f
+        };
+    };
+
+    Vec2 tl_ndc = to_ndc(tl);
+    Vec2 tr_ndc = to_ndc(tr);
+    Vec2 br_ndc = to_ndc(br);
+    Vec2 bl_ndc = to_ndc(bl);
+
+    SpriteVertex vertices[4] = {
+        {tl_ndc.x, tl_ndc.y, u0, v0},
+        {tr_ndc.x, tr_ndc.y, u1, v0},
+        {br_ndc.x, br_ndc.y, u1, v1},
+        {bl_ndc.x, bl_ndc.y, u0, v1}
+    };
+
+    SDL_GPUTransferBufferCreateInfo transfer_info = {};
+    transfer_info.usage = SDL_GPU_TRANSFERBUFFERUSAGE_UPLOAD;
+    transfer_info.size = sizeof(vertices);
+
+    SDL_GPUTransferBuffer* transfer = SDL_CreateGPUTransferBuffer(device, &transfer_info);
+    void* map = SDL_MapGPUTransferBuffer(device, transfer, false);
+    std::memcpy(map, vertices, sizeof(vertices));
+    SDL_UnmapGPUTransferBuffer(device, transfer);
+
+    SDL_EndGPURenderPass(render_pass);
+
+    SDL_GPUCopyPass* copy = SDL_BeginGPUCopyPass(cmd_buffer);
+    SDL_GPUTransferBufferLocation src_loc = {};
+    src_loc.transfer_buffer = transfer;
+    SDL_GPUBufferRegion dst_region = {};
+    dst_region.buffer = quad_vertex_buffer;
+    dst_region.size = sizeof(vertices);
+    SDL_UploadToGPUBuffer(copy, &src_loc, &dst_region, false);
+    SDL_EndGPUCopyPass(copy);
+
+    SDL_GPUColorTargetInfo color_target = {};
+    color_target.texture = swapchain_texture;
+    color_target.load_op = SDL_GPU_LOADOP_LOAD;
+    color_target.store_op = SDL_GPU_STOREOP_STORE;
+    render_pass = SDL_BeginGPURenderPass(cmd_buffer, &color_target, 1, nullptr);
+
+    SDL_GPUViewport viewport = {0, 0, (float)swapchain_w, (float)swapchain_h, 0.0f, 1.0f};
+    SDL_SetGPUViewport(render_pass, &viewport);
+
+    SDL_Rect scissor = {0, 0, (int)swapchain_w, (int)swapchain_h};
+    SDL_SetGPUScissor(render_pass, &scissor);
+
+    SDL_ReleaseGPUTransferBuffer(device, transfer);
+
+    SDL_BindGPUGraphicsPipeline(render_pass, sprite_pipeline);
+
+    SDL_GPUBufferBinding vb_binding = {};
+    vb_binding.buffer = quad_vertex_buffer;
+    SDL_BindGPUVertexBuffers(render_pass, 0, &vb_binding, 1);
+
+    SDL_GPUBufferBinding ib_binding = {};
+    ib_binding.buffer = quad_index_buffer;
+    SDL_BindGPUIndexBuffer(render_pass, &ib_binding, SDL_GPU_INDEXELEMENTSIZE_16BIT);
+
+    SDL_GPUTextureSamplerBinding tex_binding = {};
+    tex_binding.texture = texture.ptr;
+    tex_binding.sampler = texture.sampler;
+    SDL_BindGPUFragmentSamplers(render_pass, 0, &tex_binding, 1);
+
+    // Use tint color instead of just opacity
+    SpriteUniforms uniforms = {1.0f, 0.0f, 0.0f, 0.0f, tint.r, tint.g, tint.b, tint.a};
     SDL_PushGPUFragmentUniformData(cmd_buffer, 0, &uniforms, sizeof(uniforms));
 
     SDL_DrawGPUIndexedPrimitives(render_pass, 6, 1, 0, 0, 0);

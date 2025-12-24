@@ -547,7 +547,7 @@ void GridRenderer::render_corner_quad_rotated(const RenderConfig& config, BoardP
     Vec2 bl = transform_board_point(config, bl_b.x, bl_b.y);
 
     SDL_FRect src = {0, 0, (float)texture.width, (float)texture.height};
-    g_gpu.draw_sprite_transformed(texture, src, tl, tr, br, bl, tint.a);
+    g_gpu.draw_sprite_transformed_tinted(texture, src, tl, tr, br, bl, tint);
 }
 
 void GridRenderer::render_path_segment(const RenderConfig& config, BoardPos pos,
@@ -628,8 +628,12 @@ void GridRenderer::render_attack_reticle(const RenderConfig& config, BoardPos po
     Vec2 br = transform_board_point(config, tx + ts, ty + ts);
     Vec2 bl = transform_board_point(config, tx, ty + ts);
 
+    // Apply yellow tint (Duelyst: CONFIG.AGGRO_COLOR = #FFD900)
+    SDL_FColor tint = TileColor::ATTACK_CURRENT;
+    tint.a *= opacity;
+
     SDL_FRect src = {0, 0, (float)attack_reticle.width, (float)attack_reticle.height};
-    g_gpu.draw_sprite_transformed(attack_reticle, src, tl, tr, br, bl, opacity);
+    g_gpu.draw_sprite_transformed_tinted(attack_reticle, src, tl, tr, br, bl, tint);
 }
 
 void GridRenderer::render_attack_blob(const RenderConfig& config,

@@ -72,7 +72,8 @@ struct GameState {
     float turn_transition_timer = 0.0f;
     float ai_action_timer = 0.0f;
     int ai_current_unit = -1;
-    std::vector<bool> has_acted;
+    std::vector<bool> has_moved;
+    std::vector<bool> has_attacked;
 
     // Hover state for tile system
     BoardPos hover_pos{-1, -1};
@@ -264,21 +265,34 @@ void update_selected_ranges(GameState& state) {
         state.selected_unit_idx = -1;
         return;
     }
-    
-    if (state.units[state.selected_unit_idx].is_dead()) {
+
+    int idx = state.selected_unit_idx;
+
+    if (state.units[idx].is_dead()) {
         clear_selection(state);
         return;
     }
-    
-    BoardPos selected_pos = state.units[state.selected_unit_idx].board_pos;
-    
-    auto occupied = get_occupied_positions(state, state.selected_unit_idx);
-    state.reachable_tiles = get_reachable_tiles(selected_pos, MOVE_RANGE, occupied);
-    
-    auto enemy_positions = get_enemy_positions(state, state.selected_unit_idx);
+
+    // Don't update ranges while unit is busy (moving/attacking)
+    if (state.units[idx].is_moving() || state.units[idx].is_attacking()) {
+        return;
+    }
+
+    BoardPos selected_pos = state.units[idx].board_pos;
+
+    // Only show movement range if unit hasn't moved this turn
+    bool can_move = idx >= static_cast<int>(state.has_moved.size()) || !state.has_moved[idx];
+    if (can_move) {
+        auto occupied = get_occupied_positions(state, idx);
+        state.reachable_tiles = get_reachable_tiles(selected_pos, MOVE_RANGE, occupied);
+    }
+    // If unit has moved, reachable_tiles stays empty (cleared in handle_move_click)
+
+    // Always update attackable tiles from current position
+    auto enemy_positions = get_enemy_positions(state, idx);
     state.attackable_tiles = get_attackable_tiles(
         selected_pos,
-        state.units[state.selected_unit_idx].attack_range,
+        state.units[idx].attack_range,
         enemy_positions
     );
 }
@@ -324,8 +338,10 @@ void spawn_attack_fx(GameState& state, Vec2 target_pos) {
 }
 
 void reset_actions(GameState& state) {
-    state.has_acted.clear();
-    state.has_acted.resize(state.units.size(), false);
+    state.has_moved.clear();
+    state.has_moved.resize(state.units.size(), false);
+    state.has_attacked.clear();
+    state.has_attacked.resize(state.units.size(), false);
 }
 
 void start_player_turn(GameState& state) {
@@ -352,7 +368,7 @@ void begin_turn_transition(GameState& state, TurnPhase next_phase) {
 bool all_units_acted(const GameState& state, UnitType type) {
     for (size_t i = 0; i < state.units.size(); i++) {
         if (state.units[i].type == type && !state.units[i].is_dead()) {
-            if (i < state.has_acted.size() && !state.has_acted[i]) {
+            if (i < state.has_attacked.size() && !state.has_attacked[i]) {
                 return false;
             }
         }
@@ -475,7 +491,7 @@ int find_next_ai_unit(const GameState& state) {
     for (size_t i = 0; i < state.units.size(); i++) {
         if (state.units[i].type != UnitType::Enemy) continue;
         if (state.units[i].is_dead()) continue;
-        if (i < state.has_acted.size() && state.has_acted[i]) continue;
+        if (i < state.has_attacked.size() && state.has_attacked[i]) continue;
         if (!state.units[i].can_act()) continue;
         return static_cast<int>(i);
     }
@@ -484,16 +500,16 @@ int find_next_ai_unit(const GameState& state) {
 
 void execute_ai_action(GameState& state, int unit_idx, const RenderConfig& config) {
     if (try_ai_attack(state, unit_idx)) {
-        state.has_acted[unit_idx] = true;
+        state.has_attacked[unit_idx] = true;
         return;
     }
-    
+
     if (try_ai_move(state, unit_idx, config)) {
-        state.has_acted[unit_idx] = true;
+        state.has_attacked[unit_idx] = true;
         return;
     }
-    
-    state.has_acted[unit_idx] = true;
+
+    state.has_attacked[unit_idx] = true;
     SDL_Log("AI unit %d has no valid action", unit_idx);
 }
 
@@ -607,27 +623,24 @@ void remove_dead_units(GameState& state) {
     }
     
     int removed_before_selected = 0;
-    std::vector<bool> new_has_acted;
-    
+    std::vector<bool> new_has_moved;
+    std::vector<bool> new_has_attacked;
     for (size_t i = 0; i < state.units.size(); i++) {
-        if (!state.units[i].is_dead()) {
-            if (i < state.has_acted.size()) {
-                new_has_acted.push_back(state.has_acted[i]);
-            } else {
-                new_has_acted.push_back(false);
-            }
+        if (!state.units[i].death_complete) {
+            new_has_moved.push_back(i < state.has_moved.size() ? state.has_moved[i] : false);
+            new_has_attacked.push_back(i < state.has_attacked.size() ? state.has_attacked[i] : false);
         } else if (static_cast<int>(i) < state.selected_unit_idx) {
             removed_before_selected++;
         }
     }
-    
+
     state.units.erase(
         std::remove_if(state.units.begin(), state.units.end(),
             [](const Entity& e) { return e.is_dead(); }),
         state.units.end()
     );
-    
-    state.has_acted = std::move(new_has_acted);
+    state.has_moved = std::move(new_has_moved);
+    state.has_attacked = std::move(new_has_attacked);
     
     if (state.selected_unit_idx >= 0) {
         state.selected_unit_idx -= removed_before_selected;
@@ -690,7 +703,7 @@ void handle_select_click(GameState& state, BoardPos clicked) {
     
     if (state.units[unit_idx].type != UnitType::Player) return;
     if (!state.units[unit_idx].can_act()) return;
-    if (unit_idx < static_cast<int>(state.has_acted.size()) && state.has_acted[unit_idx]) return;
+    if (unit_idx < static_cast<int>(state.has_attacked.size()) && state.has_attacked[unit_idx]) return;
     
     if (state.selected_unit_idx >= 0 && state.selected_unit_idx != unit_idx) {
         state.units[state.selected_unit_idx].restore_facing();
@@ -722,14 +735,18 @@ void handle_move_click(GameState& state, BoardPos clicked, const RenderConfig& c
     int unit_idx = state.selected_unit_idx;
     SDL_Log("Moving unit %d to (%d, %d)", unit_idx, clicked.x, clicked.y);
     
-    if (unit_idx < static_cast<int>(state.has_acted.size())) {
-        state.has_acted[unit_idx] = true;
+    if (unit_idx < static_cast<int>(state.has_moved.size())) {
+        state.has_moved[unit_idx] = true;
     }
-    
-    state.selected_unit_idx = -1;
+
+    // Keep selection — player can attack after move
+    // Clear all movement-related UI state
     state.reachable_tiles.clear();
-    state.attackable_tiles.clear();
-    
+    state.movement_path.clear();
+    state.attackable_tiles.clear();  // Will be recalculated after move completes
+    state.move_blob_opacity = 1.0f;
+    state.tile_anims.clear();
+
     state.units[unit_idx].start_move(config, clicked);
 }
 
@@ -750,8 +767,8 @@ void handle_attack_click(GameState& state, BoardPos clicked) {
     int attacker_idx = state.selected_unit_idx;
     BoardPos target_pos = state.units[target_idx].board_pos;
     
-    if (attacker_idx < static_cast<int>(state.has_acted.size())) {
-        state.has_acted[attacker_idx] = true;
+    if (attacker_idx < static_cast<int>(state.has_attacked.size())) {
+        state.has_attacked[attacker_idx] = true;
     }
     
     state.selected_unit_idx = -1;
@@ -764,11 +781,33 @@ void handle_attack_click(GameState& state, BoardPos clicked) {
 
 void handle_selected_click(GameState& state, BoardPos clicked, const RenderConfig& config) {
     int clicked_unit = find_unit_at_pos(state, clicked);
-    
+
     if (clicked_unit >= 0 && state.units[clicked_unit].type != state.units[state.selected_unit_idx].type) {
         handle_attack_click(state, clicked);
-    } else {
+        return;
+    }
+
+    // Check if clicked tile is reachable
+    bool is_reachable = false;
+    for (const auto& tile : state.reachable_tiles) {
+        if (tile == clicked) { is_reachable = true; break; }
+    }
+
+    if (is_reachable) {
         handle_move_click(state, clicked, config);
+    } else {
+        // Clicked non-reachable tile — deselect
+        int idx = state.selected_unit_idx;
+        if (idx >= 0 && idx < static_cast<int>(state.has_moved.size()) && state.has_moved[idx]) {
+            // Unit moved this turn, end its turn
+            if (idx < static_cast<int>(state.has_attacked.size())) {
+                state.has_attacked[idx] = true;
+            }
+        }
+        state.selected_unit_idx = -1;
+        state.reachable_tiles.clear();
+        state.attackable_tiles.clear();
+        state.movement_path.clear();
     }
 }
 
@@ -819,7 +858,8 @@ void reset_game(GameState& state, const RenderConfig& config) {
     state.turn_transition_timer = 0.0f;
     state.ai_action_timer = 0.0f;
     state.ai_current_unit = -1;
-    state.has_acted.clear();
+    state.has_moved.clear();
+    state.has_attacked.clear();
 
     // Reset tile state
     state.hover_pos = {-1, -1};
@@ -933,6 +973,11 @@ void start_opacity_fade(GameState& state, FadeTarget target,
 }
 
 void update_hover_path(GameState& state, const RenderConfig& config) {
+    // Don't calculate path while unit is moving
+    if (state.selected_unit_idx >= 0 && state.units[state.selected_unit_idx].is_moving()) {
+        return;
+    }
+
     // Check if hover is in movement range
     bool in_move_range = false;
     for (const auto& t : state.reachable_tiles) {
@@ -1002,8 +1047,8 @@ void update(GameState& state, float dt, const RenderConfig& config) {
     check_attack_damage(state);
     process_pending_damage(state, config);
 
-    for (auto& unit : state.units) {
-        unit.update(dt, config);
+    for (size_t i = 0; i < state.units.size(); i++) {
+        state.units[i].update(dt, config);
     }
 
     update_floating_texts(state, dt, config);
@@ -1157,36 +1202,49 @@ void render_single_pass(GameState& state, const RenderConfig& config) {
     // 2. Grid lines (disabled — using tile gaps instead)
     // state.grid_renderer.render(config);
 
-    // 3. Selection highlights
-    if (state.selected_unit_idx >= 0 && state.game_phase == GamePhase::Playing) {
+    // 3. Selection highlights (hide during movement/attack - Duelyst behavior)
+    bool unit_is_busy = state.selected_unit_idx >= 0 &&
+        (state.units[state.selected_unit_idx].is_moving() ||
+         state.units[state.selected_unit_idx].is_attacking());
+
+    if (state.selected_unit_idx >= 0 && state.game_phase == GamePhase::Playing && !unit_is_busy) {
         // Include unit position in blob for visual continuity
         BoardPos unit_pos = state.units[state.selected_unit_idx].board_pos;
         std::vector<BoardPos> blob_tiles = state.reachable_tiles;
         blob_tiles.push_back(unit_pos);
 
-        // Calculate attack blob FIRST (needed for seam detection in both renderers)
+        // Attack blob = attack range EXTENSION beyond movement (Duelyst behavior)
+        // Yellow blob shows tiles you could attack that are NOT in your movement range
+        // After moving (reachable_tiles empty), there's no "extension" - only show reticles
         const auto& unit = state.units[state.selected_unit_idx];
-        auto attack_blob = get_attack_pattern(unit_pos, unit.attack_range);
+        std::vector<BoardPos> attack_blob;
 
-        // Remove enemy positions (they get reticles)
-        std::erase_if(attack_blob, [&](const BoardPos& p) {
-            return std::find(state.attackable_tiles.begin(), state.attackable_tiles.end(), p)
-                   != state.attackable_tiles.end();
-        });
+        // Only calculate attack blob if movement is available (extension concept)
+        if (!state.reachable_tiles.empty()) {
+            attack_blob = get_attack_pattern(unit_pos, unit.attack_range);
 
-        // Remove tiles overlapping with move blob
-        std::erase_if(attack_blob, [&](const BoardPos& p) {
-            return std::find(blob_tiles.begin(), blob_tiles.end(), p) != blob_tiles.end();
-        });
+            // Remove tiles that are in the movement blob (they're already highlighted)
+            std::erase_if(attack_blob, [&](const BoardPos& p) {
+                return std::find(blob_tiles.begin(), blob_tiles.end(), p) != blob_tiles.end();
+            });
+
+            // Remove enemy positions (they get reticles instead of yellow blob)
+            std::erase_if(attack_blob, [&](const BoardPos& p) {
+                return std::find(state.attackable_tiles.begin(), state.attackable_tiles.end(), p)
+                       != state.attackable_tiles.end();
+            });
+        }
 
         // Render move blob (z=2) with seam detection
         state.grid_renderer.render_move_range_alpha(config,
             blob_tiles, state.move_blob_opacity, attack_blob);
 
-        // Render attack blob (z=4) with seam detection
-        state.grid_renderer.render_attack_blob(config, attack_blob, 200.0f/255.0f, blob_tiles);
+        // Render attack blob (z=4) only if there's an extension to show
+        if (!attack_blob.empty()) {
+            state.grid_renderer.render_attack_blob(config, attack_blob, 200.0f/255.0f, blob_tiles);
+        }
 
-        // Render attack reticles (z=5)
+        // Render attack reticles (z=5) - always show on attackable enemies
         for (const auto& target : state.attackable_tiles) {
             state.grid_renderer.render_attack_reticle(config, target);
         }

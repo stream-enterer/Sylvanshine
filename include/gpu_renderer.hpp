@@ -38,6 +38,11 @@ struct SpriteUniforms {
     float dissolve_time;
     float seed;
     float padding;
+    // Tint color (RGBA), multiplied with texture color
+    float tint_r;
+    float tint_g;
+    float tint_b;
+    float tint_a;
 };
 
 
@@ -150,6 +155,14 @@ struct GPURenderer {
         const SDL_FRect& src,
         Vec2 tl, Vec2 tr, Vec2 br, Vec2 bl,
         float opacity
+    );
+
+    // Draw sprite with arbitrary quad corners and color tint
+    void draw_sprite_transformed_tinted(
+        const GPUTextureHandle& texture,
+        const SDL_FRect& src,
+        Vec2 tl, Vec2 tr, Vec2 br, Vec2 bl,
+        SDL_FColor tint
     );
 
     // SDF shadow rendering
