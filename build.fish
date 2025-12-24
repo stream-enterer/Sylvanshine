@@ -64,13 +64,16 @@ function check_assets_stale
     end
 
     # Check if any source file is newer than manifest
-    # Sources: app/resources/**/*.{png,plist}, app/timing/*.tsv, app/fx/*.tsv
-    for pattern in "app/resources/**/*.png" "app/resources/**/*.plist" "app/timing/*.tsv" "app/fx/*.tsv"
-        for src in $pattern
-            test -f "$src"; or continue
-            if test "$src" -nt "$manifest"
-                return 0
-            end
+    # Use find for reliable recursive globbing
+    for src in (find app/resources -name "*.png" -o -name "*.plist" 2>/dev/null)
+        if test "$src" -nt "$manifest"
+            return 0
+        end
+    end
+    for src in app/timing/*.tsv app/fx/*.tsv
+        test -f "$src"; or continue
+        if test "$src" -nt "$manifest"
+            return 0
         end
     end
 
