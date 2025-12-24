@@ -88,6 +88,9 @@ struct GameState {
 
     // Active fade animations
     std::vector<TileFadeAnim> tile_anims;
+
+    // Pulsing animation for target tiles (Duelyst: 0.7s period, 0.85-1.0 scale)
+    float target_pulse_phase = 0.0f;
 };
 
 // =============================================================================
@@ -1011,6 +1014,11 @@ void update(GameState& state, float dt, const RenderConfig& config) {
     update_hover_state(state, config);
     update_tile_animations(state, dt);
 
+    // Update target tile pulsing (Duelyst: 0.7s period)
+    constexpr float PULSE_PERIOD = 0.7f;
+    state.target_pulse_phase += dt / PULSE_PERIOD;
+    if (state.target_pulse_phase > 1.0f) state.target_pulse_phase -= 1.0f;
+
     check_win_lose_condition(state);
 
     if (state.game_phase != GamePhase::Playing) return;
@@ -1154,12 +1162,20 @@ void render_single_pass(GameState& state, const RenderConfig& config) {
         // Selection box at selected unit position
         state.grid_renderer.render_select_box(config, unit_pos);
 
-        // Movement path and destination selection box
+        // Movement path and destination select box with pulsing
         if (!state.movement_path.empty()) {
             state.grid_renderer.render_path(config, state.movement_path);
 
-            // Selection box at path destination
-            state.grid_renderer.render_select_box(config, state.movement_path.back());
+            // Glow tile + pulsing select box at path destination
+            BoardPos dest = state.movement_path.back();
+
+            // Glow tile (subtle 20% opacity)
+            state.grid_renderer.render_glow(config, dest);
+
+            // Select box (bracket corners) with pulsing (0.85-1.0 scale oscillation)
+            // scale = 0.85 + 0.15 * (0.5 + 0.5 * cos(phase * 2π))
+            float pulse_scale = 0.85f + 0.15f * (0.5f + 0.5f * std::cos(state.target_pulse_phase * 2.0f * M_PI));
+            state.grid_renderer.render_select_box(config, dest, pulse_scale);
         }
     }
 

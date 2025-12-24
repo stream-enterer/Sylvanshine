@@ -38,7 +38,8 @@ namespace TileColor {
 
     // Path and hover
     constexpr SDL_FColor PATH  = {1.0f, 1.0f, 1.0f, 150.0f/255.0f};
-    constexpr SDL_FColor HOVER = {1.0f, 1.0f, 1.0f, 200.0f/255.0f};
+    // Duelyst: CONFIG.TILE_FAINT_OPACITY = 75/255 for passive hover
+    constexpr SDL_FColor HOVER = {1.0f, 1.0f, 1.0f, 75.0f/255.0f};
 }
 
 namespace TileOpacity {
@@ -82,6 +83,8 @@ struct GridRenderer {
     GPUTextureHandle floor_tile;
     GPUTextureHandle hover_tile;
     GPUTextureHandle select_box;  // Selection/targeting reticle (bracket corners)
+    GPUTextureHandle glow_tile;   // Subtle glow for movement hover (20% opacity)
+    GPUTextureHandle target_tile; // Bracket corners for hover target (78% opacity, pulsing)
 
     // Corner textures (quarter tile size)
     GPUTextureHandle corner_0;
@@ -123,7 +126,15 @@ struct GridRenderer {
     void render_hover(const RenderConfig& config, BoardPos pos);
 
     // Render selection box (bracket-corner reticle) at a position
-    void render_select_box(const RenderConfig& config, BoardPos pos);
+    // pulse_scale: 0.85-1.0 for pulsing animation, 1.0 for no pulse
+    void render_select_box(const RenderConfig& config, BoardPos pos, float pulse_scale = 1.0f);
+
+    // Render glow tile for movement hover target (20% opacity)
+    void render_glow(const RenderConfig& config, BoardPos pos);
+
+    // Render target tile (bracket corners) for hover target with optional pulsing
+    // pulse_scale: 0.85-1.0 for pulsing animation, 1.0 for no pulse
+    void render_target(const RenderConfig& config, BoardPos pos, float pulse_scale = 1.0f);
 
 private:
     Vec2 transform_board_point(const RenderConfig& config, float board_x, float board_y);

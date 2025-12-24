@@ -16,6 +16,8 @@ bool GridRenderer::init(const RenderConfig& config) {
     floor_tile = g_gpu.load_texture((prefix + "floor.png").c_str());
     hover_tile = g_gpu.load_texture((prefix + "hover.png").c_str());
     select_box = g_gpu.load_texture((prefix + "select_box.png").c_str());
+    glow_tile = g_gpu.load_texture((prefix + "glow.png").c_str());
+    target_tile = g_gpu.load_texture((prefix + "target.png").c_str());
 
     // Corner tiles
     corner_0 = g_gpu.load_texture((prefix + "corner_0.png").c_str());
@@ -320,20 +322,73 @@ void GridRenderer::render_hover(const RenderConfig& config, BoardPos pos) {
     }
 }
 
-void GridRenderer::render_select_box(const RenderConfig& config, BoardPos pos) {
+void GridRenderer::render_select_box(const RenderConfig& config, BoardPos pos, float pulse_scale) {
     if (!pos.is_valid() || !select_box) return;
+
+    int ts = config.tile_size();
+
+    // Duelyst: tile_box.png is 80x80 on 95px tiles = 84.2% of tile
+    // With pulsing: size oscillates between 84.2% and 84.2% * 0.85 = 71.6%
+    float base_ratio = 80.0f / 95.0f;  // 0.842
+    float box_size = ts * base_ratio * pulse_scale;
+    float half_size = box_size * 0.5f;
+
+    // Center of tile
+    float cx = (pos.x + 0.5f) * ts;
+    float cy = (pos.y + 0.5f) * ts;
+
+    Vec2 tl = transform_board_point(config, cx - half_size, cy - half_size);
+    Vec2 tr = transform_board_point(config, cx + half_size, cy - half_size);
+    Vec2 br = transform_board_point(config, cx + half_size, cy + half_size);
+    Vec2 bl = transform_board_point(config, cx - half_size, cy + half_size);
+
+    SDL_FRect src = {0, 0, (float)select_box.width, (float)select_box.height};
+    g_gpu.draw_sprite_transformed(select_box, src, tl, tr, br, bl, 200.0f/255.0f);  // 78% opacity (Duelyst CONFIG.TILE_SELECT_OPACITY)
+}
+
+void GridRenderer::render_glow(const RenderConfig& config, BoardPos pos) {
+    if (!pos.is_valid() || !glow_tile) return;
 
     int ts = config.tile_size();
     float tx = static_cast<float>(pos.x * ts);
     float ty = static_cast<float>(pos.y * ts);
 
-    Vec2 tl = transform_board_point(config, tx, ty);
-    Vec2 tr = transform_board_point(config, tx + ts, ty);
-    Vec2 br = transform_board_point(config, tx + ts, ty + ts);
-    Vec2 bl = transform_board_point(config, tx, ty + ts);
+    // Duelyst: glow is 90/95 = 0.947 of tile size
+    float glow_ratio = 90.0f / 95.0f;
+    float inset = ts * (1.0f - glow_ratio) / 2.0f;
 
-    SDL_FRect src = {0, 0, (float)select_box.width, (float)select_box.height};
-    g_gpu.draw_sprite_transformed(select_box, src, tl, tr, br, bl, 0.8f);  // 80% opacity
+    Vec2 tl = transform_board_point(config, tx + inset, ty + inset);
+    Vec2 tr = transform_board_point(config, tx + ts - inset, ty + inset);
+    Vec2 br = transform_board_point(config, tx + ts - inset, ty + ts - inset);
+    Vec2 bl = transform_board_point(config, tx + inset, ty + ts - inset);
+
+    SDL_FRect src = {0, 0, (float)glow_tile.width, (float)glow_tile.height};
+    g_gpu.draw_sprite_transformed(glow_tile, src, tl, tr, br, bl, 50.0f/255.0f);  // 20% opacity (Duelyst hardcoded 50)
+}
+
+void GridRenderer::render_target(const RenderConfig& config, BoardPos pos, float pulse_scale) {
+    if (!pos.is_valid() || !target_tile) return;
+
+    int ts = config.tile_size();
+    float tx = static_cast<float>(pos.x * ts);
+    float ty = static_cast<float>(pos.y * ts);
+
+    // Duelyst: target is 100/95 = 1.053 of tile size (slightly larger)
+    // With pulsing, this scales between 1.0 and 0.85
+    float target_ratio = (100.0f / 95.0f) * pulse_scale;
+    float half_size = ts * target_ratio * 0.5f;
+
+    // Center of tile
+    float cx = tx + ts * 0.5f;
+    float cy = ty + ts * 0.5f;
+
+    Vec2 tl = transform_board_point(config, cx - half_size, cy - half_size);
+    Vec2 tr = transform_board_point(config, cx + half_size, cy - half_size);
+    Vec2 br = transform_board_point(config, cx + half_size, cy + half_size);
+    Vec2 bl = transform_board_point(config, cx - half_size, cy + half_size);
+
+    SDL_FRect src = {0, 0, (float)target_tile.width, (float)target_tile.height};
+    g_gpu.draw_sprite_transformed(target_tile, src, tl, tr, br, bl, 200.0f/255.0f);  // 78% opacity (Duelyst CONFIG.TARGET_ACTIVE_OPACITY)
 }
 
 // =============================================================================
@@ -489,6 +544,7 @@ void GridRenderer::render_path_segment(const RenderConfig& config, BoardPos pos,
     Vec2 bl = transform_board_point(config, bl_board.x, bl_board.y);
 
     // Draw textured quad with the rotated corners
+    // Duelyst: CONFIG.PATH_TILE_ACTIVE_OPACITY = 150/255 = 0.588
     SDL_FRect src = {0, 0, static_cast<float>(texture.width), static_cast<float>(texture.height)};
-    g_gpu.draw_sprite_transformed(texture, src, tl, tr, br, bl, 1.0f);
+    g_gpu.draw_sprite_transformed(texture, src, tl, tr, br, bl, 150.0f/255.0f);
 }

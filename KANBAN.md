@@ -36,10 +36,13 @@
 - [x] Tile sprites with spacing (Duelyst grid has gaps between tiles) — see `docs/grid_comparison/transition_plan.md`
 - [x] Attack range yellow color (#FFD900) instead of red — `docs/out_of_scope/duelyst_color_scheme.md`
 - [x] Movement color off-white (#F0F0F0) to match Duelyst
+- [x] Selection box rendering (`tile_box.png`) with 7.9% inset — `docs/tile_visual_fixes_transition.md`
+- [x] Selection box pulsing animation (scale 0.85–1.0 @ 0.7s) — `docs/tile_visual_fixes_transition.md`
+- [x] Path arrow opacity (59%) and hard-edge sprites (NEAREST interpolation)
+- [x] Glow tile under movement target (20% opacity)
+- [x] Passive hover opacity (29% for non-movement hover)
 - [ ] Movement highlight sprites 🔓 FX instances catalogued
 - [ ] Attack highlight sprites 🔓 FX instances catalogued
-- [ ] Selection box rendering (`tile_box.png`) — `docs/grid_phase7_plan.md` §1
-- [ ] Selection box pulsing animation (scale 0.85–1.0) — `docs/grid_phase7_plan.md` §3
 - [ ] Instant hover transitions (no fade when moving within board) — `docs/grid_phase7_plan.md` §2
 - [ ] Attack target reticle (`tile_large.png`) — `docs/grid_phase7_plan.md` §4
 - [ ] Enemy ownership indicator (`tile_grid.png`) under enemy units
@@ -297,7 +300,8 @@
 - [x] Z-order sorting (screen Y, painter's algorithm)
 - [x] Shadow system (blob shadow, perspective transform, shader pipeline)
 - [x] Multi-pass rendering pipeline (FBO-based)
-- [x] Bloom post-processing
+- [x] Bloom post-processing infrastructure (PassManager with highpass/blur/bloom passes)
+- [ ] Bloom activation — passes exist but not routed through render pipeline. See `docs/duelyst_implementation_differences.md`
 - [x] Dynamic shadow geometry (skew/stretch from light position/altitude)
 - [x] Per-map lighting preset system (10 presets from Duelyst battle maps)
 - [x] Grid gap system (tile sprites with baked-in margins, disabled grid lines)

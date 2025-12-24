@@ -526,6 +526,13 @@ def resize_image(src_path: Path, dst_path: Path, width: int, height: int):
     resized.save(dst_path)
 
 
+def resize_image_nearest(src_path: Path, dst_path: Path, width: int, height: int):
+    """Image resize using nearest-neighbor filter (preserves hard edges)."""
+    img = Image.open(src_path).convert('RGBA')
+    resized = img.resize((width, height), Image.NEAREST)
+    resized.save(dst_path)
+
+
 def resize_with_symmetric_margin(src_path: Path, dst_path: Path,
                                   target_size: int, margin: int) -> None:
     """
@@ -642,7 +649,30 @@ def generate_scaled_tiles(
                 resize_image(src, dst, tile_size, tile_size)
                 generated += 1
 
-        # === Path sprites (128×128 → tile_size, NO margin — cross gaps intentionally) ===
+        # === Glow tile (100×100 source → tile_size * 0.947, centered) ===
+        # Duelyst: glow is 90/95 = 0.947 of tile size
+        src = src_dir / 'tile_glow.png'
+        dst = dst_dir / 'glow.png'
+        if src.exists():
+            if output_files is not None:
+                output_files.add(dst)
+            if force or needs_regeneration(src, dst):
+                resize_image(src, dst, tile_size, tile_size)
+                generated += 1
+
+        # === Target tile (128×128 source → tile_size * 1.053, bracket corners for hover) ===
+        # Duelyst: target is 100/95 = 1.053 of tile size (slightly larger than tile)
+        src = src_dir / 'tile_target.png'
+        dst = dst_dir / 'target.png'
+        if src.exists():
+            if output_files is not None:
+                output_files.add(dst)
+            if force or needs_regeneration(src, dst):
+                resize_image(src, dst, tile_size, tile_size)
+                generated += 1
+
+        # === Path sprites (128×128 → tile_size, NEAREST for hard edges) ===
+        # Use nearest-neighbor interpolation to preserve hard edges like Duelyst
         path_map = {
             'tile_path_move_start.png': 'path_start.png',
             'tile_path_move_straight.png': 'path_straight.png',
@@ -659,7 +689,7 @@ def generate_scaled_tiles(
                 if output_files is not None:
                     output_files.add(dst)
                 if force or needs_regeneration(src, dst):
-                    resize_image(src, dst, tile_size, tile_size)
+                    resize_image_nearest(src, dst, tile_size, tile_size)
                     generated += 1
 
         if verbose:
