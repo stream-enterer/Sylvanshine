@@ -144,6 +144,14 @@ struct GPURenderer {
     void draw_quad_transformed(Vec2 tl, Vec2 tr, Vec2 br, Vec2 bl, SDL_FColor color);
     void draw_line(Vec2 start, Vec2 end, SDL_FColor color);
 
+    // Draw sprite with arbitrary quad corners (for rotation)
+    void draw_sprite_transformed(
+        const GPUTextureHandle& texture,
+        const SDL_FRect& src,
+        Vec2 tl, Vec2 tr, Vec2 br, Vec2 bl,
+        float opacity
+    );
+
     // SDF shadow rendering
     // sdf_texture is the pre-computed SDF atlas
     // src is the frame rect in the atlas (same as spritesheet)

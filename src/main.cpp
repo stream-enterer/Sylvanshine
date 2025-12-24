@@ -73,6 +73,21 @@ struct GameState {
     float ai_action_timer = 0.0f;
     int ai_current_unit = -1;
     std::vector<bool> has_acted;
+
+    // Hover state for tile system
+    BoardPos hover_pos{-1, -1};
+    bool hover_valid = false;
+    bool was_hovering_on_board = false;  // For instant transition detection
+
+    // Computed path to hover target
+    std::vector<BoardPos> movement_path;
+
+    // Blob opacity for dimming during hover
+    float move_blob_opacity = 1.0f;
+    float attack_blob_opacity = 1.0f;
+
+    // Active fade animations
+    std::vector<TileFadeAnim> tile_anims;
 };
 
 // =============================================================================
@@ -225,13 +240,19 @@ std::vector<BoardPos> get_enemy_positions(const GameState& state, int unit_idx) 
 }
 
 void clear_selection(GameState& state) {
-    if (state.selected_unit_idx >= 0 && 
+    if (state.selected_unit_idx >= 0 &&
         state.selected_unit_idx < static_cast<int>(state.units.size())) {
         state.units[state.selected_unit_idx].restore_facing();
     }
     state.selected_unit_idx = -1;
     state.reachable_tiles.clear();
     state.attackable_tiles.clear();
+
+    // Clear tile highlight state
+    state.movement_path.clear();
+    state.move_blob_opacity = 1.0f;
+    state.attack_blob_opacity = 1.0f;
+    state.tile_anims.clear();
 }
 
 void update_selected_ranges(GameState& state) {
@@ -797,6 +818,15 @@ void reset_game(GameState& state, const RenderConfig& config) {
     state.ai_current_unit = -1;
     state.has_acted.clear();
 
+    // Reset tile state
+    state.hover_pos = {-1, -1};
+    state.hover_valid = false;
+    state.was_hovering_on_board = false;
+    state.movement_path.clear();
+    state.move_blob_opacity = 1.0f;
+    state.attack_blob_opacity = 1.0f;
+    state.tile_anims.clear();
+
     Entity unit1 = create_unit(state, config, "f1_general", UnitType::Player, 25, 5, {2, 2});
     if (unit1.spritesheet.ptr) {
         state.units.push_back(std::move(unit1));
@@ -868,8 +898,101 @@ void check_player_turn_end(GameState& state) {
     if (state.turn_phase != TurnPhase::PlayerTurn) return;
     if (any_units_busy(state)) return;
     if (!all_units_acted(state, UnitType::Player)) return;
-    
+
     begin_turn_transition(state, TurnPhase::EnemyTurn);
+}
+
+// =============================================================================
+// Tile Hover System
+// =============================================================================
+
+void start_opacity_fade(GameState& state, FadeTarget target,
+                        float from, float to, float duration) {
+    if (duration <= 0.0f) {
+        // Instant — apply directly
+        switch (target) {
+            case FadeTarget::MoveBlobOpacity:
+                state.move_blob_opacity = to;
+                break;
+            case FadeTarget::AttackBlobOpacity:
+                state.attack_blob_opacity = to;
+                break;
+        }
+        return;
+    }
+    // Remove existing animation on this target
+    state.tile_anims.erase(
+        std::remove_if(state.tile_anims.begin(), state.tile_anims.end(),
+            [target](const TileFadeAnim& a) { return a.target == target; }),
+        state.tile_anims.end());
+
+    state.tile_anims.push_back({target, from, to, duration, 0.0f});
+}
+
+void update_hover_path(GameState& state, const RenderConfig& config) {
+    // Check if hover is in movement range
+    bool in_move_range = false;
+    for (const auto& t : state.reachable_tiles) {
+        if (t == state.hover_pos) { in_move_range = true; break; }
+    }
+
+    if (in_move_range) {
+        // Calculate path
+        auto occupied = get_occupied_positions(state, state.selected_unit_idx);
+        BoardPos start = state.units[state.selected_unit_idx].board_pos;
+        state.movement_path = get_path_to(start, state.hover_pos, occupied);
+
+        // Dim blob (instant if already on board, else animate)
+        float fade_dur = state.was_hovering_on_board ? 0.0f : FADE_FAST;
+        start_opacity_fade(state, FadeTarget::MoveBlobOpacity,
+                          state.move_blob_opacity, TileOpacity::DIM, fade_dur);
+    } else {
+        // Clear path, restore blob
+        state.movement_path.clear();
+        if (state.move_blob_opacity < 1.0f) {
+            start_opacity_fade(state, FadeTarget::MoveBlobOpacity,
+                              state.move_blob_opacity, 1.0f, FADE_FAST);
+        }
+    }
+}
+
+void update_hover_state(GameState& state, const RenderConfig& config) {
+    state.was_hovering_on_board = state.hover_valid;
+    BoardPos new_hover = screen_to_board_perspective(config, state.mouse_pos);
+    state.hover_valid = new_hover.is_valid();
+    state.hover_pos = new_hover;
+
+    // Update path if unit selected and hovering valid move target
+    if (state.hover_valid && state.selected_unit_idx >= 0) {
+        update_hover_path(state, config);
+    } else if (!state.hover_valid && !state.movement_path.empty()) {
+        // Clear path when leaving board
+        state.movement_path.clear();
+        start_opacity_fade(state, FadeTarget::MoveBlobOpacity,
+                          state.move_blob_opacity, 1.0f, FADE_FAST);
+    }
+}
+
+void update_tile_animations(GameState& state, float dt) {
+    // Update tile animations and apply values
+    for (auto& anim : state.tile_anims) {
+        anim.update(dt);
+        float val = anim.current_value();
+        switch (anim.target) {
+            case FadeTarget::MoveBlobOpacity:
+                state.move_blob_opacity = val;
+                break;
+            case FadeTarget::AttackBlobOpacity:
+                state.attack_blob_opacity = val;
+                break;
+        }
+    }
+
+    // Remove completed animations
+    state.tile_anims.erase(
+        std::remove_if(state.tile_anims.begin(), state.tile_anims.end(),
+            [](const TileFadeAnim& a) { return a.elapsed >= a.duration; }),
+        state.tile_anims.end());
 }
 
 void update(GameState& state, float dt, const RenderConfig& config) {
@@ -883,6 +1006,10 @@ void update(GameState& state, float dt, const RenderConfig& config) {
     update_floating_texts(state, dt, config);
     update_active_fx(state, dt);
     remove_dead_units(state);
+
+    // Update hover state and tile animations
+    update_hover_state(state, config);
+    update_tile_animations(state, dt);
 
     check_win_lose_condition(state);
 
@@ -1007,13 +1134,30 @@ std::vector<size_t> get_render_order(const GameState& state) {
 
 // Single-pass rendering (legacy path)
 void render_single_pass(GameState& state, const RenderConfig& config) {
+    // 1. Floor grid (semi-transparent dark tiles with gaps)
+    state.grid_renderer.render_floor_grid(config);
+
+    // 2. Grid lines
     state.grid_renderer.render(config);
 
+    // 3. Selection highlights
     if (state.selected_unit_idx >= 0 && state.game_phase == GamePhase::Playing) {
-        auto occupied = get_occupied_positions(state, state.selected_unit_idx);
-        state.grid_renderer.render_move_range(config,
-            state.units[state.selected_unit_idx].board_pos, MOVE_RANGE, occupied);
+        state.grid_renderer.render_move_range_alpha(config,
+            state.reachable_tiles, state.move_blob_opacity);
         state.grid_renderer.render_attack_range(config, state.attackable_tiles);
+
+        // Movement path
+        if (!state.movement_path.empty()) {
+            state.grid_renderer.render_path(config, state.movement_path);
+
+            // Target reticle at path destination
+            state.grid_renderer.render_target(config, state.movement_path.back());
+        }
+    }
+
+    // 4. Hover highlight
+    if (state.hover_valid) {
+        state.grid_renderer.render_hover(config, state.hover_pos);
     }
 
     auto render_order = get_render_order(state);

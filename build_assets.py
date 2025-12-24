@@ -497,6 +497,76 @@ def animation_to_dict(anim: Animation) -> dict:
     }
 
 
+def resize_image(src_path: Path, dst_path: Path, width: int, height: int):
+    """High-quality image resize using Lanczos filter."""
+    img = Image.open(src_path).convert('RGBA')
+    resized = img.resize((width, height), Image.LANCZOS)
+    resized.save(dst_path)
+
+
+def generate_scaled_tiles(source_dir: Path, dist_dir: Path, force: bool = False, verbose: bool = False) -> int:
+    """Generate tile sprites for each scale level. Returns count of tiles generated."""
+    src_dir = source_dir / 'resources' / 'tiles'
+    generated = 0
+
+    for scale in [1, 2]:
+        dst_dir = dist_dir / 'resources' / 'tiles' / f's{scale}'
+        dst_dir.mkdir(parents=True, exist_ok=True)
+
+        tile_size = 48 * scale      # 48 or 96
+        quarter_size = tile_size // 2  # 24 or 48
+
+        # Corner sprites (64×64 source → quarter_size)
+        corner_map = {
+            'tile_merged_large_0.png': 'corner_0.png',
+            'tile_merged_large_01.png': 'corner_01.png',
+            'tile_merged_large_03.png': 'corner_03.png',
+            'tile_merged_large_013.png': 'corner_013.png',
+            'tile_merged_large_0123.png': 'corner_0123.png',
+        }
+        for src_name, dst_name in corner_map.items():
+            src = src_dir / src_name
+            dst = dst_dir / dst_name
+            if src.exists():
+                if force or needs_regeneration(src, dst):
+                    resize_image(src, dst, quarter_size, quarter_size)
+                    generated += 1
+
+        # Floor, hover, and target tiles (128×128 → tile_size)
+        for src_name, dst_name in [('tile_board.png', 'floor.png'),
+                                    ('tile_hover.png', 'hover.png'),
+                                    ('tile_glow.png', 'target.png')]:
+            src = src_dir / src_name
+            dst = dst_dir / dst_name
+            if src.exists():
+                if force or needs_regeneration(src, dst):
+                    resize_image(src, dst, tile_size, tile_size)
+                    generated += 1
+
+        # Path sprites (128×128 → tile_size)
+        path_map = {
+            'tile_path_move_start.png': 'path_start.png',
+            'tile_path_move_straight.png': 'path_straight.png',
+            'tile_path_move_straight_from_start.png': 'path_straight_from_start.png',
+            'tile_path_move_corner.png': 'path_corner.png',
+            'tile_path_move_corner_from_start.png': 'path_corner_from_start.png',
+            'tile_path_move_end.png': 'path_end.png',
+            'tile_path_move_end_from_start.png': 'path_end_from_start.png',
+        }
+        for src_name, dst_name in path_map.items():
+            src = src_dir / src_name
+            dst = dst_dir / dst_name
+            if src.exists():
+                if force or needs_regeneration(src, dst):
+                    resize_image(src, dst, tile_size, tile_size)
+                    generated += 1
+
+        if verbose:
+            print(f"  Generated scale {scale} tiles in {dst_dir}")
+
+    return generated
+
+
 def build_assets(
     source_dir: Path,
     dist_dir: Path,
@@ -711,6 +781,11 @@ def build_assets(
             assets['tiles'][tile_name] = f'resources/tiles/{tile_name}.png'
 
         print(f"  {stats.tiles_found} tiles: {stats.tiles_copied} copied, {stats.tiles_skipped} up-to-date")
+
+    # ===== Generate scaled tiles =====
+    print("Generating scaled tiles...")
+    scaled_count = generate_scaled_tiles(source_dir, dist_dir, force, verbose)
+    print(f"  {scaled_count} scaled tiles generated")
 
     # ===== Copy shadow texture =====
     shadow_src = source_dir / 'resources' / 'unit_shadow.png'
