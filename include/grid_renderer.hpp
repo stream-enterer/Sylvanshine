@@ -30,13 +30,11 @@ struct TileFadeAnim {
 };
 
 namespace TileColor {
-    // Current Sylvanshine colors (keep for compatibility)
-    constexpr SDL_FColor MOVE_CURRENT   = {1.0f, 1.0f, 1.0f, 200.0f/255.0f};
-    constexpr SDL_FColor ATTACK_CURRENT = {1.0f, 100.0f/255.0f, 100.0f/255.0f, 200.0f/255.0f};
+    // Movement: slightly off-white (Duelyst's #F0F0F0)
+    constexpr SDL_FColor MOVE_CURRENT   = {0.941f, 0.941f, 0.941f, 200.0f/255.0f};
 
-    // Duelyst colors (for future use)
-    constexpr SDL_FColor MOVE_DUELYST   = {0.941f, 0.941f, 0.941f, 1.0f};  // #F0F0F0
-    constexpr SDL_FColor AGGRO_DUELYST  = {1.0f, 0.851f, 0.0f, 1.0f};      // #FFD900 yellow!
+    // Attack: Duelyst's signature yellow #FFD900
+    constexpr SDL_FColor ATTACK_CURRENT = {1.0f, 0.851f, 0.0f, 200.0f/255.0f};
 
     // Path and hover
     constexpr SDL_FColor PATH  = {1.0f, 1.0f, 1.0f, 150.0f/255.0f};

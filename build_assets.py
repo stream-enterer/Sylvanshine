@@ -526,6 +526,61 @@ def resize_image(src_path: Path, dst_path: Path, width: int, height: int):
     resized.save(dst_path)
 
 
+def resize_with_symmetric_margin(src_path: Path, dst_path: Path,
+                                  target_size: int, margin: int) -> None:
+    """
+    Resize sprite with symmetric margin on all sides.
+    Used for floor and hover tiles to create gap-based grid effect.
+
+    Args:
+        src_path: Source image (e.g., tile_board.png at 128×128)
+        dst_path: Destination image
+        target_size: Output dimensions (e.g., 48 or 96)
+        margin: Transparent margin per side (e.g., 1 or 2)
+    """
+    content_size = target_size - (margin * 2)
+
+    img = Image.open(src_path).convert('RGBA')
+    # Crop to visible content (remove source's transparent margins)
+    bbox = img.getbbox()
+    if bbox:
+        img = img.crop(bbox)
+    img = img.resize((content_size, content_size), Image.LANCZOS)
+
+    # Create output with margin on all sides
+    output = Image.new('RGBA', (target_size, target_size), (0, 0, 0, 0))
+    output.paste(img, (margin, margin))
+    output.save(dst_path)
+
+
+def resize_with_asymmetric_margin(src_path: Path, dst_path: Path,
+                                   target_size: int, margin: int) -> None:
+    """
+    Resize sprite with asymmetric margin (TL orientation: margin on left/top only).
+    Used for corner sprites. Rotation during rendering places margin on correct edges.
+
+    Args:
+        src_path: Source image (e.g., tile_merged_large_0.png at 64×64)
+        dst_path: Destination image
+        target_size: Output dimensions (e.g., 24 or 48)
+        margin: Margin on left and top edges only (e.g., 1 or 2)
+    """
+    # Content extends to right and bottom edges (no margin there)
+    content_size = target_size - margin
+
+    img = Image.open(src_path).convert('RGBA')
+    # Crop to visible content
+    bbox = img.getbbox()
+    if bbox:
+        img = img.crop(bbox)
+    img = img.resize((content_size, content_size), Image.LANCZOS)
+
+    # Place at (margin, margin) — content extends to right/bottom edges
+    output = Image.new('RGBA', (target_size, target_size), (0, 0, 0, 0))
+    output.paste(img, (margin, margin))
+    output.save(dst_path)
+
+
 def generate_scaled_tiles(
     source_dir: Path,
     dist_dir: Path,
@@ -543,14 +598,17 @@ def generate_scaled_tiles(
 
         tile_size = 48 * scale      # 48 or 96
         quarter_size = tile_size // 2  # 24 or 48
+        margin = scale              # 1px (1x) or 2px (2x) — creates ~2% gap ratio
 
-        # Corner sprites (64×64 source → quarter_size)
+        # === Corner sprites (64×64 source → quarter_size, NO margin) ===
+        # Blob corners fill full quarter-tile to cover floor gaps when rendered on top
         corner_map = {
             'tile_merged_large_0.png': 'corner_0.png',
             'tile_merged_large_01.png': 'corner_01.png',
             'tile_merged_large_03.png': 'corner_03.png',
             'tile_merged_large_013.png': 'corner_013.png',
             'tile_merged_large_0123.png': 'corner_0123.png',
+            'tile_merged_large_0_seam.png': 'corner_0_seam.png',  # Seam between move/attack
         }
         for src_name, dst_name in corner_map.items():
             src = src_dir / src_name
@@ -562,21 +620,29 @@ def generate_scaled_tiles(
                     resize_image(src, dst, quarter_size, quarter_size)
                     generated += 1
 
-        # Floor, hover, and selection box tiles
-        # Note: tile_box.png is 80×80, others are 128×128
+        # === Floor and hover tiles (128×128 source → tile_size with symmetric margin) ===
         for src_name, dst_name in [('tile_board.png', 'floor.png'),
-                                    ('tile_hover.png', 'hover.png'),
-                                    ('tile_box.png', 'select_box.png')]:
+                                    ('tile_hover.png', 'hover.png')]:
             src = src_dir / src_name
             dst = dst_dir / dst_name
             if src.exists():
                 if output_files is not None:
                     output_files.add(dst)
                 if force or needs_regeneration(src, dst):
-                    resize_image(src, dst, tile_size, tile_size)
+                    resize_with_symmetric_margin(src, dst, tile_size, margin)
                     generated += 1
 
-        # Path sprites (128×128 → tile_size)
+        # === Select box (80×80 source → tile_size, NO margin — intentionally larger) ===
+        src = src_dir / 'tile_box.png'
+        dst = dst_dir / 'select_box.png'
+        if src.exists():
+            if output_files is not None:
+                output_files.add(dst)
+            if force or needs_regeneration(src, dst):
+                resize_image(src, dst, tile_size, tile_size)
+                generated += 1
+
+        # === Path sprites (128×128 → tile_size, NO margin — cross gaps intentionally) ===
         path_map = {
             'tile_path_move_start.png': 'path_start.png',
             'tile_path_move_straight.png': 'path_straight.png',

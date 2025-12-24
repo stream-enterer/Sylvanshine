@@ -125,10 +125,8 @@ void GridRenderer::render_move_range(const RenderConfig& config,
 
 void GridRenderer::render_attack_range(const RenderConfig& config,
                                        const std::vector<BoardPos>& attackable_tiles) {
-    SDL_FColor highlight = {1.0f, 100.0f/255.0f, 100.0f/255.0f, 200.0f/255.0f};
-
     for (const auto& tile : attackable_tiles) {
-        render_highlight(config, tile, highlight);
+        render_highlight(config, tile, TileColor::ATTACK_CURRENT);
     }
 }
 

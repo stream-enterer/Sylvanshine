@@ -1137,8 +1137,8 @@ void render_single_pass(GameState& state, const RenderConfig& config) {
     // 1. Floor grid (semi-transparent dark tiles with gaps)
     state.grid_renderer.render_floor_grid(config);
 
-    // 2. Grid lines
-    state.grid_renderer.render(config);
+    // 2. Grid lines (disabled — using tile gaps instead)
+    // state.grid_renderer.render(config);
 
     // 3. Selection highlights
     if (state.selected_unit_idx >= 0 && state.game_phase == GamePhase::Playing) {

@@ -33,10 +33,11 @@
 - [ ] Sync lighting presets with actual battle map backgrounds
 
 ### Grid Visuals
-- [ ] Tile sprites with spacing (Duelyst grid has gaps between tiles) — see `docs/grid_comparison/transition_plan.md`
+- [x] Tile sprites with spacing (Duelyst grid has gaps between tiles) — see `docs/grid_comparison/transition_plan.md`
+- [x] Attack range yellow color (#FFD900) instead of red — `docs/out_of_scope/duelyst_color_scheme.md`
+- [x] Movement color off-white (#F0F0F0) to match Duelyst
 - [ ] Movement highlight sprites 🔓 FX instances catalogued
 - [ ] Attack highlight sprites 🔓 FX instances catalogued
-- [ ] Attack range yellow color (#FFD900) instead of red — `docs/out_of_scope/duelyst_color_scheme.md`
 - [ ] Selection box rendering (`tile_box.png`) — `docs/grid_phase7_plan.md` §1
 - [ ] Selection box pulsing animation (scale 0.85–1.0) — `docs/grid_phase7_plan.md` §3
 - [ ] Instant hover transitions (no fade when moving within board) — `docs/grid_phase7_plan.md` §2
@@ -156,6 +157,7 @@
 - [ ] Undo window expires on turn end
 
 ### Movement Rules
+- [ ] Pathfinding around units (units should route around other units, not through them)
 - [ ] Ground units cannot move through other units (verify Duelyst behavior) ⚡ `get_modifier_chain.py ModifierFlying` shows movement rules
 - [ ] Flying units move through other units ⚡ same query
 - [ ] Sprite overlap visual handling
@@ -298,6 +300,8 @@
 - [x] Bloom post-processing
 - [x] Dynamic shadow geometry (skew/stretch from light position/altitude)
 - [x] Per-map lighting preset system (10 presets from Duelyst battle maps)
+- [x] Grid gap system (tile sprites with baked-in margins, disabled grid lines)
+- [x] Duelyst color scheme (movement=#F0F0F0, attack=#FFD900 yellow)
 
 ---
 
@@ -312,6 +316,12 @@
 - Boss encounter design
 - Run length tuning
 - Difficulty curve
+
+---
+
+## MISC / INVESTIGATE
+
+- [ ] Enemy attack range uses different color — Duelyst uses red `#D22846` (`CONFIG.AGGRO_OPPONENT_COLOR`) for enemy attack tiles vs yellow `#FFD900` for friendly. Investigate if/when this matters for single-player tactics.
 
 ---
 
