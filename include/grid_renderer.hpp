@@ -83,7 +83,7 @@ struct GridRenderer {
     // Scale-specific textures (pre-scaled, no runtime scaling)
     GPUTextureHandle floor_tile;
     GPUTextureHandle hover_tile;
-    GPUTextureHandle target_tile;
+    GPUTextureHandle select_box;  // Selection/targeting reticle (bracket corners)
 
     // Corner textures (quarter tile size)
     GPUTextureHandle corner_0;
@@ -124,8 +124,8 @@ struct GridRenderer {
     // Render hover highlight
     void render_hover(const RenderConfig& config, BoardPos pos);
 
-    // Render target reticle at path destination
-    void render_target(const RenderConfig& config, BoardPos pos);
+    // Render selection box (bracket-corner reticle) at a position
+    void render_select_box(const RenderConfig& config, BoardPos pos);
 
 private:
     Vec2 transform_board_point(const RenderConfig& config, float board_x, float board_y);

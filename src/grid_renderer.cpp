@@ -15,7 +15,7 @@ bool GridRenderer::init(const RenderConfig& config) {
     // Floor and special tiles
     floor_tile = g_gpu.load_texture((prefix + "floor.png").c_str());
     hover_tile = g_gpu.load_texture((prefix + "hover.png").c_str());
-    target_tile = g_gpu.load_texture((prefix + "target.png").c_str());
+    select_box = g_gpu.load_texture((prefix + "select_box.png").c_str());
 
     // Corner tiles
     corner_0 = g_gpu.load_texture((prefix + "corner_0.png").c_str());
@@ -322,8 +322,8 @@ void GridRenderer::render_hover(const RenderConfig& config, BoardPos pos) {
     }
 }
 
-void GridRenderer::render_target(const RenderConfig& config, BoardPos pos) {
-    if (!pos.is_valid() || !target_tile) return;
+void GridRenderer::render_select_box(const RenderConfig& config, BoardPos pos) {
+    if (!pos.is_valid() || !select_box) return;
 
     int ts = config.tile_size();
     float tx = static_cast<float>(pos.x * ts);
@@ -334,8 +334,8 @@ void GridRenderer::render_target(const RenderConfig& config, BoardPos pos) {
     Vec2 br = transform_board_point(config, tx + ts, ty + ts);
     Vec2 bl = transform_board_point(config, tx, ty + ts);
 
-    SDL_FRect src = {0, 0, (float)target_tile.width, (float)target_tile.height};
-    g_gpu.draw_sprite_transformed(target_tile, src, tl, tr, br, bl, 0.8f);  // 80% opacity
+    SDL_FRect src = {0, 0, (float)select_box.width, (float)select_box.height};
+    g_gpu.draw_sprite_transformed(select_box, src, tl, tr, br, bl, 0.8f);  // 80% opacity
 }
 
 // =============================================================================

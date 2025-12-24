@@ -117,75 +117,39 @@ Add target tile rendering:
 
 ---
 
-## Issue 3: Triangle Artifacts in Movement Blob
-
-### Visual Comparison
-| Aspect | Duelyst | Sylvanshine |
-|--------|---------|-------------|
-| Corner blending | Smooth, seamless | Visible triangular seams |
-| Edge gradient | Correct orientation | Misaligned (not rotated) |
-| Interior fill | Consistent | Inconsistent patterns |
-
-### Ground Truth
-
-**Source:** `grid_rendering.md` §7 (Rotation Values)
-
-| Corner | Rotation |
-|--------|----------|
-| Top-Left (tl) | 0° |
-| Top-Right (tr) | 90° |
-| Bottom-Right (br) | 180° |
-| Bottom-Left (bl) | 270° |
-
-**Critical detail:** Each corner sprite has a gradient baked in that flows from opaque exterior edge to semi-transparent interior. Rotation ensures gradients face outward from blob.
-
-### Root Cause
-
-**Phase 5 `render_corner_quad()` does NOT rotate corner sprites.**
-
-Current implementation:
-```cpp
-void GridRenderer::render_corner_quad(...) {
-    // Places sprite at correct position
-    // Does NOT apply rotation
-    Vec2 tl = transform_board_point(config, x, y);
-    Vec2 tr = transform_board_point(config, x + half, y);
-    // ... renders unrotated quad
-}
-```
-
-Required:
-```cpp
-// Rotate each corner: TL=0°, TR=90°, BR=180°, BL=270°
-float rotation_deg = corner * 90.0f;
-// Apply rotation before perspective transform
-```
-
-### Implementation Path That Led to Problem
-
-```
-Phase 5 Implementation:
-  ├─ Correctly identified corner sprite selection algorithm
-  ├─ Correctly implemented neighbor detection
-  ├─ MISSED rotation requirement from ground truth
-  └─ Did not visually test against Duelyst reference
-```
-
-### Solution
-
-**Phase 6 addresses this** with `render_corner_quad_rotated()`.
-
----
-
 ## Summary Table
 
 | Issue | Root Cause | Phase 6 Fixes? | Additional Work |
 |-------|-----------|----------------|-----------------|
 | Thin arrow | Scaling ratio + missing FromStart | **Yes** | — |
-| No target reticle | Not implemented | **Yes** | — |
+| No target reticle | Wrong sprite (glow vs box) | **Yes** ✅ | Alignment TODO |
 | Triangle artifacts | Missing corner rotation | **Yes** | — |
+| Blob excludes unit tile | Unit pos not in reachable_tiles | **Yes** ✅ | — |
+| Selection box alignment | Source 80×80 vs tile size | Partial | Size/padding fix |
 | Missing animations | Not implemented | No | Phase 7 |
 | Z-order hierarchy | Implicit only | Partial | Phase 7 |
+
+---
+
+## Fixes Applied (2024-12-24)
+
+### Fix: Movement Blob Visual Continuity
+**Problem:** Tile under selected unit excluded from contiguous movement blob.
+
+**Solution:** `main.cpp:1145-1148` includes unit position in blob tiles before rendering.
+
+### Fix: Selection Box Sprite
+**Problem:** Used `tile_glow.png` (glow effect) instead of `tile_box.png` (bracket corners).
+
+**Solution:**
+- Asset pipeline generates `select_box.png` from `tile_box.png`
+- Selection box renders at both unit position AND hover destination
+- Matches Duelyst's `TileBoxSprite` behavior
+
+### Known Issue: Selection Box Alignment
+**Problem:** Selection box (80×80 source) scaled to tile size may not align properly with grid tile boundaries.
+
+**Status:** Not yet fixed. Needs investigation into proper sizing/padding to match Duelyst's tile alignment.
 
 ---
 
@@ -279,10 +243,11 @@ Render order is implicit in `render_single_pass()`:
 | Floor grid | ✅ Yes | Adds Duelyst-style gaps |
 | Path arrow scaling | ✅ Yes | Pre-scaled sprites |
 | FromStart variants | ✅ Yes | Added to path system |
-| Target glow tile | ✅ Yes | Renders at path end |
+| Selection box | ✅ Yes | Fixed: uses `tile_box.png`, renders at unit + destination |
+| Movement blob continuity | ✅ Yes | Fixed: includes unit position in blob |
+| Selection box alignment | ⚠️ Partial | TODO: size/padding adjustment needed |
 | Instant hover transition | ❌ No | Future enhancement |
 | Pulsing scale animation | ❌ No | Future enhancement |
-| Selection box | ❌ No | Future enhancement |
 | Z-order constants | ❌ No | Currently implicit |
 
 ---
@@ -291,10 +256,11 @@ Render order is implicit in `render_single_pass()`:
 
 ### Phase 7 Candidates
 
-1. **Selection Box**
-   - TileBoxSprite at selected unit
-   - Pulsing scale animation (85%)
-   - White outline appearance
+1. **Selection Box Alignment** (partially complete)
+   - ✅ TileBoxSprite (`tile_box.png`) at selected unit — DONE
+   - ✅ TileBoxSprite at hover destination — DONE
+   - ⚠️ Size/padding alignment with grid tiles — TODO
+   - ❌ Pulsing scale animation (85%) — Future
 
 2. **Instant Hover Transitions**
    - Track `wasHoveringOnBoard` state

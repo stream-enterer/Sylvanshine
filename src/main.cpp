@@ -1142,16 +1142,24 @@ void render_single_pass(GameState& state, const RenderConfig& config) {
 
     // 3. Selection highlights
     if (state.selected_unit_idx >= 0 && state.game_phase == GamePhase::Playing) {
+        // Include unit position in blob for visual continuity
+        BoardPos unit_pos = state.units[state.selected_unit_idx].board_pos;
+        std::vector<BoardPos> blob_tiles = state.reachable_tiles;
+        blob_tiles.push_back(unit_pos);
+
         state.grid_renderer.render_move_range_alpha(config,
-            state.reachable_tiles, state.move_blob_opacity);
+            blob_tiles, state.move_blob_opacity);
         state.grid_renderer.render_attack_range(config, state.attackable_tiles);
 
-        // Movement path
+        // Selection box at selected unit position
+        state.grid_renderer.render_select_box(config, unit_pos);
+
+        // Movement path and destination selection box
         if (!state.movement_path.empty()) {
             state.grid_renderer.render_path(config, state.movement_path);
 
-            // Target reticle at path destination
-            state.grid_renderer.render_target(config, state.movement_path.back());
+            // Selection box at path destination
+            state.grid_renderer.render_select_box(config, state.movement_path.back());
         }
     }
 

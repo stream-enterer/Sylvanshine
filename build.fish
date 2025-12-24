@@ -54,8 +54,37 @@ function do_compile_shaders
     end
 end
 
+function check_assets_stale
+    # Returns 0 if assets need rebuilding, 1 if up-to-date
+    set -l manifest "dist/assets.json"
+
+    # If manifest doesn't exist, need to build
+    if not test -f "$manifest"
+        return 0
+    end
+
+    # Check if any source file is newer than manifest
+    # Sources: app/resources/**/*.{png,plist}, app/timing/*.tsv, app/fx/*.tsv
+    for pattern in "app/resources/**/*.png" "app/resources/**/*.plist" "app/timing/*.tsv" "app/fx/*.tsv"
+        for src in $pattern
+            test -f "$src"; or continue
+            if test "$src" -nt "$manifest"
+                return 0
+            end
+        end
+    end
+
+    # All sources older than manifest
+    return 1
+end
+
 function do_build_assets
     echo "→ Building assets..."
+    # Early exit if nothing changed
+    if not check_assets_stale
+        echo "  Assets up-to-date (skipping Python)"
+        return 0
+    end
     uv run build_assets.py; or return 1
 end
 
@@ -107,15 +136,29 @@ function do_build_run
     and do_run $argv
 end
 
+function do_quick
+    # Quick build: skip assets and shaders, just compile C++
+    echo "→ Quick build (C++ only)..."
+    cmake -B $BUILD_DIR -DCMAKE_BUILD_TYPE=Release
+    and cmake --build $BUILD_DIR -j(nproc)
+    and echo "✓ Quick build complete: ./$BUILD_DIR/$PROJECT_NAME"
+end
+
+function do_quick_run
+    do_quick
+    and do_run $argv
+end
+
 function do_shaders_only
     do_compile_shaders
 end
 
-function do_assets_only
-    echo "→ Building assets (forced)..."
-    uv run build_assets.py --clean or return 1
-    echo "✓ Assets built to $DIST_DIR/"
-end
+# Disabled: wipes dist/ which is slow to regenerate
+# function do_assets_only
+#     echo "→ Building assets (forced)..."
+#     uv run build_assets.py --clean; or return 1
+#     echo "✓ Assets built to $DIST_DIR/"
+# end
 
 function show_help
     echo "Usage: ./build.fish [command]"
@@ -123,12 +166,13 @@ function show_help
     echo "Commands:"
     echo "  build      - Build assets + shaders + release"
     echo "  debug      - Build assets + shaders + debug"
+    echo "  quick      - C++ only (skip assets/shaders)"
+    echo "  qr         - Quick + run"
     echo "  clean      - Remove build directory"
     echo "  rebuild    - Clean + build"
     echo "  run        - Run executable"
     echo "  br         - Build + run"
     echo "  shaders    - Compile shaders only"
-    echo "  assets     - Build assets only (force rebuild)"
     echo "  help       - Show this help"
 end
 
@@ -137,6 +181,10 @@ switch $argv[1]
         do_build
     case debug
         do_debug
+    case quick
+        do_quick
+    case qr
+        do_quick_run $argv[2..]
     case clean
         do_clean
     case rebuild
@@ -147,8 +195,8 @@ switch $argv[1]
         do_build_run $argv[2..]
     case shaders
         do_shaders_only
-    case assets
-        do_assets_only
+    # case assets
+    #     do_assets_only
     case help
         show_help
     case '*'

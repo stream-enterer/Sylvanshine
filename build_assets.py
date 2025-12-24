@@ -281,6 +281,28 @@ def needs_copy(src: Path, dest: Path) -> bool:
     return False
 
 
+def needs_update(png_path: Path, plist_path: Path | None, dest: Path) -> bool:
+    """Check if a spritesheet needs updating based on PNG and plist mtimes.
+
+    Returns True if either PNG or plist is newer than dest, or if dest doesn't exist.
+    """
+    if not dest.exists():
+        return True
+
+    dest_mtime = dest.stat().st_mtime
+
+    # Check PNG
+    if png_path.stat().st_mtime > dest_mtime:
+        return True
+
+    # Check plist if it exists
+    if plist_path and plist_path.exists():
+        if plist_path.stat().st_mtime > dest_mtime:
+            return True
+
+    return False
+
+
 def needs_regeneration(src: Path, derived: Path) -> bool:
     """Check if a derived file needs regeneration based on source mtime.
 
@@ -504,7 +526,13 @@ def resize_image(src_path: Path, dst_path: Path, width: int, height: int):
     resized.save(dst_path)
 
 
-def generate_scaled_tiles(source_dir: Path, dist_dir: Path, force: bool = False, verbose: bool = False) -> int:
+def generate_scaled_tiles(
+    source_dir: Path,
+    dist_dir: Path,
+    force: bool = False,
+    verbose: bool = False,
+    output_files: set[Path] | None = None
+) -> int:
     """Generate tile sprites for each scale level. Returns count of tiles generated."""
     src_dir = source_dir / 'resources' / 'tiles'
     generated = 0
@@ -528,17 +556,22 @@ def generate_scaled_tiles(source_dir: Path, dist_dir: Path, force: bool = False,
             src = src_dir / src_name
             dst = dst_dir / dst_name
             if src.exists():
+                if output_files is not None:
+                    output_files.add(dst)
                 if force or needs_regeneration(src, dst):
                     resize_image(src, dst, quarter_size, quarter_size)
                     generated += 1
 
-        # Floor, hover, and target tiles (128×128 → tile_size)
+        # Floor, hover, and selection box tiles
+        # Note: tile_box.png is 80×80, others are 128×128
         for src_name, dst_name in [('tile_board.png', 'floor.png'),
                                     ('tile_hover.png', 'hover.png'),
-                                    ('tile_glow.png', 'target.png')]:
+                                    ('tile_box.png', 'select_box.png')]:
             src = src_dir / src_name
             dst = dst_dir / dst_name
             if src.exists():
+                if output_files is not None:
+                    output_files.add(dst)
                 if force or needs_regeneration(src, dst):
                     resize_image(src, dst, tile_size, tile_size)
                     generated += 1
@@ -557,6 +590,8 @@ def generate_scaled_tiles(source_dir: Path, dist_dir: Path, force: bool = False,
             src = src_dir / src_name
             dst = dst_dir / dst_name
             if src.exists():
+                if output_files is not None:
+                    output_files.add(dst)
                 if force or needs_regeneration(src, dst):
                     resize_image(src, dst, tile_size, tile_size)
                     generated += 1
@@ -618,6 +653,9 @@ def build_assets(
     assets['fx_mapping'] = rsx_mapping
     print(f"  Loaded {len(rsx_mapping)} RSX mappings")
 
+    # Track all output files for orphan cleanup
+    output_files: set[Path] = set()
+
     # ===== Process Units =====
     units_dir = resources_dir / 'units'
     if units_dir.exists():
@@ -638,10 +676,13 @@ def build_assets(
                     print(f"  Warning: No plist for {unit_name}")
                 stats.warnings += 1
 
-            # Copy spritesheet to dist (only if needed)
+            # Copy spritesheet to dist (check both PNG and plist mtimes)
             dest_png = dist_dir / 'resources' / 'units' / f'{unit_name}.png'
+            output_files.add(dest_png)
+            plist_for_check = plist_path if plist_path.exists() else None
             try:
-                if copy_if_needed(png_path, dest_png, force):
+                if force or needs_update(png_path, plist_for_check, dest_png):
+                    shutil.copy2(png_path, dest_png)
                     stats.files_copied += 1
                 else:
                     stats.files_skipped += 1
@@ -655,9 +696,8 @@ def build_assets(
             sdf_path = dist_dir / 'resources' / 'units' / f'{unit_name}_sdf.png'
             sdf_generated = False
 
-            # Check if SDF needs regeneration based on source PNG timestamp
-            # (not dest_png, and using mtime-only check since SDF has different size)
-            needs_sdf = force or needs_regeneration(png_path, sdf_path)
+            # Check if SDF needs regeneration based on source PNG and plist timestamps
+            needs_sdf = force or needs_update(png_path, plist_for_check, sdf_path)
 
             if needs_sdf and animations:
                 # Collect all unique frames from all animations
@@ -682,6 +722,10 @@ def build_assets(
             elif sdf_path.exists():
                 stats.sdf_skipped += 1
                 sdf_generated = True  # Already exists and up-to-date
+
+            # Track SDF file if it exists or was generated
+            if sdf_generated:
+                output_files.add(sdf_path)
 
             # Add to assets manifest
             unit_entry = {
@@ -723,8 +767,11 @@ def build_assets(
                 stats.warnings += 1
 
             dest_png = dist_dir / 'resources' / 'fx' / f'{fx_name}.png'
+            output_files.add(dest_png)
+            plist_for_check = plist_path if plist_path.exists() else None
             try:
-                if copy_if_needed(png_path, dest_png, force):
+                if force or needs_update(png_path, plist_for_check, dest_png):
+                    shutil.copy2(png_path, dest_png)
                     stats.files_copied += 1
                 else:
                     stats.files_skipped += 1
@@ -764,6 +811,7 @@ def build_assets(
         for png_path in png_files:
             tile_name = png_path.stem
             dest_png = dist_dir / 'resources' / 'tiles' / f'{tile_name}.png'
+            output_files.add(dest_png)
 
             try:
                 if copy_if_needed(png_path, dest_png, force):
@@ -784,13 +832,14 @@ def build_assets(
 
     # ===== Generate scaled tiles =====
     print("Generating scaled tiles...")
-    scaled_count = generate_scaled_tiles(source_dir, dist_dir, force, verbose)
+    scaled_count = generate_scaled_tiles(source_dir, dist_dir, force, verbose, output_files)
     print(f"  {scaled_count} scaled tiles generated")
 
     # ===== Copy shadow texture =====
     shadow_src = source_dir / 'resources' / 'unit_shadow.png'
     if shadow_src.exists():
         shadow_dest = dist_dir / 'resources' / 'unit_shadow.png'
+        output_files.add(shadow_dest)
         if copy_if_needed(shadow_src, shadow_dest, force):
             stats.files_copied += 1
             print("Copied unit_shadow.png")
@@ -799,11 +848,27 @@ def build_assets(
 
     # ===== Write assets.json (only if changed) =====
     assets_path = dist_dir / 'assets.json'
+    output_files.add(assets_path)
     if write_json_if_changed(assets_path, assets):
         stats.manifest_updated = True
         print("Updated assets.json")
     else:
         print("assets.json unchanged")
+
+    # ===== Orphan cleanup =====
+    # Remove files in dist/resources that weren't generated this build
+    orphan_count = 0
+    for subdir in ['units', 'fx', 'tiles']:
+        resource_dir = dist_dir / 'resources' / subdir
+        if resource_dir.exists():
+            for existing_file in resource_dir.rglob('*.png'):
+                if existing_file not in output_files:
+                    existing_file.unlink()
+                    orphan_count += 1
+                    if verbose:
+                        print(f"  Removed orphan: {existing_file.relative_to(dist_dir)}")
+    if orphan_count > 0:
+        print(f"Removed {orphan_count} orphan files")
 
     # ===== Summary =====
     print(f"\nBuild complete!")
@@ -821,7 +886,8 @@ def build_assets(
 
 def main():
     parser = argparse.ArgumentParser(description='Build Sylvanshine game assets')
-    parser.add_argument('--clean', action='store_true', help='Clean dist directory before building')
+    # Disabled: --clean wipes dist/ which is slow to regenerate
+    # parser.add_argument('--clean', action='store_true', help='Clean dist directory before building')
     parser.add_argument('--force', '-f', action='store_true', help='Force copy all files (ignore cache)')
     parser.add_argument('--verbose', '-v', action='store_true', help='Verbose output')
     args = parser.parse_args()
@@ -837,7 +903,7 @@ def main():
     stats = build_assets(
         source_dir=source_dir,
         dist_dir=dist_dir,
-        clean=args.clean,
+        clean=False,  # Disabled: wipes dist/
         force=args.force,
         verbose=args.verbose
     )

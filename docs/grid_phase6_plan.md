@@ -530,9 +530,11 @@ void render_single_pass(GameState& state, const RenderConfig& config) {
 - [ ] FromStart variants connect smoothly to unit position
 - [ ] Corners rotate correctly for L-shaped paths
 
-### Target Reticle
-- [ ] Reticle appears at path destination when hovering valid move
-- [ ] Reticle renders on top of movement blob
+### Selection Box (Bracket-Corner Reticle)
+- [x] Selection box appears at selected unit position
+- [x] Selection box appears at path destination when hovering valid move
+- [x] Uses `tile_box.png` (bracket corners), not `tile_glow.png`
+- [ ] **TODO:** Align selection box size/padding with grid tile (currently uses source aspect ratio)
 
 ### Floor Grid
 - [ ] Semi-transparent dark tiles visible
@@ -542,3 +544,36 @@ void render_single_pass(GameState& state, const RenderConfig& config) {
 - [ ] Unit sprites unchanged (integer scaling)
 - [ ] Perspective unchanged (16° board tilt)
 - [ ] Shadows unchanged (19.5 offset)
+
+---
+
+## Post-Implementation Fixes (2024-12-24)
+
+### Bug Fix: Movement Blob Visual Continuity
+**Issue:** Tile under selected unit was excluded from the contiguous movement blob.
+
+**Root Cause:** `reachable_tiles` only contains valid move destinations, not the unit's current position.
+
+**Fix:** `main.cpp:1145-1148` now includes unit position in blob tiles:
+```cpp
+BoardPos unit_pos = state.units[state.selected_unit_idx].board_pos;
+std::vector<BoardPos> blob_tiles = state.reachable_tiles;
+blob_tiles.push_back(unit_pos);
+```
+
+### Bug Fix: Selection Box Sprite
+**Issue:** Target reticle used `tile_glow.png` (a glow effect) instead of `tile_box.png` (bracket-corner selection box).
+
+**Ground Truth:** From `tile_interaction_flow.md` §1.2, `TileBoxSprite` uses `tile_box.png` for the "Selected unit box outline" with bracket corners.
+
+**Fix:**
+1. `build_assets.py`: Changed `tile_glow.png` → `tile_box.png` for `select_box.png`
+2. `grid_renderer.hpp/cpp`: Renamed `target_tile` → `select_box`, function `render_target` → `render_select_box`
+3. `main.cpp:1154-1162`: Renders selection box at both unit position and hover destination
+
+### Known Issue: Selection Box Alignment
+**Status:** Not yet fixed.
+
+**Problem:** Selection box uses source sprite aspect ratio (80×80) scaled to tile size, but may need padding/sizing adjustments to align properly with grid tiles.
+
+**Expected:** Selection box corners should align with tile boundaries per Duelyst's `TileBoxSprite` behavior.
