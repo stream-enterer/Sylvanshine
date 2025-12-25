@@ -37,10 +37,30 @@
 - [ ] Level transition effect (arcade beat-em-up style screen transitions)
 - [ ] Background asset organization
 
-### Shader Catalogue
+### Shader Implementation
+
+**Status:** 4/97 ported | **Tiers:** 0-4 | [Full docs](duelyst_analysis/summaries/shader_usage_comprehensive.md)
+
+| Tier | Unlock Condition | Count | Status |
+|------|------------------|-------|--------|
+| 0 | Core rendering | 4 | ✅ Done |
+| 1 | Uniform-only (no framebuffer) | 8 | 🔓 Ready to port |
+| 2 | Combat FX system | 12 | ⏳ Blocked on combat_fx |
+| 3 | Card UI system | 7 | ⏳ Blocked on card_ui |
+| 4 | Post-processing pipeline | 18 | ⏳ Blocked on post_processing |
+| — | Skip (complex/low priority) | 15 | ❌ Deferred |
+| — | Helpers/vertex (inline) | 33 | 📦 Bundle as needed |
+
+**Tier 0 (Done):** sprite, dissolve, sdf_shadow, color
+**Tier 1 (Ready):** highlight, glow, glownoise, tinting, levels, colorize, monochrome, mask
+
+> 📊 Full status: `instances/shader_implementation.tsv` (queryable by tier/status/dependency)
+> 📖 Usage docs: `summaries/shader_usage_comprehensive.md` (uniforms, algorithms, FX mappings)
+> ⚡ Query ready shaders: `grep "ready" instances/shader_implementation.tsv`
+
+- [x] Document all Duelyst shaders and their usage contexts ⚡ `instances/shaders.tsv` + `shader_usage_comprehensive.md`
+- [x] Identify shaders useful for our implementation 📊 `instances/shader_implementation.tsv` with tiers
 - [ ] Bloom activation — passes exist but not routed through render pipeline
-- [ ] Document all Duelyst shaders and their usage contexts ⚡ `instances/shaders.tsv` (96 shaders already extracted)
-- [ ] Identify shaders useful for our implementation 📊 can filter by type/usage
 
 ---
 
@@ -359,9 +379,9 @@ Show enemy "thinking" during enemy turn to help player understand AI decisions a
 
 | Symbol | Meaning | Count |
 |--------|---------|-------|
-| ⚡ | Now trivial (single query) | 11 |
+| ⚡ | Now trivial (single query) | 12 |
 | 🔓 | Unblocked (info available) | 12 |
-| 📊 | Bulk queryable | 16 |
+| 📊 | Bulk queryable | 17 |
 | | Unchanged | ~50 |
 
-**~41 tasks** are now significantly easier or already answered by the knowledge base.
+**~43 tasks** are now significantly easier or already answered by the knowledge base.
