@@ -84,23 +84,8 @@ spells/
 | sfx_spell_* | Spell sound effects |
 | resources/fx/ | Effect sprites |
 
-## Statistics
-- **301 spells** in instances/spells.tsv
-- Spell breakdown by faction:
-  - Lyonar: ~45
-  - Songhai: ~45
-  - Vetruvian: ~45
-  - Abyssian: ~45
-  - Magmar: ~45
-  - Vanar: ~45
-  - Neutral: ~30
-- Common spell types:
-  - Damage spells: ~60
-  - Buff spells: ~50
-  - Summon spells: ~40
-  - Removal spells: ~30
-  - Draw spells: ~20
-  - Other: ~100
+## TSV Data
+See `instances/spells.tsv` for all spell definitions.
 
 ## Bloodbound Spells (BBS)
 Each general has a unique signature spell:

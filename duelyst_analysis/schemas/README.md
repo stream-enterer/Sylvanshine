@@ -73,28 +73,19 @@ These entities extend `SDKObject` and form the foundation of the game logic:
   [50+ Action types]              [400+ Modifier types]
 ```
 
-## Data Sources
-
-These schemas were generated from analysis of:
-- `duelyst_analysis/semantic/classes.tsv` - Class definitions
-- `duelyst_analysis/semantic/inheritance.tsv` - Inheritance chains
-- `duelyst_analysis/semantic/data_shapes.tsv` - Field definitions
-- `duelyst_analysis/semantic/events.tsv` - Event emitters/listeners
-- `duelyst_analysis/semantic/constants.tsv` - Game constants
-
 ## Usage
 
-Each schema file contains:
-1. **Source Evidence** - Where the entity is defined
-2. **Fields** - All properties with types and sources
-3. **Lifecycle Events** - Creation, destruction, modification events
+Each schema file documents:
+1. **Source Evidence** - Where the entity is defined in source code
+2. **Fields** - Properties with types and whether required
+3. **Lifecycle Events** - Creation, destruction, modification triggers
 4. **Dependencies** - Required and dependent entities
-5. **Description** - Detailed explanation of the entity's purpose
+5. **Description** - Entity's purpose and behavior
 
-## Statistics
+## Cross-References
 
-- **Total Schemas**: 25
-- **Core SDK Entities**: 16
-- **Meta-Game Entities**: 3
-- **Configuration Entities**: 5
-- **Utility Entities**: 5
+Schemas reference TSV data in `instances/`:
+- `cards.tsv` - All card definitions with faction, type, stats
+- `units.tsv` - Unit stats, abilities (pipe-separated), sprites
+- `modifiers.tsv` - Modifier types with is_keyword, is_watch flags
+- `actions.tsv` - Action type hierarchy and execution order

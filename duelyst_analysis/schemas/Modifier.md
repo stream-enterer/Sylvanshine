@@ -6,23 +6,20 @@
 - Data shape: Buff/debuff/ability system
 
 ## Fields
-| Field | Type | Source | Required? |
-|-------|------|--------|-----------|
-| type | string | modifier identification | yes |
-| cardIndex | number | attached card reference | yes |
-| attributeBuffs | object | stat modifications | no |
-| durationEndTurn | number | turn-based duration | no |
-| durationStartTurn | number | turn-based duration | no |
-| isRemoved | boolean | state tracking | no |
-| isActive | boolean | state tracking | no |
-| isAura | boolean | aura modifier flag | no |
-| isHiddenToUI | boolean | display flag | no |
-| isInherent | boolean | built-in ability | no |
-| isAdditionalInherent | boolean | card text ability | no |
-| stackType | string | stacking behavior | no |
-| maxStacks | number | stack limit | no |
-| appliedName | string | display name | no |
-| appliedDescription | string | display text | no |
+| Field | Type | Required? | Description |
+|-------|------|-----------|-------------|
+| type | string | yes | Modifier class identifier |
+| cardIndex | number | yes | Index of card this modifier is attached to |
+| attributeBuffs | object | no | Stat modifications {atk, hp, etc.} |
+| durationEndTurn | number | no | Turn when modifier expires (end of turn) |
+| durationStartTurn | number | no | Turn when modifier expires (start of turn) |
+| isAura | boolean | no | Whether this is an aura effect |
+| isInherent | boolean | no | Built-in ability (part of card definition) |
+| isAdditionalInherent | boolean | no | Card text ability (shown in UI) |
+| stackType | string | no | SINGLE, DUPLICATE, or UNIQUE |
+| maxStacks | number | no | Maximum stack count |
+| appliedName | string | no | Display name when applied |
+| appliedDescription | string | no | Tooltip text |
 
 ## Lifecycle Events
 - created: ApplyModifierAction, onApply

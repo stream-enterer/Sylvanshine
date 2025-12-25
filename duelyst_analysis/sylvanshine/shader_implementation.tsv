@@ -1,0 +1,100 @@
+name	tier	status	dependency	game_use	sylvanshine_file	notes
+sprite	0	done	none	all_rendering	dist/shaders/sprite.frag.spv	base sprite rendering
+dissolve	0	done	none	unit_death	dist/shaders/dissolve.frag.spv	death/despawn animation
+sdf_shadow	0	done	none	unit_shadows	dist/shaders/sdf_shadow.frag.spv	unit ground shadows
+color	0	done	none	debug_primitives	dist/shaders/color.frag.spv	solid color rendering
+highlight	1	ready	none	unit_selection	-	selection outline with pulse
+glow	1	ready	none	spawn_activation	-	simple color glow outline
+glownoise	1	ready	none	animated_glow	-	noise-animated glow
+tinting	1	ready	none	damage_status	-	color tinting overlay
+levels	1	ready	none	brightness_contrast	-	photoshop-style levels
+colorize	1	ready	none	grayscale_tint	-	colorization effect
+monochrome	1	ready	none	disabled_state	-	grayscale conversion
+mask	1	ready	none	ui_clipping	-	texture masking
+shockwave	2	blocked	combat_fx	attack_impact	-	requires distortion framebuffer
+firering	2	blocked	combat_fx	fire_spells	-	circular fire expansion
+fireringflarewarped	2	blocked	combat_fx	fire_spells	-	warped fire ring variant
+firelinearwave	2	blocked	combat_fx	fire_attacks	-	linear fire wave
+energyball	2	blocked	combat_fx	projectile_core	-	animated energy sphere
+chromaticflare	2	blocked	combat_fx	ability_activation	-	chromatic explosion
+fbmpolarflare	2	blocked	combat_fx	radial_burst	-	polar coordinate flare
+fbmpolarflarewipe	2	blocked	combat_fx	radial_wipe	-	polar flare animation
+fbmnoiserays	2	blocked	combat_fx	light_emanation	-	fbm light rays
+fbmnoisegradientmask	2	blocked	combat_fx	gradient_effects	-	fbm with gradient
+shadowblob	2	blocked	combat_fx	soft_shadows	-	soft blob shadow
+timer	2	blocked	combat_fx	turn_timer	-	circular progress indicator
+cardangledgradientshine	3	blocked	card_ui	card_hover	-	card shine sweep
+rarityflare	3	blocked	card_ui	card_reveal	-	legendary/epic glow
+horizontalglowflare	3	blocked	card_ui	card_effects	-	horizontal burst
+coregem	3	blocked	card_ui	card_gem	-	requires cubemap texture
+coregemedgesandcolorize	3	blocked	card_ui	card_gem_edges	-	gem edge colorization
+lensflare	3	blocked	card_ui	bright_sources	-	classic lens flare
+wisplenslensflare	3	blocked	card_ui	wisp_flare	-	wisp-style flare
+bloom	4	blocked	post_processing	global_glow	-	temporal bloom composite
+highpass	4	blocked	post_processing	bloom_extract	-	brightness threshold
+fxaa	4	blocked	post_processing	antialiasing	-	fast approximate AA
+tonecurve	4	blocked	post_processing	color_grading	-	LUT-based grading
+gradientcolormap	4	blocked	post_processing	faction_colors	-	faction color shifts
+radialblur	4	blocked	post_processing	god_rays	-	radial blur effect
+surface	4	blocked	post_processing	final_composite	-	surface compositing
+extrusionblur	4	blocked	post_processing	motion_blur	-	directional blur
+scatterrays	4	blocked	post_processing	light_scatter	-	god ray scattering
+scatterocclusion	4	blocked	post_processing	light_occlusion	-	scatter occlusion
+glowimageapcontrol	4	blocked	post_processing	image_glow	-	image-controlled glow
+glowimagemapripple	4	blocked	post_processing	rippling_glow	-	rippling glow effect
+lensnoise	4	blocked	post_processing	lens_overlay	-	lens noise effect
+whitecloudvignette	4	blocked	post_processing	atmosphere	-	cloud vignette overlay
+findedges	4	blocked	post_processing	edge_detection	-	edge detection filter
+chromatic	4	blocked	post_processing	aberration	-	chromatic aberration
+caustic	-	skip	complex	water_tiles	-	requires animated water system
+causticprismaticglow	-	skip	complex	water_effects	-	prismatic caustics
+voronoiprismatic	-	skip	complex	crystal_effects	-	voronoi pattern
+riftfire	-	skip	rift_mode	rift_fire	-	rift mode specific
+riftline	-	skip	rift_mode	rift_tear	-	rift mode specific
+distortion	-	skip	complex	screen_refraction	-	requires refraction framebuffer
+vortex	-	skip	complex	whirlpool	-	requires distortion system
+water	-	skip	complex	water_surface	-	requires distortion system
+lighting	-	skip	complex	dynamic_lights	-	requires depth buffer + batching
+multipliedlighting	-	skip	complex	light_multiply	-	requires lighting system
+shadowlowquality	-	skip	complex	fast_shadows	-	requires depth system
+shadowhighquality	-	skip	complex	quality_shadows	-	requires depth system
+depth	-	skip	complex	depth_buffer	-	webgl1 depth packing workaround
+depthtest	-	skip	complex	depth_compare	-	requires depth buffer
+depthdebug	-	skip	complex	depth_viz	-	debug only
+dissolvefromcenterwithdisc	-	skip	low_priority	special_death	-	variant of dissolve
+noise2d	-	helper	none	procedural_noise	-	simplex 2d noise
+noise3d	-	helper	none	procedural_noise	-	simplex 3d noise
+noisefbm	-	helper	none	procedural_noise	-	fractional brownian motion
+noiseabsfbm	-	helper	none	procedural_noise	-	ridged fbm
+noiseabsfbmoctaves1	-	helper	none	procedural_noise	-	1-octave fbm
+noiseabsfbmoctaves2	-	helper	none	procedural_noise	-	2-octave fbm
+noiseabsfbmoctaves3	-	helper	none	procedural_noise	-	3-octave fbm
+noiseabsfbmoctaves4	-	helper	none	procedural_noise	-	4-octave fbm
+noiseabsfbmoctaves5	-	helper	none	procedural_noise	-	5-octave fbm
+noiseabsfbmoctaves6	-	helper	none	procedural_noise	-	6-octave fbm
+noiserotatedfbm	-	helper	none	procedural_noise	-	time-rotated fbm
+noiserotatedfbmfromtexture	-	helper	none	procedural_noise	-	texture-seeded fbm
+fresnel	-	helper	none	edge_glow	-	fresnel approximation
+reflection	-	helper	none	reflect_sample	-	reflection helper
+refraction	-	helper	none	refract_sample	-	refraction helper
+distortionhelper	-	helper	none	combined_distort	-	refract+reflect+fresnel
+distortionfromnormalmap	-	helper	none	normal_distort	-	normal-map distortion
+depthpack	-	helper	none	depth_encode	-	pack depth to rgba
+depthunpack	-	helper	none	depth_decode	-	unpack rgba to depth
+depthtesthelper	-	helper	none	depth_compare	-	depth test function
+adjustlevels	-	helper	none	levels_adjust	-	levels adjustment
+seededrandom	-	helper	none	deterministic_random	-	pseudo-random
+posvertex	-	helper	none	vertex_position	-	position-only vertex
+postexvertex	-	helper	none	vertex_postex	-	position+texcoord vertex
+postexcolorvertex	-	helper	none	vertex_full	-	position+texcoord+color vertex
+glowvertex	-	vertex	none	glow_geometry	-	glow vertex transform
+highlightvertex	-	vertex	none	highlight_geometry	-	highlight vertex with pulse
+lightingvertex	-	vertex	none	light_volume	-	light volume transform
+shadowvertex	-	vertex	none	shadow_projection	-	shadow projection
+distortionvertex	-	vertex	none	distortion_pos	-	distortion positioning
+depthvertex	-	vertex	none	depth_encode	-	depth value encoding
+depthtestvertex	-	vertex	none	depth_compare	-	depth comparison vertex
+chromaticvertex	-	vertex	none	aberration_pos	-	chromatic aberration vertex
+scatterocclusionvertex	-	vertex	none	occlusion_pos	-	scatter occlusion vertex
+scatterraysvertex	-	vertex	none	scatter_pos	-	scatter rays vertex
+maskvertex	-	vertex	none	mask_pos	-	mask positioning

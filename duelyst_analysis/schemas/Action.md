@@ -6,19 +6,18 @@
 - Data shape: Command pattern for game state changes
 
 ## Fields
-| Field | Type | Source | Required? |
-|-------|------|--------|-----------|
-| type | string | data_shapes.tsv:604 | yes |
-| changedByModifierIndices | array | data_shapes.tsv:605 | no |
-| isDepthFirst | boolean | data_shapes.tsv:606 | no |
-| manaCost | number | data_shapes.tsv:607 | no |
-| ownerId | number | data_shapes.tsv:608 | yes |
-| sourceIndex | number | data_shapes.tsv:609 | no |
-| sourcePosition | {x,y} | data_shapes.tsv:610 | no |
-| targetIndex | number | data_shapes.tsv:611 | no |
-| targetPosition | {x,y} | data_shapes.tsv:612 | yes |
-| timestamp | number | data_shapes.tsv:613 | no |
-| triggeringModifierIndex | number | data_shapes.tsv:614 | no |
+| Field | Type | Required? | Description |
+|-------|------|-----------|-------------|
+| type | string | yes | Action class identifier |
+| ownerId | number | yes | Player ID who initiated the action |
+| targetPosition | {x,y} | yes | Board position being affected |
+| sourceIndex | number | no | Index of source card/entity |
+| sourcePosition | {x,y} | no | Board position of source |
+| targetIndex | number | no | Index of target card/entity |
+| manaCost | number | no | Mana cost (for PlayCardAction) |
+| timestamp | number | no | When action was executed |
+| triggeringModifierIndex | number | no | Modifier that triggered this action |
+| isDepthFirst | boolean | no | Execution order flag |
 
 ## Lifecycle Events
 - created: before_added_action_to_queue

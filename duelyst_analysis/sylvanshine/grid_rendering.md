@@ -1157,7 +1157,7 @@ if (altMap) {
 ## 25. Related Documentation
 
 For detailed interaction flows and complete sprite class enumeration, see:
-- `duelyst_analysis/flows/tile_interaction_flow.md` — Comprehensive tile system documentation
+- `duelyst_analysis/sylvanshine/tile_interaction_flow.md` — Comprehensive tile system documentation
 
 ---
 

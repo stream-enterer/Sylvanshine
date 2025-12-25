@@ -75,12 +75,7 @@ Each playable faction has 3 generals:
 | Units | resources/units/f{n}_* | Unit sprites |
 
 ## Starter Decks
-Each faction has a predefined starter deck:
-- 1 General
-- 3 Artifacts
-- 6 Faction spells/minions
-- ~18 Neutral cards
-- Total: 40 cards (including general)
+Each faction has a predefined starter deck with 40 cards total (including general).
 
 ## Faction Keywords
 | Faction | Signature Mechanics |
@@ -92,9 +87,5 @@ Each faction has a predefined starter deck:
 | Magmar | Grow, Rebirth, Self-damage |
 | Vanar | Infiltrate, Walls, Stunned |
 
-## Statistics
-- **9 factions** in instances/factions.tsv
-- 6 playable factions
-- 18 playable generals
-- ~100 cards per faction in core set
-- Faction-specific FX, SFX, and sprites
+## TSV Data
+See `instances/factions.tsv` for faction definitions and `instances/cards.tsv` for card counts by faction.

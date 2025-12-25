@@ -1,62 +1,96 @@
 ---
 name: duelyst-analyzer
-description: Query tools for Duelyst codebase forensic analysis. Use when working with Duelyst game implementation, looking up cards/units/modifiers/animations/FX/shaders, or exploring the duelyst_analysis/ knowledge base.
+description: Query tools for Duelyst codebase forensic analysis. Use when working with Duelyst game implementation, looking up cards/units/modifiers/animations/FX/shaders, or exploring the duelyst_analysis/ knowledge base. (project)
 ---
 
 # Duelyst Analyzer
 
-Complete LLM-usable documentation of the Duelyst codebase at `./duelyst_analysis/`.
+Query the Duelyst knowledge base at `./duelyst_analysis/`.
 
-## First Steps
+## Immediate Queries
 
-Before any Duelyst work, read these in order:
-
-1. `./duelyst_analysis/README.md` — navigation map, data coverage, quick start
-2. `./duelyst_analysis/system_interactions.md` — action execution, attack flow, FX system, network sync
-3. `./duelyst_analysis/summaries/README.md` — system relationship diagram
-
-## Key Resources
-
-| Path | Contents |
-|------|----------|
-| `./duelyst_analysis/instances/*.tsv` | All game entity data (cards, units, modifiers, fx, etc.) |
-| `./duelyst_analysis/schemas/*.md` | Entity definitions with fields and lifecycle |
-| `./duelyst_analysis/summaries/*.md` | System-level documentation |
-| `./duelyst_analysis/flows/*.md` | End-to-end gameplay sequences |
-| `./duelyst_analysis/semantic/*.tsv` | Classes, functions, constants, events |
-
-## Query Scripts
-
-16 Python scripts in `./duelyst_analysis/scripts/`. Run with:
+Most questions can be answered with a single grep:
 
 ```bash
-uv run ./duelyst_analysis/scripts/<script>.py --help
+# Find card data
+grep "CardName" ./duelyst_analysis/instances/cards.tsv
+
+# Find unit stats and abilities
+grep "UnitName" ./duelyst_analysis/instances/units.tsv
+
+# Find modifier behavior
+grep "ModifierName" ./duelyst_analysis/instances/modifiers.tsv
+
+# Find FX definition
+grep "FXName" ./duelyst_analysis/instances/fx.tsv
+
+# Find timing constants
+grep "CONSTANT_NAME" ./duelyst_analysis/instances/constants.tsv
+
+# Find action type
+grep "ActionName" ./duelyst_analysis/instances/actions.tsv
 ```
 
-All scripts support `--help` for usage details.
+## TSV Column Formats
 
-## Discovery
+### units.tsv
+- `abilities`: pipe-separated modifier names (e.g., `ModifierProvoke|ModifierZeal`)
+- `sprite_resource`: 10 slots `Breathing|Idle|Run|Attack|Hit|Death|CastStart|CastEnd|CastLoop|Cast`
+- `sound_resource`: 6 slots `Deploy|Walk|AttackSwing|Hit|AttackImpact|Death`
 
-Entity IDs live in TSV files. To find valid IDs:
+### modifiers.tsv
+- `is_keyword`: TRUE = card text keyword (Provoke, Flying, Celerity)
+- `is_watch`: TRUE = event trigger (DeathWatch, SpellWatch, SummonWatch)
+- `stack_type`: stacking behavior (maxStacks=1, etc.)
+- `triggers`: when activated (onBeforeAction, onAfterAction, etc.)
 
-```bash
-# List cards
-head -5 ./duelyst_analysis/instances/cards.tsv
+### actions.tsv
+- `parent_class`: inheritance hierarchy
+- Execution order: create → validate → sub-actions → execute → cleanup
 
-# List modifiers
-cut -f1 ./duelyst_analysis/instances/modifiers.tsv | head -20
+## Cross-Reference Patterns
 
-# Search for specific terms
-rg "Provoke" ./duelyst_analysis/instances/modifiers.tsv
-rg "Faction1" ./duelyst_analysis/instances/units.tsv
+```
+cards.tsv (identifier) → units.tsv (identifier) → modifiers.tsv (abilities column)
 ```
 
-## Common Tasks
+To trace a card's full data:
+1. `grep "CardName" instances/cards.tsv` → get type, faction, mana
+2. `grep "CardName" instances/units.tsv` → get atk, hp, abilities
+3. Parse `abilities` column, grep each in `instances/modifiers.tsv`
 
-| Task | Start here |
-|------|------------|
-| Understand game architecture | `./duelyst_analysis/system_interactions.md` |
-| Implement new unit | `./duelyst_analysis/schemas/Unit.md`, `./duelyst_analysis/flows/unit_spawn_flow.md` |
-| Debug modifier behavior | `./duelyst_analysis/schemas/Modifier.md`, `./duelyst_analysis/flows/modifier_trigger_flow.md` |
-| Add visual effects | `./duelyst_analysis/summaries/animations.md`, `./duelyst_analysis/summaries/shaders.md` |
-| Trace action execution | `./duelyst_analysis/schemas/Action.md`, `./duelyst_analysis/flows/unit_attack_flow.md` |
+## Critical Formulas
+
+**Damage:**
+```
+totalDamage = floor(max((base + damageChange) * multiplier + finalChange, 0))
+```
+
+**Movement duration:**
+```
+duration = tileCount * 0.15s * CONFIG.ENTITY_MOVE_DURATION_MODIFIER
+```
+
+## Deeper Documentation
+
+Only read these when grep isn't enough:
+
+| When you need... | Read |
+|------------------|------|
+| Action execution order | `flows/unit_attack_flow.md` |
+| Spell resolution | `flows/spell_cast_flow.md` |
+| Modifier lifecycle | `schemas/Modifier.md` |
+| Event hook order | `flows/modifier_trigger_flow.md` |
+| Grid/tile rendering | `sylvanshine/grid_rendering.md` |
+| Lighting coordinates | `summaries/lighting_shadows.md` |
+| Data relationships | `README.md` → "Data Relationships" section |
+
+## Directory Structure
+
+| Folder | Query method |
+|--------|--------------|
+| `instances/` | grep TSV files |
+| `schemas/` | read for entity structure |
+| `summaries/` | read for system architecture |
+| `flows/` | read for step-by-step sequences |
+| `sylvanshine/` | Sylvanshine-specific implementation docs |

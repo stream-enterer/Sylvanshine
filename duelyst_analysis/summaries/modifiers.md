@@ -44,7 +44,7 @@ The Modifier system implements all card abilities, buffs, debuffs, and keywords 
 ## Resources
 | Resource | Purpose |
 |----------|---------|
-| resources/modifiers/ | Modifier icons (684 bytes dir) |
+| resources/modifiers/ | Modifier icons |
 | FloatingShield | Forcefield visual |
 | ForceField | Shield effect |
 | fxBuffSimpleGold | Buff glow effect |
@@ -71,17 +71,17 @@ The Modifier system implements all card abilities, buffs, debuffs, and keywords 
 | Structure | Cannot move or attack |
 | Zeal | Bonus near own general |
 
-## Statistics
-- **717 modifier types** in instances/modifiers.tsv
-- **47 player modifiers** in instances/playerModifiers.tsv
-- Modifier breakdown:
-  - Watch modifiers: ~150
-  - Keyword modifiers: 20+
-  - Buff modifiers: ~200
-  - Aura modifiers: ~50
-  - Opening Gambit modifiers: ~100
-  - Dying Wish modifiers: ~30
-  - Other: ~170
+## TSV Data
+
+See `instances/modifiers.tsv` for all modifier definitions.
+
+### Column Classification
+| Column | Values | Meaning |
+|--------|--------|---------|
+| `is_keyword` | TRUE/FALSE | Keywords shown on cards (Provoke, Flying, etc.) |
+| `is_watch` | TRUE/FALSE | Event-triggered abilities (DeathWatch, SummonWatch, etc.) |
+| `stack_type` | e.g. `maxStacks=1` | Stacking behavior and limits |
+| `triggers` | e.g. `onBeforeAction` | When the modifier activates |
 
 ## Event Hooks
 | Hook | Purpose |

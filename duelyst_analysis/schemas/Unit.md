@@ -6,28 +6,29 @@
 - Data shape: Minions and Generals on the board
 
 ## Fields
-| Field | Type | Source | Required? |
-|-------|------|--------|-----------|
-| atk | number | classes.tsv | yes |
-| hp | number | classes.tsv | yes |
-| maxHP | number | classes.tsv | yes |
-| speed | number | classes.tsv | no (default: 2) |
-| reach | number | classes.tsv | no (default: 1) |
-| isGeneral | boolean | classes.tsv | no |
-| exhausted | boolean | classes.tsv | no |
-| movesRemaining | number | classes.tsv | no |
-| attacksRemaining | number | classes.tsv | no |
-| isRanged | boolean | via Modifier | no |
-| isFlying | boolean | via Modifier | no |
-| hasProvoke | boolean | via Modifier | no |
-| hasCelerity | boolean | via Modifier | no |
-| hasRush | boolean | via Modifier | no |
-| hasBlast | boolean | via Modifier | no |
-| hasBackstab | boolean | via Modifier | no |
-| hasFrenzy | boolean | via Modifier | no |
-| hasRebirth | boolean | via Modifier | no |
-| hasGrow | boolean | via Modifier | no |
-| hasInfiltrate | boolean | via Modifier | no |
+| Field | Type | Required? |
+|-------|------|-----------|
+| atk | number | yes |
+| hp | number | yes |
+| maxHP | number | yes |
+| speed | number | no (default: 2) |
+| reach | number | no (default: 1) |
+| isGeneral | boolean | no |
+| exhausted | boolean | no |
+| movesRemaining | number | no |
+| attacksRemaining | number | no |
+
+Defined in: `app/sdk/entities/unit.coffee`
+
+## Computed Properties
+These are derived from modifiers, not stored fields:
+- `isRanged` - has ModifierRanged
+- `isFlying` - has ModifierFlying
+- `hasProvoke` - has ModifierProvoke
+- `hasCelerity` - has ModifierTranscendance
+- etc.
+
+See `summaries/modifiers.md` for full keyword list.
 
 ## Lifecycle Events
 - created: PlayCardAction, onApplyToBoard, summon

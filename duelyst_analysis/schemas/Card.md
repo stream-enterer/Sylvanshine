@@ -6,23 +6,19 @@
 - Data shape: Base class for all cards in the game
 
 ## Fields
-| Field | Type | Source | Required? |
-|-------|------|--------|-----------|
-| type | string | data_shapes.tsv:750 | yes |
-| name | string | data_shapes.tsv:751 | yes |
-| manaCost | number | data_shapes.tsv:752 | yes |
-| modifierIndices | array | data_shapes.tsv:753 | no |
-| modifiers | array | data_shapes.tsv:756 | no |
-| numInherent | number | data_shapes.tsv:757 | no |
-| numManaged | number | data_shapes.tsv:758 | no |
-| numActive | number | data_shapes.tsv:759 | no |
-| writable | boolean | data_shapes.tsv:754-755 | no |
-| id | number | CardFactory | yes |
-| factionId | number | CardFactory | yes |
-| raceId | number | CardFactory | no |
-| rarityId | number | CardFactory | yes |
-| baseCardId | number | CardFactory | no |
-| cardSetId | number | CardFactory | no |
+| Field | Type | Required? |
+|-------|------|-----------|
+| id | number | yes |
+| type | string | yes |
+| name | string | yes |
+| manaCost | number | yes |
+| factionId | number | yes |
+| rarityId | number | yes |
+| raceId | number | no |
+| baseCardId | number | no |
+| cardSetId | number | no |
+| modifiers | array | no |
+| modifierIndices | array | no |
 
 ## Lifecycle Events
 - created: play_card_start, before_added_action_to_queue

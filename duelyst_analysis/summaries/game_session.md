@@ -63,8 +63,5 @@ GameSession is the central singleton that manages all game state for a Duelyst m
 | game_over | Game concludes |
 | rollback_to_snapshot | State rollback |
 
-## Statistics
-- 1 central singleton managing entire game state
-- Supports 8+ game types
-- Coordinates with 64 action types
-- Manages 717 modifier types
+## Data
+See `instances/` TSV files for current counts of cards, actions, and modifiers.
