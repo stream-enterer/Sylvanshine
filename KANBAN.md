@@ -32,26 +32,6 @@
 - [x] Shadow intensity matched to Duelyst (0.75-1.1 per-map, not 0.15)
 - [ ] Sync lighting presets with actual battle map backgrounds
 
-### Grid Visuals
-- [x] Tile sprites with spacing (Duelyst grid has gaps between tiles) — see `docs/grid_comparison/transition_plan.md`
-- [x] Attack range yellow color (#FFD900) instead of red — `docs/out_of_scope/duelyst_color_scheme.md`
-- [x] Movement color off-white (#F0F0F0) to match Duelyst
-- [x] Selection box rendering (`tile_box.png`) with 7.9% inset — `docs/tile_visual_fixes_transition.md`
-- [x] Selection box pulsing animation (scale 0.85–1.0 @ 0.7s) — `docs/tile_visual_fixes_transition.md`
-- [x] Path arrow opacity (59%) and hard-edge sprites (NEAREST interpolation)
-- [x] Glow tile under movement target (20% opacity)
-- [x] Passive hover opacity (29% for non-movement hover)
-- [x] Movement highlight sprites — corner merging system in `grid_renderer.cpp:237-261`
-- [x] Attack highlight sprites — yellow blob with seam detection in `grid_renderer.cpp:639-663`
-- [x] Instant hover transitions (no fade when moving within board) — `main.cpp:997`
-- [x] Attack target reticle (`tile_large.png`) — `grid_renderer.cpp:619-637`
-- [x] Enemy ownership indicator (`tile_grid.png`) under idle enemies — `main.cpp:1205-1229`
-- [x] Enemy attack preview on hover (red blob, no selection) — `main.cpp:1303-1314`
-- [x] Z-order constants for tile layers — `grid_renderer.hpp:51-61` (9-layer system)
-- [x] Move/attack seam sprites (`corner_0_seam.png`) — fixed alt-blob neighbor check to match Duelyst (horizontal only, not vertical)
-- [ ] Card play tiles (`tile_card.png`, `tile_spawn.png`) — `docs/out_of_scope/card_play_tiles.md`
-- [ ] Attack path arc animation (ranged projectile trajectory) — `docs/out_of_scope/attack_path_arc.md`
-
 ### Backgrounds
 - [ ] Per-level background system
 - [ ] Level transition effect (arcade beat-em-up style screen transitions)
@@ -75,6 +55,7 @@
 - [ ] Ranged projectile system 🔓 `get_action_chain.py AttackAction` shows projectile flow
 - [ ] Ranged attack animations (units with separate projectile sprites) 📊 can query units with ranged attacks
 - [ ] Spawn FX animations (document when used vs walk-in) ⚡ `get_fx_composition.py Faction1.UnitSpawnFX`
+- [ ] Attack path arc animation (ranged projectile trajectory)
 
 ### Timing
 - [ ] FPS-independent timing verification (remove cap, disable vsync, confirm consistency)
@@ -307,6 +288,10 @@
 - [x] Per-map lighting preset system (10 presets from Duelyst battle maps)
 - [x] Grid gap system (tile sprites with baked-in margins, disabled grid lines)
 - [x] Duelyst color scheme (movement=#F0F0F0, attack=#FFD900 yellow)
+- [x] Grid visuals: tile sprites, selection box, path arrows, glow tiles, hover states
+- [x] Grid visuals: corner merging system with seam detection (`grid_renderer.cpp`)
+- [x] Grid visuals: attack reticles, enemy indicators, enemy attack preview
+- [x] Grid visuals: Z-order layer system (9 layers)
 
 ---
 
@@ -366,7 +351,7 @@ Show enemy "thinking" during enemy turn to help player understand AI decisions a
 
 ## MISC / INVESTIGATE
 
-*(empty)*
+- [ ] Card play tiles (`tile_card.png`, `tile_spawn.png`)
 
 ---
 
