@@ -4,6 +4,7 @@ set PROJECT_NAME "tactics"
 set SHADER_SRC_DIR "shaders"
 set SHADER_OUT_DIR "dist/shaders"
 set DIST_DIR "dist"
+set -x UV_CACHE_DIR "./.uv-cache"
 
 function check_glslangValidator
     if not command -v glslangValidator &>/dev/null

@@ -43,3 +43,4 @@
 build/*
 dist/*
 uv.lock
+.uv-cache/
