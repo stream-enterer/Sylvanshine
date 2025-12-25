@@ -38,6 +38,7 @@
 - [ ] Background asset organization
 
 ### Shader Catalogue
+- [ ] Bloom activation — passes exist but not routed through render pipeline
 - [ ] Document all Duelyst shaders and their usage contexts ⚡ `instances/shaders.tsv` (96 shaders already extracted)
 - [ ] Identify shaders useful for our implementation 📊 can filter by type/usage
 
@@ -283,7 +284,6 @@
 - [x] Shadow system (blob shadow, perspective transform, shader pipeline)
 - [x] Multi-pass rendering pipeline (FBO-based)
 - [x] Bloom post-processing infrastructure (PassManager with highpass/blur/bloom passes)
-- [ ] Bloom activation — passes exist but not routed through render pipeline. See `docs/duelyst_implementation_differences.md`
 - [x] Dynamic shadow geometry (skew/stretch from light position/altitude)
 - [x] Per-map lighting preset system (10 presets from Duelyst battle maps)
 - [x] Grid gap system (tile sprites with baked-in margins, disabled grid lines)
@@ -365,5 +365,3 @@ Show enemy "thinking" during enemy turn to help player understand AI decisions a
 | | Unchanged | ~50 |
 
 **~41 tasks** are now significantly easier or already answered by the knowledge base.
-
-Grid visual polish items consolidated from `docs/grid_phase7_plan.md` and `docs/out_of_scope/`.
