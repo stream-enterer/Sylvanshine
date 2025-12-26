@@ -1389,7 +1389,9 @@ void render_settings_menu(const RenderConfig& config) {
     float menu_x = (config.window_w - menu_width) * 0.5f + offset_right - left_extend;
 
     // 1. Draw dialog body (deep blue, 50% opacity)
-    SDL_FRect dialog_body = {menu_x, menu_y, menu_width, menu_height};
+    // Extend bottom to match top margin (92px at 1080p)
+    float bottom_ext = config.window_h * 0.085185f;
+    SDL_FRect dialog_body = {menu_x, menu_y, menu_width, menu_height + bottom_ext};
     g_gpu.draw_quad_colored(dialog_body, {0.0f, 0.0f, 47.0f/255.0f, 127.0f/255.0f});
 
     // 2. Draw title bar with smooth 3-color vertical gradient
@@ -1428,8 +1430,8 @@ void render_settings_menu(const RenderConfig& config) {
     if (g_text.atlas) {
         // Item font size larger to match reference
         float item_size = menu_height * 0.08f;
-        // Line spacing larger to fill vertical space (reduces bottom margin)
-        float line_spacing = menu_height * 0.13f;
+        // Line spacing: +20px from previous (125.3px at 1080p)
+        float line_spacing = menu_height * 0.1547f;
         // Left margin + responsive shift (+37px at 1080p)
         float item_margin = menu_width * 0.30f;
         float item_x = menu_x + item_margin + config.window_w * 0.019271f;

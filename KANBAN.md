@@ -291,6 +291,7 @@
 ---
 
 ## ✅ DONE
+- [x] Basic Options Menu (MSDF text rendering, Perfect Dark-style layout, responsive proportions)
 - [x] Core movement + animations
 - [x] Combat + FX + turns + AI
 - [x] Attack damage timing
