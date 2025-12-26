@@ -1364,12 +1364,12 @@ void render_settings_menu(const RenderConfig& config) {
     // Title gradient bot: rgba(0, 240, 255, 127)
 
     // Layout proportions based on Perfect Dark reference
-    // Menu takes ~35% of screen width, ~75% of screen height
-    float menu_width = config.window_w * 0.35f;
+    // Dialog narrower than before to match reference measurements
+    float menu_width = config.window_w * 0.32f;
     float menu_height = config.window_h * 0.75f;
 
-    // Title bar is ~6% of total menu height
-    float title_height = menu_height * 0.06f;
+    // Title bar slightly taller (was "a little short")
+    float title_height = menu_height * 0.065f;
     float title_overhang = menu_width * 0.04f;  // Small overhang on each side
 
     // Total composition height (title + body)
@@ -1406,9 +1406,9 @@ void render_settings_menu(const RenderConfig& config) {
 
     // 3. Draw title text (left-aligned with margin, matching reference)
     if (g_text.atlas) {
-        // Title font size ~60% of title bar height
-        float title_text_size = title_height * 0.6f;
-        // Left margin from title bar edge to text: ~3% of title width
+        // Title font size ~70% of title bar height (+~4px from before)
+        float title_text_size = title_height * 0.7f;
+        // Left margin from title bar edge to text
         float title_margin = title_w * 0.03f;
         float title_text_x = title_x + title_margin;
         // Vertically center in title bar
@@ -1416,17 +1416,17 @@ void render_settings_menu(const RenderConfig& config) {
         g_text.draw_text("Options", title_text_x, title_text_y, title_text_size, {1.0f, 1.0f, 1.0f, 1.0f});
     }
 
-    // 4. Draw menu items (simple list like reference: Audio, Video, Control, etc.)
+    // 4. Draw menu items (left-aligned, matching reference)
     if (g_text.atlas) {
-        // Item font size ~6% of menu body height
-        float item_size = menu_height * 0.065f;
-        // Line spacing ~12% of body height between item baselines
-        float line_spacing = menu_height * 0.11f;
-        // Left margin from body edge to text: ~25% of body width (matching reference indent)
-        float item_margin = menu_width * 0.25f;
+        // Item font size larger to match reference
+        float item_size = menu_height * 0.08f;
+        // Line spacing larger to fill vertical space (reduces bottom margin)
+        float line_spacing = menu_height * 0.13f;
+        // Left margin: items were DOWN-LEFT, so move RIGHT with larger margin
+        float item_margin = menu_width * 0.30f;
         float item_x = menu_x + item_margin;
-        // First item starts ~8% from top of body
-        float item_y = menu_y + menu_height * 0.08f;
+        // First item starts higher (items were DOWN, so move UP)
+        float item_y = menu_y + menu_height * 0.06f;
 
         SDL_FColor item_color = {0.0f, 1.0f, 1.0f, 1.0f};  // Cyan
 
