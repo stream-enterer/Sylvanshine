@@ -27,6 +27,7 @@ add_executable(${PROJECT_NAME}
     src/perspective.cpp
     src/gpu_renderer.cpp
     src/render_pass.cpp
+    src/text_renderer.cpp
 )
 target_link_libraries(${PROJECT_NAME} PRIVATE
     ${SDL3_LIBRARIES}

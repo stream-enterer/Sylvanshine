@@ -125,6 +125,7 @@ void GPURenderer::shutdown() {
         if (color_pipeline) SDL_ReleaseGPUGraphicsPipeline(device, color_pipeline);
         if (line_pipeline) SDL_ReleaseGPUGraphicsPipeline(device, line_pipeline);
         if (sdf_shadow_pipeline) SDL_ReleaseGPUGraphicsPipeline(device, sdf_shadow_pipeline);
+        if (text_pipeline) SDL_ReleaseGPUGraphicsPipeline(device, text_pipeline);
 
         // Release buffers and samplers
         if (quad_vertex_buffer) SDL_ReleaseGPUBuffer(device, quad_vertex_buffer);
@@ -143,6 +144,7 @@ void GPURenderer::shutdown() {
     color_pipeline = nullptr;
     line_pipeline = nullptr;
     sdf_shadow_pipeline = nullptr;
+    text_pipeline = nullptr;
     quad_vertex_buffer = nullptr;
     shadow_vertex_buffer = nullptr;
     quad_index_buffer = nullptr;
@@ -385,6 +387,51 @@ bool GPURenderer::create_pipelines() {
     if (!line_pipeline) {
         SDL_Log("Failed to create line pipeline: %s", SDL_GetError());
     }
+
+    // MSDF text pipeline
+    SDL_GPUShader* text_vert = load_shader("msdf_text.vert", SDL_GPU_SHADERSTAGE_VERTEX, 0, 0);
+    SDL_GPUShader* text_frag = load_shader("msdf_text.frag", SDL_GPU_SHADERSTAGE_FRAGMENT, 1, 0);
+
+    if (text_vert && text_frag) {
+        // Text vertex format: position (2f), texcoord (2f), color (4f)
+        SDL_GPUVertexBufferDescription text_vb_desc = {};
+        text_vb_desc.slot = 0;
+        text_vb_desc.pitch = sizeof(TextVertex);
+        text_vb_desc.input_rate = SDL_GPU_VERTEXINPUTRATE_VERTEX;
+
+        SDL_GPUVertexAttribute text_attrs[3] = {};
+        text_attrs[0].location = 0;
+        text_attrs[0].buffer_slot = 0;
+        text_attrs[0].format = SDL_GPU_VERTEXELEMENTFORMAT_FLOAT2;
+        text_attrs[0].offset = 0;
+        text_attrs[1].location = 1;
+        text_attrs[1].buffer_slot = 0;
+        text_attrs[1].format = SDL_GPU_VERTEXELEMENTFORMAT_FLOAT2;
+        text_attrs[1].offset = sizeof(float) * 2;
+        text_attrs[2].location = 2;
+        text_attrs[2].buffer_slot = 0;
+        text_attrs[2].format = SDL_GPU_VERTEXELEMENTFORMAT_FLOAT4;
+        text_attrs[2].offset = sizeof(float) * 4;
+
+        pipeline_info.vertex_shader = text_vert;
+        pipeline_info.fragment_shader = text_frag;
+        pipeline_info.primitive_type = SDL_GPU_PRIMITIVETYPE_TRIANGLELIST;
+        pipeline_info.vertex_input_state.vertex_buffer_descriptions = &text_vb_desc;
+        pipeline_info.vertex_input_state.num_vertex_attributes = 3;
+        pipeline_info.vertex_input_state.vertex_attributes = text_attrs;
+
+        text_pipeline = SDL_CreateGPUGraphicsPipeline(device, &pipeline_info);
+
+        if (text_pipeline) {
+            SDL_Log("MSDF text pipeline created");
+        } else {
+            SDL_Log("Failed to create text pipeline: %s", SDL_GetError());
+        }
+    } else {
+        SDL_Log("MSDF text shaders not found, text rendering disabled");
+    }
+    if (text_vert) SDL_ReleaseGPUShader(device, text_vert);
+    if (text_frag) SDL_ReleaseGPUShader(device, text_frag);
 
     return true;
 }

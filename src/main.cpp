@@ -7,6 +7,7 @@
 #include "timing_loader.hpp"
 #include "asset_manager.hpp"
 #include "sdl_handles.hpp"
+#include "text_renderer.hpp"
 #include <vector>
 #include <cstring>
 #include <algorithm>
@@ -154,6 +155,7 @@ static const LightingPreset g_lighting_presets[] = {
 };
 
 static int g_current_preset = 0;
+static bool g_show_settings_menu = false;
 
 void apply_lighting_preset(int preset_idx, const RenderConfig& config) {
     if (preset_idx < 0 || preset_idx >= static_cast<int>(std::size(g_lighting_presets))) {
@@ -911,6 +913,9 @@ void handle_events(bool& running, GameState& state, const RenderConfig& config) 
             else if (event.key.key == SDLK_ESCAPE) {
                 running = false;
             }
+            else if (event.key.key == SDLK_TAB) {
+                g_show_settings_menu = !g_show_settings_menu;
+            }
             // Lighting preset selection (0-9)
             else if (event.key.key >= SDLK_0 && event.key.key <= SDLK_9) {
                 int preset = event.key.key - SDLK_0;
@@ -1347,9 +1352,112 @@ void render_single_pass(GameState& state, const RenderConfig& config) {
     }
 }
 
+// =============================================================================
+// Basic Settings Menu (test rendering)
+// =============================================================================
+
+void render_settings_menu(const RenderConfig& config) {
+    // Menu colors from docs/basic_menu_colors.md
+    // Dialog body: rgba(0, 0, 47, 127)
+    // Title gradient top: rgba(0, 96, 191, 127)
+    // Title gradient mid: rgba(0, 0, 80, 127)
+    // Title gradient bot: rgba(0, 240, 255, 127)
+
+    float menu_width = config.window_w * 0.5f;
+    float menu_height = config.window_h * 0.6f;
+    float menu_x = (config.window_w - menu_width) * 0.5f;
+    float menu_y = (config.window_h - menu_height) * 0.5f;
+
+    float title_height = 60.0f * config.scale;
+    float title_overhang = 20.0f * config.scale;
+
+    // 1. Draw dialog body (deep blue, 50% opacity)
+    SDL_FRect dialog_body = {menu_x, menu_y, menu_width, menu_height};
+    g_gpu.draw_quad_colored(dialog_body, {0.0f, 0.0f, 47.0f/255.0f, 127.0f/255.0f});
+
+    // 2. Draw title bar (3-color gradient with overhang)
+    // Title bar extends beyond dialog by title_overhang on each side
+    float title_x = menu_x - title_overhang;
+    float title_w = menu_width + title_overhang * 2.0f;
+    float title_y = menu_y - title_height;
+
+    // For 3-color gradient, split into 2 quads:
+    // Top half: top color to middle color
+    // Bottom half: middle color to bottom color
+    float half_h = title_height * 0.5f;
+
+    // Top half gradient (top to middle)
+    // Using per-vertex colors by drawing with transformed quad
+    SDL_FColor top_color = {0.0f, 96.0f/255.0f, 191.0f/255.0f, 127.0f/255.0f};
+    SDL_FColor mid_color = {0.0f, 0.0f, 80.0f/255.0f, 127.0f/255.0f};
+    SDL_FColor bot_color = {0.0f, 240.0f/255.0f, 1.0f, 127.0f/255.0f};
+
+    // Since draw_quad_colored doesn't support gradients, approximate with 3 bands
+    SDL_FRect title_top = {title_x, title_y, title_w, half_h * 0.5f};
+    g_gpu.draw_quad_colored(title_top, top_color);
+
+    SDL_FRect title_mid = {title_x, title_y + half_h * 0.5f, title_w, half_h};
+    g_gpu.draw_quad_colored(title_mid, mid_color);
+
+    SDL_FRect title_bot = {title_x, title_y + half_h * 1.5f, title_w, half_h * 0.5f};
+    g_gpu.draw_quad_colored(title_bot, bot_color);
+
+    // 3. Draw title text "SETTINGS" (centered)
+    if (g_text.atlas) {
+        float text_size = 36.0f * config.scale;
+        float text_width = g_text.measure_width("SETTINGS", text_size);
+        float text_x = title_x + (title_w - text_width) * 0.5f;
+        float text_y = title_y + (title_height - text_size) * 0.5f;
+        g_text.draw_text("SETTINGS", text_x, text_y, text_size, {1.0f, 1.0f, 1.0f, 1.0f});
+    }
+
+    // 4. Draw some menu items
+    if (g_text.atlas) {
+        float item_size = 20.0f * config.scale;
+        float item_y = menu_y + 40.0f * config.scale;
+        float item_x = menu_x + 30.0f * config.scale;
+        float line_spacing = 35.0f * config.scale;
+
+        SDL_FColor item_color = {0.0f, 1.0f, 1.0f, 1.0f};  // Cyan
+
+        g_text.draw_text("VISUAL SETTINGS", item_x, item_y, item_size, item_color);
+        item_y += line_spacing;
+
+        g_text.draw_text("  Resolution", item_x, item_y, item_size * 0.8f, {0.8f, 0.8f, 0.8f, 1.0f});
+        item_y += line_spacing * 0.8f;
+
+        g_text.draw_text("  Lighting Quality", item_x, item_y, item_size * 0.8f, {0.8f, 0.8f, 0.8f, 1.0f});
+        item_y += line_spacing;
+
+        g_text.draw_text("AUDIO SETTINGS", item_x, item_y, item_size, item_color);
+        item_y += line_spacing;
+
+        g_text.draw_text("  Master Volume", item_x, item_y, item_size * 0.8f, {0.8f, 0.8f, 0.8f, 1.0f});
+        item_y += line_spacing * 0.8f;
+
+        g_text.draw_text("  Music Volume", item_x, item_y, item_size * 0.8f, {0.8f, 0.8f, 0.8f, 1.0f});
+    }
+
+    // 5. Footer hint
+    if (g_text.atlas) {
+        float hint_size = 14.0f * config.scale;
+        std::string hint = "Press TAB to close";
+        float hint_width = g_text.measure_width(hint, hint_size);
+        float hint_x = menu_x + (menu_width - hint_width) * 0.5f;
+        float hint_y = menu_y + menu_height - 30.0f * config.scale;
+        g_text.draw_text(hint, hint_x, hint_y, hint_size, {0.6f, 0.6f, 0.6f, 1.0f});
+    }
+}
+
 void render(GameState& state, const RenderConfig& config) {
     g_gpu.begin_frame();
     render_single_pass(state, config);
+
+    // Render settings menu overlay if visible
+    if (g_show_settings_menu) {
+        render_settings_menu(config);
+    }
+
     g_gpu.end_frame();
 }
 
@@ -1391,6 +1499,11 @@ int main(int argc, char* argv[]) {
     if (!g_gpu.init(window.get())) {
         SDL_Log("Failed to initialize GPU renderer");
         return 1;
+    }
+
+    // Load font for UI text
+    if (!g_text.load("dist/fonts/audiowide.png", "dist/fonts/audiowide.json")) {
+        SDL_Log("Warning: Failed to load font, text rendering disabled");
     }
 
     // Apply default lighting preset (press 0-9 to switch)

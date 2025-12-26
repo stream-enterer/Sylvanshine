@@ -21,6 +21,12 @@ struct ColorVertex {
     float r, g, b, a;
 };
 
+struct TextVertex {
+    float x, y;       // NDC position
+    float u, v;       // UV in atlas
+    float r, g, b, a; // Text color
+};
+
 // Point light source for dynamic lighting
 struct PointLight {
     float x, y;          // Screen position
@@ -103,6 +109,7 @@ struct GPURenderer {
     SDL_GPUGraphicsPipeline* color_pipeline = nullptr;
     SDL_GPUGraphicsPipeline* line_pipeline = nullptr;
     SDL_GPUGraphicsPipeline* sdf_shadow_pipeline = nullptr;
+    SDL_GPUGraphicsPipeline* text_pipeline = nullptr;
 
     // Vertex buffers
     SDL_GPUBuffer* quad_vertex_buffer = nullptr;
@@ -178,12 +185,18 @@ struct GPURenderer {
         const PointLight* light = nullptr
     );
 
-private:
+    // Interrupt/resume current render pass for buffer uploads
+    void interrupt_render_pass();
+    void resume_render_pass();
+
+    // Public for text rendering access
     SDL_GPUCommandBuffer* cmd_buffer = nullptr;
     SDL_GPURenderPass* render_pass = nullptr;
-    SDL_GPUTexture* swapchain_texture = nullptr;
     Uint32 swapchain_w = 0;
     Uint32 swapchain_h = 0;
+
+private:
+    SDL_GPUTexture* swapchain_texture = nullptr;
 
     // Scene lighting
     PointLight scene_light;
@@ -193,10 +206,6 @@ private:
     bool create_quad_buffers();
     SDL_GPUShader* load_shader(const char* filename, SDL_GPUShaderStage stage,
                                 Uint32 sampler_count, Uint32 uniform_buffer_count);
-
-    // Interrupt/resume current render pass for buffer uploads
-    void interrupt_render_pass();
-    void resume_render_pass();
 };
 
 extern GPURenderer g_gpu;
