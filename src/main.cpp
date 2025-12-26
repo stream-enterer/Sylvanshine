@@ -1364,14 +1364,14 @@ void render_settings_menu(const RenderConfig& config) {
     // Title gradient bot: rgba(0, 240, 255, 127)
 
     // Layout proportions based on Perfect Dark reference
-    // Dialog: 596.4px at 1080p
-    float menu_width = config.window_w * 0.310625f;  // 596.4px at 1080p
+    // Dialog: 603.4px at 1080p
+    float menu_width = config.window_w * 0.314271f;  // 603.4px at 1080p
     float menu_height = config.window_h * 0.75f;
 
     // Title bar extended 2px down (54.65px at 1080p)
     float title_height = menu_height * 0.06747f;
-    // Asymmetric overhang: left 24px, right 9px (absolute, decoupled from dialog width)
-    float title_overhang_left = config.window_w * 0.0125f;      // 24px at 1080p
+    // Asymmetric overhang: left 16px, right 9px (absolute, decoupled from dialog width)
+    float title_overhang_left = config.window_w * 0.008333f;    // 16px at 1080p (cropped 8px)
     float title_overhang_right = config.window_w * 0.0046875f;  // 9px at 1080p
 
     // 1px gap between title bar and dialog body
@@ -1384,7 +1384,7 @@ void render_settings_menu(const RenderConfig& config) {
     float offset_up = config.window_h * 0.042593f;    // 46/1080
     float offset_right = config.window_w * 0.007292f; // 14/1920
     // Left edge position adjustment
-    float left_extend = config.window_w * 0.00989583f;  // 19/1920
+    float left_extend = config.window_w * 0.008073f;  // 15.5/1920
     float menu_y = (config.window_h - total_height) * 0.5f + title_height + gap - offset_up;
     float menu_x = (config.window_w - menu_width) * 0.5f + offset_right - left_extend;
 
@@ -1396,7 +1396,7 @@ void render_settings_menu(const RenderConfig& config) {
     // Title bar sits above dialog with 1px gap, asymmetric overhang
     // Title bar width is absolute (decoupled from dialog width)
     float title_x = menu_x - title_overhang_left;
-    float title_w = config.window_w * 0.333542f;  // 640.4px at 1080p (fixed)
+    float title_w = config.window_w * 0.329896f;  // 633.4px at 1080p
     float title_bar_y = menu_y - title_height - gap;
 
     SDL_FColor top_color = {0.0f, 96.0f/255.0f, 191.0f/255.0f, 127.0f/255.0f};
@@ -1414,15 +1414,13 @@ void render_settings_menu(const RenderConfig& config) {
     SDL_FRect title_lower = {title_x, title_bar_y + half_h, title_w, half_h};
     g_gpu.draw_quad_gradient(title_lower, mid_color, mid_color, bot_color, bot_color);
 
-    // 3. Draw title text (left-aligned with margin, matching reference)
+    // 3. Draw title text (decoupled positioning with absolute offsets)
     if (g_text.atlas) {
-        // Title font size ~70% of title bar height (+~4px from before)
-        float title_text_size = title_height * 0.7f;
-        // Left margin from title bar edge to text
-        float title_margin = title_w * 0.03f;
-        float title_text_x = title_x + title_margin;
-        // Vertically center in title bar
-        float title_text_y = title_bar_y + (title_height - title_text_size) * 0.5f;
+        // Title font size: base 70% of title bar height + 4px at 1080p (responsive)
+        float title_text_size = title_height * 0.7f + config.window_h * 0.003704f;
+        // Text position: absolute offset from title_x and title_bar_y (decoupled, responsive)
+        float title_text_x = title_x + config.window_w * 0.014167f;  // 27.2px at 1080p
+        float title_text_y = title_bar_y + config.window_h * 0.002037f;  // 2.2px at 1080p
         g_text.draw_text("Options", title_text_x, title_text_y, title_text_size, {1.0f, 1.0f, 1.0f, 1.0f});
     }
 
@@ -1432,11 +1430,11 @@ void render_settings_menu(const RenderConfig& config) {
         float item_size = menu_height * 0.08f;
         // Line spacing larger to fill vertical space (reduces bottom margin)
         float line_spacing = menu_height * 0.13f;
-        // Left margin: items were DOWN-LEFT, so move RIGHT with larger margin
+        // Left margin + responsive shift (+37px at 1080p)
         float item_margin = menu_width * 0.30f;
-        float item_x = menu_x + item_margin;
-        // First item starts higher (items were DOWN, so move UP)
-        float item_y = menu_y + menu_height * 0.06f;
+        float item_x = menu_x + item_margin + config.window_w * 0.019271f;
+        // First item Y + responsive shift (-16px up at 1080p)
+        float item_y = menu_y + menu_height * 0.06f - config.window_h * 0.014815f;
 
         SDL_FColor item_color = {0.0f, 1.0f, 1.0f, 1.0f};  // Cyan
 
