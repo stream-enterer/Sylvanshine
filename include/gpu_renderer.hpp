@@ -154,6 +154,10 @@ struct GPURenderer {
 
     void draw_quad_colored(const SDL_FRect& dst, SDL_FColor color);
     void draw_quad_transformed(Vec2 tl, Vec2 tr, Vec2 br, Vec2 bl, SDL_FColor color);
+    // Draw quad with per-vertex colors for gradients (tl=top-left, etc.)
+    void draw_quad_gradient(const SDL_FRect& dst,
+                            SDL_FColor tl, SDL_FColor tr,
+                            SDL_FColor br, SDL_FColor bl);
     void draw_line(Vec2 start, Vec2 end, SDL_FColor color);
 
     // Draw sprite with arbitrary quad corners (for rotation)

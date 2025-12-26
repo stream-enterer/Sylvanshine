@@ -1357,95 +1357,93 @@ void render_single_pass(GameState& state, const RenderConfig& config) {
 // =============================================================================
 
 void render_settings_menu(const RenderConfig& config) {
-    // Menu colors from docs/basic_menu_colors.md
+    // Colors from docs/basic_menu_colors.md
     // Dialog body: rgba(0, 0, 47, 127)
     // Title gradient top: rgba(0, 96, 191, 127)
     // Title gradient mid: rgba(0, 0, 80, 127)
     // Title gradient bot: rgba(0, 240, 255, 127)
 
-    float menu_width = config.window_w * 0.5f;
-    float menu_height = config.window_h * 0.6f;
-    float menu_x = (config.window_w - menu_width) * 0.5f;
-    float menu_y = (config.window_h - menu_height) * 0.5f;
+    // Layout proportions based on Perfect Dark reference
+    // Menu takes ~35% of screen width, ~75% of screen height
+    float menu_width = config.window_w * 0.35f;
+    float menu_height = config.window_h * 0.75f;
 
-    float title_height = 60.0f * config.scale;
-    float title_overhang = 20.0f * config.scale;
+    // Title bar is ~6% of total menu height
+    float title_height = menu_height * 0.06f;
+    float title_overhang = menu_width * 0.04f;  // Small overhang on each side
+
+    // Total composition height (title + body)
+    float total_height = title_height + menu_height;
+
+    // Center vertically with equal margins
+    float menu_y = (config.window_h - total_height) * 0.5f + title_height;
+    float menu_x = (config.window_w - menu_width) * 0.5f;
 
     // 1. Draw dialog body (deep blue, 50% opacity)
     SDL_FRect dialog_body = {menu_x, menu_y, menu_width, menu_height};
     g_gpu.draw_quad_colored(dialog_body, {0.0f, 0.0f, 47.0f/255.0f, 127.0f/255.0f});
 
-    // 2. Draw title bar (3-color gradient with overhang)
-    // Title bar extends beyond dialog by title_overhang on each side
+    // 2. Draw title bar with smooth 3-color vertical gradient
+    // Title bar sits on top of body with slight overhang
     float title_x = menu_x - title_overhang;
     float title_w = menu_width + title_overhang * 2.0f;
-    float title_y = menu_y - title_height;
+    float title_bar_y = menu_y - title_height;
 
-    // For 3-color gradient, split into 2 quads:
-    // Top half: top color to middle color
-    // Bottom half: middle color to bottom color
-    float half_h = title_height * 0.5f;
-
-    // Top half gradient (top to middle)
-    // Using per-vertex colors by drawing with transformed quad
     SDL_FColor top_color = {0.0f, 96.0f/255.0f, 191.0f/255.0f, 127.0f/255.0f};
     SDL_FColor mid_color = {0.0f, 0.0f, 80.0f/255.0f, 127.0f/255.0f};
     SDL_FColor bot_color = {0.0f, 240.0f/255.0f, 1.0f, 127.0f/255.0f};
 
-    // Since draw_quad_colored doesn't support gradients, approximate with 3 bands
-    SDL_FRect title_top = {title_x, title_y, title_w, half_h * 0.5f};
-    g_gpu.draw_quad_colored(title_top, top_color);
+    // Draw as two gradient quads for smooth 3-color gradient
+    float half_h = title_height * 0.5f;
 
-    SDL_FRect title_mid = {title_x, title_y + half_h * 0.5f, title_w, half_h};
-    g_gpu.draw_quad_colored(title_mid, mid_color);
+    // Top half: top_color -> mid_color
+    SDL_FRect title_upper = {title_x, title_bar_y, title_w, half_h};
+    g_gpu.draw_quad_gradient(title_upper, top_color, top_color, mid_color, mid_color);
 
-    SDL_FRect title_bot = {title_x, title_y + half_h * 1.5f, title_w, half_h * 0.5f};
-    g_gpu.draw_quad_colored(title_bot, bot_color);
+    // Bottom half: mid_color -> bot_color
+    SDL_FRect title_lower = {title_x, title_bar_y + half_h, title_w, half_h};
+    g_gpu.draw_quad_gradient(title_lower, mid_color, mid_color, bot_color, bot_color);
 
-    // 3. Draw title text "SETTINGS" (centered)
+    // 3. Draw title text (left-aligned with margin, matching reference)
     if (g_text.atlas) {
-        float text_size = 36.0f * config.scale;
-        float text_width = g_text.measure_width("SETTINGS", text_size);
-        float text_x = title_x + (title_w - text_width) * 0.5f;
-        float text_y = title_y + (title_height - text_size) * 0.5f;
-        g_text.draw_text("SETTINGS", text_x, text_y, text_size, {1.0f, 1.0f, 1.0f, 1.0f});
+        // Title font size ~60% of title bar height
+        float title_text_size = title_height * 0.6f;
+        // Left margin from title bar edge to text: ~3% of title width
+        float title_margin = title_w * 0.03f;
+        float title_text_x = title_x + title_margin;
+        // Vertically center in title bar
+        float title_text_y = title_bar_y + (title_height - title_text_size) * 0.5f;
+        g_text.draw_text("Options", title_text_x, title_text_y, title_text_size, {1.0f, 1.0f, 1.0f, 1.0f});
     }
 
-    // 4. Draw some menu items
+    // 4. Draw menu items (simple list like reference: Audio, Video, Control, etc.)
     if (g_text.atlas) {
-        float item_size = 20.0f * config.scale;
-        float item_y = menu_y + 40.0f * config.scale;
-        float item_x = menu_x + 30.0f * config.scale;
-        float line_spacing = 35.0f * config.scale;
+        // Item font size ~6% of menu body height
+        float item_size = menu_height * 0.065f;
+        // Line spacing ~12% of body height between item baselines
+        float line_spacing = menu_height * 0.11f;
+        // Left margin from body edge to text: ~25% of body width (matching reference indent)
+        float item_margin = menu_width * 0.25f;
+        float item_x = menu_x + item_margin;
+        // First item starts ~8% from top of body
+        float item_y = menu_y + menu_height * 0.08f;
 
         SDL_FColor item_color = {0.0f, 1.0f, 1.0f, 1.0f};  // Cyan
 
-        g_text.draw_text("VISUAL SETTINGS", item_x, item_y, item_size, item_color);
-        item_y += line_spacing;
+        const char* menu_items[] = {
+            "Audio",
+            "Video",
+            "Control",
+            "Display",
+            "Cheats",
+            "Cinema",
+            "Extended"
+        };
 
-        g_text.draw_text("  Resolution", item_x, item_y, item_size * 0.8f, {0.8f, 0.8f, 0.8f, 1.0f});
-        item_y += line_spacing * 0.8f;
-
-        g_text.draw_text("  Lighting Quality", item_x, item_y, item_size * 0.8f, {0.8f, 0.8f, 0.8f, 1.0f});
-        item_y += line_spacing;
-
-        g_text.draw_text("AUDIO SETTINGS", item_x, item_y, item_size, item_color);
-        item_y += line_spacing;
-
-        g_text.draw_text("  Master Volume", item_x, item_y, item_size * 0.8f, {0.8f, 0.8f, 0.8f, 1.0f});
-        item_y += line_spacing * 0.8f;
-
-        g_text.draw_text("  Music Volume", item_x, item_y, item_size * 0.8f, {0.8f, 0.8f, 0.8f, 1.0f});
-    }
-
-    // 5. Footer hint
-    if (g_text.atlas) {
-        float hint_size = 14.0f * config.scale;
-        std::string hint = "Press TAB to close";
-        float hint_width = g_text.measure_width(hint, hint_size);
-        float hint_x = menu_x + (menu_width - hint_width) * 0.5f;
-        float hint_y = menu_y + menu_height - 30.0f * config.scale;
-        g_text.draw_text(hint, hint_x, hint_y, hint_size, {0.6f, 0.6f, 0.6f, 1.0f});
+        for (const char* item : menu_items) {
+            g_text.draw_text(item, item_x, item_y, item_size, item_color);
+            item_y += line_spacing;
+        }
     }
 }
 
