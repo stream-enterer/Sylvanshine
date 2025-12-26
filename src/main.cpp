@@ -1364,30 +1364,40 @@ void render_settings_menu(const RenderConfig& config) {
     // Title gradient bot: rgba(0, 240, 255, 127)
 
     // Layout proportions based on Perfect Dark reference
-    // Dialog narrower than before to match reference measurements
-    float menu_width = config.window_w * 0.32f;
+    // Dialog: 596.4px at 1080p
+    float menu_width = config.window_w * 0.310625f;  // 596.4px at 1080p
     float menu_height = config.window_h * 0.75f;
 
-    // Title bar slightly taller (was "a little short")
-    float title_height = menu_height * 0.065f;
-    float title_overhang = menu_width * 0.04f;  // Small overhang on each side
+    // Title bar extended 2px down (54.65px at 1080p)
+    float title_height = menu_height * 0.06747f;
+    // Asymmetric overhang: left 24px, right 9px (absolute, decoupled from dialog width)
+    float title_overhang_left = config.window_w * 0.0125f;      // 24px at 1080p
+    float title_overhang_right = config.window_w * 0.0046875f;  // 9px at 1080p
 
-    // Total composition height (title + body)
-    float total_height = title_height + menu_height;
+    // 1px gap between title bar and dialog body
+    float gap = config.window_h * 0.000926f;
 
-    // Center vertically with equal margins
-    float menu_y = (config.window_h - total_height) * 0.5f + title_height;
-    float menu_x = (config.window_w - menu_width) * 0.5f;
+    // Total composition height (title + gap + body)
+    float total_height = title_height + gap + menu_height;
+
+    // Position with offset from center (up 46px, right 14px at 1080p)
+    float offset_up = config.window_h * 0.042593f;    // 46/1080
+    float offset_right = config.window_w * 0.007292f; // 14/1920
+    // Left edge position adjustment
+    float left_extend = config.window_w * 0.00989583f;  // 19/1920
+    float menu_y = (config.window_h - total_height) * 0.5f + title_height + gap - offset_up;
+    float menu_x = (config.window_w - menu_width) * 0.5f + offset_right - left_extend;
 
     // 1. Draw dialog body (deep blue, 50% opacity)
     SDL_FRect dialog_body = {menu_x, menu_y, menu_width, menu_height};
     g_gpu.draw_quad_colored(dialog_body, {0.0f, 0.0f, 47.0f/255.0f, 127.0f/255.0f});
 
     // 2. Draw title bar with smooth 3-color vertical gradient
-    // Title bar sits on top of body with slight overhang
-    float title_x = menu_x - title_overhang;
-    float title_w = menu_width + title_overhang * 2.0f;
-    float title_bar_y = menu_y - title_height;
+    // Title bar sits above dialog with 1px gap, asymmetric overhang
+    // Title bar width is absolute (decoupled from dialog width)
+    float title_x = menu_x - title_overhang_left;
+    float title_w = config.window_w * 0.333542f;  // 640.4px at 1080p (fixed)
+    float title_bar_y = menu_y - title_height - gap;
 
     SDL_FColor top_color = {0.0f, 96.0f/255.0f, 191.0f/255.0f, 127.0f/255.0f};
     SDL_FColor mid_color = {0.0f, 0.0f, 80.0f/255.0f, 127.0f/255.0f};
