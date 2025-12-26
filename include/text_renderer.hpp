@@ -32,3 +32,4 @@ struct TextRenderer {
 };
 
 extern TextRenderer g_text;
+extern TextRenderer g_title_text;

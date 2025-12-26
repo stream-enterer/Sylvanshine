@@ -1416,14 +1416,15 @@ void render_settings_menu(const RenderConfig& config) {
     SDL_FRect title_lower = {title_x, title_bar_y + half_h, title_w, half_h};
     g_gpu.draw_quad_gradient(title_lower, mid_color, mid_color, bot_color, bot_color);
 
-    // 3. Draw title text (decoupled positioning with absolute offsets)
-    if (g_text.atlas) {
-        // Title font size: base 70% of title bar height + 4px at 1080p (responsive)
-        float title_text_size = title_height * 0.7f + config.window_h * 0.003704f;
-        // Text position: absolute offset from title_x and title_bar_y (decoupled, responsive)
-        float title_text_x = title_x + config.window_w * 0.014167f;  // 27.2px at 1080p
-        float title_text_y = title_bar_y + config.window_h * 0.002037f;  // 2.2px at 1080p
-        g_text.draw_text("Options", title_text_x, title_text_y, title_text_size, {1.0f, 1.0f, 1.0f, 1.0f});
+    // 3. Draw title text (vertically centered with drop shadow)
+    if (g_title_text.atlas) {
+        float title_text_size = title_height * 0.7f + config.window_h * 0.003704f + 2.0f;
+        float title_text_x = title_x + config.window_w * 0.014167f;
+        // Vertically center: visual center is at y + 0.604 * size for "Options"
+        float title_text_y = title_bar_y + (title_height - 1.208f * title_text_size) / 2.0f + 4.0f;
+        // 2px drop shadow
+        g_title_text.draw_text("Options", title_text_x + 2, title_text_y + 2, title_text_size, {0.0f, 0.0f, 0.0f, 1.0f});
+        g_title_text.draw_text("Options", title_text_x, title_text_y, title_text_size, {1.0f, 1.0f, 1.0f, 1.0f});
     }
 
     // 4. Draw menu items (left-aligned, matching reference)
@@ -1512,6 +1513,11 @@ int main(int argc, char* argv[]) {
     // Load font for UI text
     if (!g_text.load("dist/fonts/audiowide.png", "dist/fonts/audiowide.json")) {
         SDL_Log("Warning: Failed to load font, text rendering disabled");
+    }
+
+    // Load titlebar font (Iceland)
+    if (!g_title_text.load("dist/fonts/iceland.png", "dist/fonts/iceland.json")) {
+        SDL_Log("Warning: Failed to load title font");
     }
 
     // Apply default lighting preset (press 0-9 to switch)

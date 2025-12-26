@@ -4,6 +4,7 @@
 #include "../third_party/json.hpp"
 
 TextRenderer g_text;
+TextRenderer g_title_text;
 
 bool TextRenderer::load(const char* atlas_png, const char* metrics_json) {
     // Load atlas texture
