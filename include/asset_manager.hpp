@@ -1,9 +1,13 @@
 #pragma once
 #include "types.hpp"
 #include "animation_loader.hpp"
-#include "timing_loader.hpp"
 #include <string>
 #include <unordered_map>
+
+// Unit timing data (attack animation delays, etc.)
+struct UnitTiming {
+    float attack_damage_delay = 0.5f;  // Time from attack start to damage application
+};
 
 /**
  * AssetManager - Singleton that loads and caches game assets from dist/assets.json

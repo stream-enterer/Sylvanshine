@@ -1,14 +1,6 @@
 #include "types.hpp"
+#include "perspective.hpp"
 #include <cmath>
-
-constexpr float FOV_DEGREES = 60.0f;
-constexpr float BOARD_X_ROTATION = 16.0f;
-constexpr float DEG_TO_RAD = 3.14159265359f / 180.0f;
-
-static float calculate_zeye(float height) {
-    float half_fov_rad = (FOV_DEGREES * 0.5f) * DEG_TO_RAD;
-    return (height * 0.5f) / std::tan(half_fov_rad);
-}
 
 float RenderConfig::board_origin_y() const {
     float zeye = calculate_zeye(static_cast<float>(window_h));

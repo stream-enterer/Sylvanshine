@@ -18,16 +18,19 @@ add_executable(${PROJECT_NAME}
     src/types.cpp
     src/animation_loader.cpp
     src/plist_parser.cpp
-    src/asset_paths.cpp
     src/asset_manager.cpp
     src/entity.cpp
     src/fx.cpp
-    src/timing_loader.cpp
     src/grid_renderer.cpp
     src/perspective.cpp
     src/gpu_renderer.cpp
     src/render_pass.cpp
     src/text_renderer.cpp
+    src/lighting_presets.cpp
+    src/settings_menu.cpp
+    src/game_logic.cpp
+    src/input.cpp
+    src/scene_render.cpp
 )
 target_link_libraries(${PROJECT_NAME} PRIVATE
     ${SDL3_LIBRARIES}

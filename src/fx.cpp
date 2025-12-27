@@ -1,46 +1,6 @@
 #include "fx.hpp"
 #include "asset_manager.hpp"
 #include <SDL3_image/SDL_image.h>
-#include <fstream>
-#include <sstream>
-
-std::vector<std::string> split_string(const std::string& str, char delimiter) {
-    std::vector<std::string> result;
-    std::stringstream ss(str);
-    std::string token;
-    while (std::getline(ss, token, delimiter)) {
-        if (!token.empty()) {
-            result.push_back(token);
-        }
-    }
-    return result;
-}
-
-// Legacy TSV parsing - kept for reference but no longer used
-// RSX mappings are now loaded from assets.json via AssetManager
-bool parse_rsx_mapping(const char* filepath, std::unordered_map<std::string, RSXMapping>& mappings) {
-    (void)filepath;
-    (void)mappings;
-    // This function is now a no-op - RSX mappings come from assets.json
-    return true;
-}
-
-// Legacy TSV parsing - kept for reference but no longer used
-// FX data is now loaded from assets.json via AssetManager
-bool parse_fx_manifest(const char* filepath, std::unordered_map<std::string, FXManifestEntry>& manifest) {
-    (void)filepath;
-    (void)manifest;
-    // This function is now a no-op - FX manifest comes from assets.json
-    return true;
-}
-
-bool FXCache::load_mappings(const char* rsx_mapping_path, const char* manifest_path) {
-    // Legacy TSV loading - now handled by AssetManager
-    // This function is kept for API compatibility but mappings come from assets.json
-    (void)rsx_mapping_path;
-    (void)manifest_path;
-    return true;
-}
 
 FXAsset* FXCache::get_asset(const std::string& folder) {
     auto it = loaded_assets.find(folder);
