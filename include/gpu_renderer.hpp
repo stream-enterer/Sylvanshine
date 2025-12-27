@@ -44,11 +44,12 @@ struct SpriteUniforms {
     float dissolve_time;
     float seed;
     float padding;
-    // Tint color (RGBA), multiplied with texture color
-    float tint_r;
-    float tint_g;
-    float tint_b;
-    float tint_a;
+    // For sprite shader: Tint color (RGBA), multiplied with texture color
+    // For dissolve shader: Frame UV bounds (min_x, min_y, size_x, size_y)
+    float tint_r;  // or frame_uv_min_x
+    float tint_g;  // or frame_uv_min_y
+    float tint_b;  // or frame_uv_size_x
+    float tint_a;  // or frame_uv_size_y
 };
 
 
@@ -84,7 +85,8 @@ struct SDFShadowUniforms {
 
     float max_raymarch;         // Max raymarch distance in UV space (default: 0.3)
     float raymarch_steps;       // Number of raymarch steps (default: 12.0)
-    float _pad1, _pad2;         // Alignment padding
+    float dissolve_time;        // Dissolve progress (0.0 = solid, 1.0 = fully dissolved)
+    float dissolve_seed;        // Random seed for dissolve noise pattern
 };
 
 // FX configuration - shadow settings
@@ -179,6 +181,7 @@ struct GPURenderer {
     // SDF shadow rendering
     // sdf_texture is the pre-computed SDF atlas
     // src is the frame rect in the atlas (same as spritesheet)
+    // dissolve_time/seed: sync shadow dissolution with sprite dissolve effect
     void draw_sdf_shadow(
         const GPUTextureHandle& sdf_texture,
         const SDL_FRect& src,
@@ -186,6 +189,8 @@ struct GPURenderer {
         float scale,
         bool flip_x,
         float opacity,
+        float dissolve_time = 0.0f,
+        float dissolve_seed = 0.0f,
         const PointLight* light = nullptr
     );
 

@@ -7,6 +7,8 @@ layout(set = 3, binding = 0) uniform Uniforms {
     float u_time;
     float u_seed;
     float u_padding;
+    vec2 u_frameUVMin;   // Top-left UV of sprite frame in atlas
+    vec2 u_frameUVSize;  // Size of sprite frame in UV space
 };
 
 layout(location = 0) in vec2 v_texCoord;
@@ -51,21 +53,25 @@ float getNoiseFBM(in vec2 coord, in float time, in float frequency, in float amp
 
 void main() {
     vec4 color = texture(u_texture, v_texCoord);
-    
-    // Vignette
-    vec2 noiseCenterDiff = v_texCoord - vec2(0.5);
+
+    // Normalize texture coordinate to 0-1 within the sprite frame
+    // This ensures the dissolve pattern matches the shadow exactly
+    vec2 normalizedUV = (v_texCoord - u_frameUVMin) / u_frameUVSize;
+
+    // Vignette - uses normalized UV, properly centered at 0.5
+    vec2 noiseCenterDiff = normalizedUV - vec2(0.5);
     float noiseCenterOffset = u_time + 0.25;
     noiseCenterOffset = (noiseCenterOffset * noiseCenterOffset * noiseCenterOffset * noiseCenterOffset) + 0.25;
     float noiseCenterDist = length(noiseCenterDiff) * 5.0 * noiseCenterOffset + noiseCenterOffset;
     noiseCenterDist = noiseCenterDist * noiseCenterDist * noiseCenterDist * noiseCenterDist * noiseCenterDist * noiseCenterDist;
     float noiseVignette = max(0.0, 1.0 - noiseCenterDist) * u_vignetteStrength;
-    
-    // Noise
-    float noise = getNoiseFBM(vec2(u_seed) + v_texCoord, 0.0, u_frequency, max(0.0, u_amplitude + u_time - noiseVignette));
+
+    // Noise - uses normalized UV for consistent pattern with shadow
+    float noise = getNoiseFBM(vec2(u_seed) + normalizedUV, 0.0, u_frequency, max(0.0, u_amplitude + u_time - noiseVignette));
     float noiseRangeMin = 0.99 - u_time;
     float noiseRangeMax = 1.0 - u_time;
     float noiseSmooth = 1.0 - smoothstep(noiseRangeMin, noiseRangeMax, noise);
     float noiseEdge = fract(1.0 - smoothstep(noiseRangeMin, noiseRangeMax + u_edgeFalloff, noise));
-    
+
     fragColor = vec4(max(color.rgb, vec3(ceil(noiseEdge))), color.a * (noiseSmooth + noiseEdge) * u_opacity);
 }

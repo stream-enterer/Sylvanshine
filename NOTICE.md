@@ -15,6 +15,10 @@ nlohmann/json
   Source: https://github.com/nlohmann/json
   Version: 3.11.3
 
+Fluid Simulation (Wyatt Flanders)
+  License: Used with permission
+  Source: https://www.shadertoy.com/user/wyatt
+
 ## Fonts
 
 Audiowide

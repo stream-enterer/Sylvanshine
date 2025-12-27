@@ -788,7 +788,16 @@ void GPURenderer::draw_sprite_dissolve(const GPUTextureHandle& texture, const SD
     tex_binding.sampler = texture.sampler;
     SDL_BindGPUFragmentSamplers(render_pass, 0, &tex_binding, 1);
 
-    SpriteUniforms uniforms = {opacity, dissolve_time, seed, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f};
+    // Pass frame UV bounds for normalized dissolve pattern (sync with shadow)
+    // These are always in unflipped texture space
+    float frame_uv_min_x = src.x / texture.width;
+    float frame_uv_min_y = src.y / texture.height;
+    float frame_uv_size_x = src.w / texture.width;
+    float frame_uv_size_y = src.h / texture.height;
+
+    SpriteUniforms uniforms = {opacity, dissolve_time, seed, 0.0f,
+                               frame_uv_min_x, frame_uv_min_y,
+                               frame_uv_size_x, frame_uv_size_y};
     SDL_PushGPUFragmentUniformData(cmd_buffer, 0, &uniforms, sizeof(uniforms));
 
     SDL_DrawGPUIndexedPrimitives(render_pass, 6, 1, 0, 0, 0);
@@ -1264,6 +1273,8 @@ void GPURenderer::draw_sdf_shadow(
     float scale,
     bool flip_x,
     float opacity,
+    float dissolve_time,
+    float dissolve_seed,
     const PointLight* light
 ) {
     if (!sdf_shadow_pipeline || !sdf_texture.ptr) return;
@@ -1469,7 +1480,8 @@ void GPURenderer::draw_sdf_shadow(
 
         fx_config.sdf_max_raymarch,
         fx_config.sdf_raymarch_steps,
-        0.0f, 0.0f  // padding
+        dissolve_time,
+        dissolve_seed
     };
     SDL_PushGPUFragmentUniformData(cmd_buffer, 0, &uniforms, sizeof(uniforms));
 

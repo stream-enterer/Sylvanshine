@@ -196,10 +196,10 @@ void Entity::update(float dt, const RenderConfig& config) {
     
     if (state == EntityState::Dissolving) {
         dissolve_elapsed += dt;
-        
-        float t = dissolve_elapsed / dissolve_duration;
-        opacity = 1.0f - (t < 1.0f ? t : 1.0f);
-        
+
+        // Opacity stays at 1.0 during dissolve - the dissolve shader's
+        // noise pattern handles alpha reduction (matching Duelyst behavior)
+
         if (dissolve_elapsed >= dissolve_duration) {
             death_complete = true;
             opacity = 0.0f;
@@ -252,9 +252,14 @@ void Entity::render_shadow(const RenderConfig& config) const {
 
     float shadow_alpha = SHADOW_OPACITY * opacity;
 
+    // Get dissolve parameters if dissolving (shadow dissolves in sync with sprite)
+    float dissolve_time = is_dissolving() ? get_dissolve_time() : 0.0f;
+    float seed = is_dissolving() ? dissolve_seed : 0.0f;
+
     // SDF shadow rendering (requires pre-computed SDF atlas)
     if (sdf_atlas.ptr && g_gpu.fx_config.enable_shadows) {
-        g_gpu.draw_sdf_shadow(sdf_atlas, src, shadow_feet_pos, config.scale, flip_x, shadow_alpha);
+        g_gpu.draw_sdf_shadow(sdf_atlas, src, shadow_feet_pos, config.scale, flip_x,
+                              shadow_alpha, dissolve_time, seed);
     }
 }
 
