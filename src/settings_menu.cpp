@@ -13,13 +13,15 @@ void render_settings_menu(const RenderConfig& config) {
 
     // Menu content
     const char* menu_items[] = {
-        "Carrington Institute", "Solo Missions", "Combat Simulator", "Co-Operative", "Counter-Operative", "Change Agent...", "Exit Game"
+        "Audio", "Video", "Control", "Display", "Cheats", "Cinema", "Extended"
     };
 
-    // Text sizing (decoupled from menu_height)
+    // Text sizing
     float item_size = config.window_h * 0.06f;
+    float line_spacing = item_size * 1.934f;
+    size_t num_items = sizeof(menu_items) / sizeof(menu_items[0]);
 
-    // Dynamic width based on content (fixed margins, not proportional)
+    // Dynamic width based on content (fixed margins)
     float left_margin = config.window_w * 0.1135f;   // 218px at 1920w
     float right_margin = config.window_w * 0.04583f; // 88px at 1920w
 
@@ -33,28 +35,31 @@ void render_settings_menu(const RenderConfig& config) {
     } else {
         menu_width = config.window_w * 0.314271f;  // fallback if font not loaded
     }
-    float menu_height = config.window_h * 0.75f;
 
-    // Title bar extended 2px down (54.65px at 1080p)
-    float title_height = menu_height * 0.06747f;
+    // Dynamic height based on content (fixed margins)
+    // Note: top_margin is to text bounding box; subtract ~19px font padding for visual gap
+    float top_margin = config.window_h * 0.02315f;   // 25px at 1080p → 44px visual gap
+    float bottom_margin = config.window_h * 0.04074f; // 44px at 1080p
+    float content_height = (num_items - 1) * line_spacing + item_size;
+    float menu_height = top_margin + content_height + bottom_margin;
+
+    // Title bar (decoupled from menu_height)
+    float title_height = config.window_h * 0.0506f;  // 54.65px at 1080p
     float title_overhang_left = config.window_w * 0.008333f;
 
     // 1px gap between title bar and dialog body
     float gap = config.window_h * 0.000926f;
 
-    // Total composition height
+    // Total composition height (title + gap + dialog body)
     float total_height = title_height + gap + menu_height;
 
-    // Position with offset from center
-    float offset_up = config.window_h * 0.042593f;
-    float offset_right = config.window_w * 0.007292f;
-    float left_extend = config.window_w * 0.008073f;
-    float menu_y = (config.window_h - total_height) * 0.5f + title_height + gap - offset_up;
-    float menu_x = (config.window_w - menu_width) * 0.5f + offset_right - left_extend;
+    // Center entire composition on screen
+    float composition_y = (config.window_h - total_height) * 0.5f;
+    float menu_x = (config.window_w - menu_width) * 0.5f;
+    float menu_y = composition_y + title_height + gap;
 
     // 1. Draw dialog body
-    float bottom_ext = config.window_h * 0.085185f;
-    SDL_FRect dialog_body = {menu_x, menu_y, menu_width, menu_height + bottom_ext};
+    SDL_FRect dialog_body = {menu_x, menu_y, menu_width, menu_height};
     g_gpu.draw_quad_colored(dialog_body, {0.0f, 0.0f, 47.0f/255.0f, 127.0f/255.0f});
 
     // 2. Draw title bar with 3-color gradient
@@ -79,15 +84,14 @@ void render_settings_menu(const RenderConfig& config) {
         float title_text_size = title_height * 0.7f + config.window_h * 0.003704f + 2.0f;
         float title_text_x = title_x + config.window_w * 0.014167f;
         float title_text_y = title_bar_y + (title_height - 1.208f * title_text_size) / 2.0f + 4.0f;
-        g_title_text.draw_text("Perfect Menu", title_text_x + 2, title_text_y + 2, title_text_size, {0.0f, 0.0f, 0.0f, 1.0f});
-        g_title_text.draw_text("Perfect Menu", title_text_x, title_text_y, title_text_size, {1.0f, 1.0f, 1.0f, 1.0f});
+        g_title_text.draw_text("Options", title_text_x + 2, title_text_y + 2, title_text_size, {0.0f, 0.0f, 0.0f, 1.0f});
+        g_title_text.draw_text("Options", title_text_x, title_text_y, title_text_size, {1.0f, 1.0f, 1.0f, 1.0f});
     }
 
     // 4. Draw menu items
     if (g_text.atlas) {
-        float line_spacing = item_size * 1.934f;
         float item_x = menu_x + left_margin;
-        float item_y = menu_y + menu_height * 0.06f - config.window_h * 0.014815f;
+        float item_y = menu_y + top_margin;
 
         SDL_FColor item_color = {0.0f, 1.0f, 1.0f, 1.0f};
 
