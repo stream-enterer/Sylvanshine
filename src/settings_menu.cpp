@@ -11,8 +11,28 @@ void render_settings_menu(const RenderConfig& config) {
     // Title gradient mid: rgba(0, 0, 80, 127)
     // Title gradient bot: rgba(0, 240, 255, 127)
 
-    // Layout proportions based on Perfect Dark reference
-    float menu_width = config.window_w * 0.314271f;  // 603.4px at 1080p
+    // Menu content
+    const char* menu_items[] = {
+        "Carrington Institute", "Solo Missions", "Combat Simulator", "Co-Operative", "Counter-Operative", "Change Agent...", "Exit Game"
+    };
+
+    // Text sizing (decoupled from menu_height)
+    float item_size = config.window_h * 0.06f;
+
+    // Dynamic width based on content (fixed margins, not proportional)
+    float left_margin = config.window_w * 0.1135f;   // 218px at 1920w
+    float right_margin = config.window_w * 0.04583f; // 88px at 1920w
+
+    float menu_width;
+    if (g_text.atlas) {
+        float max_text_width = 0;
+        for (const char* item : menu_items) {
+            max_text_width = std::max(max_text_width, g_text.measure_width(item, item_size));
+        }
+        menu_width = left_margin + max_text_width + right_margin;
+    } else {
+        menu_width = config.window_w * 0.314271f;  // fallback if font not loaded
+    }
     float menu_height = config.window_h * 0.75f;
 
     // Title bar extended 2px down (54.65px at 1080p)
@@ -39,7 +59,8 @@ void render_settings_menu(const RenderConfig& config) {
 
     // 2. Draw title bar with 3-color gradient
     float title_x = menu_x - title_overhang_left;
-    float title_w = config.window_w * 0.329896f;
+    float title_overhang_right = config.window_w * 0.00729f;  // 14px at 1920w
+    float title_w = menu_width + title_overhang_left + title_overhang_right;
     float title_bar_y = menu_y - title_height - gap;
 
     SDL_FColor top_color = {0.0f, 96.0f/255.0f, 191.0f/255.0f, 127.0f/255.0f};
@@ -58,23 +79,17 @@ void render_settings_menu(const RenderConfig& config) {
         float title_text_size = title_height * 0.7f + config.window_h * 0.003704f + 2.0f;
         float title_text_x = title_x + config.window_w * 0.014167f;
         float title_text_y = title_bar_y + (title_height - 1.208f * title_text_size) / 2.0f + 4.0f;
-        g_title_text.draw_text("Options", title_text_x + 2, title_text_y + 2, title_text_size, {0.0f, 0.0f, 0.0f, 1.0f});
-        g_title_text.draw_text("Options", title_text_x, title_text_y, title_text_size, {1.0f, 1.0f, 1.0f, 1.0f});
+        g_title_text.draw_text("Perfect Menu", title_text_x + 2, title_text_y + 2, title_text_size, {0.0f, 0.0f, 0.0f, 1.0f});
+        g_title_text.draw_text("Perfect Menu", title_text_x, title_text_y, title_text_size, {1.0f, 1.0f, 1.0f, 1.0f});
     }
 
     // 4. Draw menu items
     if (g_text.atlas) {
-        float item_size = menu_height * 0.08f;
-        float line_spacing = menu_height * 0.1547f;
-        float item_margin = menu_width * 0.30f;
-        float item_x = menu_x + item_margin + config.window_w * 0.019271f;
+        float line_spacing = item_size * 1.934f;
+        float item_x = menu_x + left_margin;
         float item_y = menu_y + menu_height * 0.06f - config.window_h * 0.014815f;
 
         SDL_FColor item_color = {0.0f, 1.0f, 1.0f, 1.0f};
-
-        const char* menu_items[] = {
-            "Audio", "Video", "Control", "Display", "Cheats", "Cinema", "Extended"
-        };
 
         for (const char* item : menu_items) {
             g_text.draw_text(item, item_x, item_y, item_size, item_color);
