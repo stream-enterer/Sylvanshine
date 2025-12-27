@@ -166,6 +166,7 @@ void Entity::update(float dt, const RenderConfig& config) {
             board_pos = move_target;
             screen_pos = board_to_screen_perspective(config, board_pos);
             state = EntityState::Idle;
+            store_facing();  // Preserve post-move facing for deselect
             play_animation("idle");
         } else {
             float t = move_elapsed / move_duration;

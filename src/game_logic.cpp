@@ -95,10 +95,15 @@ void update_selected_facing(GameState& state, const RenderConfig& config) {
     if (state.selected_unit_idx >= static_cast<int>(state.units.size())) return;
     if (state.units[state.selected_unit_idx].is_moving()) return;
 
+    int idx = state.selected_unit_idx;
+
+    // Don't allow facing changes after unit has moved (waiting to attack/deselect)
+    if (idx < static_cast<int>(state.has_moved.size()) && state.has_moved[idx]) return;
+
     BoardPos mouse_board = screen_to_board_perspective(config, state.mouse_pos);
     if (!mouse_board.is_valid()) return;
 
-    state.units[state.selected_unit_idx].face_position(mouse_board);
+    state.units[idx].face_position(mouse_board);
 }
 
 void spawn_damage_number(GameState& state, Vec2 pos, int damage, const RenderConfig& config) {

@@ -106,18 +106,8 @@ void handle_selected_click(GameState& state, BoardPos clicked, const RenderConfi
     if (is_reachable) {
         handle_move_click(state, clicked, config);
     } else {
-        // Clicked non-reachable tile — deselect
-        int idx = state.selected_unit_idx;
-        if (idx >= 0 && idx < static_cast<int>(state.has_moved.size()) && state.has_moved[idx]) {
-            // Unit moved this turn, end its turn
-            if (idx < static_cast<int>(state.has_attacked.size())) {
-                state.has_attacked[idx] = true;
-            }
-        }
-        state.selected_unit_idx = -1;
-        state.reachable_tiles.clear();
-        state.attackable_tiles.clear();
-        state.movement_path.clear();
+        // Clicked non-reachable tile — deselect (same as right-click)
+        clear_selection(state);
     }
 }
 
